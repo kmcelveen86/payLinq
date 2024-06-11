@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -32,8 +33,12 @@ export default function TopNav() {
               Paylinq Icon
             </Typography>
             <Box>
-              <Button color="inherit">Sign In</Button>
-              <Button color="inherit">Register</Button>
+              <Link href="/signin">
+                <Button color="inherit">Sign In</Button>
+              </Link>
+              <Link href="/register">
+                <Button color="inherit">Register</Button>
+              </Link>
             </Box>
           </Toolbar>
         </AppBar>
