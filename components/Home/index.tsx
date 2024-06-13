@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import TopNav from "@/components/TopNav";
+import TopNav from "@/components/TopNav/";
 import { motion } from "framer-motion";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";

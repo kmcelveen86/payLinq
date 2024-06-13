@@ -56,7 +56,8 @@ export default function SignIn() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-          }}>
+          }}
+        >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
@@ -67,7 +68,8 @@ export default function SignIn() {
             component="form"
             onSubmit={handleSubmit}
             noValidate
-            sx={{ mt: 1 }}>
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -96,7 +98,8 @@ export default function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}>
+              sx={{ mt: 3, mb: 2 }}
+            >
               Sign In
             </Button>
             <Typography variant="body2" sx={{ mt: 2 }}>
@@ -107,7 +110,8 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 2, mb: 1, bgcolor: "#DB4437", color: "white" }}
               onClick={handleGoogleSignIn}
-              startIcon={<GoogleIcon />}>
+              startIcon={<GoogleIcon />}
+            >
               Sign in with Google
             </Button>
             <Button
@@ -115,7 +119,8 @@ export default function SignIn() {
               variant="contained"
               sx={{ mb: 2, bgcolor: "black", color: "white" }}
               onClick={handleAppleSignIn}
-              startIcon={<AppleIcon />}>
+              startIcon={<AppleIcon />}
+            >
               Sign in with Apple
             </Button>
             <Grid container>
@@ -134,7 +139,8 @@ export default function SignIn() {
           <Button
             startIcon={<ArrowBackIcon />}
             onClick={handleGoBack}
-            sx={{ mt: 2 }}>
+            sx={{ mt: 2 }}
+          >
             Go Back
           </Button>
         </Box>
