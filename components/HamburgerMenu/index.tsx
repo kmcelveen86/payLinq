@@ -57,7 +57,7 @@ export default function HamburgerMenu() {
           transition={{ type: "spring", stiffness: 100 }}>
           <List>
             {["How it works", "Pricing", "Contact"].map((text) => (
-              <ListItem button key={text}>
+              <ListItem key={text}>
                 <Link
                   href={`/${text.replace(/\s+/g, "").toLowerCase()}`}
                   passHref>
