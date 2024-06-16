@@ -15,6 +15,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AppleIcon from "@mui/icons-material/Apple";
 import Google from "@mui/icons-material/Google";
 import { useRouter } from "next/navigation";
+import SignUpForm from "@/components/SignUpForm";
 
 const theme = createTheme();
 
@@ -51,120 +52,7 @@ export default function SignUp() {
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}>
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign Up
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="confirmPassword"
-                  label="Confirm Password"
-                  type="password"
-                  id="confirmPassword"
-                  autoComplete="new-password"
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}>
-              Sign Up
-            </Button>
-            <Typography variant="body2" sx={{ mt: 2 }}>
-              Or,
-            </Typography>
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 2, mb: 1, bgcolor: "#DB4437", color: "white" }}
-              onClick={handleGoogleSignUp}
-              startIcon={<Google />}>
-              Sign up with Google
-            </Button>
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mb: 2, bgcolor: "black", color: "white" }}
-              onClick={handleAppleSignUp}
-              startIcon={<AppleIcon />}>
-              Sign up with Apple
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/signin" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-          <Button
-            startIcon={<ArrowBackIcon />}
-            onClick={handleGoBack}
-            sx={{ mt: 2 }}>
-            Go Back
-          </Button>
-        </Box>
+        <SignUpForm />
       </Container>
     </ThemeProvider>
   );
