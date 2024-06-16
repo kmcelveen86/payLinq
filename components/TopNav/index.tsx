@@ -10,6 +10,8 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Slide from "@mui/material/Slide";
 import Image from "next/image";
 import HamburgerMenu from "@/components/HamburgerMenu";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 interface HideOnScrollProps {
   children: React.ReactElement;
@@ -26,8 +28,9 @@ function HideOnScroll(props: HideOnScrollProps) {
   );
 }
 
-export default function TopNav() {
+export default async function TopNav() {
   const isMobile = useMediaQuery("(max-width:720px)");
+  const { data: session } = useSession();
 
   return (
     <React.Fragment>
@@ -79,21 +82,33 @@ export default function TopNav() {
                   </Link>
                 </Box>
               </Box>
-              <Box>
-                <Link href="/signin">
+              {session?.user?.email ? (
+                <Box>
                   <Button
+                    onClick={() => signOut()}
                     color="info"
                     variant="outlined"
                     sx={{ marginRight: 2 }}>
-                    Sign In
+                    Log Out
                   </Button>
-                </Link>
-                <Link href="/register">
-                  <Button color="info" variant="outlined">
-                    Register
-                  </Button>
-                </Link>
-              </Box>
+                </Box>
+              ) : (
+                <Box>
+                  <Link href="/signin">
+                    <Button
+                      color="info"
+                      variant="outlined"
+                      sx={{ marginRight: 2 }}>
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link href="/register">
+                    <Button color="info" variant="outlined">
+                      Register
+                    </Button>
+                  </Link>
+                </Box>
+              )}
             </Toolbar>
           </AppBar>
         </HideOnScroll>
