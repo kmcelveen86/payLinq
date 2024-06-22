@@ -13,9 +13,11 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 
 export default function HamburgerMenu() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { data: session } = useSession();
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -67,18 +69,36 @@ export default function HamburgerMenu() {
             ))}
           </List>
           <Divider />
-          <Box sx={{ padding: 2 }}>
-            <Link href="/signin" passHref>
-              <Button variant="outlined" color="info" sx={{ marginBottom: 2 }}>
-                Sign In
+          {session?.user?.email ? (
+            <Box sx={{ padding: 2 }}>
+              <Button
+                onClick={() => signOut()}
+                color="info"
+                variant="outlined"
+                sx={{ marginRight: 2 }}>
+                Log Out
               </Button>
-            </Link>
-            <Link href="/register" passHref>
-              <Button variant="outlined" color="info" sx={{ marginBottom: 2 }}>
-                Register
-              </Button>
-            </Link>
-          </Box>
+            </Box>
+          ) : (
+            <Box sx={{ padding: 2 }}>
+              <Link href="/signin" passHref>
+                <Button
+                  variant="outlined"
+                  color="info"
+                  sx={{ marginBottom: 2 }}>
+                  Sign In
+                </Button>
+              </Link>
+              <Link href="/register" passHref>
+                <Button
+                  variant="outlined"
+                  color="info"
+                  sx={{ marginBottom: 2 }}>
+                  Register
+                </Button>
+              </Link>
+            </Box>
+          )}
         </motion.div>
       </Drawer>
     </Box>
