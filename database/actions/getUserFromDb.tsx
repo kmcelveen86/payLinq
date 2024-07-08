@@ -1,4 +1,4 @@
-import prisma from "../../lib/prisma";
+import prisma from "@/lib/prisma";
 
 export async function getUserFromDb(email: string) {
   // Find user by email
@@ -6,7 +6,6 @@ export async function getUserFromDb(email: string) {
     where: { email },
   });
 
-  // If user exists, compare the provided password with the stored hashed password
   if (user) {
     return user;
   }

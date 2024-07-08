@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import TopNav from "@/components/TopNav/";
 import { motion } from "framer-motion";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -8,7 +7,6 @@ import Box from "@mui/material/Box";
 export default function Home() {
   return (
     <>
-      <TopNav />
       <Box
         display="flex"
         minHeight="100vh"

@@ -20,10 +20,11 @@ const SignUpForm = async () => {
   return (
     <form
       action={async (formData) => {
-        await registerUser({
-          email: formData.get("email") as string,
-          name: `${formData.get("firstName")} ${formData.get("lastName")}`,
-        });
+        await signIn()
+        // await registerUser({
+        //   email: formData.get("email") as string,
+        //   name: `${formData.get("firstName")} ${formData.get("lastName")}`,
+        // });
       }}>
       <Box
         sx={{
@@ -78,9 +79,6 @@ const SignUpForm = async () => {
             sx={{ mt: 3, mb: 2 }}>
             Sign Up
           </Button>
-          <Typography variant="body2" sx={{ mt: 2 }}>
-            Or,
-          </Typography>
           {/* <Button
             fullWidth
             variant="contained"
@@ -97,11 +95,21 @@ const SignUpForm = async () => {
             startIcon={<AppleIcon />}>
             Sign up with Apple
           </Button> */}
-          <Grid container justifyContent="flex-end">
+          <Grid container justifyContent="center">
             <Grid item>
-              <Link href="/signin" variant="body2">
+              <Button
+                onClick={async () => {
+                  await signIn();
+                }}
+                variant="text"
+                color="primary"
+                sx={{
+                  marginBottom: 2,
+                  marginRight: 2,
+                  textDecoration: "underline",
+                }}>
                 Already have an account? Sign in
-              </Link>
+              </Button>
             </Grid>
           </Grid>
         </Box>

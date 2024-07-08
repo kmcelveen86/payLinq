@@ -6,7 +6,6 @@
 const nextConfig = {
   /* config options here */
   pageExtensions: ["mdx", "md", "jsx", "js", "tsx", "ts"],
-  poweredByHeader: false,
 };
 
 export default nextConfig;
