@@ -1,10 +1,29 @@
-'use client'
-import React from 'react';
+"use client"; // Error components must be Client Components
 
-function ErrorPage() {
+import { useEffect } from "react";
+
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  useEffect(() => {
+    // Log the error to an error reporting service
+    console.error('ERROROROROROROROR:', error);
+  }, [error]);
+
   return (
-    <div className="h-screen flex justify-center items-center mt-28">Custom Error Screen Here</div>
+    <div>
+      <h2>Something went wrong!</h2>
+      <button
+        onClick={
+          // Attempt to recover by trying to re-render the segment
+          () => reset()
+        }>
+        Try again
+      </button>
+    </div>
   );
 }
-
-export default ErrorPage;

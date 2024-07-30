@@ -16,13 +16,12 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AppleIcon from "@mui/icons-material/Apple";
 import GoogleIcon from "@mui/icons-material/Google";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useRouter } from "next/navigation";
 import SignInForm from "@/components/SignInForm";
+import { useRouter } from "next/navigation";
 
-const theme = createTheme();
-
-export default function SignIn() {
+export default function SignInPage() {
   const router = useRouter();
+  const theme = createTheme();
 
   const handleGoBack = () => {
     // Add logic to navigate back to the previous page
@@ -52,21 +51,21 @@ export default function SignIn() {
               Or,
             </Typography>
             {/* <Button
-          fullWidth
-          variant="contained"
-          sx={{ mt: 2, mb: 1, bgcolor: "#DB4437", color: "white" }}
-          onClick={handleGoogleSignIn}
-          startIcon={<GoogleIcon />}>
-          Sign in with Google
-        </Button>
-        <Button
-          fullWidth
-          variant="contained"
-          sx={{ mb: 2, bgcolor: "black", color: "white" }}
-          onClick={handleAppleSignIn}
-          startIcon={<AppleIcon />}>
-          Sign in with Apple
-        </Button> */}
+            fullWidth
+            variant="contained"
+            sx={{ mt: 2, mb: 1, bgcolor: "#DB4437", color: "white" }}
+            onClick={handleGoogleSignIn}
+            startIcon={<GoogleIcon />}>
+            Sign in with Google
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{ mb: 2, bgcolor: "black", color: "white" }}
+            onClick={handleAppleSignIn}
+            startIcon={<AppleIcon />}>
+            Sign in with Apple
+          </Button> */}
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
