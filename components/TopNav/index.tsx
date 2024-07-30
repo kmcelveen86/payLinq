@@ -1,7 +1,5 @@
 "use client";
 import React from "react";
-import { Link as RouterLink } from "next/link";
-import Link from "@mui/material/Link";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
