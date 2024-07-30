@@ -32,9 +32,7 @@ export default function SignIn() {
     e.preventDefault();
     if (emailRef.current && emailRef.current.value) {
       try {
-        console.log('clickedclickedclicked', emailRef.current.value)
         await signIn("email", {
-          // email: emailRef.current.value,
           redirect: true,
           callbackUrl: "/",
         });

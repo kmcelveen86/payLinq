@@ -5,9 +5,7 @@ const protectedPaths = ["/user/dashboard", "/user/profile"];
 
 export async function middleware(req: NextRequest) {
   const session = await auth();
-  console.log("GREG LOOK!  ~ middleware ~ session:", session);
   const user = session?.user;
-  console.log("GREG LOOK!  ~ middleware ~ user:", user);
   const email = session?.user?.email;
   const url = req.nextUrl.clone();
 

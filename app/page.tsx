@@ -3,14 +3,12 @@ import Home from "@/components/Home/";
 import { auth, signIn, signOut } from "@/auth";
 import Image from "next/image";
 import { Box, Button, Typography, useMediaQuery, Link } from "@mui/material";
-import { Link as RouterLink } from "next/link";
 import HamburgerMenu from "@/components/HamburgerMenu";
 import TopNav from "@/components/TopNav";
 
 export default async function HomePage() {
   const session = await auth();
   const user = session?.user?.email;
-  console.log("GREG LOOK!  ~ HomePage ~ user:", user);
 
   return (
     <>

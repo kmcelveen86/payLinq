@@ -70,7 +70,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers,
   callbacks: {
     async signIn({ user, account, email, profile }) {
-      console.log("GREG LOOK!  ~ signIn ~ profile:", profile);
       const userExists = await prisma.user.findUnique({
         where: {
           email: user.email!,
@@ -96,7 +95,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   events: {
     async signIn(message) {
-      console.log("message", message);
       // update the accounts table with the data from message
       // if (message.isNewUser && message.account?.providerAccountId) {
       //   if (adapter) {
@@ -116,7 +114,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     verifyRequest: "/auth/verify-request",
     signIn: "/auth/signin",
-    // newUser: "/user/profile",
+    newUser: "/user/profile",
   },
   theme: {
     colorScheme: "auto", // "auto" | "dark" | "light"
