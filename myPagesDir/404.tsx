@@ -13,7 +13,6 @@ const Custom404 = () => {
         flexDirection: "column",
       }}
     >
-      <ErrorPage />
       <div style={{padding: '16px'}}>
         <a style={{ textDecoration: "none" }} href="/">
           Go home 🏠
