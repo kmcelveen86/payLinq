@@ -11,8 +11,6 @@ export const signInAction = async (email: string): Promise<void> => {
       email,
     });
 
-    console.log("resultresultresultresultresult", { result });
-
     if (result?.error) {
       console.error("Sign in error:", result.error);
       // Handle sign-in error
