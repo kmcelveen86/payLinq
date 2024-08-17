@@ -11,7 +11,7 @@ export default async function HomePage() {
   const user = session?.user?.email;
 
   return (
-    <Box className="bg-black">
+    <Box className="bg-black p-0">
       <HamburgerMenu />
       <TopNav>
         <>

@@ -13,7 +13,8 @@ export default function WhyChoosePaylinq() {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        p={3}>
+        className="bg-white text-black"
+        >
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}

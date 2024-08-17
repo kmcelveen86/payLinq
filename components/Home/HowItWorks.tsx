@@ -12,8 +12,7 @@ export default function HowItWorks() {
         minHeight="100vh"
         flexDirection="column"
         alignItems="center"
-        justifyContent="center"
-        p={3}>
+        justifyContent="center">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
