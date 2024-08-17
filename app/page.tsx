@@ -1,5 +1,5 @@
 import React from "react";
-import Home from "@/components/Home/";
+import { LifeDeserveSection, WhyChoosePaylinq, HowItWorks, MembershipSection, FAQSection } from "@/components/Home/";
 import { auth, signIn, signOut } from "@/auth";
 import Image from "next/image";
 import { Box, Button, Typography, useMediaQuery, Link } from "@mui/material";
@@ -11,7 +11,7 @@ export default async function HomePage() {
   const user = session?.user?.email;
 
   return (
-    <>
+    <Box className="bg-black">
       <HamburgerMenu />
       <TopNav>
         <>
@@ -74,11 +74,7 @@ export default async function HomePage() {
                   await signIn();
                 }}>
                 <Box>
-                  <Button
-                    type="submit"
-                    color="info"
-                    variant="outlined"
-                    sx={{ marginRight: 2 }}>
+                  <Button type="submit" color="info" variant="outlined">
                     Sign In/ Sign Up
                   </Button>
                 </Box>
@@ -87,7 +83,11 @@ export default async function HomePage() {
           </Box>
         </>
       </TopNav>
-      <Home />
-    </>
+      <LifeDeserveSection />
+      <WhyChoosePaylinq />
+      <HowItWorks />
+      <MembershipSection />
+      <FAQSection />
+    </Box>
   );
 }

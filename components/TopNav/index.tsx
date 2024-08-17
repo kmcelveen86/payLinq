@@ -40,7 +40,8 @@ export default function TopNav({ children }: HideOnScrollProps) {
             style={{
               backgroundColor: "white",
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "center",
+              padding: '0px'
             }}>
             {children}
           </Toolbar>
