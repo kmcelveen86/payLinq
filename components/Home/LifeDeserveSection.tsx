@@ -41,7 +41,7 @@ export default function LifeDeserveSection() {
             <Typography
               variant="h6"
               component="div"
-              className="lg:w-[491px] lg:h-[102px] leading-8 font-light xs:text-sm md:text-base lg:text-lg">
+              className="text-white leading-relaxed xs:text-sm md:text-base lg:text-lg">
               Empower your financial future with seamless bill payments, credit
               building, and exclusive rewards tailored to your lifestyle.
             </Typography>
@@ -82,11 +82,11 @@ export default function LifeDeserveSection() {
         flexDirection="column"
         alignItems="flex-end"
         justifyContent="flex-end"
-        className="absolute xs:bottom-[-67px] md:bottom-[-100px] lg:bottom-[-140px] right-0 w-[300px] h-[300px] sm:left-0 lg:left-[268px]">
+        className="absolute xs:bottom-[-80px] md:bottom-[-112px] lg:bottom-[-170px] right-0 w-[300px] h-[300px] sm:left-0 lg:left-[268px]">
         <motion.img
           src="/images/rectangle.png"
           alt="Picture of the credit cards"
-          className="relative object-contain lg:w-[498px] lg:h-[408px] md:w-[300px] md:h-[210px] xs:w-[200px] xs:h-[140px]"
+          className="relative object-contain lg:w-[498px] lg:h-[408px] md:w-[300px] md:h-[210px] xs:w-[200px] xs:h-[140px] z-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
