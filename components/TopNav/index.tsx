@@ -13,27 +13,14 @@ import HamburgerMenu from "@/components/HamburgerMenu";
 import { signInAction, signOutAction } from "@/app/actions";
 import { useSession } from "next-auth/react";
 import { signIn } from "@/auth";
+import { HideOnScroll, HideOnScrollProps } from "@/components/HideOnScroll";
 
-interface HideOnScrollProps {
-  children: React.ReactElement;
-}
-
-function HideOnScroll(props: HideOnScrollProps) {
-  const { children } = props;
-  const trigger = useScrollTrigger();
-
-  return (
-    <Slide appear={false} direction="down" in={!trigger}>
-      {children}
-    </Slide>
-  );
-}
 
 export default function TopNav({ children }: HideOnScrollProps) {
   const isMobile = useMediaQuery("(max-width:720px)");
 
   return !isMobile ? (
-    <React.Fragment>
+    <>
       <HideOnScroll>
         <AppBar>
           <Toolbar
@@ -47,6 +34,6 @@ export default function TopNav({ children }: HideOnScrollProps) {
           </Toolbar>
         </AppBar>
       </HideOnScroll>
-    </React.Fragment>
+    </>
   ) : null;
 }
