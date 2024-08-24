@@ -15,9 +15,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { signOutAction } from "@/app/actions";
 import { signIn, signOut } from "next-auth/react";
-import { HideOnScroll, HideOnScrollProps } from "@/components/HideOnScroll";
+import { HideOnScroll } from "@/components/HideOnScroll";
 
 export default function HamburgerMenu() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -42,14 +41,14 @@ export default function HamburgerMenu() {
   };
 
   return isMobile ? (
-    <Box>
+    <Box className="bg-black h-16">
       <HideOnScroll>
         <IconButton
           edge="start"
           color="inherit"
           aria-label="menu"
           onClick={toggleDrawer(true)}>
-          <Box sx={{ padding: 2 }}>
+          <Box sx={{paddingLeft: '12px' }}>
             <MenuIcon fontSize="large" color="secondary" />
           </Box>
         </IconButton>
@@ -75,20 +74,31 @@ export default function HamburgerMenu() {
               </ListItem>
             ))}
           </List>
-          <Divider />
-          {session?.user?.email ? (
-            <Box sx={{ padding: 2 }}>
-              <Button
-                onClick={async () => {
-                  await signOut();
-                }}
-                color="info"
-                variant="outlined"
-                sx={{ marginRight: 2 }}>
-                Log Out
-              </Button>
-            </Box>
-          ) : (
+          {session?.user?.email && (
+            <>
+              <Divider />
+              <List>
+                <ListItem>
+                  <Link href="/user/dashboard" passHref>
+                    <ListItemText primary="My profile" />
+                  </Link>
+                </ListItem>
+              </List>
+              <Divider />
+              <Box sx={{ padding: 2 }}>
+                <Button
+                  onClick={async () => {
+                    await signOut();
+                  }}
+                  color="info"
+                  variant="outlined"
+                  sx={{ marginRight: 2 }}>
+                  Sign Out
+                </Button>
+              </Box>
+            </>
+          )}
+          {!session?.user?.email && (
             <Box sx={{ padding: 2 }}>
               <Button
                 onClick={async () => {
