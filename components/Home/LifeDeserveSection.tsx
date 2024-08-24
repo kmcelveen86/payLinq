@@ -22,6 +22,9 @@ export default function LifeDeserveSection() {
             flexDirection: "column",
             marginLeft: "0",
           },
+          "@media (min-width: 720px) and (max-width: 1139px)": {
+            paddingTop: "80px",
+          },
         }}>
         <Box flex={1} p={2}>
           <motion.div

@@ -118,7 +118,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   theme: {
     colorScheme: "auto", // "auto" | "dark" | "light"
-    logo: "/logos/paylinq-logo.png", // Absolute URL to image
+    logo: "/logos/paylinq-logo-new.png", // Absolute URL to image
     // brandColor: "#00FF00", // Hex color code
     // buttonText: "#00FF00", // Hex color code
   },

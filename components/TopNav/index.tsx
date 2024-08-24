@@ -25,9 +25,9 @@ export default function TopNav({ children }: HideOnScrollProps) {
         <AppBar>
           <Toolbar
             style={{
-              backgroundColor: "white",
+              backgroundColor: "black",
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "space-between",
               padding: '0px'
             }}>
             {children}

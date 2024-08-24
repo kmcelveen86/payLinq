@@ -8,7 +8,6 @@ export interface HideOnScrollProps {
 export function HideOnScroll(props: HideOnScrollProps) {
   const { children } = props;
   const trigger = useScrollTrigger();
-  console.log('GREG LOOK!  ~ HideOnScroll ~ trigger:', trigger);
 
   return (
     <Slide appear={false} direction="down" in={!trigger}>
