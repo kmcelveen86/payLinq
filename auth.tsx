@@ -32,7 +32,7 @@ const providers: Provider[] = [
     },
     name: "Email",
     // async sendVerificationRequest({ identifier, token, url, theme }) {
-    //   const verificationLink = `${url}/verify?token=${token}`;
+    //   const verificationLink = `${baseUrl}/verify?token=${token}`;
     //   const msg = {
     //     to: identifier,
     //     from: process.env.AUTH_SENDGRID_EMAIL_FROM!,
