@@ -26,27 +26,27 @@ export default function SignIn() {
   );
   const emailRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = async (
-    e,
-  ) => {
-    e.preventDefault();
-    if (emailRef.current && emailRef.current.value) {
-      try {
-        await signIn("email", {
-          redirect: true,
-          callbackUrl: "/",
-        });
-      } catch (error) {
-        if (error instanceof AuthError) {
-          // Handle specific NextAuth.js errors
-          console.error("SignIn error:", error);
-        } else {
-          // Handle other errors
-          console.error("SignIn error:", error);
-        }
-      }
-    }
-  };
+  // const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = async (
+  //   e,
+  // ) => {
+  //   e.preventDefault();
+  //   if (emailRef.current && emailRef.current.value) {
+  //     try {
+  //       await signIn("email", {
+  //         redirect: true,
+  //         callbackUrl: "/",
+  //       });
+  //     } catch (error) {
+  //       if (error instanceof AuthError) {
+  //         // Handle specific NextAuth.js errors
+  //         console.error("SignIn error:", error);
+  //       } else {
+  //         // Handle other errors
+  //         console.error("SignIn error:", error);
+  //       }
+  //     }
+  //   }
+  // };
 
   const handleEmailChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (emailRef.current) {

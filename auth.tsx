@@ -23,6 +23,7 @@ const providers: Provider[] = [
     apiKey: process.env.AUTH_SENDGRID_KEY,
     from: process.env.AUTH_SENDGRID_EMAIL_FROM,
     normalizeIdentifier(identifier: string): string {
+      console.log('GREG LOOK!  ~ normalizeIdentifier ~ identifier:', identifier);
       let [local, domain] = identifier.toLowerCase().trim().split("@");
       domain = domain.split(",")[0];
       if (identifier.split("@").length > 2) {
