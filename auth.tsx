@@ -23,7 +23,10 @@ const providers: Provider[] = [
     apiKey: process.env.AUTH_SENDGRID_KEY,
     from: process.env.AUTH_SENDGRID_EMAIL_FROM,
     normalizeIdentifier(identifier: string): string {
-      console.log('GREG LOOK!  ~ normalizeIdentifier ~ identifier:', identifier);
+      console.log(
+        "GREG LOOK!  ~ normalizeIdentifier ~ identifier:",
+        identifier,
+      );
       let [local, domain] = identifier.toLowerCase().trim().split("@");
       domain = domain.split(",")[0];
       if (identifier.split("@").length > 2) {
@@ -83,12 +86,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
     },
     async redirect({ url, baseUrl }) {
-      if (url.startsWith(baseUrl)) {
-        return url;
-      } else if (url.startsWith("/")) {
-        return new URL(url, baseUrl).toString();
-      }
-      return baseUrl;
+      return process.env.NODE_ENV === "production"
+        ? "https://paylinq-seven.vercel.app/"
+        : "http://localhost:3000";
+      // if (url.startsWith(baseUrl)) {
+      //   return url;
+      // } else if (url.startsWith("/")) {
+      //   return new URL(url, baseUrl).toString();
+      // }
+      // return baseUrl;
     },
     session({ session, token, user, trigger, newSession }) {
       return session;
