@@ -21,7 +21,15 @@ export default function FAQSection() {
           component="h2"
           gutterBottom
           className="font-mono font-semibold text-white text-3xl lg:text-4xl mb-4">
-          Frequently Asked Questions
+          This is just the beginning—what&#39;s next for Paylinq?
+        </Typography>
+        <Typography
+          variant="caption"
+          gutterBottom
+          className="font-mono text-white text-lg">
+          Thank you for joining us on this journey! Right now, you are part of an exclusive group of users who are shaping the future of financial rewards.
+          We&#39;re starting simple to ensure we build a reliable, secure platform you can trust. As we grow, we&#39;ll roll out exciting features like virtual cards, credit
+          reporting, earn more points, and merchant rewards. Stay tuned—together, we&#39;re creating something incredible.
         </Typography>
       </motion.div>
 
