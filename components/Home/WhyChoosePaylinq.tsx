@@ -36,7 +36,7 @@ export default function WhyChoosePaylinq() {
               flexDirection: "column",
             },
           }}>
-          <Box className="xs:flex-none md:flex-none lg:flex-1 pl-4 self-start xs:pt-16 md:pt-24 lg:pt-36">
+          <Box className="xs:flex-none md:flex-none lg:flex-1 pl-4 self-start xs:pt-16 md:pt-24 lg:pt-36 ml-80">
             <motion.div
               initial={{ opacity: 0, y: -50 }}
               animate={{ opacity: 1, y: 0 }}>
@@ -47,16 +47,24 @@ export default function WhyChoosePaylinq() {
                 className="lg:w-[529px] lg:h-[117px] leading-10 ">
                 <div className="text-responsive">
                   <span className="text-black font-mono font-semibold xs:text-2xl md:text-3xl lg:text-5xl">
-                    Why Choose Paylinq?
+                    To our Pioneers in transforming financial management
                   </span>
                 </div>
               </Typography>
               <Typography
                 variant="h6"
                 component="div"
+                gutterBottom
                 className="text-black leading-relaxed xs:text-sm md:text-base lg:text-lg">
-                See why Paylinq should be your choice for financial freedom.
-                Open the doors to new financial ventures.
+                We know how stressful it can be to manage bills and build credit. That&#39;s why we&#39;re building Paylinq—to make your financial journey simpler, more rewarding, and
+                enjoyable.
+              </Typography>
+              <Typography
+                variant="h6"
+                component="div"
+                className="text-black leading-relaxed xs:text-sm md:text-base lg:text-lg">
+                Our mission is to not only make paying bills easier but to turn your everyday transactions into a way to achieve your financial and
+                lifestyle dreams.
               </Typography>
             </motion.div>
           </Box>
