@@ -34,10 +34,10 @@ export default function LifeDeserveSection() {
               variant="h1"
               component="div"
               gutterBottom
-              className="lg:w-[529px] lg:h-[117px] leading-10 ">
+              className="lg:w-[1039px]  leading-10 ">
               <div className="text-responsive">
                 <span className="text-white font-mono font-semibold xs:text-2xl md:text-3xl lg:text-5xl">
-                  Live the Life You Deserve with Paylinq
+                  Transform your bill payments into lifetime rewards
                 </span>
               </div>
             </Typography>
@@ -45,38 +45,9 @@ export default function LifeDeserveSection() {
               variant="h6"
               component="div"
               className="text-white leading-relaxed xs:text-sm md:text-base lg:text-lg">
-              Empower your financial future with seamless bill payments, credit
-              building, and exclusive rewards tailored to your lifestyle.
+              Pay your bills, build credit, and unlock lifestyle perks. Paylinq is starting with the basics, but we&#39;re building a revolutionary platform to help you earn rewards and
+              access exclusive benefits. You&#39;re not just paying bills—you&#39;re building a better financial future.
             </Typography>
-          </motion.div>
-        </Box>
-        <Box
-          flex={1}
-          p={2}
-          sx={{
-            backgroundColor: "#d1d5db",
-            height: "500px",
-            "@media (max-width: 1140px)": {
-              height: "300px",
-              width: "100%",
-            },
-          }}>
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}>
-            <Box
-              style={{
-                backgroundColor: "#9ca3af",
-                width: "100px",
-                height: "100px",
-              }}></Box>
           </motion.div>
         </Box>
       </Box>
