@@ -15,16 +15,15 @@ export default function HowItWorks() {
         alignItems="center"
         justifyContent="center"
         sx={{
+          marginLeft: "133px",
           backgroundColor: "#000",
           color: "#fff",
-          textAlign: "center",
-          padding: "20px",
-          // "@media (max-width: 1139px)": {
-          //   flexDirection: "column",
-          //   marginLeft: "0",
-          // },
+          "@media (max-width: 1139px)": {
+            flexDirection: "column",
+            marginLeft: "0",
+          },
         }}>
-        <Box flex={1} maxWidth="800px">
+        <Box flex={1} p={2}>
           <motion.div
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}>
@@ -46,7 +45,7 @@ export default function HowItWorks() {
                 </div>
                 <div>
                   <p className="font-mono text-white leading-relaxed xs:text-sm md:text-base lg:text-lg">
-                  Earn rewards: Start earning 500 points per month just by paying bills.
+                    Pay Bills
                   </p>
                 </div>
               </div>
@@ -56,7 +55,7 @@ export default function HowItWorks() {
                 </div>
                 <div>
                   <p className="font-mono text-white leading-relaxed xs:text-sm md:text-base lg:text-lg">
-                  Simplify your finances: Track your bill payments in one place.
+                    Build Credit
                   </p>
                 </div>
               </div>
@@ -66,11 +65,40 @@ export default function HowItWorks() {
                 </div>
                 <div>
                   <p className="font-mono text-white leading-relaxed xs:text-sm md:text-base lg:text-lg">
-                  Get in early: Be the first to experience Paylinq and enjoy exclusive rewards in the future.
+                    Redeem Points
                   </p>
                 </div>
               </div>
             </div>
+          </motion.div>
+        </Box>
+        <Box
+          flex={1}
+          p={2}
+          sx={{
+            backgroundColor: "#d1d5db",
+            height: "500px",
+            "@media (max-width: 1140px)": {
+              height: "300px",
+              width: "100%",
+            },
+          }}>
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}>
+            <Box
+              style={{
+                backgroundColor: "#9ca3af",
+                width: "100px",
+                height: "100px",
+              }}></Box>
           </motion.div>
         </Box>
       </Box>
