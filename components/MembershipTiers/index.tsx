@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import {
   CreditCard,
@@ -13,6 +13,7 @@ import {
   Shield,
   Zap,
   Star,
+  AlertCircle,
 } from "lucide-react";
 
 // Type definitions
@@ -24,6 +25,7 @@ type RewardType = {
 type FeatureType = {
   icon: React.ReactNode;
   text: string;
+  comingSoon?: boolean;
 };
 
 type PricingCardProps = {
@@ -45,6 +47,7 @@ type PricingCardProps = {
   selected?: boolean;
   onSelect: () => void;
   annualBilling: boolean;
+  disabled?: boolean;
 };
 
 type Tier = {
@@ -52,9 +55,14 @@ type Tier = {
   price: number;
 };
 
+type ComingSoonValue = {
+  value: string | boolean;
+  comingSoon: boolean;
+};
+
 type TableFeature = {
   name: string;
-  tiers: (boolean | string)[];
+  tiers: (boolean | string | ComingSoonValue)[];
 };
 
 type FeatureCategory = {
@@ -73,6 +81,7 @@ const MembershipTiers: React.FC = () => {
 
   // Handle tier selection
   const handleSelectTier = (tierName: string): void => {
+    if (tierName !== "Freemium") return; // Only allow Freemium to be selected
     setSelectedTier(tierName);
   };
 
@@ -131,10 +140,26 @@ const MembershipTiers: React.FC = () => {
             icon={<CreditCard className="h-8 w-8 text-gray-500" />}
             features={[
               { icon: <CreditCard />, text: "Paylinq Reward Debit Card" },
-              { icon: <Shield />, text: "Credit Reporting (2 utilities)" },
-              { icon: <Award />, text: "Limited Loyalty Junction Access" },
-              { icon: <Plane />, text: "Delta Economy & Main Cabin" },
-              { icon: <Briefcase />, text: "Marriott Longer Stay Brands" },
+              {
+                icon: <Shield />,
+                text: "Credit Reporting",
+                comingSoon: true,
+              },
+              {
+                icon: <Award />,
+                text: "Loyalty Rewards Program",
+                comingSoon: true,
+              },
+              {
+                icon: <Plane />,
+                text: "Travel Benefits",
+                comingSoon: true,
+              },
+              {
+                icon: <Briefcase />,
+                text: "Hotel Partner Benefits",
+                comingSoon: true,
+              },
             ]}
             rewards={[
               { category: "Everyday Purchases", points: 1 },
@@ -146,6 +171,7 @@ const MembershipTiers: React.FC = () => {
             maxMonthlyPoints={10000}
             maxAnnualPoints={120000}
             expiration="18 months"
+            recommended={true}
             selected={selectedTier === "Freemium"}
             onSelect={() => handleSelectTier("Freemium")}
             annualBilling={annualBilling}
@@ -162,10 +188,10 @@ const MembershipTiers: React.FC = () => {
             icon={<Coffee className="h-8 w-8 text-blue-500" />}
             features={[
               { icon: <CreditCard />, text: "All Freemium Features" },
-              { icon: <Shield />, text: "Credit Reporting (8 utilities)" },
+              { icon: <Shield />, text: "Enhanced Credit Reporting" },
               { icon: <Zap />, text: "Exclusive Deals & Insights" },
-              { icon: <Award />, text: "Full Loyalty Junction Access" },
-              { icon: <Plane />, text: "Delta Main Cabin & Comfort+" },
+              { icon: <Award />, text: "Full Loyalty Program Access" },
+              { icon: <Plane />, text: "Premium Travel Benefits" },
             ]}
             rewards={[
               { category: "Everyday Purchases", points: 2 },
@@ -177,10 +203,10 @@ const MembershipTiers: React.FC = () => {
             maxMonthlyPoints={20000}
             maxAnnualPoints={240000}
             expiration="24 months"
-            recommended={true}
             selected={selectedTier === "Lifestyle"}
             onSelect={() => handleSelectTier("Lifestyle")}
             annualBilling={annualBilling}
+            disabled={true}
           />
 
           {/* VIP Lifestyle Tier */}
@@ -197,7 +223,7 @@ const MembershipTiers: React.FC = () => {
               { icon: <Zap />, text: "Priority Customer Support" },
               { icon: <Award />, text: "VIP Events & Birthday Gift" },
               { icon: <Briefcase />, text: "Financial Advice Sessions" },
-              { icon: <Plane />, text: "Delta Sky Club Access" },
+              { icon: <Plane />, text: "Premium Lounge Access" },
             ]}
             rewards={[
               { category: "Everyday Purchases", points: 3 },
@@ -212,6 +238,7 @@ const MembershipTiers: React.FC = () => {
             selected={selectedTier === "VIP Lifestyle"}
             onSelect={() => handleSelectTier("VIP Lifestyle")}
             annualBilling={annualBilling}
+            disabled={true}
           />
 
           {/* Elite Lifestyle Tier */}
@@ -243,6 +270,7 @@ const MembershipTiers: React.FC = () => {
             selected={selectedTier === "Elite Lifestyle"}
             onSelect={() => handleSelectTier("Elite Lifestyle")}
             annualBilling={annualBilling}
+            disabled={true}
           />
         </div>
 
@@ -276,8 +304,9 @@ const PricingCard: React.FC<PricingCardProps> = ({
   selected = false,
   onSelect,
   annualBilling,
+  disabled = false,
 }) => {
-  const annualPrice = price * 12 * 0.85; // 15% discount for annual billing
+  const annualPrice = Math.ceil(price * 12 * 0.85); // 15% discount for annual billing
   const currentPrice = annualBilling ? annualPrice : price;
   const priceDisplay =
     currentPrice === 0
@@ -288,7 +317,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
     <div
       className={`rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 ${
         selected ? "scale-105 ring-2 ring-indigo-500" : "hover:scale-105"
-      } ${color}`}
+      } ${color} ${disabled ? "opacity-80" : ""}`}
     >
       {recommended && (
         <div className="bg-emerald-500 text-white text-center py-1 font-semibold text-sm">
@@ -347,9 +376,20 @@ const PricingCard: React.FC<PricingCardProps> = ({
             {features.map((feature, index) => (
               <li key={index} className="flex items-start">
                 <span className="flex-shrink-0 h-5 w-5 text-emerald-500 mr-2">
-                  <Check size={18} />
+                  {feature.comingSoon ? (
+                    <Clock size={18} className="text-amber-500" />
+                  ) : (
+                    <Check size={18} />
+                  )}
                 </span>
-                <span className="text-sm text-gray-600">{feature.text}</span>
+                <div>
+                  <span className="text-sm text-gray-600">{feature.text}</span>
+                  {feature.comingSoon && (
+                    <span className="text-xs text-amber-600 block">
+                      Coming soon
+                    </span>
+                  )}
+                </div>
               </li>
             ))}
           </ul>
@@ -381,10 +421,15 @@ const PricingCard: React.FC<PricingCardProps> = ({
         {/* CTA Button */}
         <button
           onClick={onSelect}
-          className={`w-full ${buttonColor} text-white font-semibold py-3 px-4 rounded-lg transition-colors mt-2`}
+          disabled={disabled}
+          className={`w-full ${buttonColor} text-white font-semibold py-3 px-4 rounded-lg transition-colors mt-2 ${
+            disabled ? "opacity-60 cursor-not-allowed" : ""
+          }`}
         >
           {selected
             ? "Selected"
+            : disabled
+            ? "Coming Soon"
             : tierName === "Freemium"
             ? "Get Started"
             : "Select Plan"}
@@ -410,7 +455,10 @@ const FeatureComparisonTable: React.FC<{ annualBilling: boolean }> = ({
       name: "Card Benefits",
       features: [
         { name: "Paylinq Reward Debit Card", tiers: [true, true, true, true] },
-        { name: "Digital Card", tiers: [true, true, true, true] },
+        {
+          name: "Digital Card",
+          tiers: [{ value: true, comingSoon: true }, true, true, true],
+        },
         {
           name: "Priority Customer Support",
           tiers: [false, false, true, true],
@@ -426,7 +474,12 @@ const FeatureComparisonTable: React.FC<{ annualBilling: boolean }> = ({
       features: [
         {
           name: "Credit Reporting",
-          tiers: ["2 utilities", "8 utilities", "8 utilities", "8 utilities"],
+          tiers: [
+            { value: "2 Accounts", comingSoon: true },
+            "Multiple Accounts",
+            "Multiple Accounts",
+            "Multiple Accounts",
+          ],
         },
         { name: "Financial Insights", tiers: [false, true, true, true] },
         {
@@ -443,30 +496,35 @@ const FeatureComparisonTable: React.FC<{ annualBilling: boolean }> = ({
       name: "Travel & Lifestyle",
       features: [
         {
-          name: "Loyalty Junction Access",
-          tiers: ["Limited", "Full", "Premium", "Premium"],
-        },
-        {
-          name: "Delta Seating",
+          name: "Loyalty Program Access",
           tiers: [
-            "Economy & Main Cabin",
-            "Main Cabin & Comfort+",
-            "Comfort+, First Class & Premium Select",
-            "First Class, Premium Select & Delta One",
+            { value: "Basic", comingSoon: true },
+            "Full",
+            "Premium",
+            "Premium",
           ],
         },
         {
-          name: "Marriott Brands",
+          name: "Travel Benefits",
           tiers: [
-            "Longer Stay",
-            "Select & Longer Stay",
-            "Premium & Select",
-            "Premium & Luxury",
+            { value: "Economy", comingSoon: true },
+            "Standard Travel Benefits",
+            "Premium Travel Benefits",
+            "Luxury Travel Benefits",
+          ],
+        },
+        {
+          name: "Hotel Partners",
+          tiers: [
+            { value: "Standard", comingSoon: true },
+            "Standard Hotels",
+            "Premium Hotels",
+            "Luxury Hotels",
           ],
         },
         {
           name: "Lounge Access",
-          tiers: [false, false, "Delta Sky Club", "Delta One Lounge"],
+          tiers: [false, false, "Premium Lounges", "Exclusive Lounges"],
         },
       ],
     },
@@ -477,7 +535,7 @@ const FeatureComparisonTable: React.FC<{ annualBilling: boolean }> = ({
         { name: "Birthday Gift", tiers: [false, false, true, true] },
         { name: "Concierge Services", tiers: [false, false, false, "24/7"] },
         {
-          name: "Luxury Travel Experiences",
+          name: "Luxury Experiences",
           tiers: [false, false, false, true],
         },
       ],
@@ -491,6 +549,10 @@ const FeatureComparisonTable: React.FC<{ annualBilling: boolean }> = ({
         <p className="text-gray-600 mt-1">
           Compare all features across our membership tiers
         </p>
+        <div className="mt-3 text-sm flex items-center text-amber-600">
+          <span className="inline-block w-3 h-3 bg-amber-100 border border-amber-300 rounded-full mr-2"></span>
+          Features with a dot indicator are coming soon
+        </div>
       </div>
 
       <div className="overflow-x-auto">
@@ -501,13 +563,14 @@ const FeatureComparisonTable: React.FC<{ annualBilling: boolean }> = ({
                 Feature
               </th>
               {tiers.map((tier, index) => {
-                const annualPrice = tier.price * 12 * 0.85;
+                const annualPrice = Math.ceil(tier.price * 12 * 0.85);
                 const priceDisplay =
                   tier.price === 0
                     ? "Free"
                     : `$${annualBilling ? annualPrice : tier.price}${
                         annualBilling ? "/year" : "/month"
                       }`;
+                const isAvailable = index === 0;
 
                 return (
                   <th
@@ -518,6 +581,11 @@ const FeatureComparisonTable: React.FC<{ annualBilling: boolean }> = ({
                       {tier.name}
                     </span>
                     <span className="text-base">{priceDisplay}</span>
+                    {!isAvailable && (
+                      <span className="inline-block mt-1 px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded-full">
+                        Coming Soon
+                      </span>
+                    )}
                   </th>
                 );
               })}
@@ -549,6 +617,13 @@ const FeatureComparisonTable: React.FC<{ annualBilling: boolean }> = ({
                               —
                             </span>
                           )
+                        ) : typeof value === "object" ? (
+                          <div className="relative inline-flex items-center justify-center">
+                            <span className="text-gray-700 font-medium">
+                              {value.value}
+                            </span>
+                            <span className="absolute -top-1 right-[-10px] w-2 h-2 bg-amber-400 rounded-full"></span>
+                          </div>
                         ) : (
                           <span className="text-gray-700 font-medium">
                             {value}
@@ -584,7 +659,7 @@ const FAQSection: React.FC = () => {
     {
       question: "Can I upgrade my membership tier at any time?",
       answer:
-        "Yes, you can upgrade your membership tier at any time through your account settings. The new benefits will apply immediately, and you'll be billed the prorated difference for the remainder of your billing cycle.",
+        "Currently, only the Freemium tier is available. We're working hard to launch our premium tiers soon! Once available, you'll be able to upgrade your membership tier at any time through your account settings.",
     },
     {
       question: "Do unused points roll over to the next month?",
@@ -594,12 +669,12 @@ const FAQSection: React.FC = () => {
     {
       question: "How does credit reporting work with Paylinq?",
       answer:
-        "Paylinq reports your utility payments to major credit bureaus to help build your credit history. The number of utilities you can report varies by tier, from 2 utilities with Freemium to 8 utilities with higher tiers.",
+        "Credit reporting is coming soon to Paylinq! When available, we'll report your payments to major credit bureaus to help build your credit history. The number of accounts you can report will vary by membership tier.",
     },
     {
-      question: "What is Loyalty Junction?",
+      question: "What is the Loyalty Program?",
       answer:
-        "Loyalty Junction is our exclusive marketplace offering special deals and discounts from partner merchants. Access and available offers vary by membership tier, with premium tiers enjoying exclusive high-value offers not available to other members.",
+        "Our Loyalty Program is an exclusive marketplace that will offer special deals and discounts from partner merchants. This feature is coming soon, and access and available offers will vary by membership tier, with premium tiers enjoying exclusive high-value offers.",
     },
   ];
 
