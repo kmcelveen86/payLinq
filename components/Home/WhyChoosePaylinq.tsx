@@ -16,7 +16,7 @@ export default function WhyChoosePaylinq() {
         justifyContent="center"
         sx={{
           marginLeft: "133px",
-          backgroundColor: "#fff",
+          backgroundColor: "black",
           "@media (max-width: 1139px)": {
             flexDirection: "column",
             marginLeft: "0",
@@ -46,7 +46,7 @@ export default function WhyChoosePaylinq() {
                 gutterBottom
                 className="lg:w-[529px] lg:h-[117px] leading-10 ">
                 <div className="text-responsive">
-                  <span className="text-black font-mono font-semibold xs:text-2xl md:text-3xl lg:text-5xl">
+                  <span className="text-white font-mono font-semibold xs:text-2xl md:text-3xl lg:text-5xl">
                     To our Pioneers in transforming financial management
                   </span>
                 </div>
@@ -55,14 +55,14 @@ export default function WhyChoosePaylinq() {
                 variant="h6"
                 component="div"
                 gutterBottom
-                className="text-black leading-relaxed xs:text-sm md:text-base lg:text-lg">
+                className="text-white leading-relaxed xs:text-sm md:text-base lg:text-lg">
                 We know how stressful it can be to manage bills and build credit. That&#39;s why we&#39;re building Paylinq—to make your financial journey simpler, more rewarding, and
                 enjoyable.
               </Typography>
               <Typography
                 variant="h6"
                 component="div"
-                className="text-black leading-relaxed xs:text-sm md:text-base lg:text-lg">
+                className="text-white leading-relaxed xs:text-sm md:text-base lg:text-lg">
                 Our mission is to not only make paying bills easier but to turn your everyday transactions into a way to achieve your financial and
                 lifestyle dreams.
               </Typography>

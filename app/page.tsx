@@ -5,6 +5,7 @@ import {
   HowItWorks,
   MembershipSection,
   FAQSection,
+  MembershipTiers
 } from "@/components/Home/";
 import TopNavComp from "@/components/TopNav/TopNavComp";
 import { auth, signIn, signOut } from "@/auth";
@@ -21,7 +22,8 @@ export default async function HomePage() {
       <HamburgerMenu />
       <TopNavComp />
       <LifeDeserveSection />
-      <WhyChoosePaylinq />
+      <MembershipTiers />
+      {/* <WhyChoosePaylinq /> */}
       <HowItWorks />
       <MembershipSection />
       <FAQSection />
