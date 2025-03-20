@@ -3,6 +3,7 @@ import WhyChoosePaylinq from "./WhyChoosePaylinq";
 import HowItWorks from "./HowItWorks";
 import MembershipSection from "./MembershipSection";
 import FAQSection from "./FAQSection";
+import MembershipTiers from "@/components/MembershipTiers";
 
 export {
   LifeDeserveSection,
@@ -10,4 +11,5 @@ export {
   HowItWorks,
   MembershipSection,
   FAQSection,
+  MembershipTiers
 };
