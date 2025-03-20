@@ -124,7 +124,7 @@ export default function FAQSection() {
             >
               This is just the beginning—
               <span className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-transparent bg-clip-text">
-                what's next for Paylinq?
+                {`what's next for Paylinq?`}
               </span>
             </Typography>
 
@@ -132,20 +132,20 @@ export default function FAQSection() {
               variant="body1"
               className="text-gray-300 text-lg leading-relaxed mb-8"
             >
-              Thank you for joining us on this journey! Right now, you are part
+              {`Thank you for joining us on this journey! Right now, you are part
               of an exclusive group of users who are shaping the future of
               financial rewards. We're starting simple to ensure we build a
-              reliable, secure platform you can trust.
+              reliable, secure platform you can trust.`}
             </Typography>
 
             <Typography
               variant="body1"
               className="text-gray-300 text-lg leading-relaxed"
             >
-              As we grow, we'll roll out exciting features like virtual cards,
+              {`As we grow, we'll roll out exciting features like virtual cards,
               credit reporting, expanded point earning opportunities, and
               merchant rewards. Stay tuned—together, we're creating something
-              incredible.
+              incredible.`}
             </Typography>
 
             {/* Animated decoration */}
