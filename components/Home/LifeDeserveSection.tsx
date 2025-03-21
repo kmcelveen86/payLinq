@@ -192,7 +192,7 @@ export default function LifeDeserveSection(): React.ReactElement {
                     backgroundImage: "linear-gradient(90deg, #2D9642, #C28F49)",
                   }}
                 >
-                  Empowering Financial Growth Through Reward-Driven Spending
+                  {`Empowering Financial Growth Through Reward-Driven Spending`}
                 </span>
               </div>
             </Typography>
@@ -222,8 +222,8 @@ export default function LifeDeserveSection(): React.ReactElement {
                 component="div"
                 className="text-white font-light italic"
               >
-                "Our mission is to turn your everyday transactions into a way to
-                achieve your financial and lifestyle dreams."
+                {`"Our mission is to turn your everyday transactions into a way to
+                achieve your financial and lifestyle dreams."`}
               </Typography>
             </motion.div>
 
