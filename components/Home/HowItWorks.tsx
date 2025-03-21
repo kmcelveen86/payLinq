@@ -48,7 +48,7 @@ const featureItems = [
 export default function HowItWorks() {
   const controls = useAnimation();
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 'some', margin: "0px 0px -100px 0px" });
 
   useEffect(() => {
     if (isInView) {
@@ -174,10 +174,15 @@ export default function HowItWorks() {
               <Typography
                 variant="h1"
                 component="h2"
-                className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 font-sans text-transparent bg-clip-text"
-                style={{
-                  backgroundImage: "linear-gradient(90deg, #2D9642, #C28F49)",
-                  WebkitBackgroundClip: "text",
+                sx={{
+                  fontSize: { xs: '1.875rem', md: '2.25rem', lg: '3rem' },
+                  fontWeight: 'bold',
+                  marginBottom: '3.5rem',
+                  fontFamily: 'sans-serif',
+                  color: 'transparent',
+                  backgroundImage: 'linear-gradient(90deg, #2D9642, #C28F49)',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
                 }}
               >
                 How Paylinq Works
