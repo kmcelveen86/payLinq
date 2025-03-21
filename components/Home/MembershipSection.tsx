@@ -126,7 +126,7 @@ export default function RoadmapSection() {
             >
               <MapPin className="text-[#2D9642] w-6 h-6 mr-2" />
             </motion.div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2D9642] to-[#C28F49]">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-linear-to-r from-[#2D9642] to-[#C28F49]">
               Our Roadmap
             </h2>
             <motion.div
@@ -180,7 +180,7 @@ export default function RoadmapSection() {
               }}
             >
               {/* Card Header */}
-              <div className={`bg-gradient-to-r ${item.color} p-6 relative`}>
+              <div className={`bg-linear-to-r ${item.color} p-6 relative`}>
                 {/* Corner decorative elements */}
                 <div
                   className="absolute top-0 right-0 w-16 h-16 opacity-20"
@@ -225,7 +225,7 @@ export default function RoadmapSection() {
               </div>
 
               {/* Card Body */}
-              <div className={`${item.lightColor} p-6 flex-grow`}>
+              <div className={`${item.lightColor} p-6 grow`}>
                 <h4
                   className="text-xl font-bold mb-3"
                   style={{ color: index === 2 ? "#C28F49" : "#2D9642" }}

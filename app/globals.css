@@ -1,27 +1,122 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@theme {
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+  --background-image-gradient-conic: conic-gradient(
+    from 180deg at 50% 50%,
+    var(--tw-gradient-stops)
+  );
+
+  --color-paylinq-green: #15803d;
+
+  --color-neutral-50: #f7f7f7;
+  --color-neutral-100: #f4f4f6;
+  --color-neutral-200: #e6e5e8;
+  --color-neutral-300: #d4d3d8;
+  --color-neutral-400: #a2a2a7;
+  --color-neutral-500: #727178;
+  --color-neutral-600: #53525a;
+  --color-neutral-700: #403f48;
+  --color-neutral-800: #27262f;
+  --color-neutral-900: #181720;
+
+  --color-blue-50: #effdff;
+  --color-blue-100: #cbf2f8;
+  --color-blue-200: #a3e3ef;
+  --color-blue-300: #71daef;
+  --color-blue-400: #42c7e7;
+  --color-blue-500: #30adcf;
+  --color-blue-600: #268baf;
+  --color-blue-700: #1f7090;
+  --color-blue-800: #1d5c76;
+  --color-blue-900: #1b4d65;
+  --color-blue: #a3e3ef;
+
+  --color-cyan-50: #ecfefe;
+  --color-cyan-100: #d4fbfd;
+  --color-cyan-200: #b4f4f9;
+  --color-cyan-300: #8de8f2;
+  --color-cyan-400: #5fd3e5;
+  --color-cyan-500: #44b6cc;
+  --color-cyan-600: #2e92ac;
+  --color-cyan-700: #1f758c;
+  --color-cyan-800: #195e73;
+  --color-cyan-900: #144e62;
+  --color-cyan: #8de8f2;
+
+  --color-tiffany-50: #f0f9fe;
+  --color-tiffany-100: #e1f4fe;
+  --color-tiffany-200: #bdeafc;
+  --color-tiffany-300: #84d8f8;
+  --color-tiffany-400: #3ec2f1;
+  --color-tiffany-500: #03aae2;
+  --color-tiffany-600: #0088bf;
+  --color-tiffany-700: #006c9a;
+  --color-tiffany-800: #005b80;
+  --color-tiffany-900: #004b6c;
+  --color-tiffany: #84d8f8;
+
+  --color-turquoise-50: #ecfefe;
+  --color-turquoise-100: #d4fdff;
+  --color-turquoise-200: #b2f8fe;
+  --color-turquoise-300: #86eef9;
+  --color-turquoise-400: #65daec;
+  --color-turquoise-500: #5bbed2;
+  --color-turquoise-600: #3e96af;
+  --color-turquoise-700: #29778e;
+  --color-turquoise-800: #1d6073;
+  --color-turquoise-900: #144e62;
+  --color-turquoise: #5bbed2;
+
+  --breakpoint-xs: 0px;
+  --breakpoint-sm: 375px;
+  --breakpoint-md: 720px;
+  --breakpoint-lg: 1140px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  --font-sans: prompt;
+  --font-mono: taviraj;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
   }
 }
 
-body {
-  margin: 0;
+@utility text-balance {
+  text-wrap: balance;
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  :root {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --foreground-rgb: 255, 255, 255;
+      --background-start-rgb: 0, 0, 0;
+      --background-end-rgb: 0, 0, 0;
+    }
+  }
+
+  body {
+    margin: 0;
   }
 }

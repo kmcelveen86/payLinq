@@ -249,8 +249,8 @@ const MembershipTiers: React.FC = () => {
               price={0}
               color="bg-gray-50"
               accentColor="border-green-300"
-              buttonColor="bg-gradient-to-r from-[#2D9642] to-[#38b053]"
-              buttonHoverColor="bg-gradient-to-r from-[#27833a] to-[#319745]"
+              buttonColor="bg-linear-to-r from-[#2D9642] to-[#38b053]"
+              buttonHoverColor="bg-linear-to-r from-[#27833a] to-[#319745]"
               textColor="text-green-700"
               icon={<CreditCard className="h-8 w-8 text-[#2D9642]" />}
               features={[
@@ -303,8 +303,8 @@ const MembershipTiers: React.FC = () => {
               price={20}
               color="bg-green-50"
               accentColor="border-green-400"
-              buttonColor="bg-gradient-to-r from-[#2D9642] to-[#38b053]"
-              buttonHoverColor="bg-gradient-to-r from-[#27833a] to-[#319745]"
+              buttonColor="bg-linear-to-r from-[#2D9642] to-[#38b053]"
+              buttonHoverColor="bg-linear-to-r from-[#27833a] to-[#319745]"
               textColor="text-green-700"
               icon={<Coffee className="h-8 w-8 text-[#2D9642]" />}
               features={[
@@ -348,8 +348,8 @@ const MembershipTiers: React.FC = () => {
               price={50}
               color="bg-amber-50"
               accentColor="border-amber-400"
-              buttonColor="bg-gradient-to-r from-[#C28F49] to-[#d9a55c]"
-              buttonHoverColor="bg-gradient-to-r from-[#b3813f] to-[#c79652]"
+              buttonColor="bg-linear-to-r from-[#C28F49] to-[#d9a55c]"
+              buttonHoverColor="bg-linear-to-r from-[#b3813f] to-[#c79652]"
               textColor="text-amber-700"
               icon={<Gift className="h-8 w-8 text-[#C28F49]" />}
               features={[
@@ -397,8 +397,8 @@ const MembershipTiers: React.FC = () => {
               price={75}
               color="bg-amber-50"
               accentColor="border-amber-400"
-              buttonColor="bg-gradient-to-r from-[#C28F49] to-[#d9a55c]"
-              buttonHoverColor="bg-gradient-to-r from-[#b3813f] to-[#c79652]"
+              buttonColor="bg-linear-to-r from-[#C28F49] to-[#d9a55c]"
+              buttonHoverColor="bg-linear-to-r from-[#b3813f] to-[#c79652]"
               textColor="text-amber-700"
               icon={<Sparkle className="h-8 w-8 text-[#C28F49]" />}
               features={[
@@ -583,7 +583,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
                 whileHover={{ x: 3 }}
               >
                 <span
-                  className={`flex-shrink-0 h-5 w-5 mr-2 ${
+                  className={`shrink-0 h-5 w-5 mr-2 ${
                     feature.comingSoon ? "text-amber-500" : "text-green-500"
                   }`}
                 >
@@ -607,7 +607,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
         </div>
 
         {/* Point Limits */}
-        <div className={`border-t ${accentColor} pt-4 mb-6 flex-grow`}>
+        <div className={`border-t ${accentColor} pt-4 mb-6 grow`}>
           <h4 className={`font-semibold mb-2 ${textColor}`}>Point Limits</h4>
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
@@ -823,7 +823,7 @@ const FeatureComparisonTable: React.FC<{ annualBilling: boolean }> = ({
           <tbody>
             {featureCategories.map((category, categoryIndex) => (
               <React.Fragment key={categoryIndex}>
-                <tr className="bg-gradient-to-r from-green-50 to-amber-50">
+                <tr className="bg-linear-to-r from-green-50 to-amber-50">
                   <td colSpan={5} className="py-3 px-6 font-bold text-gray-800">
                     {category.name}
                   </td>
@@ -955,7 +955,7 @@ const FAQSection: React.FC = () => {
               transition={{ duration: 0.4, delay: index * 0.1 }}
             >
               <motion.button
-                className="flex justify-between items-center w-full text-left focus:outline-none group"
+                className="flex justify-between items-center w-full text-left focus:outline-hidden group"
                 onClick={() => toggleItem(index)}
                 whileHover={{ x: 3 }}
               >
@@ -963,7 +963,7 @@ const FAQSection: React.FC = () => {
                   {faq.question}
                 </h3>
                 <div
-                  className="ml-6 flex-shrink-0 text-gray-500"
+                  className="ml-6 shrink-0 text-gray-500"
                   style={{ color: openItem === index ? "#2D9642" : "#6B7280" }}
                 >
                   <motion.div

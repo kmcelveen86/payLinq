@@ -21,8 +21,8 @@ export default function PaylinqRewardsAndBenefits() {
           <stop offset="100%" stopColor="#DB2777" />
         </linearGradient>
         <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur-sm" />
+          <feComposite in="SourceGraphic" in2="blur-sm" operator="over" />
         </filter>
       </defs>
 

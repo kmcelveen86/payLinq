@@ -185,7 +185,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
               gutterBottom
               className="lg:w-[1039px] leading-10"
             >
-              <div className="text-responsive">
+              <div className="text-responsive leading-4">
                 <span
                   className="font-mono font-semibold xs:text-2xl md:text-3xl lg:text-5xl text-transparent bg-clip-text"
                   style={{
@@ -237,7 +237,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
               <Button
                 variant="contained"
                 size="large"
-                className="bg-gradient-to-r from-[#2D9642] to-[#C28F49] hover:from-[#259138] hover:to-[#B37F41]"
+                className="bg-linear-to-r from-[#2D9642] to-[#C28F49] hover:from-[#259138] hover:to-[#B37F41]"
                 sx={{
                   borderRadius: "50px",
                   padding: "12px 32px",
