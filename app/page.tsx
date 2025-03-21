@@ -8,6 +8,7 @@ import {
   MembershipTiers
 } from "@/components/Home/";
 import TopNavComp from "@/components/TopNav/TopNavComp";
+import PaylinqFooter from "@/components/PaylinqFooter";
 import { auth, signIn, signOut } from "@/auth";
 import { Box, Button, Typography, useMediaQuery, Link } from "@mui/material";
 import HamburgerMenu from "@/components/HamburgerMenu";
@@ -27,6 +28,7 @@ export default async function HomePage() {
       <HowItWorks />
       <MembershipSection />
       <FAQSection />
+      <PaylinqFooter />
     </Box>
   );
 }
