@@ -10,6 +10,7 @@ import {
   Lightbulb,
   Clock,
   Sparkles,
+  ArrowRight,
 } from "lucide-react";
 
 export default function FAQSection() {
@@ -77,27 +78,61 @@ export default function FAQSection() {
   };
 
   return (
-    <div className="relative bg-gradient-to-b from-gray-900 to-black py-20 px-4 lg:px-16 overflow-hidden">
+    <div
+      className="relative py-20 px-4 lg:px-16 overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(180deg, #000000 0%, #0A0A0A 50%, #060606 100%)",
+      }}
+    >
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-yellow-600 opacity-5 blur-3xl"></div>
-        <div className="absolute bottom-40 left-20 w-80 h-80 rounded-full bg-blue-600 opacity-5 blur-3xl"></div>
+        <div
+          className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-10 blur-3xl"
+          style={{ backgroundColor: "#2D9642" }}
+        ></div>
+        <div
+          className="absolute bottom-40 left-20 w-80 h-80 rounded-full opacity-10 blur-3xl"
+          style={{ backgroundColor: "#C28F49" }}
+        ></div>
 
         {/* Decorative lines */}
         <svg className="absolute top-0 left-0 w-full h-full">
           <path
             d="M0,100 C200,150 400,50 600,120 C800,190 1000,80 1200,150"
-            stroke="rgba(234, 179, 8, 0.1)"
+            stroke="rgba(45, 150, 66, 0.1)"
             strokeWidth="3"
             fill="none"
           />
           <path
             d="M100,200 C300,150 500,250 700,180 C900,110 1100,220 1300,150"
-            stroke="rgba(59, 130, 246, 0.1)"
+            stroke="rgba(194, 143, 73, 0.1)"
             strokeWidth="2"
             fill="none"
           />
         </svg>
+
+        {/* Animated particles */}
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full w-2 h-2"
+            style={{
+              backgroundColor: i % 2 === 0 ? "#2D9642" : "#C28F49",
+              top: `${20 + Math.random() * 60}%`,
+              left: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.2, 0.5, 0.2],
+            }}
+            transition={{
+              duration: 5 + Math.random() * 5,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10" ref={ref}>
@@ -109,7 +144,14 @@ export default function FAQSection() {
             transition={{ duration: 1, ease: "easeOut" }}
             className="text-left"
           >
-            <div className="mb-6 inline-flex items-center px-4 py-2 bg-yellow-600/10 border border-yellow-600/20 rounded-full text-yellow-500">
+            <div
+              className="mb-6 inline-flex items-center px-4 py-2 rounded-full text-[#C28F49]"
+              style={{
+                backgroundColor: "rgba(194, 143, 73, 0.1)",
+                borderColor: "rgba(194, 143, 73, 0.2)",
+                borderWidth: "1px",
+              }}
+            >
               <HelpCircle size={18} className="mr-2" />
               <span className="text-sm font-medium">
                 Frequently Asked Questions
@@ -123,7 +165,12 @@ export default function FAQSection() {
               className="font-sans font-bold text-white text-3xl lg:text-4xl mb-6 leading-tight"
             >
               This is just the beginning—
-              <span className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-transparent bg-clip-text">
+              <span
+                className="text-transparent bg-clip-text"
+                style={{
+                  backgroundImage: "linear-gradient(90deg, #2D9642, #C28F49)",
+                }}
+              >
                 {`what's next for Paylinq?`}
               </span>
             </Typography>
@@ -166,33 +213,33 @@ export default function FAQSection() {
                   cx="100"
                   cy="100"
                   r="80"
-                  stroke="url(#grad1)"
+                  stroke="url(#paylinqGrad1)"
                   strokeWidth="2"
                 />
                 <circle
                   cx="100"
                   cy="100"
                   r="60"
-                  stroke="url(#grad1)"
+                  stroke="url(#paylinqGrad1)"
                   strokeWidth="2"
                 />
                 <circle
                   cx="100"
                   cy="100"
                   r="40"
-                  stroke="url(#grad1)"
+                  stroke="url(#paylinqGrad1)"
                   strokeWidth="2"
                 />
                 <defs>
                   <linearGradient
-                    id="grad1"
+                    id="paylinqGrad1"
                     x1="0%"
                     y1="0%"
                     x2="100%"
                     y2="100%"
                   >
-                    <stop offset="0%" stopColor="#FBBF24" />
-                    <stop offset="100%" stopColor="#D97706" />
+                    <stop offset="0%" stopColor="#2D9642" />
+                    <stop offset="100%" stopColor="#C28F49" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -212,11 +259,15 @@ export default function FAQSection() {
                 variants={itemVariants}
                 className="overflow-hidden"
               >
-                <div
+                <motion.div
+                  whileHover={{
+                    scale: 1.01,
+                    boxShadow: "0 4px 12px rgba(45, 150, 66, 0.15)",
+                  }}
                   className={`
                     bg-gray-800/40 backdrop-blur-sm border border-gray-700/50 rounded-xl overflow-hidden
                     transition-all duration-300 ease-in-out shadow-lg
-                    ${openIndex === index ? "shadow-yellow-600/5" : ""}
+                    ${openIndex === index ? "shadow-[#2D9642]/10" : ""}
                   `}
                 >
                   {/* Question header */}
@@ -230,7 +281,7 @@ export default function FAQSection() {
                         mr-4 p-2 rounded-lg transition-colors
                         ${
                           openIndex === index
-                            ? "bg-yellow-600/20 text-yellow-500"
+                            ? "bg-[#2D9642]/20 text-[#2D9642]"
                             : "bg-gray-700/50 text-gray-400"
                         }
                       `}
@@ -244,7 +295,7 @@ export default function FAQSection() {
                           font-semibold transition-colors text-lg
                           ${
                             openIndex === index
-                              ? "text-yellow-500"
+                              ? "text-[#C28F49]"
                               : "text-white"
                           }
                         `}
@@ -259,7 +310,7 @@ export default function FAQSection() {
                         flex-shrink-0 transition-colors
                         ${
                           openIndex === index
-                            ? "text-yellow-500"
+                            ? "text-[#C28F49]"
                             : "text-gray-400"
                         }
                       `}
@@ -279,28 +330,46 @@ export default function FAQSection() {
                     className="overflow-hidden"
                   >
                     <div className="px-6 pb-5 pt-0">
-                      <div className="pl-10 border-l border-gray-700">
+                      <div
+                        className="pl-10 border-l"
+                        style={{ borderColor: "rgba(45, 150, 66, 0.3)" }}
+                      >
                         <Typography className="text-gray-300 leading-relaxed">
                           {faq.answer}
                         </Typography>
                       </div>
                     </div>
                   </motion.div>
-                </div>
+                </motion.div>
               </motion.div>
             ))}
 
             {/* CTA Button */}
             <motion.div
               variants={itemVariants}
-              className="mt-8 text-center lg:text-left"
+              className="mt-8 text-center lg:text-left flex justify-center lg:justify-start"
             >
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-medium rounded-lg shadow-lg hover:shadow-yellow-500/20 transition-all"
+                className="px-6 py-3 text-white font-medium rounded-lg shadow-lg transition-all flex items-center"
+                style={{
+                  background:
+                    "linear-gradient(90deg, #2D9642 0%, #C28F49 100%)",
+                }}
               >
-                Have More Questions?
+                <span>Have More Questions?</span>
+                <motion.div
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                  }}
+                  className="ml-2"
+                >
+                  <ArrowRight size={20} />
+                </motion.div>
               </motion.button>
             </motion.div>
           </motion.div>

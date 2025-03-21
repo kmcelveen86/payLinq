@@ -24,7 +24,8 @@ export default function WhyChoosePaylinq() {
           "@media (min-width: 1140px)": {
             marginLeft: "-133px",
           },
-        }}>
+        }}
+      >
         <Box
           display="flex"
           minHeight="100vh"
@@ -35,19 +36,22 @@ export default function WhyChoosePaylinq() {
             "@media (max-width: 1139px)": {
               flexDirection: "column",
             },
-          }}>
+          }}
+        >
           <Box className="xs:flex-none md:flex-none lg:flex-1 pl-4 self-start xs:pt-16 md:pt-24 lg:pt-36 ml-80">
             <motion.div
               initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}>
+              animate={{ opacity: 1, y: 0 }}
+            >
               <Typography
                 variant="h1"
                 component="div"
                 gutterBottom
-                className="lg:w-[529px] lg:h-[117px] leading-10 ">
+                className="lg:w-[529px] lg:h-[117px] leading-10 "
+              >
                 <div className="text-responsive">
                   <span className="text-white font-mono font-semibold xs:text-2xl md:text-3xl lg:text-5xl">
-                    To our Pioneers in transforming financial management
+                    {`To our Pioneers in transforming financial management`}
                   </span>
                 </div>
               </Typography>
@@ -55,16 +59,18 @@ export default function WhyChoosePaylinq() {
                 variant="h6"
                 component="div"
                 gutterBottom
-                className="text-white leading-relaxed xs:text-sm md:text-base lg:text-lg">
-                We know how stressful it can be to manage bills and build credit. That&#39;s why we&#39;re building Paylinq—to make your financial journey simpler, more rewarding, and
-                enjoyable.
+                className="text-white leading-relaxed xs:text-sm md:text-base lg:text-lg"
+              >
+                {` We know how stressful it can be to manage bills and build credit. That&#39;s why we&#39;re building Paylinq—to make your financial journey simpler, more rewarding, and
+                enjoyable.`}
               </Typography>
               <Typography
                 variant="h6"
                 component="div"
-                className="text-white leading-relaxed xs:text-sm md:text-base lg:text-lg">
-                Our mission is to not only make paying bills easier but to turn your everyday transactions into a way to achieve your financial and
-                lifestyle dreams.
+                className="text-white leading-relaxed xs:text-sm md:text-base lg:text-lg"
+              >
+                {`Our mission is to turn your everyday transactions into a way to
+                achieve your financial and lifestyle dreams.`}
               </Typography>
             </motion.div>
           </Box>
@@ -77,7 +83,8 @@ export default function WhyChoosePaylinq() {
                 height: "300px",
                 width: "100%",
               },
-            }}>
+            }}
+          >
             <Box className="flex items-center mb-8 lg:mb-0 ">
               <motion.img
                 src="/images/simplifyBill.png"
