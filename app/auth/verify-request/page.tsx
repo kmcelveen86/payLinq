@@ -106,20 +106,20 @@ const VerifyRequest: React.FC = () => {
             mb: 2,
           }}
         >
-          Check Your Email
+          {`Check Your Email`}
         </Typography>
 
         <Typography variant="body1" sx={{ mb: 2, color: "#555" }}>
-          We've sent you an email with a login link. Please check your inbox and
-          follow the instructions to log in.
+          {`We've sent you an email with a login link. Please check your inbox and
+          follow the instructions to log in.`}
         </Typography>
 
         <Typography
           variant="body1"
           sx={{ mt: 2, color: "#666", fontSize: "0.95rem" }}
         >
-          If you don't see the email, make sure to check your spam or junk
-          folder.
+          {`If you don't see the email, make sure to check your spam or junk
+          folder.`}
         </Typography>
 
         {/* Static decorative line */}

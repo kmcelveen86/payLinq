@@ -250,13 +250,13 @@ const SignInForm: React.FC = () => {
             color="text.secondary"
             className="text-gray-500"
           >
-            Don't have an account?{" "}
+            {`Don't have an account?`}
             <motion.span
               className="font-semibold cursor-pointer"
               style={{ color: "#2D9642" }}
               whileHover={{ scale: 1.05 }}
             >
-              Sign up now
+              {`Sign up now`}
             </motion.span>
           </Typography>
         </motion.div>
