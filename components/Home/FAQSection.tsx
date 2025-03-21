@@ -265,7 +265,7 @@ export default function FAQSection() {
                     boxShadow: "0 4px 12px rgba(45, 150, 66, 0.15)",
                   }}
                   className={`
-                    bg-gray-800/40 backdrop-blur-sm border border-gray-700/50 rounded-xl overflow-hidden
+                    bg-gray-800/40 backdrop-blur-xs border border-gray-700/50 rounded-xl overflow-hidden
                     transition-all duration-300 ease-in-out shadow-lg
                     ${openIndex === index ? "shadow-[#2D9642]/10" : ""}
                   `}
@@ -273,7 +273,7 @@ export default function FAQSection() {
                   {/* Question header */}
                   <button
                     onClick={() => toggleAccordion(index)}
-                    className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
+                    className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-hidden"
                   >
                     <div className="flex items-center">
                       <div
@@ -307,7 +307,7 @@ export default function FAQSection() {
                       animate={{ rotate: openIndex === index ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
                       className={`
-                        flex-shrink-0 transition-colors
+                        shrink-0 transition-colors
                         ${
                           openIndex === index
                             ? "text-[#C28F49]"

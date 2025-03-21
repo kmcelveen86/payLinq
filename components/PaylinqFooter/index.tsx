@@ -148,21 +148,21 @@ const PaylinqFooter = () => {
             >
               <div className="flex items-start">
                 <Mail
-                  className="text-gray-500 mt-1 mr-3 flex-shrink-0"
+                  className="text-gray-500 mt-1 mr-3 shrink-0"
                   size={18}
                 />
                 <span className="text-gray-400">{`kmcelveen@getpaylinq.com`}</span>
               </div>
               <div className="flex items-start">
                 <Phone
-                  className="text-gray-500 mt-1 mr-3 flex-shrink-0"
+                  className="text-gray-500 mt-1 mr-3 shrink-0"
                   size={18}
                 />
                 <span className="text-gray-400">{`(901) 428-1741`}</span>
               </div>
               <div className="flex items-start">
                 <MapPin
-                  className="text-gray-500 mt-1 mr-3 flex-shrink-0"
+                  className="text-gray-500 mt-1 mr-3 shrink-0"
                   size={18}
                 />
                 <span className="text-gray-400">
@@ -228,7 +228,7 @@ const PaylinqFooter = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             whileHover={{ y: -5 }}
-            className="bg-gray-900 bg-opacity-40 backdrop-blur-sm p-6 rounded-xl border border-gray-800"
+            className="bg-gray-900 bg-opacity-40 backdrop-blur-xs p-6 rounded-xl border border-gray-800"
           >
             <Landmark size={24} className="mb-4" style={{ color: "#2D9642" }} />
             <h3 className="text-white font-semibold mb-2">
@@ -245,7 +245,7 @@ const PaylinqFooter = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             whileHover={{ y: -5 }}
-            className="bg-gray-900 bg-opacity-40 backdrop-blur-sm p-6 rounded-xl border border-gray-800"
+            className="bg-gray-900 bg-opacity-40 backdrop-blur-xs p-6 rounded-xl border border-gray-800"
           >
             <Shield size={24} className="mb-4" style={{ color: "#C28F49" }} />
             <h3 className="text-white font-semibold mb-2">Privacy Protected</h3>
@@ -260,7 +260,7 @@ const PaylinqFooter = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             whileHover={{ y: -5 }}
-            className="bg-gray-900 bg-opacity-40 backdrop-blur-sm p-6 rounded-xl border border-gray-800"
+            className="bg-gray-900 bg-opacity-40 backdrop-blur-xs p-6 rounded-xl border border-gray-800"
           >
             <CreditCard
               size={24}
@@ -279,7 +279,7 @@ const PaylinqFooter = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             whileHover={{ y: -5 }}
-            className="bg-gray-900 bg-opacity-40 backdrop-blur-sm p-6 rounded-xl border border-gray-800"
+            className="bg-gray-900 bg-opacity-40 backdrop-blur-xs p-6 rounded-xl border border-gray-800"
           >
             <Star size={24} className="mb-4" style={{ color: "#C28F49" }} />
             <h3 className="text-white font-semibold mb-2">Premium Support</h3>
@@ -369,7 +369,7 @@ const PaylinqFooter = () => {
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    className="bg-gray-800 text-white px-4 py-2 rounded-l-md focus:outline-none focus:ring-1 focus:ring-green-500 w-full md:w-auto"
+                    className="bg-gray-800 text-white px-4 py-2 rounded-l-md focus:outline-hidden focus:ring-1 focus:ring-green-500 w-full md:w-auto"
                   />
                   <button
                     className="rounded-r-md px-4 py-2 flex items-center justify-center text-white font-medium"

@@ -273,7 +273,7 @@ export default function HowItWorks() {
 
           {/* CTA Section */}
           <motion.div variants={fadeInUpVariants} className="mt-20 text-center">
-            <div className="rounded-2xl p-8 md:p-12 shadow-lg mx-auto max-w-4xl border border-gray-700 bg-gradient-to-r from-gray-900 to-gray-800">
+            <div className="rounded-2xl p-8 md:p-12 shadow-lg mx-auto max-w-4xl border border-gray-700 bg-linear-to-r from-gray-900 to-gray-800">
               <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
                 Ready to elevate your finances?
               </h3>

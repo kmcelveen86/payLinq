@@ -81,7 +81,7 @@ export default function SignIn() {
                 />
                 <button
                   onClick={handleSubmit}
-                  className="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded transition focus:ring-2 focus:ring-offset-2 focus:outline-none bg-zinc-800 hover:bg-zinc-900 focus:ring-zinc-800">
+                  className="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded-sm transition focus:ring-2 focus:ring-offset-2 focus:outline-hidden bg-zinc-800 hover:bg-zinc-900 focus:ring-zinc-800">
                   <span>Sign in with your email</span>
                 </button>
               </div> */}
@@ -113,7 +113,7 @@ export default function SignIn() {
             <button
               key={provider.id}
               type="submit"
-              className="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded transition focus:ring-2 focus:ring-offset-2 focus:outline-none bg-zinc-800 hover:bg-zinc-900 focus:ring-zinc-800">
+              className="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded-sm transition focus:ring-2 focus:ring-offset-2 focus:outline-hidden bg-zinc-800 hover:bg-zinc-900 focus:ring-zinc-800">
               <span>Sign in with {provider.name}</span>
             </button>
             // </form>
