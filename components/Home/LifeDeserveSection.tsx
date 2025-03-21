@@ -142,13 +142,13 @@ export default function LifeDeserveSection(): React.ReactElement {
         }}
       />
 
-      {/* Background accents - subtle green and gold glows */}
+      {/* Background accents */}
       <div
-        className="absolute top-20 left-20 w-96 h-96 rounded-full blur-[150px] opacity-20 z-1"
+        className="absolute top-20 h-96 rounded-full blur-[150px] opacity-20 z-1"
         style={{ backgroundColor: "#2D9642" }}
       />
       <div
-        className="absolute bottom-10 right-20 w-96 h-96 rounded-full blur-[150px] opacity-15 z-1"
+        className="absolute bottom-10 right-20 h-96 rounded-full blur-[150px] opacity-15 z-1"
         style={{ backgroundColor: "#C28F49" }}
       />
 
