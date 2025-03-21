@@ -9,6 +9,7 @@ import {
   LucideStar,
   Award,
   BarChart4,
+  ArrowRight,
 } from "lucide-react";
 
 export default function RoadmapSection() {
@@ -26,14 +27,14 @@ export default function RoadmapSection() {
   const roadmapItems = [
     {
       phase: "Phase 1 (MVP)",
-      title: "Track Bills, Earn Points",
+      title: "Track Purchases, Earn Points",
       description:
         "Start earning points daily just by making purchases with your Paylinq Debit Card.",
       status: "Current Phase",
-      icon: <BarChart4 size={24} className="text-yellow-600" />,
-      color: "from-yellow-400 to-yellow-600",
-      lightColor: "bg-yellow-100",
-      darkColor: "bg-yellow-600",
+      icon: <BarChart4 size={24} className="text-[#2D9642]" />,
+      color: "from-[#2D9642] to-[#38B053]",
+      lightColor: "bg-green-50",
+      darkColor: "bg-[#2D9642]",
       timeline: "Now",
     },
     {
@@ -42,10 +43,10 @@ export default function RoadmapSection() {
       description:
         "Soon, you'll be able to redeem your points for flights, hotels, and exclusive perks at our partner merchants. Plus, you'll build credit simply by making purchases.",
       status: "Coming Soon",
-      icon: <Award size={24} className="text-blue-600" />,
-      color: "from-blue-400 to-blue-600",
-      lightColor: "bg-blue-100",
-      darkColor: "bg-blue-600",
+      icon: <Award size={24} className="text-[#2D9642]" />,
+      color: "from-[#2D9642] to-[#38B053]",
+      lightColor: "bg-green-50",
+      darkColor: "bg-[#2D9642]",
       timeline: "Q2 2025",
     },
     {
@@ -54,10 +55,10 @@ export default function RoadmapSection() {
       description:
         "We're creating a world where financial management is seamless and rewarding. Imagine earning up to 4x points on purchases, receiving luxury perks, and getting exclusive financial advice—Paylinq is your partner for it all.",
       status: "Future Vision",
-      icon: <LucideRocket size={24} className="text-purple-600" />,
-      color: "from-purple-400 to-purple-600",
-      lightColor: "bg-purple-100",
-      darkColor: "bg-purple-600",
+      icon: <LucideRocket size={24} className="text-[#C28F49]" />,
+      color: "from-[#C28F49] to-[#D9A55C]",
+      lightColor: "bg-amber-50",
+      darkColor: "bg-[#C28F49]",
       timeline: "Q4 2025",
     },
   ];
@@ -84,18 +85,18 @@ export default function RoadmapSection() {
   };
 
   return (
-    <div className="relative bg-gradient-to-b from-gray-50 to-white py-20 px-4 lg:px-16 overflow-hidden">
+    <div className="relative bg-[#F2F2F0] py-20 px-4 lg:px-16 overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-yellow-100 opacity-50 blur-3xl"></div>
-        <div className="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-blue-100 opacity-50 blur-3xl"></div>
-        <div className="absolute top-1/3 right-1/4 w-40 h-40 rounded-full bg-purple-100 opacity-40 blur-3xl"></div>
+        <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-green-100 opacity-50 blur-3xl"></div>
+        <div className="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-amber-100 opacity-50 blur-3xl"></div>
+        <div className="absolute top-1/3 right-1/4 w-40 h-40 rounded-full bg-green-100 opacity-40 blur-3xl"></div>
 
         {/* Connecting lines for the roadmap */}
         <svg className="absolute top-0 left-0 w-full h-full">
           <path
             d="M200,100 C300,150 400,180 600,200 C800,220 900,300 1000,400"
-            stroke="rgba(234, 179, 8, 0.15)"
+            stroke="rgba(45, 150, 66, 0.15)"
             strokeWidth="6"
             strokeDasharray="8 12"
             fill="none"
@@ -112,11 +113,35 @@ export default function RoadmapSection() {
           className="text-center mb-16"
         >
           <div className="inline-flex items-center justify-center mb-4">
-            <MapPin className="text-yellow-600 w-6 h-6 mr-2" />
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800">
+            <motion.div
+              animate={{
+                rotate: [0, -10, 0, 10, 0],
+                scale: [1, 1.05, 1, 1.05, 1],
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                repeatType: "reverse",
+              }}
+            >
+              <MapPin className="text-[#2D9642] w-6 h-6 mr-2" />
+            </motion.div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2D9642] to-[#C28F49]">
               Our Roadmap
             </h2>
-            <MapPin className="text-yellow-600 w-6 h-6 ml-2" />
+            <motion.div
+              animate={{
+                rotate: [0, 10, 0, -10, 0],
+                scale: [1, 1.05, 1, 1.05, 1],
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                repeatType: "reverse",
+              }}
+            >
+              <MapPin className="text-[#C28F49] w-6 h-6 ml-2" />
+            </motion.div>
           </div>
 
           <p className="text-gray-600 max-w-3xl mx-auto text-lg">
@@ -147,6 +172,12 @@ export default function RoadmapSection() {
               `}
               onMouseEnter={() => setHoveredCard(index)}
               onMouseLeave={() => setHoveredCard(0)}
+              whileHover={{
+                boxShadow:
+                  index === 2
+                    ? "0 20px 25px -5px rgba(194, 143, 73, 0.2), 0 10px 10px -5px rgba(194, 143, 73, 0.1)"
+                    : "0 20px 25px -5px rgba(45, 150, 66, 0.2), 0 10px 10px -5px rgba(45, 150, 66, 0.1)",
+              }}
             >
               {/* Card Header */}
               <div className={`bg-gradient-to-r ${item.color} p-6 relative`}>
@@ -155,6 +186,7 @@ export default function RoadmapSection() {
                   className="absolute top-0 right-0 w-16 h-16 opacity-20"
                   style={{
                     clipPath: "polygon(100% 0, 0 0, 100% 100%)",
+                    backgroundColor: "white",
                   }}
                 ></div>
 
@@ -187,14 +219,17 @@ export default function RoadmapSection() {
                     }}
                     className="absolute -top-1 -right-1"
                   >
-                    <Sparkles className="w-8 h-8 text-yellow-300" />
+                    <Sparkles className="w-8 h-8 text-white" />
                   </motion.div>
                 )}
               </div>
 
               {/* Card Body */}
-              <div className={`${item.lightColor} bg-opacity-30 p-6 flex-grow`}>
-                <h4 className="text-xl font-bold text-gray-800 mb-3">
+              <div className={`${item.lightColor} p-6 flex-grow`}>
+                <h4
+                  className="text-xl font-bold mb-3"
+                  style={{ color: index === 2 ? "#C28F49" : "#2D9642" }}
+                >
                   {item.title}
                 </h4>
                 <p className="text-gray-600 mb-6">{item.description}</p>
@@ -202,13 +237,15 @@ export default function RoadmapSection() {
                 {/* Card progress indicator */}
                 <div className="mt-auto">
                   <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full ${item.darkColor}`}
-                      style={{
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{
                         width:
                           index === 0 ? "100%" : index === 1 ? "30%" : "10%",
                       }}
-                    ></div>
+                      transition={{ duration: 1.5, delay: 0.5 }}
+                      className={`h-full ${item.darkColor}`}
+                    ></motion.div>
                   </div>
                 </div>
               </div>
@@ -240,9 +277,25 @@ export default function RoadmapSection() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-medium rounded-lg shadow-lg hover:shadow-yellow-500/20"
+            className="px-8 py-3 text-white font-medium rounded-lg shadow-lg flex items-center justify-center mx-auto group"
+            style={{
+              background: "linear-gradient(90deg, #2D9642 0%, #C28F49 100%)",
+              boxShadow:
+                "0 10px 15px -3px rgba(45, 150, 66, 0.2), 0 4px 6px -2px rgba(45, 150, 66, 0.1)",
+            }}
           >
-            Join the Waitlist
+            <span>Join the Waitlist</span>
+            <motion.div
+              animate={{ x: [0, 5, 0] }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                repeatType: "reverse",
+              }}
+              className="ml-2"
+            >
+              <ArrowRight size={18} />
+            </motion.div>
           </motion.button>
         </motion.div>
       </div>
