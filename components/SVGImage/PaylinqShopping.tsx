@@ -4,12 +4,12 @@ const PaylinqShopping = ()  => {
   {/* <!-- Background with gradient --> */}
   <defs>
     <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F8FAFC" />
-      <stop offset="100%" stop-color="#EFF6FF" />
+      <stop offset="0%" stopColor="#F8FAFC" />
+      <stop offset="100%" stopColor="#EFF6FF" />
     </linearGradient>
     <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1E40AF" />
-      <stop offset="100%" stop-color="#3B82F6" />
+      <stop offset="0%" stopColor="#1E40AF" />
+      <stop offset="100%" stopColor="#3B82F6" />
     </linearGradient>
   </defs>
 
@@ -38,7 +38,7 @@ const PaylinqShopping = ()  => {
   
   {/* <!-- Hand holding card --> */}
   <path d="M50 230 C40 200, 70 170, 100 180 C120 170, 150 180, 160 220 C180 250, 150 270, 120 260 C80 270, 60 250, 50 230" fill="#FCD34D" />
-  <path d="M100 180 C120 170, 150 180, 160 220" fill="none" stroke="#E7C13C" stroke-width="1" />
+  <path d="M100 180 C120 170, 150 180, 160 220" fill="none" stroke="#E7C13C" strokeWidth="1" />
   
   {/* <!-- Card in hand --> */}
   <rect x="90" y="190" width="100" height="60" rx="5" ry="5" fill="url(#cardGradient)" transform="rotate(-10, 140, 220)" />
@@ -50,9 +50,9 @@ const PaylinqShopping = ()  => {
   <rect x="105" y="195" width="15" height="10" rx="1" ry="1" fill="#FFD700" opacity="0.9" transform="rotate(-10, 140, 220)" />
   
   {/* <!-- Payment wave animation --> */}
-  <path d="M195 180 C210 170, 220 180, 230 190" stroke="#6366F1" stroke-width="3" fill="none" opacity="0.7" />
-  <path d="M195 170 C215 160, 230 170, 245 185" stroke="#6366F1" stroke-width="2" fill="none" opacity="0.5" />
-  <path d="M195 160 C220 150, 240 160, 260 180" stroke="#6366F1" stroke-width="1" fill="none" opacity="0.3" />
+  <path d="M195 180 C210 170, 220 180, 230 190" stroke="#6366F1" strokeWidth="3" fill="none" opacity="0.7" />
+  <path d="M195 170 C215 160, 230 170, 245 185" stroke="#6366F1" strokeWidth="2" fill="none" opacity="0.5" />
+  <path d="M195 160 C220 150, 240 160, 260 180" stroke="#6366F1" strokeWidth="1" fill="none" opacity="0.3" />
   
   {/* <!-- Shopping items on counter --> */}
   <circle cx="330" cy="110" r="20" fill="#FB923C" /> {/* Orange */}
@@ -60,11 +60,11 @@ const PaylinqShopping = ()  => {
   <rect x="310" y="120" width="30" height="15" rx="2" ry="2" fill="#BFDBFE" /> {/* Box item */}
   
   {/* <!-- Store name --> */}
-  <text x="20" y="40" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#334155">FARMERS MARKET</text>
+  <text x="20" y="40" fontFamily="Arial, sans-serif" fontSize="18" fontWeight="bold" fill="#334155">FARMERS MARKET</text>
   
   {/* <!-- Transaction text --> */}
-  <text x="280" y="110" font-family="monospace" font-size="10" fill="#1E293B" text-anchor="middle">APPROVED</text>
-  <text x="280" y="125" font-family="monospace" font-size="8" fill="#1E293B" text-anchor="middle">$42.75</text>
+  <text x="280" y="110" fontFamily="monospace" fontSize="10" fill="#1E293B" textAnchor="middle">APPROVED</text>
+  <text x="280" y="125" fontFamily="monospace" fontSize="8" fill="#1E293B" textAnchor="middle">$42.75</text>
 </svg>
   )
 }

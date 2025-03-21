@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { ArrowRight } from "lucide-react";
 
-export default function LifeDeserveSection(): React.ReactElement {
+export default function LifeDeserveSection(): React.ReactElement<any> {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {

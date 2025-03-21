@@ -9,12 +9,12 @@ const PaylinqDebit = () => {
       {/* Background with gradient */}
       <defs>
         <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#0F172A" />
-          <stop offset="100%" stop-color="#1E293B" />
+          <stop offset="0%" stopColor="#0F172A" />
+          <stop offset="100%" stopColor="#1E293B" />
         </linearGradient>
         <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#10B981" />
-          <stop offset="100%" stop-color="#34D399" />
+          <stop offset="0%" stopColor="#10B981" />
+          <stop offset="100%" stopColor="#34D399" />
         </linearGradient>
       </defs>
 
@@ -56,7 +56,7 @@ const PaylinqDebit = () => {
       <path
         d="M140 150 C142 140, 148 134, 156 134 M148 150 C150 144, 154 140, 160 140 M156 150 C158 147, 161 145, 165 145"
         stroke="white"
-        stroke-width="2"
+        strokeWidth="2"
         fill="none"
       />
 
@@ -64,8 +64,8 @@ const PaylinqDebit = () => {
       <text
         x="80"
         y="190"
-        font-family="'Courier New', monospace"
-        font-size="16"
+        fontFamily="'Courier New', monospace"
+        fontSize="16"
         fill="white"
       >
         •••• •••• •••• 4789
@@ -75,8 +75,8 @@ const PaylinqDebit = () => {
       <text
         x="80"
         y="215"
-        font-family="Arial, sans-serif"
-        font-size="11"
+        fontFamily="Arial, sans-serif"
+        fontSize="11"
         fill="#94A3B8"
       >
         VALID THRU
@@ -84,8 +84,8 @@ const PaylinqDebit = () => {
       <text
         x="80"
         y="230"
-        font-family="'Courier New', monospace"
-        font-size="14"
+        fontFamily="'Courier New', monospace"
+        fontSize="14"
         fill="white"
       >
         08/28
@@ -95,8 +95,8 @@ const PaylinqDebit = () => {
       <text
         x="80"
         y="250"
-        font-family="Arial, sans-serif"
-        font-size="14"
+        fontFamily="Arial, sans-serif"
+        fontSize="14"
         fill="white"
       >
         PAYLINQ REWARDS
@@ -110,9 +110,9 @@ const PaylinqDebit = () => {
       <text
         x="260"
         y="110"
-        font-family="Arial, sans-serif"
-        font-weight="bold"
-        font-size="18"
+        fontFamily="Arial, sans-serif"
+        fontWeight="bold"
+        fontSize="18"
         fill="white"
       >
         PAYLINQ
@@ -122,21 +122,21 @@ const PaylinqDebit = () => {
       <path
         d="M260 220 C300 200, 320 230, 330 260"
         stroke="#34D399"
-        stroke-width="1"
+        strokeWidth="1"
         fill="none"
         opacity="0.4"
       />
       <path
         d="M270 240 C320 220, 330 250, 340 280"
         stroke="#34D399"
-        stroke-width="1"
+        strokeWidth="1"
         fill="none"
         opacity="0.4"
       />
       <path
         d="M50 200 C70 180, 90 180, 110 240"
         stroke="#34D399"
-        stroke-width="1"
+        strokeWidth="1"
         fill="none"
         opacity="0.4"
       />
