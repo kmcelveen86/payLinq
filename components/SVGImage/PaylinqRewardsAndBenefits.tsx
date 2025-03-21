@@ -9,16 +9,16 @@ export default function PaylinqRewardsAndBenefits() {
       {/* <!-- Background with gradient --> */}
       <defs>
         <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#FDFAFA" />
-          <stop offset="100%" stop-color="#FCE7F3" />
+          <stop offset="0%" stopColor="#FDFAFA" />
+          <stop offset="100%" stopColor="#FCE7F3" />
         </linearGradient>
         <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stop-color="#EC4899" />
-          <stop offset="100%" stop-color="#F9A8D4" />
+          <stop offset="0%" stopColor="#EC4899" />
+          <stop offset="100%" stopColor="#F9A8D4" />
         </linearGradient>
         <linearGradient id="badgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#C026D3" />
-          <stop offset="100%" stop-color="#DB2777" />
+          <stop offset="0%" stopColor="#C026D3" />
+          <stop offset="100%" stopColor="#DB2777" />
         </linearGradient>
         <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
           <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
@@ -72,11 +72,11 @@ export default function PaylinqRewardsAndBenefits() {
       <text
         x="90"
         y="180"
-        font-family="Arial, sans-serif"
-        font-size="14"
-        font-weight="bold"
+        fontFamily="Arial, sans-serif"
+        fontSize="14"
+        fontWeight="bold"
         fill="#831843"
-        text-anchor="middle"
+        textAnchor="middle"
       >
         VIP REWARDS
       </text>
@@ -115,15 +115,15 @@ export default function PaylinqRewardsAndBenefits() {
         x2="360"
         y2="250"
         stroke="#94A3B8"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <text
         x="290"
         y="270"
-        font-family="Arial, sans-serif"
-        font-size="12"
+        fontFamily="Arial, sans-serif"
+        fontSize="12"
         fill="#881337"
-        text-anchor="middle"
+        textAnchor="middle"
       >
         POINTS GROWTH
       </text>
@@ -139,8 +139,8 @@ export default function PaylinqRewardsAndBenefits() {
         x2="175"
         y2="240"
         stroke="#FDF2F8"
-        stroke-width="2"
-        stroke-dasharray="5,2"
+        strokeWidth="2"
+        strokeDasharray="5,2"
       />
       <line
         x1="150"
@@ -148,8 +148,8 @@ export default function PaylinqRewardsAndBenefits() {
         x2="200"
         y2="220"
         stroke="#FDF2F8"
-        stroke-width="2"
-        stroke-dasharray="5,2"
+        strokeWidth="2"
+        strokeDasharray="5,2"
       />
 
       {/* <!-- Confetti --> */}
@@ -202,11 +202,11 @@ export default function PaylinqRewardsAndBenefits() {
       <text
         x="200"
         y="30"
-        font-family="Arial, sans-serif"
-        font-size="18"
-        font-weight="bold"
+        fontFamily="Arial, sans-serif"
+        fontSize="18"
+        fontWeight="bold"
         fill="#831843"
-        text-anchor="middle"
+        textAnchor="middle"
       >
         EXCLUSIVE BENEFITS
       </text>
