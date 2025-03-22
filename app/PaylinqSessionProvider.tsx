@@ -9,7 +9,7 @@ type Props = {
   children: ReactNode;
 };
 
-function Provider({ children }: Props) {
+function PaylinqSessionProvider({ children }: Props) {
   const theme = createTheme({
     palette: {
       mode: "light",
@@ -39,4 +39,4 @@ function Provider({ children }: Props) {
   );
 }
 
-export default Provider;
+export default PaylinqSessionProvider;
