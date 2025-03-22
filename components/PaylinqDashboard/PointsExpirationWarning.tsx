@@ -19,11 +19,11 @@ export default function PointsExpirationWarning(props: Props) {
         </div>
         <div>
           <h3 className="font-medium text-amber-400">
-            Points Expiration Notice
+            {`Points Expiration Notice`}
           </h3>
           <p className="text-gray-300 text-sm mt-1">
-            With the Freemium plan, your points expire after 18 months. Upgrade
-            to Lifestyle or higher to extend your points' validity period.
+            {`With the Freemium plan, your points expire after 18 months. Upgrade
+            to Lifestyle or higher to extend your points' validity period.`}
           </p>
         </div>
       </div>
