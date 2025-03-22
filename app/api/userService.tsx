@@ -1,0 +1,134 @@
+import axios from "axios";
+import { ProfileFormData } from "../schemas/profile";
+import {
+  User,
+  Address,
+  NotificationPreferences,
+  PaymentMethod,
+} from "../types";
+
+interface UploadResponse {
+  success: boolean;
+  imageUrl: string;
+}
+
+const API_BASE_URL = "/api/users";
+
+const apiClient = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+export const createUserProfile = async (data: ProfileFormData) => {
+  const response = await apiClient.post("/profile", data);
+  return response.data;
+};
+
+// User Profile APIs
+export const fetchUserProfile = async (): Promise<User> => {
+  const response = await apiClient.get("/profile");
+  return response.data;
+};
+
+export const updateUserProfile = async (
+  userData: Partial<User>
+): Promise<User> => {
+  const response = await axios.put("/api/users/profile", {
+    ...userData,
+    agreedToTerms: true,
+  });
+  return response.data;
+};
+
+// Address APIs
+export const fetchUserAddress = async (): Promise<Address> => {
+  const response = await apiClient.get("/address");
+  return response.data;
+};
+
+export const updateUserAddress = async (
+  addressData: Partial<Address>
+): Promise<Address> => {
+  const response = await apiClient.put("/address", addressData);
+  return response.data;
+};
+
+// Notification Preferences APIs
+export const fetchNotificationPreferences =
+  async (): Promise<NotificationPreferences> => {
+    const response = await apiClient.get("/notifications");
+    return response.data;
+  };
+
+export const updateNotificationPreferences = async (
+  preferences: Partial<NotificationPreferences>
+): Promise<NotificationPreferences> => {
+  const response = await apiClient.put("/notifications", preferences);
+  return response.data;
+};
+
+// Payment Methods APIs
+export const fetchPaymentMethods = async (): Promise<PaymentMethod[]> => {
+  const response = await apiClient.get("/payment-methods");
+  return response.data;
+};
+
+export const addPaymentMethod = async (
+  paymentMethod: Partial<PaymentMethod>
+): Promise<PaymentMethod> => {
+  const response = await apiClient.post("/payment-methods", paymentMethod);
+  return response.data;
+};
+
+export const updatePaymentMethod = async (
+  id: string,
+  paymentMethod: Partial<PaymentMethod>
+): Promise<PaymentMethod> => {
+  const response = await apiClient.put(`/payment-methods/${id}`, paymentMethod);
+  return response.data;
+};
+
+export const deletePaymentMethod = async (id: string): Promise<void> => {
+  await apiClient.delete(`/payment-methods/${id}`);
+};
+
+// Security APIs
+export const changePassword = async (
+  currentPassword: string,
+  newPassword: string
+): Promise<{ success: boolean; message: string }> => {
+  const response = await apiClient.post("/change-password", {
+    currentPassword,
+    newPassword,
+  });
+  return response.data;
+};
+
+export const enableTwoFactorAuth = async (): Promise<{
+  success: boolean;
+  setupUrl: string;
+}> => {
+  const response = await apiClient.post("/enable-2fa");
+  return response.data;
+};
+
+export const fetchLoginHistory = async (): Promise<any[]> => {
+  const response = await apiClient.get("/login-history");
+  return response.data;
+};
+
+// Function to upload profile image
+export const uploadProfileImage = async (file: File): Promise<UploadResponse> => {
+  const formData = new FormData();
+  formData.append("profileImage", file);
+
+  const response = await apiClient.post("/profile-image", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return response.data;
+};

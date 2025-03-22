@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { formatDistance, subDays } from "date-fns";
 import ProfileSetup from "@/components/ProfileSetup";
+import DeleteAccountModal from "@/components/DeleteAccountModal";
 import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -19,6 +21,19 @@ import {
   PlusCircle,
   Upload,
 } from "lucide-react";
+import {
+  useUserProfile,
+  useUpdateUserProfile,
+  usePaymentMethods,
+  useProfileImage
+} from "../../app/hooks/useProfile";
+
+import {
+  ProfileFormData,
+  NotificationPreferences,
+} from "../../app/schemas/profile";
+import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 // Add ChevronRight component
 interface ChevronRightProps {
@@ -68,11 +83,95 @@ const ChevronRight = (props: ChevronRightProps) => (
 
 export default function ProfileComp() {
   const { data: session } = useSession();
+  const userObj = session?.user;
   const isNewUser = !session?.user?.name;
 
   const [loading, setLoading] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [activeSection, setActiveSection] = useState("personal");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const { mutate: uploadImage, isPending: isUploading } = useProfileImage();
+
+  // Use React Query hooks
+  const {
+    data: profileData,
+    isLoading: isProfileLoading,
+    isError: isProfileError,
+  } = useUserProfile();
+
+  const { data: paymentMethods, isLoading: isPaymentMethodsLoading } =
+    usePaymentMethods();
+
+  const { mutate: updateProfile, isPending: isUpdatePending } =
+    useUpdateUserProfile();
+  // const { mutate: uploadImage } = useUploadProfileImage();
+
+  // Local form state
+  const [formData, setFormData] = useState<ProfileFormData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    dob: "",
+    address: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    notifications: {
+      email: true,
+      sms: false,
+      app: true,
+    },
+    agreedToTerms: false, // Added initialization
+  });
+
+  useEffect(() => {
+    if (profileData) {
+      setFormData({
+        ...formData,
+        ...profileData,
+      });
+    }
+  }, [profileData]);
+
+  const handleInputChange_2 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+
+    if (name.includes(".")) {
+      // Handle nested objects (e.g., notifications.email)
+      const [parent, child] = name.split(".");
+      setFormData((prevData) => ({
+        ...prevData,
+        [parent]: {
+          ...(prevData[parent as keyof typeof prevData] as unknown as Record<
+            string,
+            any
+          >),
+          [child]: type === "checkbox" ? checked : value,
+        },
+      }));
+    } else {
+      // Handle top-level fields
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
+  };
+
+  const handleSaveChanges_2 = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    updateProfile(formData, {
+      onSuccess: () => {
+        setSaveSuccess(true);
+        setTimeout(() => {
+          setSaveSuccess(false);
+        }, 3000);
+      },
+    });
+  };
 
   // Mock existing user data
   const [userData, setUserData] = useState({
@@ -84,7 +183,7 @@ export default function ProfileComp() {
     address: "123 Main Street",
     city: "New York",
     state: "NY",
-    zipCode: "10001",
+    postalCode: "10001",
     profileImage: null as string | null, // URL to profile image would go here
     notifications: {
       email: true,
@@ -146,17 +245,34 @@ export default function ProfileComp() {
     }
   };
 
+  // Update or add the handleProfileImageChange function
   const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      // In a real app, you would upload this file to your server
-      // For this demo, we'll just create a local object URL
-      const imageUrl = URL.createObjectURL(file);
-      setUserData({
-        ...userData,
-        profileImage: imageUrl,
-      });
+    if (!file) return;
+
+    // Check if the file is an image
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file");
+      return;
     }
+
+    // Check file size (limit to 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image size should be less than 5MB");
+      return;
+    }
+
+    // Create a temporary URL for preview
+    const imageUrl = URL.createObjectURL(file);
+
+    // Update local form state for immediate preview
+    setFormData((prev: any) => ({
+      ...prev,
+      profileImage: imageUrl, // For preview only
+    }));
+
+    // Upload the image to the server
+    uploadImage(file);
   };
 
   const handleSaveChanges = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -248,9 +364,11 @@ export default function ProfileComp() {
         >
           <div className="flex items-center mb-4 md:mb-0">
             <CreditCard className="h-8 w-8 text-[#2D9642] mr-2" />
-            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2D9642] to-[#C28F49]">
-              Paylinq
-            </span>
+            <Link href="/">
+              <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2D9642] to-[#C28F49]">
+                Paylinq
+              </span>
+            </Link>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-white">
             Manage Your Profile
@@ -284,13 +402,45 @@ export default function ProfileComp() {
           >
             <div className="bg-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl p-6 border border-gray-700 sticky top-8">
               <div className="flex flex-col items-center mb-6">
+                {/* Replace the existing image container in your sidebar */}
                 <div className="relative group mb-4">
-                  <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-[#2D9642]">
-                    {userData.profileImage ? (
+                  <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-[#2D9642] relative">
+                    {/* Show loading spinner when uploading */}
+                    {isUploading && (
+                      <div className="absolute inset-0 bg-gray-800 bg-opacity-70 flex items-center justify-center z-10">
+                        <svg
+                          className="animate-spin h-8 w-8 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                      </div>
+                    )}
+
+                    {/* Display image with fallbacks */}
+                    {formData.profileImage || userObj?.image ? (
                       <img
-                        src={userData.profileImage}
-                        alt={`${userData.firstName} ${userData.lastName}`}
+                        src={formData.profileImage || userObj?.image || ""}
+                        alt={userObj?.name ?? "User Profile Image"}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          // If image fails to load, show default avatar
+                          e.currentTarget.src = "/default-avatar.png";
+                        }}
                       />
                     ) : (
                       <div className="w-full h-full bg-gray-700 flex items-center justify-center">
@@ -298,6 +448,8 @@ export default function ProfileComp() {
                       </div>
                     )}
                   </div>
+
+                  {/* Upload button */}
                   <label className="absolute bottom-0 right-0 p-1 bg-[#C28F49] rounded-full shadow-lg cursor-pointer transform transition-transform group-hover:scale-110">
                     <Camera size={18} className="text-white" />
                     <input
@@ -305,14 +457,17 @@ export default function ProfileComp() {
                       className="hidden"
                       accept="image/*"
                       onChange={handleProfileImageChange}
+                      disabled={isUploading}
                     />
                   </label>
                 </div>
-                <h2 className="text-xl font-bold text-white">{`${userData.firstName} ${userData.lastName}`}</h2>
-                <p className="text-gray-400 text-sm mb-4">{userData.email}</p>
+                <h2 className="text-xl font-bold text-white">
+                  {userObj?.name}
+                </h2>
+                <p className="text-gray-400 text-sm mb-4">{formData.email}</p>
 
                 <span className="px-3 py-1 bg-[#2D9642]/20 text-[#2D9642] text-xs rounded-full mb-2">
-                  Freemium Member
+                  {userObj?.membershipTier || `Not a member`}
                 </span>
               </div>
 
@@ -375,9 +530,11 @@ export default function ProfileComp() {
                   <span>Security</span>
                 </motion.button>
               </nav>
-
               <div className="mt-8 pt-6 border-t border-gray-700">
-                <button className="w-full py-3 text-rose-500 font-medium flex items-center justify-center">
+                <button
+                  className="w-full py-3 text-rose-500 font-medium flex items-center justify-center"
+                  onClick={() => setIsDeleteModalOpen(true)}
+                >
                   <Trash2 size={16} className="mr-2" />
                   Delete Account
                 </button>
@@ -392,7 +549,7 @@ export default function ProfileComp() {
             animate="visible"
             className="lg:col-span-3"
           >
-            <form onSubmit={handleSaveChanges}>
+            <form onSubmit={handleSaveChanges_2}>
               <div className="bg-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl border border-gray-700">
                 <AnimatePresence mode="wait">
                   {/* Personal Information Section */}
@@ -411,7 +568,13 @@ export default function ProfileComp() {
                           Personal Information
                         </h2>
                         <span className="text-sm text-gray-400">
-                          Last updated: 2 weeks ago
+                          {`Last updated: ${formatDistance(
+                            new Date(userObj?.updatedAt), // Remove the subDays() function
+                            new Date(),
+                            {
+                              addSuffix: true,
+                            }
+                          )}`}
                         </span>
                       </div>
 
@@ -424,8 +587,8 @@ export default function ProfileComp() {
                             <input
                               type="text"
                               name="firstName"
-                              value={userData.firstName}
-                              onChange={handleInputChange}
+                              value={formData.firstName}
+                              onChange={handleInputChange_2}
                               className="block w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                             />
                           </div>
@@ -436,8 +599,8 @@ export default function ProfileComp() {
                             <input
                               type="text"
                               name="lastName"
-                              value={userData.lastName}
-                              onChange={handleInputChange}
+                              value={formData.lastName}
+                              onChange={handleInputChange_2}
                               className="block w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                             />
                           </div>
@@ -454,11 +617,18 @@ export default function ProfileComp() {
                               </div>
                               <input
                                 type="email"
-                                name="email"
-                                value={userData.email}
-                                onChange={handleInputChange}
-                                className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
+                                value={formData.email}
+                                disabled
+                                className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent cursor-not-allowed"
+                                readOnly
                               />
+                              {/* <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleInputChange_2}
+                                className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
+                              /> */}
                             </div>
                           </div>
                           <div>
@@ -472,8 +642,8 @@ export default function ProfileComp() {
                               <input
                                 type="tel"
                                 name="phone"
-                                value={userData.phone}
-                                onChange={handleInputChange}
+                                value={formData.phone}
+                                onChange={handleInputChange_2}
                                 className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                               />
                             </div>
@@ -491,8 +661,8 @@ export default function ProfileComp() {
                             <input
                               type="date"
                               name="dob"
-                              value={userData.dob}
-                              onChange={handleInputChange}
+                              value={formData.dob}
+                              onChange={handleInputChange_2}
                               className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                             />
                           </div>
@@ -517,7 +687,13 @@ export default function ProfileComp() {
                           Address Information
                         </h2>
                         <span className="text-sm text-gray-400">
-                          Last updated: 2 weeks ago
+                          {`Last updated: ${formatDistance(
+                            new Date(userObj?.updatedAt), // Remove the subDays() function
+                            new Date(),
+                            {
+                              addSuffix: true,
+                            }
+                          )}`}
                         </span>
                       </div>
 
@@ -529,8 +705,8 @@ export default function ProfileComp() {
                           <input
                             type="text"
                             name="address"
-                            value={userData.address}
-                            onChange={handleInputChange}
+                            value={formData.address}
+                            onChange={handleInputChange_2}
                             className="block w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                           />
                         </div>
@@ -543,8 +719,8 @@ export default function ProfileComp() {
                             <input
                               type="text"
                               name="city"
-                              value={userData.city}
-                              onChange={handleInputChange}
+                              value={formData.city}
+                              onChange={handleInputChange_2}
                               className="block w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                             />
                           </div>
@@ -555,8 +731,8 @@ export default function ProfileComp() {
                             <input
                               type="text"
                               name="state"
-                              value={userData.state}
-                              onChange={handleInputChange}
+                              value={formData.state}
+                              onChange={handleInputChange_2}
                               className="block w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                             />
                           </div>
@@ -566,9 +742,9 @@ export default function ProfileComp() {
                             </label>
                             <input
                               type="text"
-                              name="zipCode"
-                              value={userData.zipCode}
-                              onChange={handleInputChange}
+                              name="postalCode"
+                              value={formData.postalCode}
+                              onChange={handleInputChange_2}
                               className="block w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                             />
                           </div>
@@ -621,8 +797,8 @@ export default function ProfileComp() {
                                   type="checkbox"
                                   className="sr-only peer"
                                   name="notifications.email"
-                                  checked={userData.notifications.email}
-                                  onChange={handleInputChange}
+                                  checked={formData?.notifications?.email}
+                                  onChange={handleInputChange_2}
                                 />
                                 <div className="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#2D9642]"></div>
                               </label>
@@ -648,8 +824,8 @@ export default function ProfileComp() {
                                   type="checkbox"
                                   className="sr-only peer"
                                   name="notifications.sms"
-                                  checked={userData.notifications.sms}
-                                  onChange={handleInputChange}
+                                  checked={formData?.notifications?.sms}
+                                  onChange={handleInputChange_2}
                                 />
                                 <div className="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#2D9642]"></div>
                               </label>
@@ -675,8 +851,8 @@ export default function ProfileComp() {
                                   type="checkbox"
                                   className="sr-only peer"
                                   name="notifications.app"
-                                  checked={userData.notifications.app}
-                                  onChange={handleInputChange}
+                                  checked={formData?.notifications?.app}
+                                  onChange={handleInputChange_2}
                                 />
                                 <div className="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#2D9642]"></div>
                               </label>
@@ -981,6 +1157,10 @@ export default function ProfileComp() {
           </motion.div>
         </div>
       </div>
+      <DeleteAccountModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+      />
     </div>
   );
 }

@@ -9,22 +9,42 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+model NotificationPreferences {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  email     Boolean  @default(true)
+  sms       Boolean  @default(false)
+  app       Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model User {
-  id                String          @id @default(cuid())
-  name              String?
-  email             String          @unique
-  dateOfBirth       DateTime?
-  phoneNumber       String?         @unique
-  emailVerified     DateTime?
-  image             String?
-  verificationToken String?         @unique
-  tokenVerified     Boolean         @default(false)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  accounts          Account[]
-  Authenticator     Authenticator[]
-  sessions          Session[]
-  stripeCustomer    StripeCustomer?
+  id                      String                   @id @default(cuid())
+  name                    String?
+  firstName               String?
+  lastName                String?
+  email                   String                   @unique
+  dateOfBirth             DateTime?
+  phoneNumber             String?                  @unique
+  address                 String?
+  city                    String?
+  state                   String?
+  postalCode              String?
+  emailVerified           DateTime?
+  image                   String?
+  verificationToken       String?                  @unique
+  agreedToTerms           Boolean                  @default(false)
+  tokenVerified           Boolean                  @default(false)
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  membershipTier          String?
+  accounts                Account[]
+  Authenticator           Authenticator[]
+  sessions                Session[]
+  stripeCustomer          StripeCustomer?
+  notificationPreferences NotificationPreferences?
 }
 
 model Account {

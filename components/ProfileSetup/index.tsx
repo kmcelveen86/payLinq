@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -8,68 +9,44 @@ import {
   Phone,
   MapPin,
   Calendar,
-  Camera,
-  ChevronRight,
   Shield,
   CreditCard,
+  ChevronRight,
 } from "lucide-react";
+import { useProfileSetup } from "@/app/hooks/useProfileSetup";
+
+// CheckIcon component TODO: Move to a separate file
+const CheckIcon = ({ className }: { className: string }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+  </svg>
+);
 
 export default function ProfileSetup() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    dob: "",
-    address: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    agreedToTerms: false,
-  });
+  const {
+    currentStep,
+    register,
+    handleSubmit,
+    errors,
+    handleNextStep,
+    handlePrevStep,
+    isStepOneValid,
+    isStepTwoValid,
+    isStepThreeValid,
+    isPending,
+    isError,
+  } = useProfileSetup();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  };
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
 
-  const handleNextStep = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setCurrentStep(currentStep + 1);
-    }, 500);
-  };
-
-  const handlePrevStep = () => {
-    setCurrentStep(currentStep - 1);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    // Here you would handle the form submission to your backend
-    setTimeout(() => {
-      setLoading(false);
-      setCurrentStep(4); // Move to success step
-    }, 1000);
-  };
-
-  const isStepOneValid =
-    formData.firstName && formData.lastName && formData.email;
-  const isStepTwoValid = formData.phone && formData.dob;
-  const isStepThreeValid =
-    formData.address &&
-    formData.city &&
-    formData.state &&
-    formData.zipCode &&
-    formData.agreedToTerms;
-
+  // Animation variants
   const stepVariants = {
     hidden: { opacity: 0, x: 50 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
@@ -237,14 +214,15 @@ export default function ProfileSetup() {
                         </div>
                         <input
                           type="text"
-                          name="firstName"
-                          value={formData.firstName}
-                          onChange={handleInputChange}
+                          {...register("firstName")}
                           className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
-                          placeholder="John"
-                          required
                         />
                       </div>
+                      {errors.firstName && (
+                        <p className="mt-1 text-xs text-red-400">
+                          {errors.firstName.message}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-1">
@@ -256,14 +234,17 @@ export default function ProfileSetup() {
                         </div>
                         <input
                           type="text"
-                          name="lastName"
-                          value={formData.lastName}
-                          onChange={handleInputChange}
+                          {...register("lastName")}
                           className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                           placeholder="Doe"
                           required
                         />
                       </div>
+                      {errors.lastName && (
+                        <p className="mt-1 text-xs text-red-400">
+                          {errors.lastName.message}
+                        </p>
+                      )}
                     </div>
                   </motion.div>
 
@@ -277,16 +258,19 @@ export default function ProfileSetup() {
                       </div>
                       <input
                         type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
-                        placeholder="johndoe@example.com"
-                        required
+                        value={userEmail || ""}
+                        disabled
+                        className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent opacity-70 cursor-not-allowed"
+                        readOnly
+                      />
+                      <input
+                        type="hidden"
+                        {...register("email")}
+                        value={userEmail || ""}
                       />
                     </div>
                     <p className="mt-1 text-xs text-gray-400">
-                      {`We'll never share your email with anyone else.`}
+                      {`We'll use this email for account verification and communication.`}
                     </p>
                   </motion.div>
 
@@ -297,14 +281,14 @@ export default function ProfileSetup() {
                       whileTap={{ scale: 0.97 }}
                       type="button"
                       onClick={handleNextStep}
-                      disabled={!isStepOneValid || loading}
+                      disabled={!isStepOneValid || isPending}
                       className={`flex items-center px-6 py-2 bg-gradient-to-r ${
                         isStepOneValid
                           ? "from-[#2D9642] to-[#C28F49]"
                           : "from-gray-600 to-gray-500"
                       } rounded-lg font-medium text-white transition-all duration-200 disabled:opacity-70`}
                     >
-                      {loading ? (
+                      {isPending ? (
                         <svg
                           className="animate-spin h-5 w-5 mr-2"
                           viewBox="0 0 24 24"
@@ -368,14 +352,16 @@ export default function ProfileSetup() {
                       </div>
                       <input
                         type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
+                        {...register("phone")}
                         className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                         placeholder="(123) 456-7890"
-                        required
                       />
                     </div>
+                    {errors.phone && (
+                      <p className="mt-1 text-xs text-red-400">
+                        {errors.phone.message}
+                      </p>
+                    )}
                   </motion.div>
 
                   <motion.div variants={childVariants}>
@@ -386,18 +372,24 @@ export default function ProfileSetup() {
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <Calendar size={16} className="text-gray-400" />
                       </div>
+
                       <input
                         type="date"
-                        name="dob"
-                        value={formData.dob}
-                        onChange={handleInputChange}
+                        {...register("dob")}
+                        max={new Date().toISOString().split("T")[0]}
+                        min={(() => {
+                          const date = new Date();
+                          date.setFullYear(date.getFullYear() - 100); // Reasonable minimum (100 years ago)
+                          return date.toISOString().split("T")[0];
+                        })()}
                         className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
-                        required
                       />
                     </div>
-                    <p className="mt-1 text-xs text-gray-400">
-                      You must be at least 18 years old to use Paylinq.
-                    </p>
+                    {errors.dob && (
+                      <p className="mt-1 text-xs text-red-400">
+                        {errors.dob.message}
+                      </p>
+                    )}
                   </motion.div>
 
                   <motion.div variants={childVariants} className="mt-4">
@@ -428,14 +420,14 @@ export default function ProfileSetup() {
                       whileTap={{ scale: 0.97 }}
                       type="button"
                       onClick={handleNextStep}
-                      disabled={!isStepTwoValid || loading}
+                      disabled={!isStepTwoValid || isPending}
                       className={`flex items-center px-6 py-2 bg-gradient-to-r ${
                         isStepTwoValid
                           ? "from-[#2D9642] to-[#C28F49]"
                           : "from-gray-600 to-gray-500"
                       } rounded-lg font-medium text-white transition-all duration-200 disabled:opacity-70`}
                     >
-                      {loading ? (
+                      {isPending ? (
                         <svg
                           className="animate-spin h-5 w-5 mr-2"
                           viewBox="0 0 24 24"
@@ -499,14 +491,16 @@ export default function ProfileSetup() {
                       </div>
                       <input
                         type="text"
-                        name="address"
-                        value={formData.address}
-                        onChange={handleInputChange}
+                        {...register("address")}
                         className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                         placeholder="123 Main St"
-                        required
                       />
                     </div>
+                    {errors.address && (
+                      <p className="mt-1 text-xs text-red-400">
+                        {errors.address.message}
+                      </p>
+                    )}
                   </motion.div>
 
                   <motion.div
@@ -519,13 +513,15 @@ export default function ProfileSetup() {
                       </label>
                       <input
                         type="text"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleInputChange}
+                        {...register("city")}
                         className="block w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                         placeholder="New York"
-                        required
                       />
+                      {errors.city && (
+                        <p className="mt-1 text-xs text-red-400">
+                          {errors.city.message}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-1">
@@ -533,13 +529,15 @@ export default function ProfileSetup() {
                       </label>
                       <input
                         type="text"
-                        name="state"
-                        value={formData.state}
-                        onChange={handleInputChange}
+                        {...register("state")}
                         className="block w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                         placeholder="NY"
-                        required
                       />
+                      {errors.state && (
+                        <p className="mt-1 text-xs text-red-400">
+                          {errors.state.message}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-1">
@@ -547,13 +545,15 @@ export default function ProfileSetup() {
                       </label>
                       <input
                         type="text"
-                        name="zipCode"
-                        value={formData.zipCode}
-                        onChange={handleInputChange}
+                        {...register("postalCode")}
                         className="block w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                         placeholder="10001"
-                        required
                       />
+                      {errors.postalCode && (
+                        <p className="mt-1 text-xs text-red-400">
+                          {errors.postalCode.message}
+                        </p>
+                      )}
                     </div>
                   </motion.div>
 
@@ -562,12 +562,9 @@ export default function ProfileSetup() {
                       <div className="flex items-center h-5">
                         <input
                           id="terms"
-                          name="agreedToTerms"
+                          {...register("agreedToTerms")}
                           type="checkbox"
-                          checked={formData.agreedToTerms}
-                          onChange={handleInputChange}
                           className="h-4 w-4 text-[#2D9642] focus:ring-[#2D9642] border-gray-600 rounded"
-                          required
                         />
                       </div>
                       <div className="ml-3 text-sm">
@@ -589,54 +586,59 @@ export default function ProfileSetup() {
                         </label>
                       </div>
                     </div>
-                  </motion.div>
+                    {errors.agreedToTerms && (
+                      <p className="mt-1 text-xs text-red-400">
+                        {errors.agreedToTerms.message}
+                      </p>
+                    )}
 
-                  <div className="flex justify-between items-center pt-4">
-                    <motion.button
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      type="button"
-                      onClick={handlePrevStep}
-                      className="px-4 py-2 border border-gray-600 rounded-lg font-medium text-gray-300 hover:bg-gray-700 transition-all duration-200"
-                    >
-                      Back
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      type="submit"
-                      disabled={!isStepThreeValid || loading}
-                      className={`flex items-center px-6 py-2 bg-gradient-to-r ${
-                        isStepThreeValid
-                          ? "from-[#2D9642] to-[#C28F49]"
-                          : "from-gray-600 to-gray-500"
-                      } rounded-lg font-medium text-white transition-all duration-200 disabled:opacity-70`}
-                    >
-                      {loading ? (
-                        <svg
-                          className="animate-spin h-5 w-5 mr-2"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                            fill="none"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                      ) : (
-                        "Complete Setup"
-                      )}
-                    </motion.button>
-                  </div>
+                    <div className="flex justify-between items-center pt-4">
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        type="button"
+                        onClick={handlePrevStep}
+                        className="px-4 py-2 border border-gray-600 rounded-lg font-medium text-gray-300 hover:bg-gray-700 transition-all duration-200"
+                      >
+                        Back
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        type="submit"
+                        disabled={!isStepThreeValid || isPending}
+                        className={`flex items-center px-6 py-2 bg-gradient-to-r ${
+                          isStepThreeValid
+                            ? "from-[#2D9642] to-[#C28F49]"
+                            : "from-gray-600 to-gray-500"
+                        } rounded-lg font-medium text-white transition-all duration-200 disabled:opacity-70`}
+                      >
+                        {isPending ? (
+                          <svg
+                            className="animate-spin h-5 w-5 mr-2"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                              fill="none"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                        ) : (
+                          "Complete Setup"
+                        )}
+                      </motion.button>
+                    </div>
+                  </motion.div>
                 </motion.div>
               </motion.div>
             )}
@@ -692,22 +694,18 @@ export default function ProfileSetup() {
                 </motion.div>
               </motion.div>
             )}
+
+            {/* Error display */}
+            {isError && (
+              <div className="mt-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg">
+                <p className="text-red-300 text-sm">
+                  There was an error creating your profile. Please try again.
+                </p>
+              </div>
+            )}
           </form>
         </div>
       </div>
     </div>
   );
 }
-
-// CheckIcon component
-const CheckIcon = ({ className }: { className: string }) => (
-  <svg
-    className={className}
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-  </svg>
-);

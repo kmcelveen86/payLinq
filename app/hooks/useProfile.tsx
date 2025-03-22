@@ -1,0 +1,230 @@
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  fetchUserProfile,
+  updateUserProfile,
+  fetchUserAddress,
+  updateUserAddress,
+  fetchNotificationPreferences,
+  updateNotificationPreferences,
+  fetchPaymentMethods,
+  addPaymentMethod,
+  updatePaymentMethod,
+  deletePaymentMethod,
+  uploadProfileImage,
+} from "@/app/api/userService";
+import { toast } from "react-hot-toast";
+import { ProfileFormData } from "../schemas/profile";
+
+// User Profile Hooks
+export const useUserProfile = () => {
+  return useQuery({
+    queryKey: ["userProfile"],
+    queryFn: fetchUserProfile,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+};
+
+export const useUpdateUserProfile = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: ProfileFormData) => {
+      const apiData = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phone: data.phone,
+        dob: data.dob,
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        postalCode: data.postalCode,
+        agreedToTerms: data.agreedToTerms,
+        notifications: data.notifications,
+      };
+      return updateUserProfile(apiData);
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(["userProfile"], data);
+
+      queryClient.invalidateQueries({ queryKey: ["userProfile"] });
+      toast.success("Profile updated successfully");
+    },
+    onError: (error) => {
+      console.error("Error updating profile:", error);
+      toast.error("Failed to update profile");
+    },
+  });
+};
+
+// Address Hooks
+export const useUserAddress = () => {
+  return useQuery({
+    queryKey: ["userAddress"],
+    queryFn: fetchUserAddress,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+};
+
+export const useUpdateUserAddress = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateUserAddress,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userAddress"] });
+      toast.success("Address updated successfully");
+    },
+    onError: (error) => {
+      console.error("Error updating address:", error);
+      toast.error("Failed to update address");
+    },
+  });
+};
+
+// Notification Preferences Hooks
+export const useNotificationPreferences = () => {
+  return useQuery({
+    queryKey: ["notificationPreferences"],
+    queryFn: fetchNotificationPreferences,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+};
+
+export const useUpdateNotificationPreferences = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateNotificationPreferences,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notificationPreferences"] });
+      toast.success("Notification preferences updated");
+    },
+    onError: (error) => {
+      console.error("Error updating notification preferences:", error);
+      toast.error("Failed to update notification preferences");
+    },
+  });
+};
+
+// Payment Methods Hooks
+export const usePaymentMethods = () => {
+  return useQuery({
+    queryKey: ["paymentMethods"],
+    queryFn: fetchPaymentMethods,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+};
+
+export const useAddPaymentMethod = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: addPaymentMethod,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
+      toast.success("Payment method added");
+    },
+    onError: (error) => {
+      console.error("Error adding payment method:", error);
+      toast.error("Failed to add payment method");
+    },
+  });
+};
+
+export const useUpdatePaymentMethod = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: any }) =>
+      updatePaymentMethod(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
+      toast.success("Payment method updated");
+    },
+    onError: (error) => {
+      console.error("Error updating payment method:", error);
+      toast.error("Failed to update payment method");
+    },
+  });
+};
+
+export const useDeletePaymentMethod = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deletePaymentMethod,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
+      toast.success("Payment method removed");
+    },
+    onError: (error) => {
+      console.error("Error deleting payment method:", error);
+      toast.error("Failed to remove payment method");
+    },
+  });
+};
+
+// React Query hook for profile image upload
+export const useProfileImage = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: uploadProfileImage,
+    onSuccess: (data) => {
+      // Update the cached user profile with the new image URL
+      queryClient.setQueryData(["userProfile"], (oldData: any) => {
+        if (oldData) {
+          return {
+            ...oldData,
+            profileImage: data.imageUrl,
+            image: data.imageUrl,
+          };
+        }
+        return oldData;
+      });
+
+      // Invalidate the query to trigger a background refetch
+      queryClient.invalidateQueries({ queryKey: ["userProfile"] });
+
+      toast.success("Profile image updated successfully");
+    },
+    onError: (error) => {
+      console.error("Error uploading profile image:", error);
+      toast.error("Failed to upload profile image");
+    },
+  });
+};
+
+// Combined profile data hook for convenience
+export const useProfileData = () => {
+  const profileQuery = useUserProfile();
+  const addressQuery = useUserAddress();
+  const notificationsQuery = useNotificationPreferences();
+  const paymentMethodsQuery = usePaymentMethods();
+
+  const isLoading =
+    profileQuery.isLoading ||
+    addressQuery.isLoading ||
+    notificationsQuery.isLoading ||
+    paymentMethodsQuery.isLoading;
+
+  const isError =
+    profileQuery.isError ||
+    addressQuery.isError ||
+    notificationsQuery.isError ||
+    paymentMethodsQuery.isError;
+
+  const data = {
+    user: profileQuery.data,
+    address: addressQuery.data,
+    notifications: notificationsQuery.data,
+    paymentMethods: paymentMethodsQuery.data || [],
+  };
+
+  return {
+    isLoading,
+    isError,
+    data,
+  };
+};
