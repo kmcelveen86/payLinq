@@ -26,12 +26,7 @@ const providers: Provider[] = [
       identifier: email,
       url,
       provider: { server, from },
-    }) {
-      console.log("🚀 ~ email:", email)
-      console.log("🚀 ~ from:", from)
-      console.log("🚀 ~ server:", server)
-     
-    },
+    }) {},
   }),
   Sendgrid({
     maxAge: 30 * 24 * 60 * 60, // 30 days

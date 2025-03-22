@@ -34,7 +34,6 @@ export default function TopNavDropDown() {
   const open = Boolean(anchorEl);
   const theme = useTheme();
   const { data: session } = useSession();
-  console.log({ session });
 
   // Prevent hydration errors
   useEffect(() => {
