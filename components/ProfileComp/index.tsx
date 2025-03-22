@@ -851,10 +851,10 @@ export default function ProfileComp() {
                           </div>
 
                           <p className="text-gray-400 mb-4">
-                            Add an extra layer of security to your account by
+                            {`Add an extra layer of security to your account by
                             enabling two-factor authentication. We'll send you a
                             verification code to your phone whenever you sign
-                            in.
+                            in.`}
                           </p>
 
                           <motion.button

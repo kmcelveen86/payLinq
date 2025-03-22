@@ -133,7 +133,7 @@ export default function ProfileSetup() {
             Complete Your Profile
           </h2>
           <p className="mt-2 text-gray-400">
-            Let's set up your account to get the most out of Paylinq
+            {`Let's set up your account to get the most out of Paylinq`}
           </p>
         </motion.div>
 
@@ -286,7 +286,7 @@ export default function ProfileSetup() {
                       />
                     </div>
                     <p className="mt-1 text-xs text-gray-400">
-                      We'll never share your email with anyone else.
+                      {`We'll never share your email with anyone else.`}
                     </p>
                   </motion.div>
 
