@@ -88,7 +88,7 @@ export default function SignIn() {
             </div>
           );
         })}
-        <div className="flex gap-2 items-center my-4 w-36">
+        {/* <div className="flex gap-2 items-center my-4 w-36">
           <div className="flex-1 bg-neutral-300 h-[1px]" />
           <span className="text-xs leading-4 uppercase text-neutral-500">
             or
@@ -97,28 +97,14 @@ export default function SignIn() {
         </div>
         {oauthProviders.map((provider) => {
           return (
-            // <form
-            //   key={provider.id}
-            //   action={async () => {
-            //     "use server";
-            //     try {
-            //       await signIn(provider.id, { redirectTo: "/" });
-            //     } catch (error) {
-            //       if (error instanceof AuthError) {
-            //         return redirect(`/?error=${error.type}`);
-            //       }
-            //       throw error;
-            //     }
-            //   }}>
             <button
               key={provider.id}
               type="submit"
               className="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded-sm transition focus:ring-2 focus:ring-offset-2 focus:outline-hidden bg-zinc-800 hover:bg-zinc-900 focus:ring-zinc-800">
               <span>Sign in with {provider.name}</span>
             </button>
-            // </form>
           );
-        })}
+        })} */}
       </Box>
     </>
   );

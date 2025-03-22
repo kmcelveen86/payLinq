@@ -1,87 +1,204 @@
 generator client {
-    provider = "prisma-client-js"
-    previewFeatures = ["driverAdapters"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
-    provider  = "postgresql"
-    // Uses connection pooling
-    url       = env("POSTGRES_PRISMA_URL")
-    // Uses direct connection, ⚠️ make sure to keep this to `POSTGRES_URL_NON_POOLING`
-    // or you'll have dangling databases from migrations
-    directUrl = env("POSTGRES_URL_NON_POOLING")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model User {
-    id                    String          @id @default(cuid())
-    name                  String?
-    email                 String          @unique
-    dateOfBirth           DateTime?
-    phoneNumber           String?         @unique
-    emailVerified         DateTime?
-    image                 String?
-    accounts              Account[]
-    sessions              Session[]
-    verificationToken     String?         @unique
-    tokenVerified         Boolean         @default(false)
-    // Optional for WebAuthn support
-    Authenticator Authenticator[]
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id                String          @id @default(cuid())
+  name              String?
+  email             String          @unique
+  dateOfBirth       DateTime?
+  phoneNumber       String?         @unique
+  emailVerified     DateTime?
+  image             String?
+  verificationToken String?         @unique
+  tokenVerified     Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  accounts          Account[]
+  Authenticator     Authenticator[]
+  sessions          Session[]
+  stripeCustomer    StripeCustomer?
 }
 
 model Account {
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String?
-    access_token      String?
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String?
-    session_state     String?
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@id([provider, providerAccountId])
+  @@id([provider, providerAccountId])
 }
 
 model Session {
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
-    identifier String
-    token      String
-    expires    DateTime
+  identifier String
+  token      String
+  expires    DateTime
 
-    @@id([identifier, token])
+  @@id([identifier, token])
 }
 
-// Optional for WebAuthn support
 model Authenticator {
-    credentialID         String  @unique
-    userId               String
-    providerAccountId    String
-    credentialPublicKey  String
-    counter              Int
-    credentialDeviceType String
-    credentialBackedUp   Boolean
-    transports           String?
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+  user                 User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@id([userId, credentialID])
+}
 
-    @@id([userId, credentialID])
+model StripeCustomer {
+  id               String             @id @default(cuid())
+  userId           String             @unique
+  stripeCustomerId String             @unique
+  isActive         Boolean            @default(true)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  cardholders      StripeCardholder[]
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model StripeCardholder {
+  id                   String         @id @default(cuid())
+  stripeCardholderId   String         @unique
+  stripeCustomerId     String
+  status               String
+  type                 String
+  name                 String
+  email                String
+  phoneNumber          String
+  idVerificationStatus String?
+  idDocumentStatus     String?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  billingAddress       StripeAddress? @relation("CardholderBillingAddress")
+  cards                StripeCard[]
+  stripeCustomer       StripeCustomer @relation(fields: [stripeCustomerId], references: [id], onDelete: Cascade)
+}
+
+model StripeCard {
+  id           String           @id @default(cuid())
+  stripeCardId String           @unique
+  cardholderId String
+  status       String
+  type         String
+  brand        String
+  currency     String
+  last4        String
+  expiryMonth  Int
+  expiryYear   Int
+  displayName  String?
+  replacedBy   String?
+  cancelReason String?
+  metadata     Json?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  cardholder   StripeCardholder @relation(fields: [cardholderId], references: [id], onDelete: Cascade)
+  pin          StripePin?
+  shipping     StripeShipping?
+  spending     StripeSpending?
+}
+
+model StripeAddress {
+  id                   String           @id @default(cuid())
+  line1                String
+  line2                String?
+  city                 String
+  state                String
+  postalCode           String
+  country              String
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  billingCardholderFor StripeCardholder @relation("CardholderBillingAddress", fields: [id], references: [id], map: "BillingCardholderFor_FK")
+  shippingFor          StripeShipping?
+}
+
+model StripeShipping {
+  id             String        @id @default(cuid())
+  cardId         String        @unique
+  addressId      String        @unique
+  carrier        String?
+  status         String
+  trackingNumber String?
+  trackingUrl    String?
+  eta            DateTime?
+  deliveredAt    DateTime?
+  type           String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  address        StripeAddress @relation(fields: [addressId], references: [id])
+  card           StripeCard    @relation(fields: [cardId], references: [id], onDelete: Cascade)
+}
+
+model StripeSpending {
+  id                String     @id @default(cuid())
+  cardId            String     @unique
+  limit             Int?
+  limitInterval     String?
+  allowedCategories String[]
+  blockedCategories String[]
+  isActive          Boolean    @default(true)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  card              StripeCard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+}
+
+model StripePin {
+  id              String     @id @default(cuid())
+  cardId          String     @unique
+  status          String
+  attemptCount    Int        @default(0)
+  isBlocked       Boolean    @default(false)
+  lastAttemptedAt DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  card            StripeCard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+}
+
+model StripeTransaction {
+  id                  String   @id @default(cuid())
+  stripeTransactionId String   @unique
+  cardId              String
+  amount              Int
+  currency            String
+  type                String
+  status              String
+  merchantName        String?
+  merchantCategory    String?
+  description         String?
+  authorizationId     String?
+  isDeclined          Boolean  @default(false)
+  declineReason       String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }

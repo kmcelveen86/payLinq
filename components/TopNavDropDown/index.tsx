@@ -50,11 +50,11 @@ export default function TopNavDropDown() {
   };
 
   const menuItems = [
-    { text: "My Profile", icon: <User size={18} />, path: "/user/dashboard" },
+    { text: "Dashboard", icon: <User size={18} />, path: "/user/dashboard" },
     {
       text: "Account Settings",
       icon: <Settings size={18} />,
-      path: "/user/settings",
+      path: "/user/profile-edit",
     },
     {
       text: "Payment Methods",
