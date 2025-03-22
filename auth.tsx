@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Sendgrid from "next-auth/providers/sendgrid";
+import Resend from "next-auth/providers/resend";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Apple from "next-auth/providers/apple";
 import Google from "next-auth/providers/google";
@@ -18,15 +19,25 @@ const baseUrl =
     : process.env.NEXTAUTH_URL;
 
 const providers: Provider[] = [
+  Resend({
+    apiKey: process.env.AUTH_RESEND_KEY,
+    from: process.env.AUTH_RESEND_EMAIL_FROM,
+    sendVerificationRequest({
+      identifier: email,
+      url,
+      provider: { server, from },
+    }) {
+      console.log("🚀 ~ email:", email)
+      console.log("🚀 ~ from:", from)
+      console.log("🚀 ~ server:", server)
+     
+    },
+  }),
   Sendgrid({
     maxAge: 30 * 24 * 60 * 60, // 30 days
     apiKey: process.env.AUTH_SENDGRID_KEY,
     from: process.env.AUTH_SENDGRID_EMAIL_FROM,
     normalizeIdentifier(identifier: string): string {
-      console.log(
-        "GREG LOOK!  ~ normalizeIdentifier ~ identifier:",
-        identifier,
-      );
       let [local, domain] = identifier.toLowerCase().trim().split("@");
       domain = domain.split(",")[0];
       if (identifier.split("@").length > 2) {
@@ -121,7 +132,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     verifyRequest: "/auth/verify-request",
     signIn: "/auth/signin",
-    newUser: "/user/profile",
+    newUser: "/user/profile-edit",
   },
   theme: {
     colorScheme: "auto", // "auto" | "dark" | "light"

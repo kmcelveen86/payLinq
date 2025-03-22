@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 
-const protectedPaths = ["/user/dashboard", "/user/profile"];
+const protectedPaths = ["/user/dashboard", "/user/profile-edit"];
 
 export async function middleware(req: NextRequest) {
   const session = await auth();

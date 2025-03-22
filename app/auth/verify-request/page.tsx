@@ -5,7 +5,7 @@ const VerifyRequest: React.FC = () => {
   return (
     <Container
       component="main"
-      maxWidth="lg"
+      maxWidth={false}
       sx={{
         height: "100vh",
         display: "flex",
