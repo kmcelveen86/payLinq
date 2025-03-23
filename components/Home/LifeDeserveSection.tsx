@@ -1,15 +1,23 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { ArrowRight } from "lucide-react";
+import { useUserProfile } from "@/app/hooks/useProfile";
+import { get } from "http";
 
 export default function LifeDeserveSection(): React.ReactElement<any> {
+  const router = useRouter();
+  const { data: session } = useSession();
+  const { data: userProfile } = useUserProfile();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const isAnonymous = !session?.user;
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -125,6 +133,30 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
     };
   }, [isMounted]);
 
+  const handleOnStartJourneyClick = () => {
+    if (isAnonymous) {
+      signIn("email", { callbackUrl: "/membership-tiers" });
+    } else {
+      if (!userProfile?.firstName) {
+        router.push("/user/profile-edit");
+      } else {
+        router.push("/membership-tiers");
+      }
+    }
+  };
+
+  const getButtonText = () => {
+    if (isAnonymous) {
+      return "Start Your Journey";
+    }
+
+    if (userProfile?.firstName) {
+      return "Continue Your Journey";
+    }
+
+    return "Your Journey Awaits";
+  };
+
   return (
     <div className="relative">
       {/* Canvas for animated background */}
@@ -235,6 +267,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
               className="mt-8"
             >
               <Button
+                onClick={handleOnStartJourneyClick}
                 variant="contained"
                 size="large"
                 className="bg-linear-to-r from-[#2D9642] to-[#C28F49] hover:from-[#259138] hover:to-[#B37F41]"
@@ -263,7 +296,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
                   </motion.div>
                 }
               >
-                Start Your Journey
+                {getButtonText()}
               </Button>
             </motion.div>
           </motion.div>

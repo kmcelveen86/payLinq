@@ -6,10 +6,11 @@ import {
   updateUserAddress,
   fetchNotificationPreferences,
   updateNotificationPreferences,
-  fetchPaymentMethods,
-  addPaymentMethod,
-  updatePaymentMethod,
-  deletePaymentMethod,
+  updateMembershipTier,
+  // fetchPaymentMethods,
+  // addPaymentMethod,
+  // updatePaymentMethod,
+  // deletePaymentMethod,
   uploadProfileImage,
 } from "@/app/api/userService";
 import { toast } from "react-hot-toast";
@@ -107,63 +108,96 @@ export const useUpdateNotificationPreferences = () => {
   });
 };
 
+// MEMBERSHIP TIER HOOKS
+
+export const useUpdateMembershipTier = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: updateMembershipTier,
+    onSuccess: (data) => {
+      console.log("🚀 ~ useUpdateMembershipTieruseUpdateMembershipTier ~ data:", data)
+      // Update the cached user profile with the new membership tier
+      queryClient.setQueryData(['userProfile'], (oldData: any) => {
+        if (oldData) {
+          return {
+            ...oldData,
+            membershipTier: data.user.membershipTier,
+          };
+        }
+        return oldData;
+      });
+      
+      // Invalidate queries to trigger refetching
+      queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+      queryClient.invalidateQueries({ queryKey: ['userPoints'] });
+      
+      toast.success(data.message || 'Membership tier updated successfully');
+    },
+    onError: (error: any) => {
+      console.error('Error updating membership tier:', error);
+      toast.error(error.response?.data?.message || 'Failed to update membership tier');
+    },
+  });
+};
+
 // Payment Methods Hooks
-export const usePaymentMethods = () => {
-  return useQuery({
-    queryKey: ["paymentMethods"],
-    queryFn: fetchPaymentMethods,
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
-};
+// export const usePaymentMethods = () => {
+//   return useQuery({
+//     queryKey: ["paymentMethods"],
+//     queryFn: fetchPaymentMethods,
+//     staleTime: 1000 * 60 * 5, // 5 minutes
+//   });
+// };
 
-export const useAddPaymentMethod = () => {
-  const queryClient = useQueryClient();
+// export const useAddPaymentMethod = () => {
+//   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: addPaymentMethod,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
-      toast.success("Payment method added");
-    },
-    onError: (error) => {
-      console.error("Error adding payment method:", error);
-      toast.error("Failed to add payment method");
-    },
-  });
-};
+//   return useMutation({
+//     mutationFn: addPaymentMethod,
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
+//       toast.success("Payment method added");
+//     },
+//     onError: (error) => {
+//       console.error("Error adding payment method:", error);
+//       toast.error("Failed to add payment method");
+//     },
+//   });
+// };
 
-export const useUpdatePaymentMethod = () => {
-  const queryClient = useQueryClient();
+// export const useUpdatePaymentMethod = () => {
+//   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) =>
-      updatePaymentMethod(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
-      toast.success("Payment method updated");
-    },
-    onError: (error) => {
-      console.error("Error updating payment method:", error);
-      toast.error("Failed to update payment method");
-    },
-  });
-};
+//   return useMutation({
+//     mutationFn: ({ id, data }: { id: string; data: any }) =>
+//       updatePaymentMethod(id, data),
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
+//       toast.success("Payment method updated");
+//     },
+//     onError: (error) => {
+//       console.error("Error updating payment method:", error);
+//       toast.error("Failed to update payment method");
+//     },
+//   });
+// };
 
-export const useDeletePaymentMethod = () => {
-  const queryClient = useQueryClient();
+// export const useDeletePaymentMethod = () => {
+//   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: deletePaymentMethod,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
-      toast.success("Payment method removed");
-    },
-    onError: (error) => {
-      console.error("Error deleting payment method:", error);
-      toast.error("Failed to remove payment method");
-    },
-  });
-};
+//   return useMutation({
+//     mutationFn: deletePaymentMethod,
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
+//       toast.success("Payment method removed");
+//     },
+//     onError: (error) => {
+//       console.error("Error deleting payment method:", error);
+//       toast.error("Failed to remove payment method");
+//     },
+//   });
+// };
 
 // React Query hook for profile image upload
 export const useProfileImage = () => {
@@ -201,25 +235,26 @@ export const useProfileData = () => {
   const profileQuery = useUserProfile();
   const addressQuery = useUserAddress();
   const notificationsQuery = useNotificationPreferences();
-  const paymentMethodsQuery = usePaymentMethods();
+  // const paymentMethodsQuery = usePaymentMethods();
 
   const isLoading =
     profileQuery.isLoading ||
     addressQuery.isLoading ||
-    notificationsQuery.isLoading ||
-    paymentMethodsQuery.isLoading;
+    notificationsQuery.isLoading 
+    // || paymentMethodsQuery.isLoading;
 
   const isError =
     profileQuery.isError ||
     addressQuery.isError ||
-    notificationsQuery.isError ||
-    paymentMethodsQuery.isError;
+    notificationsQuery.isError 
+    // || paymentMethodsQuery.isError;
 
   const data = {
     user: profileQuery.data,
     address: addressQuery.data,
     notifications: notificationsQuery.data,
-    paymentMethods: paymentMethodsQuery.data || [],
+    // paymentMethods: paymentMethodsQuery.data 
+    // || [],
   };
 
   return {

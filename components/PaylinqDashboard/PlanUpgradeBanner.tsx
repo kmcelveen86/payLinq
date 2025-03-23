@@ -1,8 +1,67 @@
 import { motion } from "framer-motion";
-import { Shield, ArrowUpRight } from "lucide-react";
+import { Shield, ArrowUpRight, Award } from "lucide-react";
 import React from "react";
+import Link from "next/link";
+import { useUserProfile } from "@/app/hooks/useProfile";
 
-export default function PlanUpgradeBanner(itemVariants: any) {
+// Define the tier information for each plan
+const TIER_INFO = {
+  Freemium: {
+    tagline:
+      "You earn 1x points on everyday purchases, 2x points on dining & travel.",
+    nextTier: "Lifestyle",
+    pointsMultiplier: { everyday: 1, dining: 2, travel: 2 },
+  },
+  Lifestyle: {
+    tagline:
+      "You earn 2x points on everyday purchases, 3x points on dining & travel.",
+    nextTier: "VIP Lifestyle",
+    pointsMultiplier: { everyday: 2, dining: 3, travel: 3 },
+  },
+  "VIP Lifestyle": {
+    tagline:
+      "You earn 3x points on everyday purchases, 4x points on dining & travel.",
+    nextTier: "Elite Lifestyle",
+    pointsMultiplier: { everyday: 3, dining: 4, travel: 4 },
+  },
+  "Elite Lifestyle": {
+    tagline:
+      "You earn 5x points on all purchases including everyday, dining & travel.",
+    nextTier: null, // No next tier
+    pointsMultiplier: { everyday: 5, dining: 5, travel: 5 },
+  },
+};
+
+interface PlanUpgradeBannerProps {
+  itemVariants: any;
+}
+
+export default function PlanUpgradeBanner({
+  itemVariants,
+}: PlanUpgradeBannerProps) {
+  const {
+    data: profileData,
+    isLoading: isProfileLoading,
+    isError: isProfileError,
+  } = useUserProfile();
+
+  const { membershipTier, firstName, lastName, profileImage } =
+    profileData || {};
+
+  // Default to no tier if not provided
+  const currentTier = membershipTier || "No Plan";
+
+  // Get the tier info or use default for users without a plan
+  const tierInfo =
+    currentTier in TIER_INFO
+      ? TIER_INFO[currentTier as keyof typeof TIER_INFO]
+      : {
+          tagline:
+            "You're not earning any points yet. Upgrade to start earning rewards!",
+          nextTier: "Freemium",
+          pointsMultiplier: { everyday: 0, dining: 0, travel: 0 },
+        };
+
   return (
     <motion.div
       variants={itemVariants}
@@ -15,27 +74,37 @@ export default function PlanUpgradeBanner(itemVariants: any) {
       <div className="flex flex-col md:flex-row md:items-center justify-between relative z-10">
         <div>
           <div className="flex items-center mb-2">
-            <Shield size={18} className="text-[#2D9642] mr-2" />
-            <h3 className="text-lg font-bold">Freemium Plan</h3>
+            {currentTier === "No Plan" ? (
+              <Award size={18} className="text-gray-400 mr-2" />
+            ) : (
+              <Shield size={18} className="text-[#2D9642] mr-2" />
+            )}
+            <h3 className="text-lg font-bold">
+              {currentTier === "No Plan"
+                ? "No Active Plan"
+                : `${currentTier} Plan`}
+            </h3>
             <span className="ml-2 px-2 py-0.5 bg-gray-600 rounded-full text-xs">
               Current Plan
             </span>
           </div>
-          <p className="text-gray-300 mb-4 md:mb-0">
-            You earn{" "}
-            <span className="text-[#C28F49] font-medium">1x points</span> on
-            everyday purchases,{" "}
-            <span className="text-[#C28F49] font-medium">2x points</span> on
-            dining & travel.
-          </p>
+          <p className="text-gray-300 mb-4 md:mb-0">{tierInfo.tagline}</p>
         </div>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#2D9642] to-[#C28F49] text-white font-medium flex items-center whitespace-nowrap"
-        >
-          Upgrade Plan <ArrowUpRight size={16} className="ml-2" />
-        </motion.button>
+
+        <Link href="/membership-tiers">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#2D9642] to-[#C28F49] text-white font-medium flex items-center whitespace-nowrap"
+          >
+            {currentTier === "No Plan"
+              ? "Choose a Plan"
+              : currentTier === "Elite Lifestyle"
+              ? "Downgrade Plan"
+              : "Upgrade Plan"}
+            <ArrowUpRight size={16} className="ml-2" />
+          </motion.button>
+        </Link>
       </div>
     </motion.div>
   );

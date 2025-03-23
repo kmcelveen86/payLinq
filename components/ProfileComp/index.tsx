@@ -32,7 +32,7 @@ import {
 import {
   useUserProfile,
   useUpdateUserProfile,
-  usePaymentMethods,
+  // usePaymentMethods,
   useProfileImage,
 } from "../../app/hooks/useProfile";
 
@@ -108,8 +108,8 @@ export default function ProfileComp() {
     isError: isProfileError,
   } = useUserProfile();
 
-  const { data: paymentMethods, isLoading: isPaymentMethodsLoading } =
-    usePaymentMethods();
+  // const { data: paymentMethods, isLoading: isPaymentMethodsLoading } =
+  //   usePaymentMethods();
 
   const { mutate: updateProfile, isPending: isUpdatePending } =
     useUpdateUserProfile();

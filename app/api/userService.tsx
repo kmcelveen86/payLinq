@@ -12,6 +12,21 @@ interface UploadResponse {
   imageUrl: string;
 }
 
+interface UpdateMembershipTierParams {
+  tierName: string;
+  annualBilling: boolean;
+}
+
+interface UpdateMembershipTierResponse {
+  success: boolean;
+  user: {
+    id: string;
+    membershipTier: string;
+    billingCycle: "monthly" | "annual";
+  };
+  message: string;
+}
+
 const API_BASE_URL = "/api/users";
 
 const apiClient = axios.create({
@@ -35,7 +50,7 @@ export const fetchUserProfile = async (): Promise<User> => {
 export const updateUserProfile = async (
   userData: Partial<User>
 ): Promise<User> => {
-  const response = await axios.put("/api/users/profile", {
+  const response = await apiClient.put("/profile", {
     ...userData,
     agreedToTerms: true,
   });
@@ -69,58 +84,10 @@ export const updateNotificationPreferences = async (
   return response.data;
 };
 
-// Payment Methods APIs
-export const fetchPaymentMethods = async (): Promise<PaymentMethod[]> => {
-  const response = await apiClient.get("/payment-methods");
-  return response.data;
-};
-
-export const addPaymentMethod = async (
-  paymentMethod: Partial<PaymentMethod>
-): Promise<PaymentMethod> => {
-  const response = await apiClient.post("/payment-methods", paymentMethod);
-  return response.data;
-};
-
-export const updatePaymentMethod = async (
-  id: string,
-  paymentMethod: Partial<PaymentMethod>
-): Promise<PaymentMethod> => {
-  const response = await apiClient.put(`/payment-methods/${id}`, paymentMethod);
-  return response.data;
-};
-
-export const deletePaymentMethod = async (id: string): Promise<void> => {
-  await apiClient.delete(`/payment-methods/${id}`);
-};
-
-// Security APIs
-export const changePassword = async (
-  currentPassword: string,
-  newPassword: string
-): Promise<{ success: boolean; message: string }> => {
-  const response = await apiClient.post("/change-password", {
-    currentPassword,
-    newPassword,
-  });
-  return response.data;
-};
-
-export const enableTwoFactorAuth = async (): Promise<{
-  success: boolean;
-  setupUrl: string;
-}> => {
-  const response = await apiClient.post("/enable-2fa");
-  return response.data;
-};
-
-export const fetchLoginHistory = async (): Promise<any[]> => {
-  const response = await apiClient.get("/login-history");
-  return response.data;
-};
-
 // Function to upload profile image
-export const uploadProfileImage = async (file: File): Promise<UploadResponse> => {
+export const uploadProfileImage = async (
+  file: File
+): Promise<UploadResponse> => {
   const formData = new FormData();
   formData.append("profileImage", file);
 
@@ -132,3 +99,60 @@ export const uploadProfileImage = async (file: File): Promise<UploadResponse> =>
 
   return response.data;
 };
+
+export const updateMembershipTier = async (
+  params: UpdateMembershipTierParams
+): Promise<UpdateMembershipTierResponse> => {
+  const response = await apiClient.post("/membership-tier", params);
+  return response.data;
+};
+
+// Payment Methods APIs
+// export const fetchPaymentMethods = async (): Promise<PaymentMethod[]> => {
+//   const response = await apiClient.get("/payment-methods");
+//   return response.data;
+// };
+
+// export const addPaymentMethod = async (
+//   paymentMethod: Partial<PaymentMethod>
+// ): Promise<PaymentMethod> => {
+//   const response = await apiClient.post("/payment-methods", paymentMethod);
+//   return response.data;
+// };
+
+// export const updatePaymentMethod = async (
+//   id: string,
+//   paymentMethod: Partial<PaymentMethod>
+// ): Promise<PaymentMethod> => {
+//   const response = await apiClient.put(`/payment-methods/${id}`, paymentMethod);
+//   return response.data;
+// };
+
+// export const deletePaymentMethod = async (id: string): Promise<void> => {
+//   await apiClient.delete(`/payment-methods/${id}`);
+// };
+
+// Security APIs
+// export const changePassword = async (
+//   currentPassword: string,
+//   newPassword: string
+// ): Promise<{ success: boolean; message: string }> => {
+//   const response = await apiClient.post("/change-password", {
+//     currentPassword,
+//     newPassword,
+//   });
+//   return response.data;
+// };
+
+// export const enableTwoFactorAuth = async (): Promise<{
+//   success: boolean;
+//   setupUrl: string;
+// }> => {
+//   const response = await apiClient.post("/enable-2fa");
+//   return response.data;
+// };
+
+// export const fetchLoginHistory = async (): Promise<any[]> => {
+//   const response = await apiClient.get("/login-history");
+//   return response.data;
+// };

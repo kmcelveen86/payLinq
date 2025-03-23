@@ -9,11 +9,14 @@ import {
   Settings,
   CreditCard,
   LogOut,
+  User,
 } from "lucide-react";
 import React from "react";
+import { useRouter } from "next/navigation";
 import userData from "./data";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import { useUserProfile } from "@/app/hooks/useProfile";
 
 type Props = {
   activeTab: string;
@@ -23,23 +26,47 @@ type Props = {
 };
 
 export default function SideBar(props: Props) {
+  const router = useRouter();
   const { activeTab, setActiveTab, userData, itemVariants } = props;
+
+  const handleOnClick = () => {
+    router.push("/user/profile-edit");
+    setActiveTab("settings");
+  };
+  const {
+    data: profileData,
+    isLoading: isProfileLoading,
+    isError: isProfileError,
+  } = useUserProfile();
+  console.log("🚀 ~ SideBar ~ profileDataprofileData:", profileData);
+  const { membershipTier, firstName, lastName, profileImage } =
+    profileData || {};
   return (
     <motion.div variants={itemVariants} className="lg:col-span-1">
       <div className="bg-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl p-5">
         <div className="flex flex-col items-center mb-6">
-          <img
-            src={userData.profileImage}
-            alt={userData.name}
-            className="h-24 w-24 rounded-full border-4 border-[#2D9642] mb-4"
-          />
-          <h2 className="text-xl font-bold text-white">{userData.name}</h2>
+          {profileImage ? (
+            <img
+              src={profileImage}
+              alt={firstName}
+              className="h-24 w-24 rounded-full border-4 border-[#2D9642] mb-4"
+              // onError={(e) => {
+              //   // If image fails to load, show default avatar
+              //   e.currentTarget.src = "/default-avatar.png";
+              // }}
+            />
+          ) : (
+            // <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+              <User size={40} className="text-gray-400" />
+            // </div>
+          )}
+          <h2 className="text-xl font-bold text-white">{`${firstName} ${lastName}`}</h2>
 
           {/* Membership badge */}
           <div className="mt-2 mb-3 px-3 py-1 rounded-full bg-gray-700 flex items-center">
             <Award size={14} className="text-[#C28F49] mr-1.5" />
             <span className="text-sm text-[#C28F49] font-medium">
-              Freemium Member
+              {membershipTier || `Not a member`}
             </span>
           </div>
 
@@ -132,7 +159,7 @@ export default function SideBar(props: Props) {
             <span>Analytics</span>
           </button>
           <button
-            onClick={() => setActiveTab("settings")}
+            onClick={handleOnClick}
             className={`w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors ${
               activeTab === "settings"
                 ? "bg-gradient-to-r from-[#2D9642]/20 to-[#C28F49]/20 border-l-4 border-[#2D9642]"
