@@ -4,6 +4,14 @@ import { formatDistance, subDays } from "date-fns";
 import ProfileSetup from "@/components/ProfileSetup";
 import DeleteAccountModal from "@/components/DeleteAccountModal";
 import { useSession } from "next-auth/react";
+
+// Extend the User type to include membershipTier
+declare module "next-auth" {
+  interface User {
+    membershipTier?: string;
+    updatedAt?: string;
+  }
+}
 import { motion, AnimatePresence } from "framer-motion";
 import {
   User,
@@ -25,7 +33,7 @@ import {
   useUserProfile,
   useUpdateUserProfile,
   usePaymentMethods,
-  useProfileImage
+  useProfileImage,
 } from "../../app/hooks/useProfile";
 
 import {
@@ -105,7 +113,6 @@ export default function ProfileComp() {
 
   const { mutate: updateProfile, isPending: isUpdatePending } =
     useUpdateUserProfile();
-  // const { mutate: uploadImage } = useUploadProfileImage();
 
   // Local form state
   const [formData, setFormData] = useState<ProfileFormData>({
@@ -135,7 +142,7 @@ export default function ProfileComp() {
     }
   }, [profileData]);
 
-  const handleInputChange_2 = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
 
     if (name.includes(".")) {
@@ -160,7 +167,7 @@ export default function ProfileComp() {
     }
   };
 
-  const handleSaveChanges_2 = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSaveChanges = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     updateProfile(formData, {
@@ -201,50 +208,6 @@ export default function ProfileComp() {
     ],
   });
 
-  // Fetch user data on component mount
-  useEffect(() => {
-    // Simulate API call
-    const fetchUserData = async () => {
-      setLoading(true);
-
-      try {
-        // fake api call
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, []);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-
-    if (name.includes(".")) {
-      // Handle nested objects (e.g., notifications.email)
-      const [parent, child] = name.split(".");
-      setUserData((prevUserData) => ({
-        ...prevUserData,
-        [parent]: {
-          ...(prevUserData[parent as keyof typeof prevUserData] as Record<
-            string,
-            any
-          >),
-          [child]: type === "checkbox" ? checked : value,
-        },
-      }));
-    } else {
-      // Handle top-level fields
-      setUserData((prevUserData) => ({
-        ...prevUserData,
-        [name]: type === "checkbox" ? checked : value,
-      }));
-    }
-  };
-
   // Update or add the handleProfileImageChange function
   const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -273,26 +236,6 @@ export default function ProfileComp() {
 
     // Upload the image to the server
     uploadImage(file);
-  };
-
-  const handleSaveChanges = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      // Simulate API call to save user data
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setSaveSuccess(true);
-
-      // Reset success message after 3 seconds
-      setTimeout(() => {
-        setSaveSuccess(false);
-      }, 3000);
-    } catch (error) {
-      console.error("Error saving user data:", error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   // If still loading initial user data
@@ -549,7 +492,7 @@ export default function ProfileComp() {
             animate="visible"
             className="lg:col-span-3"
           >
-            <form onSubmit={handleSaveChanges_2}>
+            <form onSubmit={handleSaveChanges}>
               <div className="bg-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl border border-gray-700">
                 <AnimatePresence mode="wait">
                   {/* Personal Information Section */}
@@ -569,7 +512,7 @@ export default function ProfileComp() {
                         </h2>
                         <span className="text-sm text-gray-400">
                           {`Last updated: ${formatDistance(
-                            new Date(userObj?.updatedAt), // Remove the subDays() function
+                            new Date(userObj?.updatedAt as string),
                             new Date(),
                             {
                               addSuffix: true,
@@ -588,7 +531,7 @@ export default function ProfileComp() {
                               type="text"
                               name="firstName"
                               value={formData.firstName}
-                              onChange={handleInputChange_2}
+                              onChange={handleInputChange}
                               className="block w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                             />
                           </div>
@@ -600,7 +543,7 @@ export default function ProfileComp() {
                               type="text"
                               name="lastName"
                               value={formData.lastName}
-                              onChange={handleInputChange_2}
+                              onChange={handleInputChange}
                               className="block w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                             />
                           </div>
@@ -623,12 +566,12 @@ export default function ProfileComp() {
                                 readOnly
                               />
                               {/* <input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange_2}
-                                className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
-                              /> */}
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
+                        /> */}
                             </div>
                           </div>
                           <div>
@@ -643,7 +586,7 @@ export default function ProfileComp() {
                                 type="tel"
                                 name="phone"
                                 value={formData.phone}
-                                onChange={handleInputChange_2}
+                                onChange={handleInputChange}
                                 className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                               />
                             </div>
@@ -662,7 +605,7 @@ export default function ProfileComp() {
                               type="date"
                               name="dob"
                               value={formData.dob}
-                              onChange={handleInputChange_2}
+                              onChange={handleInputChange}
                               className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                             />
                           </div>
@@ -688,7 +631,7 @@ export default function ProfileComp() {
                         </h2>
                         <span className="text-sm text-gray-400">
                           {`Last updated: ${formatDistance(
-                            new Date(userObj?.updatedAt), // Remove the subDays() function
+                            new Date(userObj?.updatedAt as string), // Remove the subDays() function
                             new Date(),
                             {
                               addSuffix: true,
@@ -706,7 +649,7 @@ export default function ProfileComp() {
                             type="text"
                             name="address"
                             value={formData.address}
-                            onChange={handleInputChange_2}
+                            onChange={handleInputChange}
                             className="block w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                           />
                         </div>
@@ -720,7 +663,7 @@ export default function ProfileComp() {
                               type="text"
                               name="city"
                               value={formData.city}
-                              onChange={handleInputChange_2}
+                              onChange={handleInputChange}
                               className="block w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                             />
                           </div>
@@ -732,7 +675,7 @@ export default function ProfileComp() {
                               type="text"
                               name="state"
                               value={formData.state}
-                              onChange={handleInputChange_2}
+                              onChange={handleInputChange}
                               className="block w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                             />
                           </div>
@@ -744,7 +687,7 @@ export default function ProfileComp() {
                               type="text"
                               name="postalCode"
                               value={formData.postalCode}
-                              onChange={handleInputChange_2}
+                              onChange={handleInputChange}
                               className="block w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                             />
                           </div>
@@ -798,7 +741,7 @@ export default function ProfileComp() {
                                   className="sr-only peer"
                                   name="notifications.email"
                                   checked={formData?.notifications?.email}
-                                  onChange={handleInputChange_2}
+                                  onChange={handleInputChange}
                                 />
                                 <div className="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#2D9642]"></div>
                               </label>
@@ -825,7 +768,7 @@ export default function ProfileComp() {
                                   className="sr-only peer"
                                   name="notifications.sms"
                                   checked={formData?.notifications?.sms}
-                                  onChange={handleInputChange_2}
+                                  onChange={handleInputChange}
                                 />
                                 <div className="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#2D9642]"></div>
                               </label>
@@ -852,7 +795,7 @@ export default function ProfileComp() {
                                   className="sr-only peer"
                                   name="notifications.app"
                                   checked={formData?.notifications?.app}
-                                  onChange={handleInputChange_2}
+                                  onChange={handleInputChange}
                                 />
                                 <div className="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#2D9642]"></div>
                               </label>
@@ -1028,9 +971,9 @@ export default function ProfileComp() {
 
                           <p className="text-gray-400 mb-4">
                             {`Add an extra layer of security to your account by
-                            enabling two-factor authentication. We'll send you a
-                            verification code to your phone whenever you sign
-                            in.`}
+                      enabling two-factor authentication. We'll send you a
+                      verification code to your phone whenever you sign
+                      in.`}
                           </p>
 
                           <motion.button

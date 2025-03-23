@@ -1,4 +1,5 @@
 export interface User {
+  updatedAt?: string;
   id: string;
   firstName: string;
   lastName: string;
@@ -7,10 +8,10 @@ export interface User {
   dob?: string;
   profileImage?: string;
   membershipTier:
-    | "Freemium"
-    | "Lifestyle"
-    | "VIP Lifestyle"
-    | "Elite Lifestyle";
+  | "Freemium"
+  | "Lifestyle"
+  | "VIP Lifestyle"
+  | "Elite Lifestyle";
 }
 
 export interface Address {
