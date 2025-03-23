@@ -38,7 +38,6 @@ export default function SideBar(props: Props) {
     isLoading: isProfileLoading,
     isError: isProfileError,
   } = useUserProfile();
-  console.log("🚀 ~ SideBar ~ profileDataprofileData:", profileData);
   const { membershipTier, firstName, lastName, profileImage } =
     profileData || {};
   return (
@@ -57,7 +56,7 @@ export default function SideBar(props: Props) {
             />
           ) : (
             // <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-              <User size={40} className="text-gray-400" />
+            <User size={40} className="text-gray-400" />
             // </div>
           )}
           <h2 className="text-xl font-bold text-white">{`${firstName} ${lastName}`}</h2>

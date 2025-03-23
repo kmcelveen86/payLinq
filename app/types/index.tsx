@@ -5,6 +5,7 @@ export interface User {
   lastName: string;
   email: string;
   phone?: string;
+  password?: string;
   dob?: string;
   profileImage?: string;
   membershipTier:

@@ -26,6 +26,7 @@ model User {
   firstName               String?
   lastName                String?
   email                   String                   @unique
+  password                String?
   dateOfBirth             DateTime?
   phoneNumber             String?                  @unique
   address                 String?
