@@ -30,7 +30,7 @@ declare module "next-auth" {
   interface Session {
     provider?: string;
     user: {
-      id: string;
+      id?: string;
       firstName?: string | null;
       lastName?: string | null;
       membershipTier?: string | null;
