@@ -12,24 +12,6 @@ import type { DefaultSession, User as NextAuthUser } from "next-auth";
 import { compare } from "bcryptjs";
 
 const adapter = PrismaAdapter(prisma);
-
-// First, update the AdapterUser interface
-// declare module "@auth/core/adapters" {
-//   interface AdapterUser {
-//     firstName?: string | null;
-//     lastName?: string | null;
-//     membershipTier?: string | null;
-//     dateOfBirth?: Date | null;
-//     phoneNumber?: string | null;
-//     address?: string | null;
-//     city?: string | null;
-//     state?: string | null;
-//     postalCode?: string | null;
-//     updatedAt?: string | null;
-//     provider?: string | null;
-//   }
-// }
-
 declare module "next-auth" {
   interface User {
     firstName?: string | null;
@@ -62,20 +44,8 @@ declare module "next-auth" {
     } & DefaultSession["user"];
   }
 }
-// declare module "next-auth" {
-//   interface User {
-//     firstName?: string | null;
-//     lastName?: string | null;
-//     membershipTier?: string | null;
-//     dateOfBirth?: Date | null;
-//     phoneNumber?: string | null;
-//     address?: string | null;
-//     city?: string | null;
-//     state?: string | null;
-//     postalCode?: string | null;
-//     updatedAt?: string | null;
-//   }
-// }
+
+// Use a single declaration for AdapterUser
 declare module "@auth/core/adapters" {
   interface AdapterUser {
     firstName?: string | null;
@@ -301,7 +271,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // Other fields should already be there if the adapter is working
 
         // Add provider info if we have it
-        if (user.provider) {
+        if (user && "provider" in user && user.provider) {
           session.provider = user.provider;
         }
       }
