@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { profileSchema } from "@/app/schemas/profile";
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma"; // Import the shared instance
-
+import { prisma } from "@/lib/prisma";
+import { cookies } from "next/headers";
 
 // const prisma = new PrismaClient();
 
@@ -203,7 +203,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const session = await auth();
-    
+
     if (!session || !session.user?.email) {
       return NextResponse.json(
         { message: "Not authenticated" },
@@ -250,25 +250,38 @@ export async function PUT(request: NextRequest) {
         city,
         state,
         // Update notification preferences if provided
-        notificationPreferences: notifications ? {
-          upsert: {
-            create: {
-              email: notifications.email,
-              sms: notifications.sms,
-              app: notifications.app,
-            },
-            update: {
-              email: notifications.email,
-              sms: notifications.sms,
-              app: notifications.app,
-            },
-          },
-        } : undefined,
+        notificationPreferences: notifications
+          ? {
+              upsert: {
+                create: {
+                  email: notifications.email,
+                  sms: notifications.sms,
+                  app: notifications.app,
+                },
+                update: {
+                  email: notifications.email,
+                  sms: notifications.sms,
+                  app: notifications.app,
+                },
+              },
+            }
+          : undefined,
       },
       include: {
         notificationPreferences: true,
       },
     });
+
+    // Set the profile_complete cookie when profile has required fields
+    if (firstName && lastName && phone) {
+      const cookieStore = await cookies();
+      cookieStore.set("profile_complete", "true", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+      });
+    }
 
     return NextResponse.json({
       success: true,
@@ -277,17 +290,21 @@ export async function PUT(request: NextRequest) {
         lastName: user.lastName,
         email: user.email,
         phone: user.phoneNumber,
-        dob: user.dateOfBirth ? user.dateOfBirth.toISOString().split("T")[0] : "",
+        dob: user.dateOfBirth
+          ? user.dateOfBirth.toISOString().split("T")[0]
+          : "",
         address: user.address,
         city: user.city,
         state: user.state,
         postalCode: user.postalCode,
-        notifications: user.notificationPreferences ? {
-          email: user.notificationPreferences.email,
-          sms: user.notificationPreferences.sms,
-          app: user.notificationPreferences.app,
-        } : undefined,
-      }
+        notifications: user.notificationPreferences
+          ? {
+              email: user.notificationPreferences.email,
+              sms: user.notificationPreferences.sms,
+              app: user.notificationPreferences.app,
+            }
+          : undefined,
+      },
     });
   } catch (error) {
     console.error("Error updating user profile:", error);

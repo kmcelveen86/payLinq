@@ -152,13 +152,11 @@ const TierConfirmationModal: React.FC<TierConfirmationModalProps> = ({
                       className="text-amber-500 mt-0.5 mr-2 shrink-0"
                     />
                     <p className="text-sm text-amber-700">
-                      This is a demo application. No actual charges will be
-                      processed at this time.
+                      {`Hey ya'll this is just the demo app. No actual charges are processed 😎.`}
                     </p>
                   </div>
                 )}
               </div>
-
               <div className="flex space-x-3">
                 <motion.button
                   whileHover={{ scale: 1.02 }}

@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
+import { getToken } from "next-auth/jwt";
 
 const protectedPaths = ["/user/dashboard", "/user/profile-edit"];
-const profileRequiredPaths = ["/user/dashboard", "/user/membership-tiers"]; // Paths that require a complete profile
+const profileRequiredPaths = ["/user/dashboard", "/user/membership-tiers"];
 
 export async function middleware(req: NextRequest) {
-  const session = await auth();
-  const email = session?.user?.email;
+  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
   const url = req.nextUrl.clone();
+  const email = token?.email as string | undefined;
 
   // Check if the request path is one of the protected paths
   if (protectedPaths.some((path) => url.pathname.startsWith(path))) {
@@ -19,14 +18,13 @@ export async function middleware(req: NextRequest) {
 
     // If accessing a path that requires a complete profile
     if (profileRequiredPaths.some((path) => url.pathname.startsWith(path))) {
-      // Check if user has completed their profile
-      const user = await prisma.user.findUnique({
-        where: { email },
-        select: { firstName: true },
-      });
+      // Check for profile completion cookie
+      const profileComplete =
+        req.cookies.get("profile_complete")?.value === "true";
+      const firstName = token?.firstName as string | undefined;
 
-      // If user doesn't have a firstName, redirect to profile edit
-      if (!user?.firstName) {
+      // If neither cookie nor token indicates a complete profile, redirect to profile edit
+      if (!profileComplete && !firstName) {
         return NextResponse.redirect(new URL("/user/profile-edit", req.url));
       }
     }
@@ -36,6 +34,7 @@ export async function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
+// Optimize the matcher to only run middleware where needed
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/user/:path*"],
 };
