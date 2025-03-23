@@ -30,7 +30,6 @@ declare module "next-auth" {
   interface Session {
     provider?: string;
     user: {
-      id?: string;
       firstName?: string | null;
       lastName?: string | null;
       membershipTier?: string | null;
@@ -44,8 +43,6 @@ declare module "next-auth" {
     } & DefaultSession["user"];
   }
 }
-
-// Use a single declaration for AdapterUser
 declare module "@auth/core/adapters" {
   interface AdapterUser {
     firstName?: string | null;
