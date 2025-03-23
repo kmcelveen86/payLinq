@@ -1,30 +1,37 @@
 "use client";
 import { useRef } from "react";
-// import { signInAction } from "@/app/actions";
 import { providerMap } from "@/auth";
-import { signIn } from "next-auth/react";
-// import SignInButton from "@/components/SignInButton";
-import SignInInput from "@/components/SignInInput";
-import {
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Box,
-  Button,
-} from "@mui/material";
-import { NextApiRequest, NextApiResponse } from "next";
-import { AuthError } from "next-auth";
-import { redirect } from "next/navigation";
-import SignInForm from "@/components/SignInForm";
+import { Box } from "@mui/material";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import SignInForm from "@/components/auth/SignInForm";
 
 export default function SignIn() {
   const emailProvider = Object.values(providerMap).filter(
-    (p) => p.id === "sendgrid",
+    (p) => p.id === "sendgrid"
   );
   const oauthProviders = Object.values(providerMap).filter(
-    (p) => p.id !== "sendgrid",
+    (p) => p.id !== "sendgrid"
   );
   const emailRef = useRef<HTMLInputElement>(null);
+
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/user/dashboard");
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
+  }
 
   // const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = async (
   //   e,
@@ -61,7 +68,8 @@ export default function SignIn() {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        height="100vh">
+        height="100vh"
+      >
         {emailProvider.map((provider) => {
           return (
             <div key={provider.id}>
