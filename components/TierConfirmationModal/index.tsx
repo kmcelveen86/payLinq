@@ -79,7 +79,7 @@ const TierConfirmationModal: React.FC<TierConfirmationModalProps> = ({
                 <p className="text-gray-600 mb-4">
                   {isFreemium ? (
                     <>
-                      You're about to start your{" "}
+                      {`You're about to start your `}
                       <span className="font-semibold text-gray-800">
                         Freemium
                       </span>{" "}
@@ -87,7 +87,7 @@ const TierConfirmationModal: React.FC<TierConfirmationModalProps> = ({
                     </>
                   ) : (
                     <>
-                      You're about to upgrade your membership to the{" "}
+                      {` You're about to upgrade your membership to the `}
                       <span className="font-semibold text-gray-800">
                         {tierName}
                       </span>{" "}
