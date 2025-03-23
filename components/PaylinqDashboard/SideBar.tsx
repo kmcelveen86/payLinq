@@ -13,6 +13,7 @@ import {
 import React from "react";
 import userData from "./data";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 type Props = {
   activeTab: string;
@@ -41,15 +42,15 @@ export default function SideBar(props: Props) {
               Freemium Member
             </span>
           </div>
-        
+
           <Link href="/user/profile-edit">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-1 flex items-center text-sm font-medium text-gray-300 hover:text-white py-1 px-3 rounded-full bg-gray-700 bg-opacity-50 hover:bg-opacity-70 transition-all"
-          >
-            <Edit size={14} className="mr-1" /> Edit Profile
-          </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="mt-1 flex items-center text-sm font-medium text-gray-300 hover:text-white py-1 px-3 rounded-full bg-gray-700 bg-opacity-50 hover:bg-opacity-70 transition-all"
+            >
+              <Edit size={14} className="mr-1" /> Edit Profile
+            </motion.button>
           </Link>
         </div>
 
@@ -164,9 +165,12 @@ export default function SideBar(props: Props) {
           </div>
         </motion.div>
 
-        <button className="mt-8 w-full flex items-center justify-center text-gray-400 hover:text-white py-2 rounded-lg hover:bg-gray-700 transition-colors">
+        <button
+          onClick={() => signOut()}
+          className="mt-8 w-full flex items-center justify-center text-gray-400 hover:text-white py-2 rounded-lg hover:bg-gray-700 transition-colors"
+        >
           <LogOut size={18} className="mr-2" />
-          <span>Log Out</span>
+          <span>Sign Out</span>
         </button>
       </div>
     </motion.div>
