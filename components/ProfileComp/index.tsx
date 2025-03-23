@@ -5,13 +5,6 @@ import ProfileSetup from "@/components/ProfileSetup";
 import DeleteAccountModal from "@/components/DeleteAccountModal";
 import { useSession } from "next-auth/react";
 
-// Extend the User type to include membershipTier
-declare module "next-auth" {
-  interface User {
-    membershipTier?: string;
-    updatedAt?: string;
-  }
-}
 import { motion, AnimatePresence } from "framer-motion";
 import {
   User,
