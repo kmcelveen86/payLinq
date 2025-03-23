@@ -45,15 +45,15 @@ declare module "next-auth" {
 }
 declare module "@auth/core/adapters" {
   interface AdapterUser {
-    firstName?: string | null;
-    lastName?: string | null;
-    membershipTier?: string | null;
-    dateOfBirth?: Date | null;
-    phoneNumber?: string | null;
-    address?: string | null;
-    city?: string | null;
-    state?: string | null;
-    postalCode?: string | null;
+    firstName?: string | null | undefined;
+    lastName?: string | null | undefined;
+    membershipTier?: string | undefined;
+    phoneNumber?: string | undefined;
+    address?: string | undefined;
+    city?: string | undefined;
+    state?: string | undefined;
+    postalCode?: string | undefined;
+    dateOfBirth?: Date | undefined;
     updatedAt?: string | null;
     provider?: string | null;
   }
