@@ -2,12 +2,12 @@ import { Coffee, ShoppingBag, Utensils, Car, Home } from "lucide-react";
 // Mock user data
 const userData = {
   name: "Greg Davis",
-  profileImage: "/api/placeholder/150/150",
+  profileImage: "",
   totalPoints: 12845,
   pointsThisMonth: 1250,
   pointsToNextReward: 155,
   cardLastFour: "4832",
-  planTier: "Freemium",
+  planTier: "FreemiumFake",
   memberSince: "October 2023",
   recentTransactions: [
     {

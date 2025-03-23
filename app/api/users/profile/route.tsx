@@ -44,8 +44,7 @@ export async function GET(request: NextRequest) {
       state: user.state || "",
       postalCode: user.postalCode || "",
       profileImage: user.image || null,
-      membershipTier: user.membershipTier || "Freemium",
-      // Include notification preferences
+      membershipTier: user.membershipTier,
       notifications: user.notificationPreferences
         ? {
             email: user.notificationPreferences.email,

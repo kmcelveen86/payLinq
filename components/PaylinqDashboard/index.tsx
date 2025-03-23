@@ -12,63 +12,18 @@ import RecentTransactions from "./RecentTransactions";
 import SideBar from "./SideBar";
 import userData from "./data";
 
-import { CreditCard, Bell } from "lucide-react";
+import { CreditCard, Bell, User } from "lucide-react";
 import Link from "next/link";
+import { useUserProfile } from "@/app/hooks/useProfile";
 
 const PaylinqDashboard = () => {
+  const {
+    data: profileData,
+    isLoading: isProfileLoading,
+    isError: isProfileError,
+  } = useUserProfile();
+  const { firstName, profileImage } = profileData || {};
   const [activeTab, setActiveTab] = useState("overview");
-
-  // Plan comparison data
-  const planTiers = [
-    {
-      name: "Freemium",
-      pointMultiplier: {
-        everyday: "1x",
-        dining: "2x",
-        travel: "2x",
-      },
-      maxMonthly: "10,000",
-      active: true,
-    },
-    {
-      name: "Lifestyle",
-      pointMultiplier: {
-        everyday: "2x",
-        dining: "3x",
-        travel: "3x",
-      },
-      maxMonthly: "20,000",
-      active: false,
-    },
-    {
-      name: "VIP Lifestyle",
-      pointMultiplier: {
-        everyday: "3x",
-        dining: "4x",
-        travel: "4x",
-      },
-      maxMonthly: "30,000",
-      active: false,
-    },
-    {
-      name: "Elite Lifestyle",
-      pointMultiplier: {
-        everyday: "5x",
-        dining: "5x",
-        travel: "5x",
-      },
-      maxMonthly: "50,000",
-      active: false,
-    },
-  ];
-
-  // Features locked in freemium
-  const lockedFeatures = [
-    "Enhanced Credit Reporting",
-    "Premium Travel Benefits",
-    "Priority Customer Support",
-    "Exclusive VIP Events",
-  ];
 
   // Animation variants
   const containerVariants = {
@@ -134,11 +89,19 @@ const PaylinqDashboard = () => {
                     </span>
                   </button>
                   <div className="flex items-center space-x-3">
-                    <img
-                      src={userData.profileImage}
-                      alt={userData.name}
-                      className="h-9 w-9 rounded-full border-2 border-[#C28F49]"
-                    />
+                    {profileImage ? (
+                      <img
+                        src={profileImage}
+                        alt={firstName}
+                        className="h-9 w-9 rounded-full border-2 border-[#C28F49]"
+                        // onError={(e) => {
+                        //   // If image fails to load, show default avatar
+                        //   e.currentTarget.src = "/default-avatar.png";
+                        // }}
+                      />
+                    ) : (
+                      <User size={40} className="text-gray-400" />
+                    )}
                     <span className="font-medium hidden md:block">
                       {userData.name}
                     </span>
@@ -169,7 +132,7 @@ const PaylinqDashboard = () => {
             variants={itemVariants}
             className="lg:col-span-3 space-y-8"
           >
-            <PlanUpgradeBanner itemVarients={itemVariants} />
+            <PlanUpgradeBanner itemVariants={itemVariants} />
 
             <PointsSummaryCard userData={userData} />
 
@@ -182,10 +145,7 @@ const PaylinqDashboard = () => {
 
             <AvailableRewards userData={userData} itemVariants={itemVariants} />
 
-            <LockedPremiumFeatures
-              itemVariants={itemVariants}
-              lockedFeatures={lockedFeatures}
-            />
+            <LockedPremiumFeatures itemVariants={itemVariants} />
 
             <PlanComparison itemVariants={itemVariants} />
 

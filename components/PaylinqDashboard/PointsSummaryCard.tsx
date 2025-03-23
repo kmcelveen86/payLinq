@@ -2,6 +2,31 @@ import { motion } from "framer-motion";
 import { TrendingUp, Gift, Award, CheckCircle } from "lucide-react";
 import React from "react";
 import userData from "./data";
+import { useUserProfile } from "@/app/hooks/useProfile";
+
+// Define tier-specific information
+const TIER_INFO = {
+  Freemium: {
+    maxPointsPerMonth: 10000,
+    maxPointsPerYear: 120000,
+    expirationMonths: 18,
+  },
+  Lifestyle: {
+    maxPointsPerMonth: 20000,
+    maxPointsPerYear: 240000,
+    expirationMonths: 24,
+  },
+  "VIP Lifestyle": {
+    maxPointsPerMonth: 30000,
+    maxPointsPerYear: 360000,
+    expirationMonths: 36,
+  },
+  "Elite Lifestyle": {
+    maxPointsPerMonth: 50000,
+    maxPointsPerYear: 600000,
+    expirationMonths: 0, // Never expires
+  },
+};
 
 type Props = {
   userData: typeof userData;
@@ -9,6 +34,15 @@ type Props = {
 
 export default function PointsSummaryCard(props: Props) {
   const { userData } = props;
+
+  // Get user's membership tier
+  const { data: profileData } = useUserProfile();
+  const currentTier = profileData?.membershipTier || "Freemium";
+
+  // Get tier-specific limits
+  const tierInfo =
+    TIER_INFO[currentTier as keyof typeof TIER_INFO] || TIER_INFO["Freemium"];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <motion.div
@@ -88,12 +122,13 @@ export default function PointsSummaryCard(props: Props) {
         </div>
       </motion.div>
 
+      {/* Dynamic Tier Details Section */}
       <motion.div
         whileHover={{ y: -5 }}
         className="bg-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl p-5"
       >
         <div className="flex justify-between">
-          <h3 className="text-gray-400 text-sm">Freemium Details</h3>
+          <h3 className="text-gray-400 text-sm">{currentTier} Details</h3>
           <div className="p-2 rounded-lg bg-gray-700">
             <Award size={18} className="text-[#C28F49]" />
           </div>
@@ -106,9 +141,7 @@ export default function PointsSummaryCard(props: Props) {
               className="text-[#2D9642] mr-2 flex-shrink-0"
             />
             <span>
-              Monthly:{" "}
-              {userData.freemiumLimits.maxPointsPerMonth.toLocaleString()}{" "}
-              points
+              Monthly: {tierInfo.maxPointsPerMonth.toLocaleString()} points
             </span>
           </div>
           <div className="flex items-center text-gray-300">
@@ -117,8 +150,7 @@ export default function PointsSummaryCard(props: Props) {
               className="text-[#2D9642] mr-2 flex-shrink-0"
             />
             <span>
-              Yearly:{" "}
-              {userData.freemiumLimits.maxPointsPerYear.toLocaleString()} points
+              Yearly: {tierInfo.maxPointsPerYear.toLocaleString()} points
             </span>
           </div>
           <div className="flex items-center text-gray-300">
@@ -127,7 +159,9 @@ export default function PointsSummaryCard(props: Props) {
               className="text-[#2D9642] mr-2 flex-shrink-0"
             />
             <span>
-              Points expire in {userData.freemiumLimits.expirationMonths} months
+              {tierInfo.expirationMonths === 0
+                ? "Points never expire"
+                : `Points expire in ${tierInfo.expirationMonths} months`}
             </span>
           </div>
         </div>
