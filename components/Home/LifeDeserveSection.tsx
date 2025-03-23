@@ -308,7 +308,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
         flexDirection="column"
         alignItems="flex-end"
         justifyContent="flex-end"
-        className="absolute xs:bottom-[-80px] md:bottom-[-112px] lg:bottom-[-170px] right-0 w-[300px] h-[300px] sm:left-0 lg:left-[268px] z-10"
+        className="absolute xs:bottom-[-80px] md:bottom-[-112px] lg:bottom-[-170px] right-0 w-[300px] h-[300px] sm:left-0 lg:left-[268px] z-1"
       >
         {/* Floating motion for the card image */}
         <motion.div
