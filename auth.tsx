@@ -47,7 +47,7 @@ declare module "@auth/core/adapters" {
   interface AdapterUser {
     firstName?: string | null | undefined;
     lastName?: string | null | undefined;
-    membershipTier?: string | undefined;
+    membershipTier?: string | null | undefined;
     phoneNumber?: string | undefined;
     address?: string | undefined;
     city?: string | undefined;
