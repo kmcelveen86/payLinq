@@ -30,16 +30,16 @@ declare module "next-auth" {
   interface Session {
     provider?: string;
     user: {
-      firstName?: string | null;
-      lastName?: string | null;
-      membershipTier?: string | null;
-      dateOfBirth?: Date | null;
-      phoneNumber?: string | null;
-      address?: string | null;
-      city?: string | null;
-      state?: string | null;
-      postalCode?: string | null;
-      updatedAt?: string | null;
+      id: string;
+      firstName?: string | null | undefined;
+      lastName?: string | null | undefined;
+      membershipTier?: string | undefined;
+      phoneNumber?: string | undefined;
+      address?: string | undefined;
+      city?: string | undefined;
+      state?: string | undefined;
+      postalCode?: string | undefined;
+      dateOfBirth?: Date | undefined;
     } & DefaultSession["user"];
   }
 }
