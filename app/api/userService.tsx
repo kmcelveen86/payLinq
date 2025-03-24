@@ -37,6 +37,7 @@ const apiClient = axios.create({
 });
 
 export const createUserProfile = async (data: ProfileFormData) => {
+  console.log("🚀 ~ createUserProfile ~ data:", data)
   const response = await apiClient.post("/profile", data);
   return response.data;
 };

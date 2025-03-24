@@ -21,6 +21,7 @@ export async function middleware(req: NextRequest) {
       // Check for profile completion cookie
       const profileComplete =
         req.cookies.get("profile_complete")?.value === "true";
+      console.log("🚀 ~ middleware ~ profileComplete:", profileComplete);
       const firstName = token?.firstName as string | undefined;
 
       // If neither cookie nor token indicates a complete profile, redirect to profile edit

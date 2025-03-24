@@ -13,6 +13,7 @@ export function useProfileSetup() {
   const [currentStep, setCurrentStep] = useState(1);
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
+  console.log("🚀 ~ useProfileSetup ~ userEmail:", userEmail)
 
   const {
     register,
@@ -86,8 +87,10 @@ export function useProfileSetup() {
     setCurrentStep(currentStep - 1);
   };
 
-  const onSubmit = async (data: ProfileFormData) =>
-    profileMutation.mutate(data);
+  const onSubmit = async (data: ProfileFormData) => {
+    console.log("🚀 ~ onSubmitonSubmitonSubmit ~ data", data);
+    return profileMutation.mutate(data);
+  };
 
   // Check if current step is valid
   const isStepOneValid =

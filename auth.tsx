@@ -10,6 +10,7 @@ import prisma from "@/lib/prisma";
 import type { Provider } from "next-auth/providers";
 import type { DefaultSession, User as NextAuthUser } from "next-auth";
 import { compare } from "bcryptjs";
+import { v4 as uuidv4 } from "uuid";
 
 const adapter = PrismaAdapter(prisma);
 declare module "next-auth" {
@@ -25,6 +26,7 @@ declare module "next-auth" {
     postalCode?: string | null;
     updatedAt?: string | null;
     provider?: string | null;
+    agreedToTerms?: boolean | null;
   }
 
   interface Session {
@@ -40,6 +42,7 @@ declare module "next-auth" {
       state?: string | undefined;
       postalCode?: string | undefined;
       dateOfBirth?: Date | undefined;
+      agreedToTerms?: boolean | undefined;
     } & DefaultSession["user"];
   }
 }
@@ -56,6 +59,7 @@ declare module "@auth/core/adapters" {
     dateOfBirth?: Date | undefined;
     updatedAt?: string | null;
     provider?: string | null;
+    agreedToTerms?: boolean | undefined;
   }
 }
 
@@ -97,6 +101,7 @@ const providers: Provider[] = [
             city: true,
             state: true,
             postalCode: true,
+            agreedToTerms: true,
             // Include any other fields you need
           },
         });
@@ -173,6 +178,7 @@ export const providerMap = providers.map((provider) => {
  * based on the provider type
  */
 function getSessionStrategy(provider?: string) {
+
   // Always use JWT for credentials
   if (provider === "credentials") {
     return "jwt";
@@ -203,7 +209,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Only runs for JWT strategy
       // Store user data in the token when they sign in
       if (user) {
+        const sessionToken = uuidv4();
+        const expires = new Date(Date.now() + 60 * 60 * 24 * 30 * 1000);
+
+        const session = await adapter.createSession!({
+          sessionToken,
+          userId: user.id!,
+          expires,
+        });
+
         // Add all user fields to the token
+        token.sessionId = session.sessionToken;
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
@@ -218,6 +234,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.city = user.city;
         token.state = user.state;
         token.postalCode = user.postalCode;
+        token.agreedToTerms = user.agreedToTerms;
 
         // Track which provider was used
         if (account) {
@@ -257,6 +274,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.state = token.state as string;
         session.user.postalCode = token.postalCode as string;
         session.user.updatedAt = token.updatedAt as string;
+        session.user.agreedToTerms = token.agreedToTerms as boolean;
 
         // Add provider info
         session.provider = token.provider as string;
