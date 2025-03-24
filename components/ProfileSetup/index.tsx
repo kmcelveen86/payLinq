@@ -44,6 +44,7 @@ export default function ProfileSetup() {
   } = useProfileSetup();
 
   const { data: session } = useSession();
+  console.log("🚀 ~ ProfileSetup ~ session:", session);
   const userEmail = session?.user?.email;
 
   // Animation variants
@@ -71,6 +72,11 @@ export default function ProfileSetup() {
       opacity: 1,
       y: 0,
     },
+  };
+
+  const handleAccountSubmit = () => {
+    console.log("🚀 ~ handleAccountSubmit ~ handleSubmit()");
+    return handleSubmit();
   };
 
   return (
@@ -176,7 +182,7 @@ export default function ProfileSetup() {
 
         {/* Form card */}
         <div className="bg-gray-800 bg-opacity-60 backdrop-blur-md rounded-2xl shadow-xl p-8 border border-gray-700">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleAccountSubmit}>
             {/* Step 1: Basic Information */}
             {currentStep === 1 && (
               <motion.div
