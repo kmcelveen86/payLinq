@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { profileSchema } from "@/app/schemas/profile";
-import { auth } from "@/auth";
+import { profileSchema, profileUpdateSchema } from "@/app/schemas/profile";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 
@@ -9,16 +9,16 @@ import { cookies } from "next/headers";
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth();
+    const { userId, redirectToSignIn } = await auth();
+    const clerkUser = await currentUser();
+    const email = clerkUser?.primaryEmailAddress?.emailAddress;
 
-    if (!session || !session.user?.email) {
+    if (!userId) {
       return NextResponse.json(
         { message: "Not authenticated" },
         { status: 401 }
       );
     }
-
-    const email = session.user.email;
 
     // Fetch the user from the database, including notification preferences
     const user = await prisma.user.findUnique({
@@ -38,7 +38,9 @@ export async function GET(request: NextRequest) {
       lastName: user.lastName || "",
       email: user.email,
       phone: user.phoneNumber || "",
-      dob: user.dateOfBirth ? user.dateOfBirth.toISOString().split("T")[0] : "",
+      dateOfBirth: user.dateOfBirth
+        ? user.dateOfBirth.toISOString().split("T")[0]
+        : "",
       address: user.address || "",
       city: user.city || "",
       state: user.state || "",
@@ -88,7 +90,7 @@ export async function POST(request: NextRequest) {
       lastName,
       email,
       phone,
-      dob,
+      dateOfBirth,
       address,
       city,
       state,
@@ -115,7 +117,7 @@ export async function POST(request: NextRequest) {
           firstName: firstName,
           lastName: lastName,
           phoneNumber: phone,
-          dateOfBirth: new Date(dob),
+          dateOfBirth: new Date(dateOfBirth),
           postalCode: postalCode,
           address: address,
           city,
@@ -158,7 +160,7 @@ export async function POST(request: NextRequest) {
           lastName: lastName,
           email,
           phoneNumber: phone,
-          dateOfBirth: new Date(dob),
+          dateOfBirth: new Date(dateOfBirth),
           address,
           city,
           state,
@@ -202,9 +204,9 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const session = await auth();
+    const clerkUser = await currentUser();
 
-    if (!session || !session.user?.email) {
+    if (!clerkUser) {
       return NextResponse.json(
         { message: "Not authenticated" },
         { status: 401 }
@@ -212,76 +214,120 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const validationResult = profileSchema.safeParse(body);
-
-    if (!validationResult.success) {
+    
+    // Get existing user data first
+    const existingUser = await prisma.user.findUnique({
+      where: { clerkId: clerkUser.id },
+      include: { notificationPreferences: true }
+    });
+    
+    if (!existingUser) {
       return NextResponse.json(
-        {
-          message: "Validation error",
-          errors: validationResult.error.format(),
-        },
-        { status: 400 }
+        { message: "User not found" },
+        { status: 404 }
       );
     }
 
-    const {
-      firstName,
-      lastName,
-      phone,
-      dob,
-      address,
-      city,
-      state,
-      postalCode,
-      notifications,
-    } = validationResult.data;
+    // Prepare update data only with fields that were provided
+    const updateData: any = {};
 
-    // Update user
+    updateData.updatedAt = new Date(clerkUser.updatedAt);
+    
+    // Only include fields that were provided in the request
+    if (body.firstName !== undefined) updateData.firstName = body.firstName;
+    if (body.lastName !== undefined) updateData.lastName = body.lastName;
+    
+    // Only update name if first or last name was provided
+    if (body.firstName !== undefined || body.lastName !== undefined) {
+      const firstName = body.firstName ?? existingUser.firstName ?? '';
+      const lastName = body.lastName ?? existingUser.lastName ?? '';
+      updateData.name = `${firstName} ${lastName}`.trim();
+    }
+    
+    if (body.phone !== undefined) updateData.phoneNumber = body.phone;
+    
+    // IMPORTANT: Only include dateOfBirth if explicitly provided and valid
+    if (body.dateOfBirth !== undefined && body.dateOfBirth !== null && body.dateOfBirth !== '') {
+      try {
+        const dateValue = new Date(body.dateOfBirth);
+        if (!isNaN(dateValue.getTime())) {
+          updateData.dateOfBirth = dateValue;
+        }
+      } catch (error) {
+        // Simply don't include the date in the update if it's invalid
+        console.warn("Invalid date format provided, skipping dateOfBirth update");
+      }
+    }
+    
+    if (body.address !== undefined) updateData.address = body.address;
+    if (body.city !== undefined) updateData.city = body.city;
+    if (body.state !== undefined) updateData.state = body.state;
+    if (body.postalCode !== undefined) updateData.postalCode = body.postalCode;
+    
+    // Only include notification preferences if any were provided
+    if (body.notifications) {
+      const notificationsUpdate: any = {};
+      
+      if (body.notifications.email !== undefined) 
+        notificationsUpdate.email = body.notifications.email;
+      if (body.notifications.sms !== undefined) 
+        notificationsUpdate.sms = body.notifications.sms;
+      if (body.notifications.app !== undefined) 
+        notificationsUpdate.app = body.notifications.app;
+      
+      // Only update if at least one notification preference was provided
+      if (Object.keys(notificationsUpdate).length > 0) {
+        updateData.notificationPreferences = {
+          upsert: {
+            create: {
+              email: notificationsUpdate.email ?? true,
+              sms: notificationsUpdate.sms ?? false,
+              app: notificationsUpdate.app ?? true,
+            },
+            update: notificationsUpdate,
+          },
+        };
+      }
+    }
+    
+    // console.log("Update data:", JSON.stringify(updateData, null, 2));
+    
+    // Only proceed with update if there's something to update
+    if (Object.keys(updateData).length === 0) {
+      return NextResponse.json({
+        success: true,
+        message: "No fields to update",
+        user: {
+          firstName: existingUser.firstName,
+          lastName: existingUser.lastName,
+          email: existingUser.email,
+          phone: existingUser.phoneNumber,
+          dateOfBirth: existingUser.dateOfBirth
+            ? existingUser.dateOfBirth.toISOString().split("T")[0]
+            : "",
+          address: existingUser.address,
+          city: existingUser.city,
+          state: existingUser.state,
+          postalCode: existingUser.postalCode,
+          notifications: existingUser.notificationPreferences
+            ? {
+                email: existingUser.notificationPreferences.email,
+                sms: existingUser.notificationPreferences.sms,
+                app: existingUser.notificationPreferences.app,
+              }
+            : undefined,
+        },
+      });
+    }
+
+    // Update user with only the provided fields
     const user = await prisma.user.update({
-      where: { email: session.user.email },
-      data: {
-        name: `${firstName} ${lastName}`,
-        firstName,
-        lastName,
-        phoneNumber: phone,
-        dateOfBirth: new Date(dob),
-        postalCode,
-        address,
-        city,
-        state,
-        // Update notification preferences if provided
-        notificationPreferences: notifications
-          ? {
-              upsert: {
-                create: {
-                  email: notifications.email,
-                  sms: notifications.sms,
-                  app: notifications.app,
-                },
-                update: {
-                  email: notifications.email,
-                  sms: notifications.sms,
-                  app: notifications.app,
-                },
-              },
-            }
-          : undefined,
-      },
+      where: { clerkId: clerkUser.id },
+      data: updateData,
       include: {
         notificationPreferences: true,
       },
     });
-
-    // Set the profile_complete cookie when profile has required fields
-    if (firstName && lastName && phone) {
-      const cookieStore = await cookies();
-      cookieStore.set("profile_complete", "true", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 30 * 24 * 60 * 60, // 30 days
-      });
-    }
 
     return NextResponse.json({
       success: true,
@@ -290,13 +336,14 @@ export async function PUT(request: NextRequest) {
         lastName: user.lastName,
         email: user.email,
         phone: user.phoneNumber,
-        dob: user.dateOfBirth
+        dateOfBirth: user.dateOfBirth
           ? user.dateOfBirth.toISOString().split("T")[0]
           : "",
         address: user.address,
         city: user.city,
         state: user.state,
         postalCode: user.postalCode,
+        updatedAt: user.updatedAt,
         notifications: user.notificationPreferences
           ? {
               email: user.notificationPreferences.email,
@@ -309,7 +356,7 @@ export async function PUT(request: NextRequest) {
   } catch (error) {
     console.error("Error updating user profile:", error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "Internal server error", error: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }

@@ -22,6 +22,7 @@ model NotificationPreferences {
 
 model User {
   id                      String                   @id @default(cuid())
+  clerkId                 String?                  @unique  // Add this field
   name                    String?
   firstName               String?
   lastName                String?
@@ -46,6 +47,12 @@ model User {
   sessions                Session[]
   stripeCustomer          StripeCustomer?
   notificationPreferences NotificationPreferences?
+  banned                  Boolean                  @default(false)
+  bannedReason            String?
+  bannedAt                DateTime?
+  bannedBy                String?
+  bannedUntil             DateTime?
+  bannedUntilReason       String?
 }
 
 model Account {

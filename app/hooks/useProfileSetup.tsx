@@ -1,18 +1,25 @@
 "use client";
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
 import { createUserProfile } from "../api/userService";
 import { profileSchema, ProfileFormData } from "../schemas/profile";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useUser, useAuth, useSession } from "@clerk/nextjs";
+
 
 export function useProfileSetup() {
+  const { isLoaded, session, isSignedIn } = useSession();
+  const clerkUser = useUser();
+  const authclerk = useAuth();
+  // console.log("🚀 ~ TopNavComp ~ authclerk:", authclerk)
+  // console.log("🚀 ~ TopNavComp ~ userclerk:", clerkUser)
+  const userEmail = clerkUser?.user?.primaryEmailAddress as unknown as string;
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
-  const { data: session } = useSession();
-  const userEmail = session?.user?.email;
+  // const { data: session } = useSession();
 
   const {
     register,
@@ -27,9 +34,9 @@ export function useProfileSetup() {
     defaultValues: {
       firstName: "",
       lastName: "",
-      email: session?.user?.email ?? "",
+      email: userEmail ?? "",
       phone: "",
-      dob: "",
+      dateOfBirth: "",
       address: "",
       city: "",
       state: "",
@@ -59,7 +66,7 @@ export function useProfileSetup() {
         fieldsToValidate = ["firstName", "lastName"];
         break;
       case 2:
-        fieldsToValidate = ["phone", "dob"];
+        fieldsToValidate = ["phone", "dateOfBirth"];
         break;
       case 3:
         fieldsToValidate = [
@@ -99,7 +106,7 @@ export function useProfileSetup() {
   // formValues.email;
 
   const isStepTwoValid =
-    !errors.phone && !errors.dob && formValues.phone && formValues.dob;
+    !errors.phone && !errors.dateOfBirth && formValues.phone && formValues.dateOfBirth;
 
   const isStepThreeValid =
     !errors.address &&

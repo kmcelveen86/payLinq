@@ -1,40 +1,104 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { geolocation } from "@vercel/functions";
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma"; // Make sure this path matches your prisma client import
 
-const protectedPaths = ["/user/dashboard", "/user/profile-edit"];
-const profileRequiredPaths = ["/user/dashboard", "/user/membership-tiers"];
+const isProtectedRoute = createRouteMatcher([
+  "/user/dashboard(.*)",
+  "/user/profile-edit(.*)",
+]);
+const isBlockRoute = createRouteMatcher(["/block(.*)"]);
+const allowedCountries = ["US"];
 
-export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
-  const url = req.nextUrl.clone();
-  const email = token?.email as string | undefined;
+export default clerkMiddleware(
+  async (auth, req) => {
+    const { userId, sessionClaims, redirectToSignIn } = await auth();
 
-  // Check if the request path is one of the protected paths
-  if (protectedPaths.some((path) => url.pathname.startsWith(path))) {
-    // If no session, redirect to the home page
-    if (!email) {
-      return NextResponse.redirect(new URL("/", req.url));
+    // Handle geolocation restrictions first
+    if (isBlockRoute(req)) {
+      return;
     }
 
-    // If accessing a path that requires a complete profile
-    if (profileRequiredPaths.some((path) => url.pathname.startsWith(path))) {
-      // Check for profile completion cookie
-      const profileComplete =
-        req.cookies.get("profile_complete")?.value === "true";
-      const firstName = token?.firstName as string | undefined;
+    // Skip for webhook endpoints
+    if (req.nextUrl.pathname.startsWith("/api/webhooks/clerk")) {
+      return;
+    }
 
-      // If neither cookie nor token indicates a complete profile, redirect to profile edit
-      if (!profileComplete && !firstName) {
-        return NextResponse.redirect(new URL("/user/profile-edit", req.url));
+    // Use Vercel's `geolocation()` function to get the client's country
+    const { country } = geolocation(req);
+
+    // Redirect if the client's country is not allowed
+    if (country && !allowedCountries.includes(country)) {
+      return NextResponse.redirect(new URL("/block", req.url));
+    }
+
+    // If user is authenticated, sync with database
+    if (userId) {
+      try {
+        // Check if user exists in database with this clerk ID
+        const existingUser = await prisma.user.findFirst({
+          where: {
+            clerkId: userId,
+          },
+        });
+
+        if (!existingUser) {
+          // Try to find by email if available in sessionClaims
+          const userEmail = sessionClaims?.email as string;
+          const firstName = sessionClaims?.firstName as string;
+          const lastName = sessionClaims?.lastName as string;
+
+
+          if (userEmail) {
+            const userByEmail = await prisma.user.findUnique({
+              where: {
+                email: userEmail,
+              },
+            });
+
+            if (userByEmail) {
+              // User exists but doesn't have clerkId - update it
+              await prisma.user.update({
+                where: { id: userByEmail.id },
+                data: { clerkId: userId },
+              });
+              // console.log(`Updated existing user ${userEmail} with Clerk ID`);
+            } else {
+              // Create new user in database
+              await prisma.user.create({
+                data: {
+                  clerkId: userId,
+                  email: userEmail,
+                  firstName: firstName ?? "",
+                  lastName: lastName ?? "",
+                  membershipTier: "", // Default tier
+                },
+              });
+              // console.log(`Created new user ${userEmail} in database`);
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error syncing user with database:", error);
       }
     }
-  }
 
-  // Continue to the requested page if authenticated or not accessing protected paths
-  return NextResponse.next();
-}
+    // Handle protected routes
+    if (!userId && isProtectedRoute(req)) {
+      return redirectToSignIn();
+    }
+  },
+  { debug: true }
+);
 
-// Optimize the matcher to only run middleware where needed
 export const config = {
-  matcher: ["/user/:path*"],
+  matcher: [
+    // Protected routes
+    "/user/dashboard/:path*",
+    "/user/profile-edit/:path*",
+    "/block/:path*",
+
+    // API routes (except webhooks which we handle in the middleware function)
+    "/api/:path*",
+  ],
 };

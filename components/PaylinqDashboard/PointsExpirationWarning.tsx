@@ -34,10 +34,15 @@ const EXPIRATION_INFO = {
 export default function PointsExpirationWarning(props: Props) {
   const { itemVariants } = props;
 
-  const { data: profileData, isLoading } = useUserProfile();
+  const { data: profileData, isLoading, error } = useUserProfile();
+
+  // If loading or error, or profileData is undefined, use Freemium as default
+  const hasProfile = profileData && !isLoading && !error;
 
   // Get current membership tier with fallback to Freemium
-  const currentTier = profileData?.membershipTier || "Freemium";
+  const currentTier = hasProfile
+    ? profileData?.membershipTier || "Freemium"
+    : "Freemium";
 
   // Get tier-specific information
   const tierInfo =
@@ -66,6 +71,14 @@ export default function PointsExpirationWarning(props: Props) {
     );
   }
 
+  // If error in fetching profile, show a friendly message but still render the component
+  // with default Freemium tier info
+  let warningMessage = tierInfo.message;
+  if (error || !hasProfile) {
+    warningMessage =
+      "Your points expire after 18 months on the Freemium plan. Complete your profile to access more membership options.";
+  }
+
   return (
     <motion.div
       variants={itemVariants}
@@ -92,7 +105,7 @@ export default function PointsExpirationWarning(props: Props) {
           >
             {`Points Expiration: ${tierInfo.period}`}
           </h3>
-          <p className="text-gray-300 text-sm mt-1">{tierInfo.message}</p>
+          <p className="text-gray-300 text-sm mt-1">{warningMessage}</p>
         </div>
       </div>
     </motion.div>

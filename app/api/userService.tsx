@@ -47,15 +47,27 @@ export const fetchUserProfile = async (): Promise<User> => {
   return response.data;
 };
 
-export const updateUserProfile = async (
-  userData: Partial<User>
-): Promise<User> => {
+// Mutation for updating user in the db
+export const updateDatabaseUser = async ({
+  userData,
+}: {
+  userData: Partial<User>;
+}) => {
   const response = await apiClient.put("/profile", {
     ...userData,
-    agreedToTerms: true,
   });
   return response.data;
 };
+
+// export const updateUserProfile = async (
+//   userData: Partial<User>
+// ): Promise<User> => {
+//   const response = await apiClient.put("/profile", {
+//     ...userData,
+//     agreedToTerms: true,
+//   });
+//   return response.data;
+// };
 
 // Address APIs
 export const fetchUserAddress = async (): Promise<Address> => {

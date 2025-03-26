@@ -16,8 +16,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { signIn, signOut } from "next-auth/react";
 import { HideOnScroll } from "@/components/HideOnScroll";
 import {
   CreditCard,
@@ -30,10 +28,24 @@ import {
   LogIn,
   ChevronRight,
 } from "lucide-react";
+import {
+  useAuth,
+  useUser,
+  SignInButton,
+  SignOutButton,
+  SignedOut,
+  SignedIn,
+  useSession,
+} from "@clerk/nextjs";
 
 export default function HamburgerMenu() {
+  const { isLoaded, session, isSignedIn } = useSession();
+  const clerkUser = useUser();
+  const clerkAuth = useAuth();
+  // console.log("🚀 ~ hamburger ~ authclerk:", clerkAuth);
+  // console.log("🚀 ~ hamburger ~ userclerk:", clerkUser);
+  const userEmail = clerkUser?.user?.primaryEmailAddress;
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { data: session } = useSession();
   const isMobile = useMediaQuery("(max-width:720px)");
   const [isMounted, setIsMounted] = useState(false);
 
@@ -95,7 +107,7 @@ export default function HamburgerMenu() {
 
   if (!isMounted) return null;
 
-  return isMobile ? (
+  return (
     <Box className="bg-black h-16 flex items-center">
       <HideOnScroll>
         <IconButton
@@ -252,7 +264,7 @@ export default function HamburgerMenu() {
                 ))}
               </List>
 
-              {session?.user?.email && (
+              <SignedIn>
                 <motion.div
                   variants={listItemVariants}
                   initial="hidden"
@@ -292,7 +304,7 @@ export default function HamburgerMenu() {
                     </ListItem>
                   </List>
                 </motion.div>
-              )}
+              </SignedIn>
 
               <motion.div
                 variants={listItemVariants}
@@ -302,61 +314,58 @@ export default function HamburgerMenu() {
                 className="absolute bottom-35 left-0 right-0 px-5"
               >
                 <Divider sx={{ mb: 3, opacity: 0.6 }} />
-
-                {session?.user?.email ? (
+                <SignedIn>
                   <motion.div whileHover={{ scale: 1.02 }}>
-                    <Button
-                      onClick={async () => {
-                        await signOut();
+                    <div
+                      onClick={() => {
                         setDrawerOpen(false);
                       }}
-                      variant="outlined"
-                      startIcon={<LogOut size={18} />}
-                      fullWidth
-                      sx={{
-                        py: 1.2,
+                      style={{
+                        padding: "0.75rem 1rem",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                         border: "1px solid rgba(194, 143, 73, 0.5)",
                         color: "#C28F49",
-                        "&:hover": {
-                          border: "1px solid rgba(194, 143, 73, 0.8)",
-                          backgroundColor: "rgba(194, 143, 73, 0.05)",
-                        },
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        width: "100%",
                       }}
                     >
-                      Sign Out
-                    </Button>
+                      <LogOut size={18} style={{ marginRight: "8px" }} />
+                      <SignOutButton />
+                    </div>
                   </motion.div>
-                ) : (
+                </SignedIn>
+                <SignedOut>
                   <motion.div whileHover={{ scale: 1.02 }}>
-                    <Button
-                      onClick={async () => {
-                        await signIn();
+                    <div
+                      onClick={() => {
                         setDrawerOpen(false);
                       }}
-                      variant="contained"
-                      startIcon={<LogIn size={18} />}
-                      fullWidth
-                      sx={{
-                        py: 1.2,
+                      style={{
+                        padding: "0.75rem 1rem",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                         background: "linear-gradient(90deg, #2D9642, #C28F49)",
                         color: "white",
+                        borderRadius: "4px",
+                        cursor: "pointer",
                         boxShadow: "0 4px 10px rgba(45, 150, 66, 0.2)",
-                        "&:hover": {
-                          background:
-                            "linear-gradient(90deg, #25803a, #b37f41)",
-                          boxShadow: "0 6px 15px rgba(45, 150, 66, 0.3)",
-                        },
+                        width: "100%",
                       }}
                     >
-                      Sign In / Sign Up
-                    </Button>
+                      <LogIn size={18} style={{ marginRight: "8px" }} />
+                      <SignInButton />
+                    </div>
                   </motion.div>
-                )}
+                </SignedOut>
               </motion.div>
             </motion.div>
           </div>
         </Drawer>
       </AnimatePresence>
     </Box>
-  ) : null;
+  );
 }

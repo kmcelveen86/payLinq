@@ -1,19 +1,22 @@
 // src/app/api/users/profile-image/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { auth } from "@/auth";
 import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { v4 as uuidv4 } from "uuid";
 import { existsSync } from "fs";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
+  const { userId, redirectToSignIn } = await auth();
+  const clerkUser = await currentUser();
+  const email = clerkUser?.primaryEmailAddress;
   try {
     const session = await auth();
 
-    if (!session || !session.user?.email) {
+    if (!email) {
       return NextResponse.json(
         { message: "Not authenticated" },
         { status: 401 }
@@ -61,7 +64,7 @@ export async function POST(request: NextRequest) {
 
     // Update the user's profile image in the database
     const user = await prisma.user.update({
-      where: { email: session.user.email },
+      where: { email: clerkUser.primaryEmailAddress.emailAddress },
       data: {
         image: imageUrl,
       },

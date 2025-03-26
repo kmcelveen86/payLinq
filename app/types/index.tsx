@@ -1,13 +1,14 @@
 export interface User {
-  updatedAt?: string;
+  clerkId: string;
   id: string;
+  updatedAt?: string;
   firstName: string;
   lastName: string;
   email: string;
-  phone?: string;
+  phoneNumber?: string;
   password?: string;
-  dob?: string;
-  profileImage?: string;
+  dateOfBirth?: string;
+  image?: string;
   membershipTier:
   | "Freemium"
   | "Lifestyle"

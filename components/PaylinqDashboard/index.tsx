@@ -22,7 +22,7 @@ const PaylinqDashboard = () => {
     isLoading: isProfileLoading,
     isError: isProfileError,
   } = useUserProfile();
-  const { firstName, profileImage } = profileData || {};
+  const { firstName, image } = profileData || {};
   const [activeTab, setActiveTab] = useState("overview");
 
   // Animation variants
@@ -89,9 +89,9 @@ const PaylinqDashboard = () => {
                     </span>
                   </button>
                   <div className="flex items-center space-x-3">
-                    {profileImage ? (
+                    {image ? (
                       <img
-                        src={profileImage}
+                        src={image}
                         alt={firstName}
                         className="h-9 w-9 rounded-full border-2 border-[#C28F49]"
                         // onError={(e) => {

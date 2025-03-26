@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { motion, useAnimation, useInView } from "framer-motion";
 import {
   Milestone,
@@ -13,6 +14,7 @@ import {
 } from "lucide-react";
 
 export default function RoadmapSection() {
+  const router = useRouter();
   const [hoveredCard, setHoveredCard] = useState(0);
   const controls = useAnimation();
   const ref = useRef(null);
@@ -23,6 +25,10 @@ export default function RoadmapSection() {
       controls.start("visible");
     }
   }, [controls, isInView]);
+
+  const handleGoToWaitlist = () => {
+    router.push("/user/join-waitlist");
+  };
 
   const roadmapItems = [
     {
@@ -275,6 +281,7 @@ export default function RoadmapSection() {
             phase
           </p>
           <motion.button
+            onClick={handleGoToWaitlist}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="px-8 py-3 text-white font-medium rounded-lg shadow-lg flex items-center justify-center mx-auto group"

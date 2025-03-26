@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -14,6 +13,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useProfileSetup } from "@/app/hooks/useProfileSetup";
+import { useAuth, useSession, useUser } from "@clerk/nextjs";
 
 // CheckIcon component TODO: Move to a separate file
 const CheckIcon = ({ className }: { className: string }) => (
@@ -43,8 +43,14 @@ export default function ProfileSetup() {
     isError,
   } = useProfileSetup();
 
-  const { data: session } = useSession();
-  const userEmail = session?.user?.email;
+  const { isLoaded, session, isSignedIn } = useSession();
+  const clerkUser = useUser();
+  const clerkAuth = useAuth();
+  // console.log("🚀 ~ Profile SETUP ~ authclerk:", clerkAuth);
+  // console.log("🚀 ~ Profile SETUP ~ userclerk:", clerkUser);
+  const userEmail = clerkUser?.user?.primaryEmailAddress;
+  const emailValue = typeof userEmail === 'object' ? userEmail?.emailAddress : userEmail || "";
+
 
   // Animation variants
   const stepVariants = {
@@ -258,7 +264,7 @@ export default function ProfileSetup() {
                       </div>
                       <input
                         type="email"
-                        value={userEmail || ""}
+                        value={emailValue || ""}
                         disabled
                         className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent opacity-70 cursor-not-allowed"
                         readOnly
@@ -266,7 +272,7 @@ export default function ProfileSetup() {
                       <input
                         type="hidden"
                         {...register("email")}
-                        value={userEmail || ""}
+                        value={emailValue || ""}
                       />
                     </div>
                     <p className="mt-1 text-xs text-gray-400">
@@ -375,7 +381,7 @@ export default function ProfileSetup() {
 
                       <input
                         type="date"
-                        {...register("dob")}
+                        {...register("dateOfBirth")}
                         max={new Date().toISOString().split("T")[0]}
                         min={(() => {
                           const date = new Date();
@@ -385,9 +391,9 @@ export default function ProfileSetup() {
                         className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                       />
                     </div>
-                    {errors.dob && (
+                    {errors.dateOfBirth && (
                       <p className="mt-1 text-xs text-red-400">
-                        {errors.dob.message}
+                        {errors.dateOfBirth.message}
                       </p>
                     )}
                   </motion.div>
