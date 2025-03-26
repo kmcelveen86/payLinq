@@ -75,9 +75,9 @@ const SecuritySettings = ({ loginHistory, onLogoutDevice }: Props) => {
             </div>
           </div>
           <p className="text-gray-400 mb-4">
-            Add an extra layer of security to your account by enabling
+            {`Add an extra layer of security to your account by enabling
             two-factor authentication. We'll send you a verification code to
-            your phone whenever you sign in.
+            your phone whenever you sign in.`}
           </p>
           <motion.button
             whileHover={{ scale: 1.03 }}
