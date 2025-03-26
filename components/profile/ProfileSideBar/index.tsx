@@ -9,8 +9,8 @@ import {
   Camera,
 } from "lucide-react";
 import React, { useState, useEffect } from "react";
-import { useUserProfile } from "../../app/hooks/useProfile";
-import DeleteAccountModal from "@/components/DeleteAccountModal";
+import { useUserProfile } from "../../../app/hooks/useProfile";
+// import DeleteAccountModal from "@/components/DeleteAccountModal";
 
 // Define tab animation variants
 const tabVariants = {
@@ -22,23 +22,24 @@ const tabVariants = {
   },
 };
 
-interface ProfileSidebarProps {
+interface ProfileSideBarProps {
   activeSection: string;
   setActiveSection: (section: string) => void;
   handleProfileImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   formData: any;
 }
 
-export default function ProfileSidebar({
+export default function ProfileSideBar({
   activeSection,
   setActiveSection,
   handleProfileImageChange,
   formData,
-}: ProfileSidebarProps) {
+}: ProfileSideBarProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   // Use the React Query hook to fetch user profile data
   const { data: userProfile, isLoading } = useUserProfile();
+  const membershipTier = userProfile?.membershipTier || "Freemium";
 
   // Compute full name for display
   const fullName =
@@ -47,7 +48,6 @@ export default function ProfileSidebar({
     "User";
 
   // Get membership tier with fallback
-  const membershipTier = userProfile?.membershipTier || "Freemium";
 
   return (
     <motion.div
@@ -60,9 +60,9 @@ export default function ProfileSidebar({
         <div className="flex flex-col items-center mb-6">
           <div className="relative group mb-4">
             <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-[#2D9642]">
-              {formData.profileImage || userProfile?.profileImage ? (
+              {formData.profileImage || userProfile?.image ? (
                 <img
-                  src={formData.profileImage || userProfile?.profileImage}
+                  src={formData.profileImage || userProfile?.image}
                   alt={fullName}
                   className="w-full h-full object-cover"
                 />
@@ -157,10 +157,10 @@ export default function ProfileSidebar({
       </div>
 
       {/* Delete Account Modal */}
-      <DeleteAccountModal
+      {/* <DeleteAccountModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-      />
+      /> */}
     </motion.div>
   );
 }

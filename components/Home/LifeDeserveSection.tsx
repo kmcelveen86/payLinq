@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { signIn, useSession } from "next-auth/react";
+// import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Typography from "@mui/material/Typography";
@@ -10,14 +10,20 @@ import Button from "@mui/material/Button";
 import { ArrowRight } from "lucide-react";
 import { useUserProfile } from "@/app/hooks/useProfile";
 import { get } from "http";
+import { useAuth, useSession, useUser } from "@clerk/nextjs";
 
 export default function LifeDeserveSection(): React.ReactElement<any> {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { isLoaded, session, isSignedIn } = useSession();
+  const clerkUser = useUser();
+  const clerkAuth = useAuth();
+  // console.log("🚀 ~ TopNavComp ~ authclerk:", clerkAuth);
+  // console.log("🚀 ~ TopNavComp ~ userclerk:", clerkUser);
+  const userEmail = clerkUser?.user?.primaryEmailAddress;
+  // const { data: session } = useSession();
   const { data: userProfile } = useUserProfile();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isMounted, setIsMounted] = useState(false);
-  const isAnonymous = !session?.user;
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -133,29 +139,29 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
     };
   }, [isMounted]);
 
-  const handleOnStartJourneyClick = () => {
-    if (isAnonymous) {
-      signIn("email", { callbackUrl: "/membership-tiers" });
-    } else {
-      if (!userProfile?.firstName) {
-        router.push("/user/profile-edit");
-      } else {
-        router.push("/membership-tiers");
-      }
-    }
-  };
+  // const handleOnStartJourneyClick = () => {
+  //   if (isAnonymous) {
+  //     signIn("email", { callbackUrl: "/membership-tiers" });
+  //   } else {
+  //     if (!userProfile?.firstName) {
+  //       router.push("/user/profile-edit");
+  //     } else {
+  //       router.push("/membership-tiers");
+  //     }
+  //   }
+  // };
 
-  const getButtonText = () => {
-    if (isAnonymous) {
-      return "Start Your Journey";
-    }
+  // const getButtonText = () => {
+  //   if (isAnonymous) {
+  //     return "Start Your Journey";
+  //   }
 
-    if (userProfile?.firstName) {
-      return "Continue Your Journey";
-    }
+  //   if (userProfile?.firstName) {
+  //     return "Continue Your Journey";
+  //   }
 
-    return "Your Journey Awaits";
-  };
+  //   return "Your Journey Awaits";
+  // };
 
   return (
     <div className="relative">
@@ -260,7 +266,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
             </motion.div>
 
             {/* CTA Button */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.5 }}
@@ -298,7 +304,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
               >
                 {getButtonText()}
               </Button>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
         </Box>
       </Box>

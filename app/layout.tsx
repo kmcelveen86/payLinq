@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Suspense } from "react";
 import { Inter, Taviraj, Prompt } from "next/font/google";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import PaylinqSessionProvider from "./PaylinqSessionProvider";
 import ReactQueryProvider from "./ReactQueryProvider";
 import LoadingComp from "@/components/LoadingComp";
 import "./globals.css";
@@ -34,12 +34,12 @@ export default function RootLayout({
       className={`${inter.className} ${taviraj.className} ${prompt.className}`}
     >
       <body>
-        <PaylinqSessionProvider>
-          <ReactQueryProvider>
-            <ReactQueryDevtools />
-            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-          </ReactQueryProvider>
-        </PaylinqSessionProvider>
+        <ClerkProvider waitlistUrl="/user/join-waitlist">
+            <ReactQueryProvider>
+              <ReactQueryDevtools />
+              <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+            </ReactQueryProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

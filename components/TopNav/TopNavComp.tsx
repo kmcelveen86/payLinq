@@ -1,5 +1,5 @@
+"use client";
 import React from "react";
-import { signOut, signIn, auth } from "@/auth";
 import Image from "next/image";
 import {
   Box,
@@ -9,17 +9,38 @@ import {
   MenuItem,
   Divider,
   IconButton,
+  useMediaQuery,
 } from "@mui/material";
 import Link from "next/link";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import TopNavDropDown from "@/components/TopNavDropDown";
-import TopNav from ".";
+import HamburgerMenu from "../HamburgerMenu";
+import TopNav from "./index";
+import {
+  SignInButton,
+  SignOutButton,
+  useAuth,
+  useUser,
+  useSession,
+  SignedIn,
+  SignedOut,
+  SignUpButton,
+} from "@clerk/nextjs";
 
-export default async function TopNavComp() {
-  const session = await auth();
-  const user = session?.user?.email;
+export default function TopNavComp() {
+  const isMobile = useMediaQuery("(max-width:720px)");
+  // const session = await auth();
+  // const user = session?.user?.email;
+  const { isLoaded, session, isSignedIn } = useSession();
+  // console.log("🚀 ~ TopNavComp ~ session:", session);
+  const clerkUser = useUser();
+  const clerkAuth = useAuth();
+  // console.log("🚀 ~ TopNavComp ~ authclerk:", clerkAuth);
+  // console.log("🚀 ~ TopNavComp ~ userclerk:", clerkUser);
 
-  return (
+  return isMobile ? (
+    <HamburgerMenu />
+  ) : (
     <TopNav>
       <>
         {/* Gradient top border */}
@@ -149,49 +170,43 @@ export default async function TopNavComp() {
             </Link>
           </Box>
         </Box>
-
-        <Box
-          className="sm:mr-4 lg:mr-10"
-          sx={{
-            alignItems: "flex-end",
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          {user ? (
-            <TopNavDropDown />
-          ) : (
-            <form
-              action={async () => {
-                "use server";
-                await signIn();
-              }}
-            >
-              <Box>
-                <Button
-                  type="submit"
-                  sx={{
-                    background: "linear-gradient(90deg, #2D9642, #C28F49)",
-                    color: "white",
-                    borderRadius: "50px",
-                    padding: "8px 24px",
-                    fontWeight: "medium",
-                    textTransform: "none",
-                    boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
-                    border: "none",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      boxShadow: "0 6px 15px rgba(0,0,0,0.2)",
-                      background: "linear-gradient(90deg, #236f34, #b37f41)",
-                    },
-                  }}
-                >
-                  Sign In/ Sign Up
-                </Button>
+        {clerkUser.isSignedIn ? (
+          <TopNavDropDown />
+        ) : (
+          <Box
+            className="sm:mr-4 lg:mr-10"
+            sx={{
+              alignItems: "flex-end",
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <SignedIn>
+              <SignOutButton redirectUrl="/" />
+            </SignedIn>
+            <SignedOut>
+              <Box
+                sx={{
+                  background: "linear-gradient(90deg, #2D9642, #C28F49)",
+                  color: "white",
+                  borderRadius: "50px",
+                  padding: "8px 24px",
+                  fontWeight: "medium",
+                  textTransform: "none",
+                  boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
+                  border: "none",
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    boxShadow: "0 6px 15px rgba(0,0,0,0.2)",
+                    background: "linear-gradient(90deg, #236f34, #b37f41)",
+                  },
+                }}
+              >
+                <SignUpButton />
               </Box>
-            </form>
-          )}
-        </Box>
+            </SignedOut>
+          </Box>
+        )}
       </>
     </TopNav>
   );

@@ -18,6 +18,7 @@ import {
   ArrowUp,
 } from "lucide-react";
 
+
 const PaylinqFooter = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);

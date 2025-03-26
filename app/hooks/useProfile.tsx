@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   fetchUserProfile,
-  updateUserProfile,
+  updateDatabaseUser,
   fetchUserAddress,
   updateUserAddress,
   fetchNotificationPreferences,
@@ -15,6 +15,38 @@ import {
 } from "@/app/api/userService";
 import { toast } from "react-hot-toast";
 import { ProfileFormData } from "../schemas/profile";
+import { useUser } from "@clerk/nextjs";
+
+// Define the interface for form data
+// interface ProfileFormData {
+//   firstName: string;
+//   lastName: string;
+//   email: string;
+//   phone: string;
+//   dateOfBirth: string;
+//   address: string;
+//   city: string;
+//   state: string;
+//   postalCode: string;
+//   agreedToTerms: boolean;
+//   notifications: boolean;
+//   profileImage?: string;
+// }
+
+// Define a separate type for database update
+type DatabaseUserData = {
+  clerkId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  dateOfBirth: string;
+  address: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  agreedToTerms: boolean;
+};
 
 // User Profile Hooks
 export const useUserProfile = () => {
@@ -26,29 +58,49 @@ export const useUserProfile = () => {
 };
 
 export const useUpdateUserProfile = () => {
+  const { user } = useUser();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: ProfileFormData) => {
-      const apiData = {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        phone: data.phone,
-        dob: data.dob,
-        address: data.address,
-        city: data.city,
-        state: data.state,
-        postalCode: data.postalCode,
-        agreedToTerms: data.agreedToTerms,
-        notifications: data.notifications,
+    mutationFn: async (data: ProfileFormData) => {
+      if (!user) throw new Error("User not logged in");
+
+      // First update the Clerk profile
+      // const updateUser = async () => {
+      //   await user.update({
+      //     firstName: data.firstName,
+      //     lastName: data.lastName,
+      //   })
+      // }
+
+      // const clerkUser = await updateUser();
+
+      // Then update your database - this is now correctly structured
+      const databaseUser = await updateDatabaseUser({
+        userData: {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          phoneNumber: data.phone, // Map phone to phoneNumber
+          dateOfBirth: data.dateOfBirth,
+          // Don't include address fields here, since they should be handled by updateUserAddress
+        },
+      });
+
+      // You may want to return a combined result
+      return {
+        // clerk: clerkUser,
+        database: databaseUser,
       };
-      return updateUserProfile(apiData);
     },
     onSuccess: (data) => {
+      // Update the cache with the new data
       queryClient.setQueryData(["userProfile"], data);
 
+      // Invalidate any cached queries to ensure fresh data
       queryClient.invalidateQueries({ queryKey: ["userProfile"] });
+
+      // Show success message
       toast.success("Profile updated successfully");
     },
     onError: (error) => {
@@ -112,12 +164,12 @@ export const useUpdateNotificationPreferences = () => {
 
 export const useUpdateMembershipTier = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: updateMembershipTier,
     onSuccess: (data) => {
       // Update the cached user profile with the new membership tier
-      queryClient.setQueryData(['userProfile'], (oldData: any) => {
+      queryClient.setQueryData(["userProfile"], (oldData: any) => {
         if (oldData) {
           return {
             ...oldData,
@@ -126,16 +178,18 @@ export const useUpdateMembershipTier = () => {
         }
         return oldData;
       });
-      
+
       // Invalidate queries to trigger refetching
-      queryClient.invalidateQueries({ queryKey: ['userProfile'] });
-      queryClient.invalidateQueries({ queryKey: ['userPoints'] });
-      
-      toast.success(data.message || 'Membership tier updated successfully');
+      queryClient.invalidateQueries({ queryKey: ["userProfile"] });
+      queryClient.invalidateQueries({ queryKey: ["userPoints"] });
+
+      toast.success(data.message || "Membership tier updated successfully");
     },
     onError: (error: any) => {
-      console.error('Error updating membership tier:', error);
-      toast.error(error.response?.data?.message || 'Failed to update membership tier');
+      console.error("Error updating membership tier:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to update membership tier"
+      );
     },
   });
 };
@@ -239,20 +293,18 @@ export const useProfileData = () => {
   const isLoading =
     profileQuery.isLoading ||
     addressQuery.isLoading ||
-    notificationsQuery.isLoading 
-    // || paymentMethodsQuery.isLoading;
+    notificationsQuery.isLoading;
+  // || paymentMethodsQuery.isLoading;
 
   const isError =
-    profileQuery.isError ||
-    addressQuery.isError ||
-    notificationsQuery.isError 
-    // || paymentMethodsQuery.isError;
+    profileQuery.isError || addressQuery.isError || notificationsQuery.isError;
+  // || paymentMethodsQuery.isError;
 
   const data = {
     user: profileQuery.data,
     address: addressQuery.data,
     notifications: notificationsQuery.data,
-    // paymentMethods: paymentMethodsQuery.data 
+    // paymentMethods: paymentMethodsQuery.data
     // || [],
   };
 

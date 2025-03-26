@@ -1,7 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { signOut } from "next-auth/react";
-import { signIn, auth } from "@/auth";
 import Image from "next/image";
 import {
   Box,
@@ -15,7 +13,6 @@ import {
   useTheme,
 } from "@mui/material";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   User,
@@ -26,14 +23,20 @@ import {
   HelpCircle,
 } from "lucide-react";
 import TopNav from ".";
-import SignOutButton from "../SignOutButton";
+import { SignOutButton, useAuth, useSession, useUser } from "@clerk/nextjs";
 
 export default function TopNavDropDown() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isMounted, setIsMounted] = useState(false);
   const open = Boolean(anchorEl);
   const theme = useTheme();
-  const { data: session } = useSession();
+  const clerkUser = useUser();
+  const clerkAuth = useAuth();
+  // console.log("🚀 ~ TopNavComp ~ authclerk:", clerkAuth);
+  // console.log("🚀 ~ TopNavComp ~ userclerk:", clerkUser);
+  const userEmail = clerkUser?.user?.primaryEmailAddress;
+  const userImage = clerkUser?.user?.imageUrl;
+  const userFirstName = clerkUser?.user?.firstName;
 
   // Prevent hydration errors
   useEffect(() => {
@@ -161,13 +164,13 @@ export default function TopNavDropDown() {
           }}
         >
           <Avatar
-            src={session?.user?.image || ""}
+            src={userImage || ""}
             sx={{
               bgcolor: "rgba(45, 150, 66, 0.1)",
               color: "#2D9642",
             }}
           >
-            {!session?.user?.image && <User size={20} />}
+            {!userImage && <User size={20} />}
           </Avatar>
           <Box ml={1.5}>
             <Typography
@@ -180,11 +183,11 @@ export default function TopNavDropDown() {
                 color: "transparent",
               }}
             >
-              {session?.user?.name}
+              {userFirstName}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {session?.user?.email}
-            </Typography>
+            {/* <Typography variant="body2" color="text.secondary">
+              {userEmail}
+            </Typography> */}
           </Box>
         </Box>
 
@@ -240,7 +243,35 @@ export default function TopNavDropDown() {
           animate="visible"
           exit="exit"
         >
-          <MenuItem
+          <SignOutButton redirectUrl="/">
+            <MenuItem
+              onClick={async () => {
+                handleClose();
+              }}
+              sx={{
+                padding: "10px 16px",
+                margin: "8px",
+                color: "#C28F49",
+                borderRadius: "8px",
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  backgroundColor: "rgba(194, 143, 73, 0.08)",
+                },
+              }}
+            >
+              <motion.div
+                className="flex items-center w-full"
+                whileHover={{ x: 5 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
+                <LogOut size={18} className="mr-3" />
+                <Typography variant="body1" fontWeight={500}>
+                  Sign out
+                </Typography>
+              </motion.div>
+            </MenuItem>
+          </SignOutButton>
+          {/* <MenuItem
             onClick={async () => {
               handleClose();
               await signOut();
@@ -266,7 +297,7 @@ export default function TopNavDropDown() {
                 Sign out
               </Typography>
             </motion.div>
-          </MenuItem>
+          </MenuItem> */}
         </motion.div>
       </Menu>
     </div>

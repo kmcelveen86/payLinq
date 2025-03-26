@@ -45,7 +45,7 @@ export default function PlanUpgradeBanner({
     isError: isProfileError,
   } = useUserProfile();
 
-  const { membershipTier, firstName, lastName, profileImage } =
+  const { membershipTier, firstName, lastName, image } =
     profileData || {};
 
   // Default to no tier if not provided

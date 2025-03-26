@@ -15,8 +15,8 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import userData from "./data";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
 import { useUserProfile } from "@/app/hooks/useProfile";
+import { SignOutButton } from "@clerk/nextjs";
 
 type Props = {
   activeTab: string;
@@ -38,15 +38,15 @@ export default function SideBar(props: Props) {
     isLoading: isProfileLoading,
     isError: isProfileError,
   } = useUserProfile();
-  const { membershipTier, firstName, lastName, profileImage } =
+  const { membershipTier, firstName, lastName, image } =
     profileData || {};
   return (
     <motion.div variants={itemVariants} className="lg:col-span-1">
       <div className="bg-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl p-5">
         <div className="flex flex-col items-center mb-6">
-          {profileImage ? (
+          {image ? (
             <img
-              src={profileImage}
+              src={image}
               alt={firstName}
               className="h-24 w-24 rounded-full border-4 border-[#2D9642] mb-4"
               // onError={(e) => {
@@ -190,14 +190,12 @@ export default function SideBar(props: Props) {
             <span>Card is active and ready to use</span>
           </div>
         </motion.div>
-
-        <button
-          onClick={() => signOut()}
-          className="mt-8 w-full flex items-center justify-center text-gray-400 hover:text-white py-2 rounded-lg hover:bg-gray-700 transition-colors"
-        >
-          <LogOut size={18} className="mr-2" />
-          <span>Sign Out</span>
-        </button>
+        <SignOutButton>
+          <span className="mt-8 w-full flex items-center justify-center text-gray-400 hover:text-white py-2 rounded-lg hover:bg-gray-700 transition-colors">
+            <LogOut size={18} className="mr-2" />
+            <span>Sign Out</span>
+          </span>
+        </SignOutButton>
       </div>
     </motion.div>
   );
