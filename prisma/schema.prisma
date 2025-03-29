@@ -22,7 +22,7 @@ model NotificationPreferences {
 
 model User {
   id                      String                   @id @default(cuid())
-  clerkId                 String?                  @unique  // Add this field
+  clerkId                 String?                  @unique // Add this field
   name                    String?
   firstName               String?
   lastName                String?
@@ -42,6 +42,7 @@ model User {
   createdAt               DateTime                 @default(now())
   updatedAt               DateTime                 @updatedAt
   membershipTier          String?
+  billingCycle            String?                 @default("monthly") // monthly, yearly
   accounts                Account[]
   Authenticator           Authenticator[]
   sessions                Session[]
@@ -53,6 +54,17 @@ model User {
   bannedBy                String?
   bannedUntil             DateTime?
   bannedUntilReason       String?
+}
+
+model Waitlist {
+  id        String    @id
+  email     String    @unique
+  status    String    @default("pending") // pending, invited, joined
+  invitedAt DateTime?
+  joinedAt  DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  metadata  Json? // For any additional data you might want to store
 }
 
 model Account {

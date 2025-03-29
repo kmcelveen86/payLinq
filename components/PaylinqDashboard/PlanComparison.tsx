@@ -27,7 +27,7 @@ export default function PlanComparison(props: Props) {
               <th className="text-left pb-3">Feature</th>
               <th className="text-center pb-3 px-2">
                 <div className="flex flex-col items-center">
-                  <span className="text-[#2D9642] font-medium">Freemium</span>
+                  <span className="text-gray-300 font-medium">Freemium</span>
                   <span className="text-xs text-gray-400">Current</span>
                 </div>
               </th>
@@ -39,59 +39,59 @@ export default function PlanComparison(props: Props) {
               </th>
               <th className="text-center pb-3 px-2">
                 <div className="flex flex-col items-center">
-                  <span className="text-gray-300">VIP</span>
-                  <span className="text-xs text-gray-500">$50/mo</span>
+                  <span className="text-[#2D9642]">VIP</span>
+                  <span className="text-xs text-[#2D9642]">$50/mo</span>
                 </div>
               </th>
             </tr>
           </thead>
           <tbody>
             <tr className="border-b border-gray-700">
-              <td className="py-3 text-gray-300">Everyday Points</td>
+              <td className="py-3 text-[#2D9642]">Everyday Points</td>
               <td className="py-3 text-center">
-                <span className="text-[#2D9642] font-medium">1x</span>
+                <span className="text-gray-300 font-medium">1x</span>
               </td>
               <td className="py-3 text-center">
                 <span className="text-gray-300">2x</span>
               </td>
               <td className="py-3 text-center">
-                <span className="text-gray-300">3x</span>
+                <span className="text-[#2D9642]">3x</span>
               </td>
             </tr>
             <tr className="border-b border-gray-700">
               <td className="py-3 text-gray-300">Dining & Travel Points</td>
               <td className="py-3 text-center">
-                <span className="text-[#2D9642] font-medium">2x</span>
+                <span className="text-gray-300 font-medium">2x</span>
               </td>
               <td className="py-3 text-center">
                 <span className="text-gray-300">3x</span>
               </td>
               <td className="py-3 text-center">
-                <span className="text-gray-300">4x</span>
+                <span className="text-[#2D9642]">4x</span>
               </td>
             </tr>
             <tr className="border-b border-gray-700">
               <td className="py-3 text-gray-300">Monthly Points Limit</td>
               <td className="py-3 text-center">
-                <span className="text-[#2D9642] font-medium">10,000</span>
+                <span className="text-gray-300 font-medium">10,000</span>
               </td>
               <td className="py-3 text-center">
                 <span className="text-gray-300">20,000</span>
               </td>
               <td className="py-3 text-center">
-                <span className="text-gray-300">30,000</span>
+                <span className="text-[#2D9642]">30,000</span>
               </td>
             </tr>
             <tr className="border-b border-gray-700">
               <td className="py-3 text-gray-300">Points Expiration</td>
               <td className="py-3 text-center">
-                <span className="text-[#2D9642] font-medium">18 months</span>
+                <span className="text-gray-300 font-medium">18 months</span>
               </td>
               <td className="py-3 text-center">
                 <span className="text-gray-300">24 months</span>
               </td>
               <td className="py-3 text-center">
-                <span className="text-gray-300">36 months</span>
+                <span className="text-[#2D9642]">36 months</span>
               </td>
             </tr>
             <tr>
@@ -103,7 +103,7 @@ export default function PlanComparison(props: Props) {
                 <span className="text-gray-300">✓</span>
               </td>
               <td className="py-3 text-center">
-                <span className="text-gray-300">✓</span>
+                <span className="text-[#2D9642]">✓</span>
               </td>
             </tr>
           </tbody>

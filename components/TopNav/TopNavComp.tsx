@@ -202,7 +202,7 @@ export default function TopNavComp() {
                   },
                 }}
               >
-                <SignUpButton />
+                <SignUpButton>Join Waitlist</SignUpButton>
               </Box>
             </SignedOut>
           </Box>

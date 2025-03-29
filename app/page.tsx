@@ -4,7 +4,7 @@ import {
   HowItWorks,
   MembershipSection,
   FAQSection,
-  MembershipTiers,
+  MembershipTiersOnHomePage,
 } from "@/components/Home/";
 import TopNavComp from "@/components/TopNav/TopNavComp";
 import PaylinqFooter from "@/components/PaylinqFooter";
@@ -26,7 +26,7 @@ export default async function HomePage() {
     <Box className="bg-black p-0 w-full">
       <TopNavComp />
       <LifeDeserveSection />
-      <MembershipTiers />
+      <MembershipTiersOnHomePage />
       <HowItWorks />
       <MembershipSection />
       <FAQSection />
