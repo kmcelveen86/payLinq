@@ -22,7 +22,7 @@ const AuthToggle: React.FC<AuthToggleProps> = ({ isSignUpFlow, onToggle }) => {
           whileHover={{ scale: 1.05 }}
           onClick={onToggle}
         >
-          {isSignUpFlow ? "Sign In" : "Sign Up"}
+          {isSignUpFlow ? "Join Waitlist" : "Join Waitlist"}
         </motion.span>
       </Typography>
     </motion.div>

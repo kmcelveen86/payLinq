@@ -22,6 +22,16 @@ import {
   useUserProfile,
   useUpdateMembershipTier,
 } from "@/app/hooks/useProfile";
+import {
+  SignInButton,
+  SignOutButton,
+  useAuth,
+  useUser,
+  useSession,
+  SignedIn,
+  SignedOut,
+  SignUpButton,
+} from "@clerk/nextjs";
 import TierConfirmationModal from "@/components/TierConfirmationModal";
 
 // Membership tier data
@@ -188,6 +198,7 @@ const MembershipTierComp = () => {
 
   // Fetch user profile
   const { data: profileData, isLoading: isProfileLoading } = useUserProfile();
+  const hasPlan = profileData?.membershipTier !== "Freemium";
 
   // Mutation to update membership tier
   const { mutate: updateTier, isPending: isUpdating } =
@@ -208,6 +219,9 @@ const MembershipTierComp = () => {
       if (currentTierId) {
         setSelectedTier(currentTierId);
       }
+    }
+    if (profileData?.billingCycle === "annual") {
+      setAnnualBilling(true);
     }
   }, [profileData]);
 
@@ -241,7 +255,7 @@ const MembershipTierComp = () => {
         { tierName: selectedTierDetails.name, annualBilling },
         {
           onSuccess: () => {
-            const isFreemium = selectedTier === "freemium";
+            const isFreemium = selectedTier.toLowerCase() === "freemium";
             const successText = isFreemium
               ? `You're now a ${selectedTierDetails.name} member!`
               : `You've successfully upgraded to the ${selectedTierDetails.name} tier!`;
@@ -253,7 +267,7 @@ const MembershipTierComp = () => {
               setIsConfirmModalOpen(false);
               setSuccessMessage("");
               router.push("/user/dashboard");
-            }, 3000);
+            }, 1000);
           },
         }
       );
@@ -374,46 +388,50 @@ const MembershipTierComp = () => {
           </motion.p>
 
           {/* Billing Toggle */}
-          <motion.div
-            className="mt-8 flex items-center justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-          >
-            <span
-              className={`mr-3 text-sm font-medium ${
-                !annualBilling ? "text-green-700" : "text-gray-500"
-              }`}
+          {selectedTier?.toLocaleLowerCase() === "freemium" ? null : (
+            <motion.div
+              className="mt-8 flex items-center justify-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
             >
-              Monthly
-            </span>
-            <button
-              className="relative inline-flex h-8 w-16 items-center rounded-full transition-colors duration-300"
-              style={{
-                backgroundColor: annualBilling
-                  ? "rgba(45, 150, 66, 0.2)"
-                  : "rgba(194, 143, 73, 0.2)",
-              }}
-              onClick={() => setAnnualBilling(!annualBilling)}
-            >
-              <motion.span
-                className="inline-block h-6 w-6 transform rounded-full shadow-md"
-                animate={{
-                  translateX: annualBilling ? "37px" : "1px",
-                  backgroundColor: annualBilling ? "#2D9642" : "#C28F49",
+              <span
+                className={`mr-3 text-sm font-medium ${
+                  !annualBilling ? "text-green-700" : "text-gray-500"
+                }`}
+              >
+                Monthly
+              </span>
+              <button
+                className="relative inline-flex h-8 w-16 items-center rounded-full transition-colors duration-300"
+                style={{
+                  backgroundColor: annualBilling
+                    ? "rgba(45, 150, 66, 0.2)"
+                    : "rgba(194, 143, 73, 0.2)",
                 }}
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}
-              />
-            </button>
-            <span
-              className={`ml-3 text-sm font-medium ${
-                annualBilling ? "text-green-700" : "text-gray-500"
-              }`}
-            >
-              Annually{" "}
-              <span className="text-amber-600 font-bold">(Save 15%)</span>
-            </span>
-          </motion.div>
+                onClick={() => setAnnualBilling(!annualBilling)}
+              >
+                <motion.span
+                  className="inline-block h-6 w-6 transform rounded-full shadow-md"
+                  animate={{
+                    translateX: annualBilling ? "37px" : "1px",
+                    backgroundColor: annualBilling ? "#2D9642" : "#C28F49",
+                  }}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                />
+              </button>
+              <span
+                className={`ml-3 text-sm font-medium ${
+                  annualBilling ? "text-green-700" : "text-gray-500"
+                }`}
+              >
+                Annually{" "}
+                <span className="text-amber-600 font-bold">
+                  ({`Sav${hasPlan ? "ing" : "e"} 15%`})
+                </span>
+              </span>
+            </motion.div>
+          )}
         </motion.div>
 
         {/* Success Message */}
@@ -472,35 +490,42 @@ const MembershipTierComp = () => {
               disabled={isUpdating}
               className="px-8 py-3 rounded-lg bg-gradient-to-r from-[#2D9642] to-[#C28F49] text-white font-semibold text-lg shadow-lg"
             >
-              {isUpdating ? (
-                <span className="flex items-center">
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Processing...
-                </span>
-              ) : selectedTier === "freemium" ? (
-                "Get Free Membership"
-              ) : (
-                "Upgrade Membership"
-              )}
+              <SignedOut>
+                <SignInButton forceRedirectUrl={"/membership-tiers"}>
+                  Join Waitlist
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>
+                {isUpdating ? (
+                  <span className="flex items-center">
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Processing...
+                  </span>
+                ) : selectedTier === "freemium" ? (
+                  "Get Free Membership"
+                ) : (
+                  "Upgrade Membership"
+                )}
+              </SignedIn>
             </motion.button>
           </motion.div>
         )}
@@ -551,6 +576,16 @@ interface PricingCardProps {
   currentTier: boolean;
 }
 
+// PricingCard Component
+interface PricingCardProps {
+  tier: (typeof membershipTiers)[0];
+  annualBilling: boolean;
+  selected: boolean;
+  onSelect: () => void;
+  disabled: boolean;
+  currentTier: boolean;
+}
+
 const PricingCard: React.FC<PricingCardProps> = ({
   tier,
   annualBilling,
@@ -566,11 +601,35 @@ const PricingCard: React.FC<PricingCardProps> = ({
       ? "Free"
       : `$${currentPrice}${annualBilling ? "/year" : "/month"}`;
 
+  // Calculate background gradient for selected card
+  const selectedGradient =
+    tier.name === "Freemium" || tier.name === "Lifestyle"
+      ? "bg-gradient-to-r from-green-50 to-green-100"
+      : "bg-gradient-to-r from-amber-50 to-amber-100";
+
+  // Determine button text based on card state
+  const getButtonText = () => {
+    if (currentTier) return "Your Active Plan";
+    if (selected) return "Plan Selected";
+    if (disabled) return "Coming Soon";
+    if (tier.name === "Freemium") return "Get Started Free";
+    return `Upgrade to ${tier.name}`;
+  };
+
   return (
     <motion.div
-      className={`rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 h-full ${
-        selected ? "ring-2 ring-green-500 scale-[1.02]" : "hover:scale-[1.02]"
-      } ${tier.color} ${disabled ? "opacity-75" : ""}`}
+      className={`rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 h-full
+        ${
+          selected
+            ? `ring-2 ${
+                tier.name.includes("Elite") || tier.name.includes("VIP")
+                  ? "ring-amber-500"
+                  : "ring-green-500"
+              } scale-[1.02]`
+            : "hover:scale-[1.02]"
+        }
+        ${selected ? selectedGradient : tier.color}
+        ${disabled ? "opacity-75" : ""}`}
       whileHover={{ y: -5, boxShadow: "0 10px 40px rgba(0,0,0,0.1)" }}
       transition={{ duration: 0.3 }}
     >
@@ -579,7 +638,19 @@ const PricingCard: React.FC<PricingCardProps> = ({
           className="text-white text-center py-1 font-semibold text-sm"
           style={{ backgroundColor: "#2D9642" }}
         >
-          CURRENT PLAN
+          YOUR CURRENT PLAN
+        </div>
+      )}
+
+      {selected && !currentTier && (
+        <div
+          className={`text-white text-center py-1 font-semibold text-sm ${
+            tier.name.includes("Elite") || tier.name.includes("VIP")
+              ? "bg-amber-600"
+              : "bg-green-600"
+          }`}
+        >
+          SELECTED PLAN
         </div>
       )}
 
@@ -632,7 +703,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
               whileHover={{ x: 3 }}
               transition={{ duration: 0.2 }}
             >
-              <span className="text-gray-600">For $100 Redemption</span>
+              <span className="text-gray-600">$100 Redemption</span>
               <span className="font-semibold">
                 {tier.pointsFor100.toLocaleString()} points
               </span>
@@ -712,7 +783,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
             tier.buttonColor
           } text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 mb-4 mt-2 ${
             disabled && !currentTier ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          } ${selected ? "ring-2 ring-white ring-opacity-70" : ""}`}
           whileHover={{
             background:
               !disabled || currentTier
@@ -722,13 +793,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
           }}
           whileTap={{ scale: !disabled || currentTier ? 0.98 : 1 }}
         >
-          {selected
-            ? "Selected"
-            : currentTier
-            ? "Current Plan"
-            : disabled
-            ? "Coming Soon"
-            : "Select Plan"}
+          {getButtonText()}
         </motion.button>
       </div>
     </motion.div>

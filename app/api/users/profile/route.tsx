@@ -34,6 +34,7 @@ export async function GET(request: NextRequest) {
 
     // Format the response
     const profileData = {
+      billingCycle: user.billingCycle || "monthly",
       firstName: user.firstName || "",
       lastName: user.lastName || "",
       email: user.email,

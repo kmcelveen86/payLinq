@@ -9,6 +9,7 @@ export interface User {
   password?: string;
   dateOfBirth?: string;
   image?: string;
+  billingCycle?: "monthly" | "annual";
   membershipTier:
   | "Freemium"
   | "Lifestyle"

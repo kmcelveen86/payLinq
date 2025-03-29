@@ -9,7 +9,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { ArrowRight } from "lucide-react";
 import { useUserProfile } from "@/app/hooks/useProfile";
-import { get } from "http";
 import { useAuth, useSession, useUser } from "@clerk/nextjs";
 
 export default function LifeDeserveSection(): React.ReactElement<any> {

@@ -357,7 +357,7 @@ export default function HamburgerMenu() {
                       }}
                     >
                       <LogIn size={18} style={{ marginRight: "8px" }} />
-                      <SignInButton />
+                      <SignInButton>Join Waitlist</SignInButton>
                     </div>
                   </motion.div>
                 </SignedOut>
