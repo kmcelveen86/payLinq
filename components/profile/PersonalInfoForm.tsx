@@ -37,7 +37,10 @@ const PersonalInfoForm = ({
         </h2>
         {updatedAt && (
           <span className="text-sm text-gray-400">
-            Last updated: {(updatedAt as Date).toISOString()}
+            Last updated:{" "}
+            {typeof updatedAt === "string"
+              ? updatedAt
+              : updatedAt.toLocaleString()}
           </span>
         )}
       </div>

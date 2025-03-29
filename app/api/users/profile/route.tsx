@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
       email: user.email,
       phone: user.phoneNumber || "",
       dateOfBirth: user.dateOfBirth
-        ? user.dateOfBirth.toISOString().split("T")[0]
+        ? user.dateOfBirth
         : "",
       address: user.address || "",
       city: user.city || "",
