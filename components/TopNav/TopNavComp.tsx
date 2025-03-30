@@ -109,7 +109,7 @@ export default function TopNavComp() {
                   },
                 }}
               >
-                Benefits
+                How It Works
               </Button>
             </Link>
             <Link href="/pricing">
@@ -147,7 +147,7 @@ export default function TopNavComp() {
                   },
                 }}
               >
-                How it works
+                Contact Us
               </Button>
             </Link>
             <Link href="/contact">
@@ -165,7 +165,7 @@ export default function TopNavComp() {
                   },
                 }}
               >
-                FAQS
+                Contact Us
               </Button>
             </Link>
           </Box>
