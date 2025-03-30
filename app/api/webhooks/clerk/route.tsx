@@ -214,30 +214,82 @@ export async function POST(req: Request) {
     const primaryEmail = email_addresses?.[0]?.email_address;
 
     try {
-      // Update user information
-      const user = await prisma.user.findFirst({
+      // Find user by clerkId first
+      let user = await prisma.user.findFirst({
         where: { clerkId: id },
       });
 
+      // If user not found by clerkId, try finding by email
+      if (!user && primaryEmail) {
+        user = await prisma.user.findFirst({
+          where: { email: primaryEmail },
+        });
+
+        // If we found the user by email but clerkId doesn't match,
+        // update the clerkId to maintain the connection
+        if (user && user.clerkId !== id) {
+          console.log(
+            `Updating clerkId for user ${user.id} from ${user.clerkId} to ${id}`
+          );
+        }
+      }
+
       if (!user) {
+        console.log(
+          `User not found for clerkId: ${id}, email: ${primaryEmail}`
+        );
         return new Response("User not found in webhook", { status: 404 });
       }
 
-      await prisma.user.update({
-        where: { id: user.id },
-        data: {
-          email: primaryEmail || undefined,
-          firstName: first_name || undefined,
-          lastName: last_name || undefined,
-          image: image_url || undefined,
-          phoneNumber: evt.data.phone_numbers[0].phone_number || undefined,
-          banned: evt.data.banned || false,
-          bannedReason: evt.data.banned ? "Banned Via Clerk" : "",
-        },
-      });
+      // Only update fields that are provided and different
+      const updateData: Partial<{
+        email: string;
+        firstName: string;
+        lastName: string;
+        image: string;
+        clerkId: string;
+      }> = {};
+
+      if (primaryEmail && user.email !== primaryEmail) {
+        updateData.email = primaryEmail;
+      }
+
+      if (first_name !== undefined && user.firstName !== first_name) {
+        updateData.firstName = first_name ?? undefined;
+      }
+
+      if (last_name !== undefined && user.lastName !== last_name) {
+        updateData.lastName = last_name ?? undefined;
+      }
+
+      if (image_url !== undefined && user.image !== image_url) {
+        updateData.image = image_url;
+      }
+
+      // Always update clerkId if we found the user by email
+      if (user.clerkId !== id) {
+        updateData.clerkId = id;
+      }
+
+      // Only update if there are actual changes
+      if (Object.keys(updateData).length > 0) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: updateData,
+        });
+        console.log(`Updated user ${user.id} with data:`, updateData);
+      } else {
+        console.log(`No changes needed for user ${user.id}`);
+      }
+
+      return new Response("User updated successfully", { status: 200 });
     } catch (error) {
       console.error("Error updating user:", error);
-      return new Response("Error updating user", { status: 500 });
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+      return new Response(`Error updating user: ${errorMessage}`, {
+        status: 500,
+      });
     }
   }
 

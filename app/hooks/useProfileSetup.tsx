@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-// import { useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
 import { createUserProfile } from "../api/userService";
 import { profileSchema, ProfileFormData } from "../schemas/profile";

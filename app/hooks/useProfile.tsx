@@ -17,21 +17,6 @@ import { toast } from "react-hot-toast";
 import { ProfileFormData } from "../schemas/profile";
 import { useUser } from "@clerk/nextjs";
 
-// Define the interface for form data
-// interface ProfileFormData {
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   phoneNumber: string;
-//   dateOfBirth: string;
-//   address: string;
-//   city: string;
-//   state: string;
-//   postalCode: string;
-//   agreedToTerms: boolean;
-//   notifications: boolean;
-//   profileImage?: string;
-// }
 
 // Define a separate type for database update
 type DatabaseUserData = {
@@ -65,17 +50,7 @@ export const useUpdateUserProfile = () => {
     mutationFn: async (data: ProfileFormData) => {
       if (!user) throw new Error("User not logged in");
 
-      // First update the Clerk profile
-      // const updateUser = async () => {
-      //   await user.update({
-      //     firstName: data.firstName,
-      //     lastName: data.lastName,
-      //   })
-      // }
-
-      // const clerkUser = await updateUser();
-
-      // Then update your database - this is now correctly structured
+      // Then update the database
       const databaseUser = await updateDatabaseUser({
         userData: {
           firstName: data.firstName,
@@ -90,9 +65,7 @@ export const useUpdateUserProfile = () => {
         },
       });
 
-      // You may want to return a combined result
       return {
-        // clerk: clerkUser,
         database: databaseUser,
       };
     },
