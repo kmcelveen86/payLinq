@@ -29,6 +29,9 @@ const SecuritySettings = ({ loginHistory, onLogoutDevice }: Props) => {
   // Get values from form to compare
   const watchNewPassword = watch("newPassword");
   const watchConfirmPassword = watch("confirmPassword");
+  const watchCurrentPassword = watch("currentPassword");
+
+  const allEmpty = !watchNewPassword && !watchConfirmPassword && !watchCurrentPassword;
 
   const newPwError = errors.newPassword?.message;
   const confirmPwError = errors.confirmPassword?.message;
@@ -160,13 +163,13 @@ const SecuritySettings = ({ loginHistory, onLogoutDevice }: Props) => {
 
             <div className="flex justify-end">
               <motion.button
-                disabled={hasError || mismatchError}
+                disabled={hasError || mismatchError || allEmpty}
                 type="button"
                 onClick={() => handleSubmit()}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 className={`px-4 py-2 bg-gradient-to-r from-[#2D9642] to-[#C28F49] rounded-lg font-medium text-white ${
-                  hasError || mismatchError
+                  hasError || mismatchError || allEmpty
                     ? "opacity-50 cursor-not-allowed"
                     : ""
                 }`}

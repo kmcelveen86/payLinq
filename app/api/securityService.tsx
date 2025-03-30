@@ -21,3 +21,11 @@ export const changePassword = async (
   });
   return response.data;
 };
+
+export const deleteAccount = async (): Promise<{
+  success: boolean;
+  message: string;
+}> => {
+  const response = await apiClient.delete("/delete-account");
+  return response.data;
+};

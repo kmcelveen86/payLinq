@@ -9,11 +9,10 @@ import { useForm } from "react-hook-form";
 export function useUpdatePassword() {
   const {
     register,
+    watch,
+    reset,
     handleSubmit,
     formState: { errors },
-    watch,
-    getValues,
-    trigger,
   } = useForm<ProfilePasswordData>({
     resolver: zodResolver(profilePasswordSchema),
     mode: "onChange",
@@ -36,6 +35,7 @@ export function useUpdatePassword() {
       ),
     onSuccess: (data) => {
       toast.success(data.message || "Password updated successfully");
+      reset();
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.error || "Failed to update password");
@@ -47,12 +47,12 @@ export function useUpdatePassword() {
   return {
     register,
     handleSubmit: handleSubmit(onSubmit),
+    watch,
     errors,
     formValues,
     isPending: profilePasswordMutation.isPending,
     isError: profilePasswordMutation.isError,
     isSuccess: profilePasswordMutation.isSuccess,
     error: profilePasswordMutation.error,
-    watch,
   };
 }

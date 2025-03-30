@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useUserProfile } from "../../../app/hooks/useProfile";
-// import DeleteAccountModal from "@/components/DeleteAccountModal";
+import DeleteAccountModal from "@/components/DeleteAccountModal";
 
 // Define tab animation variants
 const tabVariants = {
@@ -157,10 +157,10 @@ export default function ProfileSideBar({
       </div>
 
       {/* Delete Account Modal */}
-      {/* <DeleteAccountModal
+      <DeleteAccountModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-      /> */}
+      />
     </motion.div>
   );
 }

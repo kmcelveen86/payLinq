@@ -76,12 +76,6 @@ export async function POST(req: Request) {
       // CREATED USING EMAIL/PASSWORD
       if (createdUsingCreds) {
         try {
-          // console.log(
-          //   `Received webhook with ID ${id} and event type of ${eventType}`
-          // );
-          // console.log("Webhook payload:", body);
-
-          // Check if user already exists by email
           const existingUser = await prisma.user.findUnique({
             where: { email: primaryEmail },
           });
@@ -95,36 +89,6 @@ export async function POST(req: Request) {
                 emailVerified: new Date(), // Set emailVerified for OAuth users
               },
             });
-
-            // If Google OAuth, create an Account record
-            // if (googleAccount) {
-            //   await prisma.account.upsert({
-            //     where: {
-            //       provider_providerAccountId: {
-            //         provider: "google",
-            //         providerAccountId: googleAccount.provider_user_id,
-            //       },
-            //     },
-            //     update: {}, // No update needed if it already exists
-            //     create: {
-            //       provider: "google",
-            //       providerAccountId: googleAccount.provider_user_id,
-            //       userId: existingUser.id,
-            //       type: "oauth",
-            //       // Optional fields that might be available from Clerk
-            //       access_token: googleAccount.access_token,
-            //       id_token: googleAccount.id_token,
-            //       refresh_token: googleAccount.refresh_token,
-            //       expires_at: googleAccount.expires_at
-            //         ? Math.floor(
-            //             new Date(googleAccount.expires_at).getTime() / 1000
-            //           )
-            //         : undefined,
-            //       token_type: "bearer",
-            //       scope: "email profile",
-            //     },
-            //   });
-            // }
           } else {
             // Create new user
             const newUser = await prisma.user.create({
