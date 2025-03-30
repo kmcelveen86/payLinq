@@ -1,3 +1,4 @@
+import TopNavComp from "@/components/TopNav/TopNavComp";
 import type { Metadata } from "next/types";
 
 export const metadata: Metadata = {
@@ -12,6 +13,7 @@ export default function HowItWorksLayout({
 }) {
   return (
     <>
+      <TopNavComp />
       {children}
     </>
   );
