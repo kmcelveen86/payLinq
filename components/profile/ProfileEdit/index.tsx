@@ -313,7 +313,6 @@ const ProfileEdit = () => {
                 email={formData.email}
                 phoneNumber={formData.phoneNumber}
                 dateOfBirth={formData.dateOfBirth || profileData?.dateOfBirth || ""}
-                // dateOfBirth={formData.dateOfBirth || profileData?.dateOfBirth || ""}
                 onChange={handleChange}
                 updatedAt={lastUpdatedText}
               />
