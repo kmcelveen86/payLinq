@@ -2,6 +2,10 @@ export interface User {
   clerkId: string;
   id: string;
   updatedAt?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
   firstName: string;
   lastName: string;
   email: string;

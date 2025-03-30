@@ -83,7 +83,10 @@ export const useUpdateUserProfile = () => {
           email: data.email,
           phoneNumber: data.phoneNumber, // Map phoneNumber to phoneNumber
           dateOfBirth: data.dateOfBirth,
-          // Don't include address fields here, since they should be handled by updateUserAddress
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          postalCode: data.postalCode,
         },
       });
 

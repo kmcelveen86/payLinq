@@ -326,7 +326,6 @@ export async function PUT(request: NextRequest) {
         },
       });
     }
-    console.log("🚀 ~ PUT ~ updateDataupdateDataupdateDataupdateData:", updateData)
     
     
     
