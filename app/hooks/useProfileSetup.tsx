@@ -35,7 +35,7 @@ export function useProfileSetup() {
       firstName: "",
       lastName: "",
       email: userEmail ?? "",
-      phone: "",
+      phoneNumber: "",
       dateOfBirth: "",
       address: "",
       city: "",
@@ -66,7 +66,7 @@ export function useProfileSetup() {
         fieldsToValidate = ["firstName", "lastName"];
         break;
       case 2:
-        fieldsToValidate = ["phone", "dateOfBirth"];
+        fieldsToValidate = ["phoneNumber", "dateOfBirth"];
         break;
       case 3:
         fieldsToValidate = [
@@ -106,7 +106,7 @@ export function useProfileSetup() {
   // formValues.email;
 
   const isStepTwoValid =
-    !errors.phone && !errors.dateOfBirth && formValues.phone && formValues.dateOfBirth;
+    !errors.phoneNumber && !errors.dateOfBirth && formValues.phoneNumber && formValues.dateOfBirth;
 
   const isStepThreeValid =
     !errors.address &&

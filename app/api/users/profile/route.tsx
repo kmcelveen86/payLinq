@@ -164,7 +164,7 @@ export async function POST(request: NextRequest) {
           lastName: lastName,
           email,
           phoneNumber: phoneNumber,
-          dateOfBirth: new Date(dateOfBirth),
+          dateOfBirth: dateOfBirth,
           address,
           city,
           state,
