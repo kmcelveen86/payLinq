@@ -22,7 +22,7 @@ import { useUser } from "@clerk/nextjs";
 //   firstName: string;
 //   lastName: string;
 //   email: string;
-//   phone: string;
+//   phoneNumber: string;
 //   dateOfBirth: string;
 //   address: string;
 //   city: string;
@@ -81,7 +81,7 @@ export const useUpdateUserProfile = () => {
           firstName: data.firstName,
           lastName: data.lastName,
           email: data.email,
-          phoneNumber: data.phone, // Map phone to phoneNumber
+          phoneNumber: data.phoneNumber, // Map phoneNumber to phoneNumber
           dateOfBirth: data.dateOfBirth,
           // Don't include address fields here, since they should be handled by updateUserAddress
         },

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { formatDistance, format, add } from "date-fns";
 import { profileSchema, profileUpdateSchema } from "@/app/schemas/profile";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
@@ -38,7 +39,7 @@ export async function GET(request: NextRequest) {
       firstName: user.firstName || "",
       lastName: user.lastName || "",
       email: user.email,
-      phone: user.phoneNumber || "",
+      phoneNumber: user.phoneNumber || "",
       dateOfBirth: user.dateOfBirth
         ? user.dateOfBirth
         : "",
@@ -90,7 +91,7 @@ export async function POST(request: NextRequest) {
       firstName,
       lastName,
       email,
-      phone,
+      phoneNumber,
       dateOfBirth,
       address,
       city,
@@ -110,6 +111,8 @@ export async function POST(request: NextRequest) {
     let user;
 
     if (existingUser) {
+      const userDate = new Date(dateOfBirth);
+      const formmattedDate = format(userDate, "MM yy dd");
       // Update existing user
       user = await prisma.user.update({
         where: { id: existingUser.id },
@@ -117,8 +120,8 @@ export async function POST(request: NextRequest) {
           name: `${firstName} ${lastName}`,
           firstName: firstName,
           lastName: lastName,
-          phoneNumber: phone,
-          dateOfBirth: new Date(dateOfBirth),
+          phoneNumber: phoneNumber,
+          dateOfBirth: formmattedDate,
           postalCode: postalCode,
           address: address,
           city,
@@ -160,7 +163,7 @@ export async function POST(request: NextRequest) {
           firstName: firstName,
           lastName: lastName,
           email,
-          phoneNumber: phone,
+          phoneNumber: phoneNumber,
           dateOfBirth: new Date(dateOfBirth),
           address,
           city,
@@ -245,14 +248,20 @@ export async function PUT(request: NextRequest) {
       updateData.name = `${firstName} ${lastName}`.trim();
     }
     
-    if (body.phone !== undefined) updateData.phoneNumber = body.phone;
+    if (body.phoneNumber !== undefined) updateData.phoneNumber = body.phoneNumber;
     
     // IMPORTANT: Only include dateOfBirth if explicitly provided and valid
     if (body.dateOfBirth !== undefined && body.dateOfBirth !== null && body.dateOfBirth !== '') {
       try {
+        // const dateValue = new Date(body.dateOfBirth);
         const dateValue = new Date(body.dateOfBirth);
+        // TODO: Hack to fix the date issue
+        const fixedDate = add(dateValue, { days: 1 });
+        const formmattedDate = format(fixedDate, "yyyy-MM-dd");
+
+        // Update existing user
         if (!isNaN(dateValue.getTime())) {
-          updateData.dateOfBirth = dateValue;
+          updateData.dateOfBirth = formmattedDate;
         }
       } catch (error) {
         // Simply don't include the date in the update if it's invalid
@@ -302,9 +311,9 @@ export async function PUT(request: NextRequest) {
           firstName: existingUser.firstName,
           lastName: existingUser.lastName,
           email: existingUser.email,
-          phone: existingUser.phoneNumber,
+          phoneNumber: existingUser.phoneNumber,
           dateOfBirth: existingUser.dateOfBirth
-            ? existingUser.dateOfBirth.toISOString().split("T")[0]
+            ? existingUser.dateOfBirth
             : "",
           address: existingUser.address,
           city: existingUser.city,
@@ -320,7 +329,10 @@ export async function PUT(request: NextRequest) {
         },
       });
     }
-
+    console.log("🚀 ~ PUT ~ updateDataupdateDataupdateDataupdateData:", updateData)
+    
+    
+    
     // Update user with only the provided fields
     const user = await prisma.user.update({
       where: { clerkId: clerkUser.id },
@@ -329,6 +341,7 @@ export async function PUT(request: NextRequest) {
         notificationPreferences: true,
       },
     });
+    console.log(`🚀 ~ PUT ~ user.dateOfBirth:`, user?.dateOfBirth)
 
     return NextResponse.json({
       success: true,
@@ -336,9 +349,9 @@ export async function PUT(request: NextRequest) {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        phone: user.phoneNumber,
+        phoneNumber: user.phoneNumber,
         dateOfBirth: user.dateOfBirth
-          ? user.dateOfBirth.toISOString().split("T")[0]
+          ? user.dateOfBirth
           : "",
         address: user.address,
         city: user.city,

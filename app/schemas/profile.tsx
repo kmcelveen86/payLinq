@@ -14,7 +14,7 @@ export const profileUpdateSchema = z.object({
   firstName: z.string().min(1, "First name is required").optional(),
   lastName: z.string().min(1, "Last name is required").optional(),
   email: z.string().email("Invalid email address").optional(),
-  phone: z.string().regex(phoneRegex, "Invalid phone number format").optional(),
+  phoneNumber: z.string().regex(phoneRegex, "Invalid phone number format").optional(),
   dateOfBirth: z
     .string()
     .refine((val) => {
@@ -49,7 +49,7 @@ export const profileSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email address"),
-  phone: z.string().regex(phoneRegex, "Invalid phone number format"),
+  phoneNumber: z.string().regex(phoneRegex, "Invalid phone number format"),
   dateOfBirth: z.string().refine((val) => {
     const date = new Date(val);
     const today = new Date();

@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useAuth, useSession, useUser } from "@clerk/nextjs";
-import { formatDistance } from "date-fns";
+import { formatDistance, format } from "date-fns";
 import DeleteAccountModal from "../DeleteAccountModal";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileSideBar from "@/components/profile/ProfileSideBar/EditProfileSideBar";
@@ -32,7 +32,7 @@ const ProfileEdit = () => {
     firstName: "",
     lastName: "",
     email: "",
-    phone: "",
+    phoneNumber: "",
     dateOfBirth: "",
     address: "",
     city: "",
@@ -72,6 +72,8 @@ const ProfileEdit = () => {
   const { mutate: uploadImage, isPending: isUploading } = useProfileImage();
   const { data: profileData } = useUserProfile();
   const { mutate: updateProfile } = useUpdateUserProfile();
+  // const formattedDate = format(new Date(profileData?.dateOfBirth as any), 'MM dd yyyy');
+  // console.log("🚀 ~ ProfileEdit ~ formattedDate:", formattedDate)
 
   const paymentMethods = [
     {
@@ -309,8 +311,9 @@ const ProfileEdit = () => {
                 firstName={formData.firstName}
                 lastName={formData.lastName}
                 email={formData.email}
-                phone={formData.phone}
-                dateOfBirth={formData.dateOfBirth}
+                phoneNumber={formData.phoneNumber}
+                dateOfBirth={formData.dateOfBirth || profileData?.dateOfBirth || ""}
+                // dateOfBirth={formData.dateOfBirth || profileData?.dateOfBirth || ""}
                 onChange={handleChange}
                 updatedAt={lastUpdatedText}
               />
