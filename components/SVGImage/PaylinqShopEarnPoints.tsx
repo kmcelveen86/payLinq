@@ -47,11 +47,11 @@ export default function PaylinqShopEarnPoints() {
         <text
           x="0"
           y="-145"
-          font-family="Arial"
-          font-size="24"
+          fontFamily="Arial"
+          fontSize="24"
           fill="white"
-          text-anchor="middle"
-          font-weight="bold"
+          textAnchor="middle"
+          fontWeight="bold"
         >
           PREMIUM SHOP
         </text>
@@ -95,21 +95,21 @@ export default function PaylinqShopEarnPoints() {
           <text
             x="0"
             y="-10"
-            font-family="Arial"
-            font-size="20"
+            fontFamily="Arial"
+            fontSize="20"
             fill="white"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             +250
           </text>
           <text
             x="0"
             y="15"
-            font-family="Arial"
-            font-size="14"
+            fontFamily="Arial"
+            fontSize="14"
             fill="white"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             POINTS
           </text>
@@ -146,11 +146,11 @@ export default function PaylinqShopEarnPoints() {
         <text
           x="0"
           y="5"
-          font-family="Arial"
-          font-size="16"
+          fontFamily="Arial"
+          fontSize="16"
           fill="#2D9642"
-          text-anchor="middle"
-          font-weight="bold"
+          textAnchor="middle"
+          fontWeight="bold"
         >
           DINING: 3X POINTS
         </text>
@@ -169,11 +169,11 @@ export default function PaylinqShopEarnPoints() {
         <text
           x="0"
           y="5"
-          font-family="Arial"
-          font-size="16"
+          fontFamily="Arial"
+          fontSize="16"
           fill="#C28F49"
-          text-anchor="middle"
-          font-weight="bold"
+          textAnchor="middle"
+          fontWeight="bold"
         >
           TRAVEL: 3X POINTS
         </text>
@@ -192,11 +192,11 @@ export default function PaylinqShopEarnPoints() {
         <text
           x="0"
           y="5"
-          font-family="Arial"
-          font-size="16"
+          fontFamily="Arial"
+          fontSize="16"
           fill="white"
-          text-anchor="middle"
-          font-weight="bold"
+          textAnchor="middle"
+          fontWeight="bold"
         >
           EVERYDAY: 2X POINTS
         </text>
@@ -205,8 +205,8 @@ export default function PaylinqShopEarnPoints() {
       {/* <!-- Definitions --> */}
       <defs>
         <linearGradient id="pointsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#2D9642" stop-opacity="0.8" />
-          <stop offset="100%" stop-color="#C28F49" stop-opacity="0.8" />
+          <stop offset="0%" stopColor="#2D9642" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="#C28F49" stopOpacity="0.8" />
         </linearGradient>
       </defs>
     </svg>

@@ -391,7 +391,7 @@ export default function HowItWorksContent() {
                       <svg
                         fill="none"
                         height="24"
-                        shape-rendering="geometricPrecision"
+                        shapeRendering="geometricPrecision"
                         stroke="currentColor"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -446,13 +446,13 @@ export default function HowItWorksContent() {
                 Join thousands of satisfied members who are maximizing their
                 rewards with every purchase.
               </p>
-              <motion.button
+              <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-4 bg-gradient-to-r from-[#2D9642] to-[#C28F49] rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <SignInButton>Join Waitlist</SignInButton>
-              </motion.button>
+              </motion.div>
               <p className="text-gray-500 mt-4">
                 No credit check required. Get started in minutes.
               </p>

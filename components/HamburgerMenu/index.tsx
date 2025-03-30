@@ -25,10 +25,22 @@ import {
   SignedIn,
   useSession,
 } from "@clerk/nextjs";
+import { useUserProfile } from "@/app/hooks/useProfile";
 
 export default function HamburgerMenu() {
   const { isLoaded, session, isSignedIn } = useSession();
+  const { data: profileData } = useUserProfile();
+  const { email } = profileData || {};
   const clerkUser = useUser();
+  const profileDataFullName = !!(
+    profileData?.firstName && profileData?.lastName
+  );
+  const userFullName =
+    clerkUser?.user?.fullName ?? profileDataFullName
+      ? `${profileData?.firstName
+          .charAt(0)
+          .toUpperCase()}${profileData?.lastName.charAt(0).toUpperCase()}`
+      : "U";
   const userEmail = clerkUser?.user?.primaryEmailAddress as any;
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -264,32 +276,36 @@ export default function HamburgerMenu() {
             {/* Footer */}
             <div className="p-4 border-t border-gray-800">
               <SignedIn>
-                <div className="mb-4 px-3 py-2 bg-gray-800 rounded-lg">
-                  <div className="flex items-center mb-1">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[#2D9642] to-[#C28F49] flex items-center justify-center text-white font-bold text-sm mr-2">
-                      {clerkUser?.user?.firstName?.[0] || "U"}
-                    </div>
-                    <div>
-                      <div className="text-white font-medium">
-                        {clerkUser?.user?.firstName || "User"}
+                <>
+                  <Link href="/user/dashboard">
+                    <div className="mb-4 px-3 py-2 bg-gray-800 rounded-lg">
+                      <div className="flex items-center mb-1">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[#2D9642] to-[#C28F49] flex items-center justify-center text-white font-bold text-sm mr-2">
+                          {userFullName}
+                        </div>
+                        <div>
+                          <div className="text-white font-medium">
+                            {userFullName}
+                          </div>
+                          <div className="text-gray-400 text-xs">{email ?? userFullName}</div>
+                        </div>
                       </div>
-                      <div className="text-gray-400 text-xs">{userEmail}</div>
                     </div>
-                  </div>
-                </div>
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full"
-                >
-                  <button
-                    onClick={toggleDrawer}
-                    className="w-full flex items-center justify-center p-3 border border-gray-700 text-gray-300 hover:text-white rounded-lg hover:border-gray-600 transition-colors"
+                  </Link>
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full"
                   >
-                    <LogOut size={16} className="mr-2" />
-                    <SignOutButton />
-                  </button>
-                </motion.div>
+                    <div
+                      onClick={toggleDrawer}
+                      className="w-full flex items-center justify-center p-3 border border-gray-700 text-gray-300 hover:text-white rounded-lg hover:border-gray-600 transition-colors"
+                    >
+                      <LogOut size={16} className="mr-2" />
+                      <SignOutButton />
+                    </div>
+                  </motion.div>
+                </>
               </SignedIn>
               <SignedOut>
                 <motion.div
@@ -297,13 +313,13 @@ export default function HamburgerMenu() {
                   whileTap={{ scale: 0.98 }}
                   className="w-full"
                 >
-                  <button
+                  <div
                     onClick={toggleDrawer}
                     className="w-full flex items-center justify-center p-3 bg-gradient-to-r from-[#2D9642] to-[#C28F49] text-white rounded-lg shadow-lg hover:shadow-[#2D9642]/20 transition-all"
                   >
                     <LogIn size={16} className="mr-2" />
                     <SignInButton>Join Waitlist</SignInButton>
-                  </button>
+                  </div>
                 </motion.div>
               </SignedOut>
             </div>

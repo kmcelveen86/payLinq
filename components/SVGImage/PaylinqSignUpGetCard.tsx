@@ -40,9 +40,9 @@ export default function PaylinqSignUpGetCard() {
         <text
           x="-140"
           y="-85"
-          font-family="Arial"
-          font-size="22"
-          font-weight="bold"
+          fontFamily="Arial"
+          fontSize="22"
+          fontWeight="bold"
           fill="white"
         >
           PAYLINQ
@@ -52,26 +52,26 @@ export default function PaylinqSignUpGetCard() {
         <text
           x="-140"
           y="0"
-          font-family="Arial"
-          font-size="20"
-          letter-spacing="2"
+          fontFamily="Arial"
+          fontSize="20"
+          letterSpacing="2"
           fill="white"
         >
           5678 •••• •••• 1234
         </text>
 
         {/* <!-- Card Name and dates --> */}
-        <text x="-140" y="40" font-family="Arial" font-size="14" fill="#e5e7eb">
+        <text x="-140" y="40" fontFamily="Arial" fontSize="14" fill="#e5e7eb">
           CARDHOLDER NAME
         </text>
-        <text x="-140" y="60" font-family="Arial" font-size="16" fill="white">
+        <text x="-140" y="60" fontFamily="Arial" fontSize="16" fill="white">
           JANE SMITH
         </text>
 
-        <text x="40" y="40" font-family="Arial" font-size="14" fill="#e5e7eb">
+        <text x="40" y="40" fontFamily="Arial" fontSize="14" fill="#e5e7eb">
           VALID THRU
         </text>
-        <text x="40" y="60" font-family="Arial" font-size="16" fill="white">
+        <text x="40" y="60" fontFamily="Arial" fontSize="16" fill="white">
           05/28
         </text>
       </g>
@@ -96,27 +96,27 @@ export default function PaylinqSignUpGetCard() {
         <text
           x="0"
           y="-85"
-          font-family="Arial"
-          font-size="12"
+          fontFamily="Arial"
+          fontSize="12"
           fill="white"
-          text-anchor="middle"
-          font-weight="bold"
+          textAnchor="middle"
+          fontWeight="bold"
         >
           SIGN UP
         </text>
 
         <rect x="-40" y="-70" width="80" height="20" rx="3" fill="#374151" />
-        <text x="-35" y="-55" font-family="Arial" font-size="8" fill="#9CA3AF">
+        <text x="-35" y="-55" fontFamily="Arial" fontSize="8" fill="#9CA3AF">
           Name
         </text>
 
         <rect x="-40" y="-40" width="80" height="20" rx="3" fill="#374151" />
-        <text x="-35" y="-25" font-family="Arial" font-size="8" fill="#9CA3AF">
+        <text x="-35" y="-25" fontFamily="Arial" fontSize="8" fill="#9CA3AF">
           Email
         </text>
 
         <rect x="-40" y="-10" width="80" height="20" rx="3" fill="#374151" />
-        <text x="-35" y="5" font-family="Arial" font-size="8" fill="#9CA3AF">
+        <text x="-35" y="5" fontFamily="Arial" fontSize="8" fill="#9CA3AF">
           Password
         </text>
 
@@ -124,23 +124,23 @@ export default function PaylinqSignUpGetCard() {
         <text
           x="0"
           y="47"
-          font-family="Arial"
-          font-size="10"
+          fontFamily="Arial"
+          fontSize="10"
           fill="white"
-          text-anchor="middle"
-          font-weight="bold"
+          textAnchor="middle"
+          fontWeight="bold"
         >
           GET STARTED
         </text>
 
         {/* <!-- Status icons --> */}
         <circle cx="0" y="80" r="3" fill="#2D9642" />
-        <text x="1" y="84" font-family="Arial" font-size="8" fill="white">
+        <text x="1" y="84" fontFamily="Arial" fontSize="8" fill="white">
           Verification
         </text>
 
         <circle cx="0" y="100" r="3" fill="#C28F49" />
-        <text x="-10" y="104" font-family="Arial" font-size="8" fill="white">
+        <text x="-10" y="104" fontFamily="Arial" fontSize="8" fill="white">
           Card Shipping
         </text>
       </g>
@@ -157,8 +157,8 @@ export default function PaylinqSignUpGetCard() {
       {/* <!-- Definitions --> */}
       <defs>
         <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#2D9642" stop-opacity="0.8" />
-          <stop offset="100%" stop-color="#C28F49" stop-opacity="0.8" />
+          <stop offset="0%" stopColor="#2D9642" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="#C28F49" stopOpacity="0.8" />
         </linearGradient>
       </defs>
     </svg>
