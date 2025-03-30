@@ -35,20 +35,20 @@ export default function PaylinqLevelUpGetMore() {
         <text
           x="-270"
           y="-105"
-          font-family="Arial"
-          font-size="18"
+          fontFamily="Arial"
+          fontSize="18"
           fill="white"
-          font-weight="bold"
+          fontWeight="bold"
         >
           MEMBERSHIP LEVEL UP
         </text>
         <text
           x="150"
           y="-105"
-          font-family="Arial"
-          font-size="16"
+          fontFamily="Arial"
+          fontSize="16"
           fill="#C28F49"
-          font-weight="bold"
+          fontWeight="bold"
         >
           YOUR BENEFITS
         </text>
@@ -80,11 +80,11 @@ export default function PaylinqLevelUpGetMore() {
           <text
             x="-250"
             y="5"
-            font-family="Arial"
-            font-size="12"
+            fontFamily="Arial"
+            fontSize="12"
             fill="white"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             1
           </text>
@@ -93,11 +93,11 @@ export default function PaylinqLevelUpGetMore() {
           <text
             x="-125"
             y="5"
-            font-family="Arial"
-            font-size="12"
+            fontFamily="Arial"
+            fontSize="12"
             fill="white"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             2
           </text>
@@ -108,16 +108,16 @@ export default function PaylinqLevelUpGetMore() {
             r="20"
             fill="#C28F49"
             stroke="white"
-            stroke-width="2"
+            strokeWidth="2"
           />
           <text
             x="0"
             y="5"
-            font-family="Arial"
-            font-size="14"
+            fontFamily="Arial"
+            fontSize="14"
             fill="white"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             3
           </text>
@@ -126,10 +126,10 @@ export default function PaylinqLevelUpGetMore() {
           <text
             x="125"
             y="5"
-            font-family="Arial"
-            font-size="12"
+            fontFamily="Arial"
+            fontSize="12"
             fill="white"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             4
           </text>
@@ -138,10 +138,10 @@ export default function PaylinqLevelUpGetMore() {
           <text
             x="250"
             y="5"
-            font-family="Arial"
-            font-size="12"
+            fontFamily="Arial"
+            fontSize="12"
             fill="white"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             5
           </text>
@@ -150,51 +150,51 @@ export default function PaylinqLevelUpGetMore() {
           <text
             x="-250"
             y="-25"
-            font-family="Arial"
-            font-size="10"
+            fontFamily="Arial"
+            fontSize="10"
             fill="#9CA3AF"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             FREEMIUM
           </text>
           <text
             x="-125"
             y="-25"
-            font-family="Arial"
-            font-size="10"
+            fontFamily="Arial"
+            fontSize="10"
             fill="#9CA3AF"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             LIFESTYLE
           </text>
           <text
             x="0"
             y="-25"
-            font-family="Arial"
-            font-size="10"
+            fontFamily="Arial"
+            fontSize="10"
             fill="#FCD34D"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             VIP LIFESTYLE
           </text>
           <text
             x="125"
             y="-25"
-            font-family="Arial"
-            font-size="10"
+            fontFamily="Arial"
+            fontSize="10"
             fill="#9CA3AF"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             ELITE
           </text>
           <text
             x="250"
             y="-25"
-            font-family="Arial"
-            font-size="10"
+            fontFamily="Arial"
+            fontSize="10"
             fill="#9CA3AF"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             PLATINUM
           </text>
@@ -223,22 +223,22 @@ export default function PaylinqLevelUpGetMore() {
           <text
             x="-135"
             y="-25"
-            font-family="Arial"
-            font-size="14"
+            fontFamily="Arial"
+            fontSize="14"
             fill="white"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             LIFESTYLE
           </text>
 
-          <text x="-240" y="-5" font-family="Arial" font-size="12" fill="white">
+          <text x="-240" y="-5" fontFamily="Arial" fontSize="12" fill="white">
             • 2X Points on Everyday Purchases
           </text>
-          <text x="-240" y="15" font-family="Arial" font-size="12" fill="white">
+          <text x="-240" y="15" fontFamily="Arial" fontSize="12" fill="white">
             • 3X Points on Dining & Travel
           </text>
-          <text x="-240" y="35" font-family="Arial" font-size="12" fill="white">
+          <text x="-240" y="35" fontFamily="Arial" fontSize="12" fill="white">
             • Standard Travel Benefits
           </text>
 
@@ -256,22 +256,22 @@ export default function PaylinqLevelUpGetMore() {
           <text
             x="115"
             y="-25"
-            font-family="Arial"
-            font-size="14"
+            fontFamily="Arial"
+            fontSize="14"
             fill="#C28F49"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             VIP LIFESTYLE
           </text>
 
-          <text x="10" y="-5" font-family="Arial" font-size="12" fill="#C28F49">
+          <text x="10" y="-5" fontFamily="Arial" fontSize="12" fill="#C28F49">
             • 3X Points on Everyday Purchases
           </text>
-          <text x="10" y="15" font-family="Arial" font-size="12" fill="#C28F49">
+          <text x="10" y="15" fontFamily="Arial" fontSize="12" fill="#C28F49">
             • 4X Points on Dining & Travel
           </text>
-          <text x="10" y="35" font-family="Arial" font-size="12" fill="#C28F49">
+          <text x="10" y="35" fontFamily="Arial" fontSize="12" fill="#C28F49">
             • Premium Travel & Lounge Access
           </text>
 
@@ -287,11 +287,11 @@ export default function PaylinqLevelUpGetMore() {
           <text
             x="115"
             y="78"
-            font-family="Arial"
-            font-size="14"
+            fontFamily="Arial"
+            fontSize="14"
             fill="white"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             UPGRADE NOW
           </text>
@@ -321,8 +321,8 @@ export default function PaylinqLevelUpGetMore() {
       {/* <!-- Definitions --> */}
       <defs>
         <linearGradient id="tierGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#2D9642" />
-          <stop offset="100%" stop-color="#C28F49" />
+          <stop offset="0%" stopColor="#2D9642" />
+          <stop offset="100%" stopColor="#C28F49" />
         </linearGradient>
       </defs>
     </svg>

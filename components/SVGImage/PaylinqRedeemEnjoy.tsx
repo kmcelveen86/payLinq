@@ -35,20 +35,20 @@ export default function PaylinqRedeemEnjoy() {
         <text
           x="-270"
           y="-105"
-          font-family="Arial"
-          font-size="18"
+          fontFamily="Arial"
+          fontSize="18"
           fill="white"
-          font-weight="bold"
+          fontWeight="bold"
         >
           REWARDS MARKETPLACE
         </text>
         <text
           x="140"
           y="-105"
-          font-family="Arial"
-          font-size="16"
+          fontFamily="Arial"
+          fontSize="16"
           fill="#C28F49"
-          font-weight="bold"
+          fontWeight="bold"
         >
           12,500 POINTS
         </text>
@@ -68,31 +68,31 @@ export default function PaylinqRedeemEnjoy() {
           <text
             x="0"
             y="5"
-            font-family="Arial"
-            font-size="12"
+            fontFamily="Arial"
+            fontSize="12"
             fill="white"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             CASH
           </text>
           <text
             x="0"
             y="25"
-            font-family="Arial"
-            font-size="16"
+            fontFamily="Arial"
+            fontSize="16"
             fill="#2D9642"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             $50
           </text>
           <text
             x="0"
             y="45"
-            font-family="Arial"
-            font-size="10"
+            fontFamily="Arial"
+            fontSize="10"
             fill="#9CA3AF"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             5,000 PTS
           </text>
@@ -112,31 +112,31 @@ export default function PaylinqRedeemEnjoy() {
           <text
             x="0"
             y="5"
-            font-family="Arial"
-            font-size="12"
+            fontFamily="Arial"
+            fontSize="12"
             fill="white"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             GIFT CARD
           </text>
           <text
             x="0"
             y="25"
-            font-family="Arial"
-            font-size="16"
+            fontFamily="Arial"
+            fontSize="16"
             fill="#C28F49"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             DINING
           </text>
           <text
             x="0"
             y="45"
-            font-family="Arial"
-            font-size="10"
+            fontFamily="Arial"
+            fontSize="10"
             fill="#9CA3AF"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             6,000 PTS
           </text>
@@ -156,31 +156,31 @@ export default function PaylinqRedeemEnjoy() {
           <text
             x="0"
             y="5"
-            font-family="Arial"
-            font-size="12"
+            fontFamily="Arial"
+            fontSize="12"
             fill="white"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             GIFT CARD
           </text>
           <text
             x="0"
             y="25"
-            font-family="Arial"
-            font-size="16"
+            fontFamily="Arial"
+            fontSize="16"
             fill="#2D9642"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             RETAIL
           </text>
           <text
             x="0"
             y="45"
-            font-family="Arial"
-            font-size="10"
+            fontFamily="Arial"
+            fontSize="10"
             fill="#9CA3AF"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             7,500 PTS
           </text>
@@ -200,31 +200,31 @@ export default function PaylinqRedeemEnjoy() {
           <text
             x="0"
             y="5"
-            font-family="Arial"
-            font-size="12"
+            fontFamily="Arial"
+            fontSize="12"
             fill="white"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             TRAVEL
           </text>
           <text
             x="0"
             y="25"
-            font-family="Arial"
-            font-size="16"
+            fontFamily="Arial"
+            fontSize="16"
             fill="#C28F49"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             HOTEL
           </text>
           <text
             x="0"
             y="45"
-            font-family="Arial"
-            font-size="10"
+            fontFamily="Arial"
+            fontSize="10"
             fill="#9CA3AF"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             10,000 PTS
           </text>
@@ -244,31 +244,31 @@ export default function PaylinqRedeemEnjoy() {
           <text
             x="0"
             y="5"
-            font-family="Arial"
-            font-size="12"
+            fontFamily="Arial"
+            fontSize="12"
             fill="white"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             TRAVEL
           </text>
           <text
             x="0"
             y="25"
-            font-family="Arial"
-            font-size="16"
+            fontFamily="Arial"
+            fontSize="16"
             fill="#2D9642"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             FLIGHT
           </text>
           <text
             x="0"
             y="45"
-            font-family="Arial"
-            font-size="10"
+            fontFamily="Arial"
+            fontSize="10"
             fill="#9CA3AF"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             12,000 PTS
           </text>
@@ -306,32 +306,32 @@ export default function PaylinqRedeemEnjoy() {
           <text
             x="-190"
             y="-10"
-            font-family="Arial"
-            font-size="11"
+            fontFamily="Arial"
+            fontSize="11"
             fill="#C28F49"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             EXCLUSIVE
           </text>
           <text
             x="-190"
             y="10"
-            font-family="Arial"
-            font-size="14"
+            fontFamily="Arial"
+            fontSize="14"
             fill="white"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             VIP
           </text>
           <text
             x="-190"
             y="30"
-            font-family="Arial"
-            font-size="11"
+            fontFamily="Arial"
+            fontSize="11"
             fill="white"
-            text-anchor="middle"
+            textAnchor="middle"
           >
             EVENT
           </text>
@@ -340,18 +340,18 @@ export default function PaylinqRedeemEnjoy() {
           <text
             x="-110"
             y="-25"
-            font-family="Arial"
-            font-size="16"
+            fontFamily="Arial"
+            fontSize="16"
             fill="white"
-            font-weight="bold"
+            fontWeight="bold"
           >
             EXCLUSIVE CONCERT ACCESS
           </text>
           <text
             x="-110"
             y="0"
-            font-family="Arial"
-            font-size="12"
+            fontFamily="Arial"
+            fontSize="12"
             fill="#D1D5DB"
           >
             VIP tickets to premium events with backstage passes
@@ -359,8 +359,8 @@ export default function PaylinqRedeemEnjoy() {
           <text
             x="-110"
             y="25"
-            font-family="Arial"
-            font-size="12"
+            fontFamily="Arial"
+            fontSize="12"
             fill="#9CA3AF"
           >
             Limited availability - members only
@@ -370,11 +370,11 @@ export default function PaylinqRedeemEnjoy() {
           <text
             x="190"
             y="-20"
-            font-family="Arial"
-            font-size="12"
+            fontFamily="Arial"
+            fontSize="12"
             fill="#C28F49"
-            font-weight="bold"
-            text-anchor="middle"
+            fontWeight="bold"
+            textAnchor="middle"
           >
             15,000 POINTS
           </text>
@@ -382,11 +382,11 @@ export default function PaylinqRedeemEnjoy() {
           <text
             x="180"
             y="30"
-            font-family="Arial"
-            font-size="14"
+            fontFamily="Arial"
+            fontSize="14"
             fill="white"
-            text-anchor="middle"
-            font-weight="bold"
+            textAnchor="middle"
+            fontWeight="bold"
           >
             REDEEM
           </text>
@@ -407,8 +407,8 @@ export default function PaylinqRedeemEnjoy() {
       {/* <!-- Definitions --> */}
       <defs>
         <linearGradient id="rewardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#2D9642" stop-opacity="0.8" />
-          <stop offset="100%" stop-color="#C28F49" stop-opacity="0.8" />
+          <stop offset="0%" stopColor="#2D9642" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="#C28F49" stopOpacity="0.8" />
         </linearGradient>
       </defs>
     </svg>
