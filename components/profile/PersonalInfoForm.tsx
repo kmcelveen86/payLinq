@@ -6,7 +6,7 @@ interface Props {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
   dateOfBirth: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   updatedAt?: string | Date;
@@ -16,7 +16,7 @@ const PersonalInfoForm = ({
   firstName,
   lastName,
   email,
-  phone,
+  phoneNumber,
   dateOfBirth,
   onChange,
   updatedAt,
@@ -101,8 +101,8 @@ const PersonalInfoForm = ({
               </div>
               <input
                 type="tel"
-                name="phone"
-                value={phone}
+                name="phoneNumber"
+                value={phoneNumber}
                 onChange={onChange}
                 className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
               />

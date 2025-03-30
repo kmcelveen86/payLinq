@@ -358,14 +358,14 @@ export default function ProfileSetup() {
                       </div>
                       <input
                         type="tel"
-                        {...register("phone")}
+                        {...register("phoneNumber")}
                         className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                         placeholder="(123) 456-7890"
                       />
                     </div>
-                    {errors.phone && (
+                    {errors.phoneNumber && (
                       <p className="mt-1 text-xs text-red-400">
-                        {errors.phone.message}
+                        {errors.phoneNumber.message}
                       </p>
                     )}
                   </motion.div>
@@ -382,11 +382,11 @@ export default function ProfileSetup() {
                       <input
                         type="date"
                         {...register("dateOfBirth")}
-                        max={new Date().toISOString().split("T")[0]}
+                        max={new Date().toString().split("T")[0]}
                         min={(() => {
                           const date = new Date();
                           date.setFullYear(date.getFullYear() - 100); // Reasonable minimum (100 years ago)
-                          return date.toISOString().split("T")[0];
+                          return date.toString().split("T")[0];
                         })()}
                         className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2D9642] focus:border-transparent"
                       />
