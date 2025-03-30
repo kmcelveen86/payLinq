@@ -144,18 +144,6 @@ export const updateMembershipTier = async (
 //   await apiClient.delete(`/payment-methods/${id}`);
 // };
 
-// Security APIs
-// export const changePassword = async (
-//   currentPassword: string,
-//   newPassword: string
-// ): Promise<{ success: boolean; message: string }> => {
-//   const response = await apiClient.post("/change-password", {
-//     currentPassword,
-//     newPassword,
-//   });
-//   return response.data;
-// };
-
 // export const enableTwoFactorAuth = async (): Promise<{
 //   success: boolean;
 //   setupUrl: string;

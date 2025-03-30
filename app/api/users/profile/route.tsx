@@ -337,7 +337,6 @@ export async function PUT(request: NextRequest) {
         notificationPreferences: true,
       },
     });
-    console.log(`🚀 ~ PUT ~ user.dateOfBirth:`, user?.dateOfBirth)
 
     return NextResponse.json({
       success: true,

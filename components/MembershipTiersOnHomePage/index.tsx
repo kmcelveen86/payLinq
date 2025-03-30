@@ -332,7 +332,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
               expiration="18 months"
               recommended={true}
               selected={selectedTier?.toLocaleLowerCase() === "freemium"}
-              isCurrentPlan={profileData?.membershipTier.toLowerCase() === "freemium"}
+              isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "freemium"}
               onSelect={() => handleSelectTier("Freemium")}
               annualBilling={annualBilling}
             />
@@ -376,7 +376,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
               maxAnnualPoints={240000}
               expiration="24 months"
               selected={selectedTier?.toLowerCase() === "lifestyle"}
-              isCurrentPlan={profileData?.membershipTier.toLowerCase() === "lifestyle"}
+              isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "lifestyle"}
               onSelect={() => handleSelectTier("Lifestyle")}
               annualBilling={annualBilling}
               disabled={profileData?.membershipTier !== "Lifestyle"}
@@ -425,10 +425,10 @@ const MembershipTiersOnHomePage: React.FC = () => {
               maxAnnualPoints={360000}
               expiration="36 months"
               selected={selectedTier?.toLowerCase() === "vip lifestyle"}
-              isCurrentPlan={profileData?.membershipTier.toLowerCase() === "vip lifestyle"}
+              isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "vip lifestyle"}
               onSelect={() => handleSelectTier("VIP Lifestyle")}
               annualBilling={annualBilling}
-              disabled={profileData?.membershipTier.toLowerCase() !== "vip lifestyle"}
+              disabled={profileData?.membershipTier?.toLowerCase() !== "vip lifestyle"}
             />
           </motion.div>
 

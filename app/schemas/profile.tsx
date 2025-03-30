@@ -14,7 +14,10 @@ export const profileUpdateSchema = z.object({
   firstName: z.string().min(1, "First name is required").optional(),
   lastName: z.string().min(1, "Last name is required").optional(),
   email: z.string().email("Invalid email address").optional(),
-  phoneNumber: z.string().regex(phoneRegex, "Invalid phone number format").optional(),
+  phoneNumber: z
+    .string()
+    .regex(phoneRegex, "Invalid phone number format")
+    .optional(),
   dateOfBirth: z
     .string()
     .refine((val) => {
@@ -74,6 +77,31 @@ export const profileSchema = z.object({
   notifications: notificationPreferencesSchema.optional(),
 });
 
+export const profilePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(6, "Current password is required"),
+    newPassword: z
+      .string()
+      .min(6, "New password is required")
+      .refine((val) => {
+        const hasUpperCase = /[A-Z]/.test(val);
+        const hasLowerCase = /[a-z]/.test(val);
+        const hasNumber = /\d/.test(val);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(val);
+        return hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+      }, "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"),
+    confirmPassword: z.string().min(6, "Confirm password is required"),
+  })
+  .superRefine((data, ctx) => {
+    if (data.newPassword !== data.confirmPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Passwords do not match",
+        path: ["confirmPassword"], // This explicitly ties the error to confirmPassword
+      });
+    }
+  });
+
 // Define the notification preferences type
 export type NotificationPreferences = {
   email?: boolean;
@@ -94,3 +122,5 @@ export type ProfileUpdateData = z.infer<typeof profileUpdateSchema> & {
   profileImage?: string | null;
   membershipTier?: string;
 };
+// Add a type for password updates
+export type ProfilePasswordData = z.infer<typeof profilePasswordSchema>;
