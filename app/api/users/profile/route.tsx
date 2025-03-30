@@ -253,11 +253,8 @@ export async function PUT(request: NextRequest) {
     // IMPORTANT: Only include dateOfBirth if explicitly provided and valid
     if (body.dateOfBirth !== undefined && body.dateOfBirth !== null && body.dateOfBirth !== '') {
       try {
-        // const dateValue = new Date(body.dateOfBirth);
         const dateValue = new Date(body.dateOfBirth);
-        // TODO: Hack to fix the date issue
-        const fixedDate = add(dateValue, { days: 1 });
-        const formmattedDate = format(fixedDate, "yyyy-MM-dd");
+        const formmattedDate = format(dateValue, "yyyy-MM-dd");
 
         // Update existing user
         if (!isNaN(dateValue.getTime())) {
