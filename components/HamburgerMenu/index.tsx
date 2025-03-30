@@ -1,24 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
-  Button,
-  useMediaQuery,
-  Typography,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { HideOnScroll } from "@/components/HideOnScroll";
+import Image from "next/image";
 import {
-  CreditCard,
   Home,
   HelpCircle,
   Tag,
@@ -27,6 +12,9 @@ import {
   LogOut,
   LogIn,
   ChevronRight,
+  Menu,
+  X,
+  CreditCard,
 } from "lucide-react";
 import {
   useAuth,
@@ -41,33 +29,37 @@ import {
 export default function HamburgerMenu() {
   const { isLoaded, session, isSignedIn } = useSession();
   const clerkUser = useUser();
-  const clerkAuth = useAuth();
-  // console.log("🚀 ~ hamburger ~ authclerk:", clerkAuth);
-  // console.log("🚀 ~ hamburger ~ userclerk:", clerkUser);
-  const userEmail = clerkUser?.user?.primaryEmailAddress;
+  const userEmail = clerkUser?.user?.primaryEmailAddress as any;
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const isMobile = useMediaQuery("(max-width:720px)");
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
 
-  const toggleDrawer =
-    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
-      ) {
-        return;
-      }
-      setDrawerOpen(open);
+    // Handle body scroll when drawer is open
+    if (drawerOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
     };
+  }, [drawerOpen]);
+
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
 
   const menuVariants = {
     hidden: { x: "-100%" },
     visible: { x: 0 },
+  };
+
+  const overlayVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
   };
 
   const listItemVariants = {
@@ -76,7 +68,7 @@ export default function HamburgerMenu() {
       opacity: 1,
       x: 0,
       transition: {
-        delay: i * 0.1,
+        delay: i * 0.05,
         duration: 0.3,
       },
     }),
@@ -86,127 +78,123 @@ export default function HamburgerMenu() {
     {
       text: "Home",
       href: "/",
-      icon: <Home size={20} className="text-gray-600 mr-3" />,
+      icon: <Home size={20} className="text-gray-600" />,
     },
     {
       text: "How it works",
       href: "/howitworks",
-      icon: <HelpCircle size={20} className="text-gray-600 mr-3" />,
+      icon: <HelpCircle size={20} className="text-gray-600" />,
     },
     {
-      text: "Pricing",
+      text: "Features",
       href: "/pricing",
-      icon: <Tag size={20} className="text-gray-600 mr-3" />,
+      icon: <Tag size={20} className="text-gray-600" />,
     },
     {
       text: "Contact",
       href: "/contact",
-      icon: <Mail size={20} className="text-gray-600 mr-3" />,
+      icon: <Mail size={20} className="text-gray-600" />,
     },
   ];
 
   if (!isMounted) return null;
 
   return (
-    <Box className="bg-black h-16 flex items-center">
-      <HideOnScroll>
-        <IconButton
-          edge="start"
-          aria-label="menu"
-          onClick={toggleDrawer(true)}
-          sx={{
-            color: "#ffffff",
-            marginLeft: "12px",
-            "&:hover": {
-              backgroundColor: "rgba(255,255,255,0.1)",
-            },
-          }}
-        >
-          <MenuIcon fontSize="large" />
-        </IconButton>
-      </HideOnScroll>
-
-      <AnimatePresence>
-        <Drawer
-          anchor="left"
-          open={drawerOpen}
-          onClose={toggleDrawer(false)}
-          PaperProps={{
-            sx: {
-              width: 280,
-              backgroundImage: "linear-gradient(to bottom, #ffffff, #f8f8f8)",
-              overflow: "hidden",
-            },
-          }}
-        >
-          <div className="relative h-full overflow-hidden">
-            {/* Green gradient top accent */}
-            <div
-              className="absolute top-0 left-0 w-full h-2"
-              style={{ background: "linear-gradient(90deg, #2D9642, #C28F49)" }}
+    <div className="bg-gray-900 h-16 flex items-center justify-between px-4 relative z-50">
+      {/* Logo Area */}
+      <div className="flex items-center">
+        <Link href="/">
+          <div className="relative w-10 h-10 mr-2">
+            <Image
+              src="/logos/paylinq-logo-new.png"
+              width={40}
+              height={40}
+              alt="Paylinq Logo"
+              className="object-contain"
             />
+          </div>
+        </Link>
+      </div>
 
-            {/* Header with logo and close button */}
-            <div className="flex justify-between items-center px-5 py-4 border-b border-gray-100">
+      {/* Menu Toggle Button */}
+      <motion.button
+        onClick={toggleDrawer}
+        whileTap={{ scale: 0.95 }}
+        className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 text-white focus:outline-none"
+      >
+        <Menu size={24} />
+      </motion.button>
+
+      {/* Drawer Overlay */}
+      <AnimatePresence>
+        {drawerOpen && (
+          <motion.div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={overlayVariants}
+            onClick={toggleDrawer}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Drawer */}
+      <AnimatePresence>
+        {drawerOpen && (
+          <motion.div
+            className="fixed top-0 bottom-0 left-0 w-[280px] bg-gray-900 shadow-xl z-50 flex flex-col"
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={menuVariants}
+            transition={{ type: "spring", damping: 25, stiffness: 250 }}
+          >
+            {/* Drawer Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-800">
               <div className="flex items-center">
-                <CreditCard
-                  size={24}
-                  style={{ color: "#2D9642" }}
-                  className="mr-2"
-                />
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: "bold",
-                    background: "linear-gradient(90deg, #2D9642, #C28F49)",
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    color: "transparent",
-                  }}
-                >
+                <div className="w-10 h-10 relative mr-2">
+                  <Image
+                    src="/logos/paylinq-logo-new.png"
+                    fill
+                    alt="Paylinq Logo"
+                    className="object-contain"
+                  />
+                </div>
+                <span className="font-bold text-xl bg-gradient-to-r from-[#2D9642] to-[#C28F49] bg-clip-text text-transparent">
                   Paylinq
-                </Typography>
+                </span>
               </div>
-              <IconButton
-                onClick={toggleDrawer(false)}
-                sx={{
-                  color: "#666",
-                  "&:hover": {
-                    backgroundColor: "rgba(45, 150, 66, 0.1)",
-                  },
-                }}
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={toggleDrawer}
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-400 hover:text-white"
               >
-                <CloseIcon />
-              </IconButton>
+                <X size={18} />
+              </motion.button>
             </div>
 
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={menuVariants}
-              transition={{ type: "spring", stiffness: 100 }}
-              className="h-full relative"
-            >
-              {/* Background decorative elements */}
-              <div
-                className="absolute top-20 right-10 w-48 h-48 rounded-full opacity-10 z-0"
-                style={{
-                  background:
-                    "radial-gradient(circle, #2D9642 0%, transparent 70%)",
-                  filter: "blur(40px)",
-                }}
-              />
-              <div
-                className="absolute bottom-20 left-5 w-32 h-32 rounded-full opacity-10 z-0"
-                style={{
-                  background:
-                    "radial-gradient(circle, #C28F49 0%, transparent 70%)",
-                  filter: "blur(30px)",
-                }}
-              />
+            {/* Decorative Elements */}
+            <div
+              className="absolute top-20 right-0 w-32 h-32 rounded-full opacity-10 pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(circle, #2D9642 0%, transparent 70%)",
+                filter: "blur(30px)",
+              }}
+            />
+            <div
+              className="absolute bottom-20 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(circle, #C28F49 0%, transparent 70%)",
+                filter: "blur(30px)",
+              }}
+            />
 
-              {/* Menu Items */}
-              <List className="relative z-10">
+            {/* Menu Items */}
+            <div className="flex-1 overflow-y-auto py-4 relative">
+              <div className="space-y-1 px-2">
                 {menuItems.map((item, index) => (
                   <motion.div
                     key={item.text}
@@ -215,54 +203,29 @@ export default function HamburgerMenu() {
                     initial="hidden"
                     animate="visible"
                   >
-                    <ListItem
-                      component={Link}
+                    <Link
                       href={item.href}
-                      onClick={toggleDrawer(false)}
-                      sx={{
-                        py: 1.5,
-                        px: 3,
-                        borderRadius: 0,
-                        position: "relative",
-                        overflow: "hidden",
-                        transition: "all 0.3s ease",
-                        "&:hover": {
-                          backgroundColor: "rgba(45, 150, 66, 0.05)",
-                        },
-                        "&:after": {
-                          content: '""',
-                          position: "absolute",
-                          left: 0,
-                          bottom: 0,
-                          height: "2px",
-                          width: "0%",
-                          background:
-                            "linear-gradient(90deg, #2D9642, #C28F49)",
-                          transition: "width 0.3s ease",
-                        },
-                        "&:hover:after": {
-                          width: "100%",
-                        },
-                      }}
+                      onClick={toggleDrawer}
+                      className="group relative overflow-hidden"
                     >
                       <motion.div
-                        className="flex items-center w-full"
                         whileHover={{ x: 5 }}
-                        transition={{ type: "spring", stiffness: 400 }}
+                        className="flex items-center p-3 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800/50 transition-colors"
                       >
-                        {item.icon}
-                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                          {item.text}
-                        </Typography>
+                        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-800 mr-3">
+                          {item.icon}
+                        </span>
+                        <span className="font-medium">{item.text}</span>
                         <ChevronRight
                           size={16}
-                          className="ml-auto text-gray-400"
+                          className="ml-auto text-gray-500 group-hover:text-white"
                         />
                       </motion.div>
-                    </ListItem>
+                      <div className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-[#2D9642] to-[#C28F49] transition-all duration-300" />
+                    </Link>
                   </motion.div>
                 ))}
-              </List>
+              </div>
 
               <SignedIn>
                 <motion.div
@@ -271,101 +234,82 @@ export default function HamburgerMenu() {
                   animate="visible"
                   custom={4}
                 >
-                  <Divider sx={{ my: 2, opacity: 0.6 }} />
-                  <List className="relative z-10">
-                    <ListItem
-                      component={Link}
+                  <div className="border-t border-gray-800 my-4" />
+                  <div className="px-2">
+                    <Link
                       href="/user/dashboard"
-                      onClick={toggleDrawer(false)}
-                      sx={{
-                        py: 1.5,
-                        px: 3,
-                        borderRadius: 0,
-                        transition: "all 0.3s ease",
-                        "&:hover": {
-                          backgroundColor: "rgba(45, 150, 66, 0.05)",
-                        },
-                      }}
+                      onClick={toggleDrawer}
+                      className="group relative overflow-hidden"
                     >
                       <motion.div
-                        className="flex items-center w-full"
                         whileHover={{ x: 5 }}
-                        transition={{ type: "spring", stiffness: 400 }}
+                        className="flex items-center p-3 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800/50 transition-colors"
                       >
-                        <User size={20} className="text-gray-600 mr-3" />
-                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                          Dashboard
-                        </Typography>
+                        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-800 mr-3">
+                          <User size={20} className="text-[#2D9642]" />
+                        </span>
+                        <span className="font-medium">Dashboard</span>
                         <ChevronRight
                           size={16}
-                          className="ml-auto text-gray-400"
+                          className="ml-auto text-gray-500 group-hover:text-white"
                         />
                       </motion.div>
-                    </ListItem>
-                  </List>
+                      <div className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-[#2D9642] to-[#C28F49] transition-all duration-300" />
+                    </Link>
+                  </div>
                 </motion.div>
               </SignedIn>
+            </div>
 
-              <motion.div
-                variants={listItemVariants}
-                initial="hidden"
-                animate="visible"
-                custom={5}
-                className="absolute bottom-35 left-0 right-0 px-5"
-              >
-                <Divider sx={{ mb: 3, opacity: 0.6 }} />
-                <SignedIn>
-                  <motion.div whileHover={{ scale: 1.02 }}>
-                    <div
-                      onClick={() => {
-                        setDrawerOpen(false);
-                      }}
-                      style={{
-                        padding: "0.75rem 1rem",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        border: "1px solid rgba(194, 143, 73, 0.5)",
-                        color: "#C28F49",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        width: "100%",
-                      }}
-                    >
-                      <LogOut size={18} style={{ marginRight: "8px" }} />
-                      <SignOutButton />
+            {/* Footer */}
+            <div className="p-4 border-t border-gray-800">
+              <SignedIn>
+                <div className="mb-4 px-3 py-2 bg-gray-800 rounded-lg">
+                  <div className="flex items-center mb-1">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[#2D9642] to-[#C28F49] flex items-center justify-center text-white font-bold text-sm mr-2">
+                      {clerkUser?.user?.firstName?.[0] || "U"}
                     </div>
-                  </motion.div>
-                </SignedIn>
-                <SignedOut>
-                  <motion.div whileHover={{ scale: 1.02 }}>
-                    <div
-                      onClick={() => {
-                        setDrawerOpen(false);
-                      }}
-                      style={{
-                        padding: "0.75rem 1rem",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        background: "linear-gradient(90deg, #2D9642, #C28F49)",
-                        color: "white",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        boxShadow: "0 4px 10px rgba(45, 150, 66, 0.2)",
-                        width: "100%",
-                      }}
-                    >
-                      <LogIn size={18} style={{ marginRight: "8px" }} />
-                      <SignInButton>Join Waitlist</SignInButton>
+                    <div>
+                      <div className="text-white font-medium">
+                        {clerkUser?.user?.firstName || "User"}
+                      </div>
+                      <div className="text-gray-400 text-xs">{userEmail}</div>
                     </div>
-                  </motion.div>
-                </SignedOut>
-              </motion.div>
-            </motion.div>
-          </div>
-        </Drawer>
+                  </div>
+                </div>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full"
+                >
+                  <button
+                    onClick={toggleDrawer}
+                    className="w-full flex items-center justify-center p-3 border border-gray-700 text-gray-300 hover:text-white rounded-lg hover:border-gray-600 transition-colors"
+                  >
+                    <LogOut size={16} className="mr-2" />
+                    <SignOutButton />
+                  </button>
+                </motion.div>
+              </SignedIn>
+              <SignedOut>
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full"
+                >
+                  <button
+                    onClick={toggleDrawer}
+                    className="w-full flex items-center justify-center p-3 bg-gradient-to-r from-[#2D9642] to-[#C28F49] text-white rounded-lg shadow-lg hover:shadow-[#2D9642]/20 transition-all"
+                  >
+                    <LogIn size={16} className="mr-2" />
+                    <SignInButton>Join Waitlist</SignInButton>
+                  </button>
+                </motion.div>
+              </SignedOut>
+            </div>
+          </motion.div>
+        )}
       </AnimatePresence>
-    </Box>
+    </div>
   );
 }
