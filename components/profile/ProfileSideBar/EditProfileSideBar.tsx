@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 interface SidebarProps {
+  userFullName: string;
   activeSection: string;
   setActiveSection: (section: string) => void;
   onDeleteClick: () => void;
@@ -39,6 +40,7 @@ const ProfileSidebar = ({
   profileImage,
   userName,
   userEmail,
+  userFullName,
   isUploading,
   handleProfileImageChange,
 }: SidebarProps) => {
@@ -97,7 +99,7 @@ const ProfileSidebar = ({
           </label>
         </div>
 
-        <h2 className="text-xl font-bold text-white">{userName}</h2>
+        <h2 className="text-xl font-bold text-white">{userFullName}</h2>
         <p className="text-gray-400 text-sm mb-4">{userEmail}</p>
       </div>
 

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth, useSession, useUser } from "@clerk/nextjs";
 import { formatDistance, format } from "date-fns";
-import DeleteAccountModal from "../DeleteAccountModal";
+import DeleteAccountModal from "@/components/DeleteAccountModal";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileSideBar from "@/components/profile/ProfileSideBar/EditProfileSideBar";
 import PersonalInfoForm from "@/components/profile/PersonalInfoForm";
@@ -71,6 +71,8 @@ const ProfileEdit = () => {
 
   const { mutate: uploadImage, isPending: isUploading } = useProfileImage();
   const { data: profileData } = useUserProfile();
+  const userFullName =
+    userObj?.fullName || `${profileData?.firstName} ${profileData?.lastName}`;
   const { mutate: updateProfile } = useUpdateUserProfile();
   // const formattedDate = format(new Date(profileData?.dateOfBirth as any), 'MM dd yyyy');
   // console.log("🚀 ~ ProfileEdit ~ formattedDate:", formattedDate)
@@ -232,9 +234,7 @@ const ProfileEdit = () => {
               </label>
             </div>
             <div>
-              <h3 className="font-semibold text-lg">
-                {userObj?.firstName || "User"}
-              </h3>
+              <h3 className="font-semibold text-lg">{userFullName}</h3>
               <p className="text-gray-400 text-sm">{formData.email}</p>
             </div>
           </div>
@@ -292,6 +292,7 @@ const ProfileEdit = () => {
           {/* Desktop Sidebar - Hidden on mobile */}
           <div className="hidden lg:block">
             <ProfileSideBar
+              userFullName={userFullName}
               activeSection={activeSection}
               setActiveSection={setActiveSection}
               onDeleteClick={() => setIsDeleteModalOpen(true)}
@@ -312,7 +313,9 @@ const ProfileEdit = () => {
                 lastName={formData.lastName}
                 email={formData.email}
                 phoneNumber={formData.phoneNumber}
-                dateOfBirth={formData.dateOfBirth || profileData?.dateOfBirth || ""}
+                dateOfBirth={
+                  formData.dateOfBirth || profileData?.dateOfBirth || ""
+                }
                 onChange={handleChange}
                 updatedAt={lastUpdatedText}
               />
@@ -355,17 +358,19 @@ const ProfileEdit = () => {
             )}
 
             {/* Sticky Save Button on Mobile */}
-            <div className="lg:bg-gray-800 lg:border-t lg:border-gray-700 lg:rounded-b-xl lg:p-4 lg:flex lg:justify-end">
-              <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-900 p-4 border-t border-gray-800 flex justify-center z-10">
-                {saveSuccess && (
-                  <div className="absolute -top-10 left-0 right-0 bg-green-600 text-white py-2 px-4 text-center">
-                    Changes saved successfully!
-                  </div>
-                )}
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`
+            {activeSection !== "security" && (
+              <div className="lg:bg-gray-800 lg:border-t lg:border-gray-700 lg:rounded-b-xl lg:p-4 lg:flex lg:justify-end">
+                <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-900 p-4 border-t border-gray-800 flex justify-center z-10">
+                  {saveSuccess && (
+                    <div className="absolute -top-10 left-0 right-0 bg-green-600 text-white py-2 px-4 text-center">
+                      Changes saved successfully!
+                    </div>
+                  )}
+                  {activeSection !== "security" && (
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className={`
                   w-full px-6 py-3 bg-gradient-to-r from-[#2D9642] to-[#C28F49] 
                   rounded-lg font-medium text-white flex items-center justify-center
                   transition-all duration-300 ease-in-out
@@ -373,6 +378,52 @@ const ProfileEdit = () => {
                     loading
                       ? "opacity-90 cursor-not-allowed"
                       : "hover:shadow-lg hover:shadow-green-700/30 hover:brightness-110 active:scale-95"
+                  }
+                `}
+                    >
+                      {loading ? (
+                        <>
+                          <svg
+                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                          Saving...
+                        </>
+                      ) : (
+                        "Save Changes"
+                      )}
+                    </button>
+                  )}
+                </div>
+
+                {/* Desktop Save Button */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`
+                  hidden lg:flex px-6 py-2 bg-gradient-to-r from-[#2D9642] to-[#C28F49] 
+                  rounded-lg font-medium text-white items-center
+                  transition-all duration-300 ease-in-out
+                  ${
+                    loading
+                      ? "opacity-90 cursor-not-allowed"
+                      : "hover:shadow-lg hover:shadow-green-700/30 hover:scale-105 hover:brightness-110 active:scale-95"
                   }
                 `}
                 >
@@ -405,51 +456,7 @@ const ProfileEdit = () => {
                   )}
                 </button>
               </div>
-
-              {/* Desktop Save Button */}
-              <button
-                type="submit"
-                disabled={loading}
-                className={`
-                  hidden lg:flex px-6 py-2 bg-gradient-to-r from-[#2D9642] to-[#C28F49] 
-                  rounded-lg font-medium text-white items-center
-                  transition-all duration-300 ease-in-out
-                  ${
-                    loading
-                      ? "opacity-90 cursor-not-allowed"
-                      : "hover:shadow-lg hover:shadow-green-700/30 hover:scale-105 hover:brightness-110 active:scale-95"
-                  }
-                `}
-              >
-                {loading ? (
-                  <>
-                    <svg
-                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    Saving...
-                  </>
-                ) : (
-                  "Save Changes"
-                )}
-              </button>
-            </div>
+            )}
           </form>
         </div>
       </div>
