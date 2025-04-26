@@ -24,10 +24,13 @@ import {
 } from "lucide-react";
 import TopNav from ".";
 import { SignOutButton, useAuth, useSession, useUser } from "@clerk/nextjs";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function TopNavDropDown() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isMounted, setIsMounted] = useState(false);
+  const queryClient = useQueryClient();
+
   const open = Boolean(anchorEl);
   const theme = useTheme();
   const clerkUser = useUser();
@@ -49,6 +52,7 @@ export default function TopNavDropDown() {
 
   const handleClose = async () => {
     setAnchorEl(null);
+    queryClient.resetQueries({ queryKey: ["userProfile"] });
   };
 
   const menuItems = [

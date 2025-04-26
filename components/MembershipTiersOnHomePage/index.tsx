@@ -137,7 +137,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
   };
 
   return (
-    <div className="relative overflow-hidden min-h-screen p-6 pt-24 font-sans text-gray-800 bg-[#F2F2F0]">
+    <div id="membershipSection" className="relative overflow-hidden min-h-screen p-6 pt-24 font-sans text-gray-800 bg-[#F2F2F0]">
       {isMounted && (
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
@@ -304,6 +304,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
                 {
                   icon: <CreditCard size={18} />,
                   text: "Paylinq Reward Debit Card",
+                  comingSoon: true
                 },
                 {
                   icon: <Award size={18} />,
@@ -742,7 +743,7 @@ const FeatureComparisonTable: React.FC<{
     {
       name: "Card Benefits",
       features: [
-        { name: "Paylinq Reward Debit Card", tiers: [true, true, true, true] },
+        { name: "Paylinq Reward Debit Card", tiers: [{ value: true, comingSoon: true }, true, true, true] },
         {
           name: "Digital Card",
           tiers: [{ value: true, comingSoon: true }, true, true, true],

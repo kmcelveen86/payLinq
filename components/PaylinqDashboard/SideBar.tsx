@@ -17,6 +17,7 @@ import userData from "./data";
 import Link from "next/link";
 import { useUserProfile } from "@/app/hooks/useProfile";
 import { SignOutButton } from "@clerk/nextjs";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   activeTab: string;
@@ -28,6 +29,11 @@ type Props = {
 export default function SideBar(props: Props) {
   const router = useRouter();
   const { activeTab, setActiveTab, userData, itemVariants } = props;
+  const queryClient = useQueryClient();
+
+  const handleLogout = () => {
+    queryClient.invalidateQueries({ queryKey: ["userProfile"] });
+  };
 
   const handleOnClick = () => {
     router.push("/user/profile-edit");
@@ -38,8 +44,7 @@ export default function SideBar(props: Props) {
     isLoading: isProfileLoading,
     isError: isProfileError,
   } = useUserProfile();
-  const { membershipTier, firstName, lastName, image } =
-    profileData || {};
+  const { membershipTier, firstName, lastName, image } = profileData || {};
   return (
     <motion.div variants={itemVariants} className="lg:col-span-1">
       <div className="bg-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl p-5">
@@ -192,7 +197,7 @@ export default function SideBar(props: Props) {
         </motion.div>
         <SignOutButton>
           <span className="mt-8 w-full flex items-center justify-center text-gray-400 hover:text-white py-2 rounded-lg hover:bg-gray-700 transition-colors">
-            <LogOut size={18} className="mr-2" />
+            <LogOut size={18} className="mr-2" onClick={handleLogout} />
             <span>Sign Out</span>
           </span>
         </SignOutButton>
