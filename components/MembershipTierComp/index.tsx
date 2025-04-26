@@ -51,7 +51,7 @@ const membershipTiers = [
       {
         icon: <CreditCard size={18} />,
         text: "Paylinq Reward Debit Card",
-        comingSoon: true
+        comingSoon: true,
       },
       {
         icon: <Award size={18} />,
@@ -94,13 +94,23 @@ const membershipTiers = [
       {
         icon: <CreditCard size={18} />,
         text: "All Freemium Features",
+        comingSoon: true,
       },
-      { icon: <Zap size={18} />, text: "Exclusive Deals & Insights" },
+      {
+        icon: <Zap size={18} />,
+        text: "Exclusive Deals & Insights",
+        comingSoon: true,
+      },
       {
         icon: <Award size={18} />,
         text: "Full Loyalty Program Access",
+        comingSoon: true,
       },
-      { icon: <Plane size={18} />, text: "Premium Travel Benefits" },
+      {
+        icon: <Plane size={18} />,
+        text: "Premium Travel Benefits",
+        comingSoon: true,
+      },
     ],
     rewards: [
       { category: "Everyday Purchases", points: 2 },
@@ -127,17 +137,28 @@ const membershipTiers = [
       {
         icon: <CreditCard size={18} />,
         text: "All Lifestyle Features",
+        comingSoon: true,
       },
-      { icon: <Zap size={18} />, text: "Priority Customer Support" },
+      {
+        icon: <Zap size={18} />,
+        text: "Priority Customer Support",
+        comingSoon: true,
+      },
       {
         icon: <Award size={18} />,
         text: "VIP Events & Birthday Gift",
+        comingSoon: true,
       },
       {
         icon: <Briefcase size={18} />,
         text: "Financial Advice Sessions",
+        comingSoon: true,
       },
-      { icon: <Plane size={18} />, text: "Premium Lounge Access" },
+      {
+        icon: <Plane size={18} />,
+        text: "Premium Lounge Access",
+        comingSoon: true,
+      },
     ],
     rewards: [
       { category: "Everyday Purchases", points: 3 },
@@ -164,14 +185,28 @@ const membershipTiers = [
       {
         icon: <CreditCard size={18} />,
         text: "All VIP Lifestyle Features",
+        comingSoon: true,
       },
       {
         icon: <Plane size={18} />,
         text: "Luxury Travel Experiences",
+        comingSoon: true,
       },
-      { icon: <Star size={18} />, text: "Dedicated Account Manager" },
-      { icon: <Zap size={18} />, text: "24/7 Concierge Services" },
-      { icon: <Award size={18} />, text: "Exclusive VIP Events" },
+      {
+        icon: <Star size={18} />,
+        text: "Dedicated Account Manager",
+        comingSoon: true,
+      },
+      {
+        icon: <Zap size={18} />,
+        text: "24/7 Concierge Services",
+        comingSoon: true,
+      },
+      {
+        icon: <Award size={18} />,
+        text: "Exclusive VIP Events",
+        comingSoon: true,
+      },
     ],
     rewards: [
       { category: "Everyday Purchases", points: 5 },
@@ -566,16 +601,6 @@ const MembershipTierComp = () => {
     </div>
   );
 };
-
-// PricingCard Component
-interface PricingCardProps {
-  tier: (typeof membershipTiers)[0];
-  annualBilling: boolean;
-  selected: boolean;
-  onSelect: () => void;
-  disabled: boolean;
-  currentTier: boolean;
-}
 
 // PricingCard Component
 interface PricingCardProps {
