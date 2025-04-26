@@ -51,6 +51,7 @@ const membershipTiers = [
       {
         icon: <CreditCard size={18} />,
         text: "Paylinq Reward Debit Card",
+        comingSoon: true
       },
       {
         icon: <Award size={18} />,

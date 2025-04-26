@@ -143,7 +143,7 @@ const PaylinqDashboard = () => {
               itemVariants={itemVariants}
             />
 
-            <AvailableRewards userData={userData} itemVariants={itemVariants} />
+            {/* <AvailableRewards userData={userData} itemVariants={itemVariants} /> */}
 
             <LockedPremiumFeatures itemVariants={itemVariants} />
 

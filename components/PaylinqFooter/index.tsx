@@ -167,9 +167,9 @@ const PaylinqFooter = () => {
                   size={18}
                 />
                 <span className="text-gray-400">
-                  {`70 W. 115th St.`}
-                  <br />
-                  {`Harlem, NY 10027`}
+                  {/* {`70 W. 115th St.`} */}
+                  {/* <br /> */}
+                  {`Augusta, Georgia 30906`}
                 </span>
               </div>
             </motion.div>

@@ -97,16 +97,16 @@ export default function HamburgerMenu() {
       href: "/howitworks",
       icon: <HelpCircle size={20} className="text-gray-600" />,
     },
-    {
-      text: "Features",
-      href: "/pricing",
-      icon: <Tag size={20} className="text-gray-600" />,
-    },
-    {
-      text: "Contact",
-      href: "/contact",
-      icon: <Mail size={20} className="text-gray-600" />,
-    },
+    // {
+    //   text: "Features",
+    //   href: "/membership-tiers",
+    //   icon: <Tag size={20} className="text-gray-600" />,
+    // },
+    // {
+    //   text: "Contact",
+    //   href: "/contact",
+    //   icon: <Mail size={20} className="text-gray-600" />,
+    // },
   ];
 
   if (!isMounted) return null;

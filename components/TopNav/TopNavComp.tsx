@@ -43,8 +43,8 @@ export default function TopNavComp() {
 
   const navLinks = [
     { href: "/howitworks", label: "How It Works", color: "#2D9642" },
-    { href: "/pricing", label: "Features", color: "#C28F49" },
-    { href: "/contact", label: "Contact Us", color: "#2D9642" },
+    // { href: "/membership-tiers", label: "Features", color: "#C28F49" },
+    // { href: "/contact", label: "Contact Us", color: "#2D9642" },
   ];
 
   if (isMobile) {
