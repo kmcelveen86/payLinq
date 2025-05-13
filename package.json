@@ -46,21 +46,15 @@
     "react-dom": "19.1.0",
     "react-hook-form": "^7.55.0",
     "react-hot-toast": "^2.5.2",
-<<<<<<< HEAD
-=======
     "react-plaid-link": "^4.0.1",
->>>>>>> parent of 6bc9a3b (chore(deps): updated deps)
     "svix": "^1.62.0",
     "uuid": "^11.1.0",
     "ws": "^8.18.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {
-<<<<<<< HEAD
-=======
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.26.0",
->>>>>>> parent of 6bc9a3b (chore(deps): updated deps)
     "@tailwindcss/postcss": "^4.0.17",
     "@tanstack/eslint-plugin-query": "^5.68.0",
     "@types/bcrypt": "^5.0.2",
