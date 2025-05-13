@@ -1,11 +1,11 @@
 version: 2
-authtoken: ${NGROK_AUTHTOKEN}
+authtoken: YOUR_AUTHTOKEN_HERE # Replace with your actual ngrok authtoken
 
 tunnels:
   # Single tunnel configured for your Vercel app and Clerk webhooks
   # Using the existing URL: https://7961-2601-3c3-8301-bdf0-e5c0-b5a9-3411-1711.ngrok-free.app
   main:
-    proto: http
+    proto: https
     addr: 3000 # Assuming your Next.js app runs on port 3000
     subdomain: 7961-2601-3c3-8301-bdf0-e5c0-b5a9-3411-1711 # Try to use the same subdomain
     
