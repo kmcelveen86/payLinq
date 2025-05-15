@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma"; // Make sure this path matches your prism
 const isProtectedRoute = createRouteMatcher([
   "/user/dashboard(.*)",
   "/user/profile-edit(.*)",
+  "/user/connected-accounts(.*)",
 ]);
 const isBlockRoute = createRouteMatcher(["/block(.*)"]);
 const allowedCountries = ["US"];
@@ -95,6 +96,7 @@ export const config = {
   matcher: [
     // Protected routes
     "/user/dashboard/:path*",
+    "/user/connected-accounts/:path*",
     "/user/profile-edit/:path*",
     "/block/:path*",
 

@@ -1,6 +1,10 @@
 "use client";
 import React, { useEffect, useRef } from "react";
+import Link from "next/link";
+import { useAuth, useSession, useUser } from "@clerk/nextjs";
 import { motion, useInView, useAnimation } from "framer-motion";
+import { SignInButton } from "@clerk/nextjs";
+import { useUserProfile } from "@/app/hooks/useProfile";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -47,7 +51,13 @@ const featureItems = [
 export default function HowItWorks() {
   const controls = useAnimation();
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 'some', margin: "0px 0px -100px 0px" });
+  const isInView = useInView(ref, {
+    once: true,
+    amount: "some",
+    margin: "0px 0px -100px 0px",
+  });
+  const { data: userProfile } = useUserProfile();
+  const clerkAuth = useAuth();
 
   useEffect(() => {
     if (isInView) {
@@ -87,6 +97,39 @@ export default function HowItWorks() {
       },
     },
   };
+
+  const generateStartText = () => {
+    const memberShipTier = userProfile?.membershipTier;
+    const hasMemberShipTier = Boolean(userProfile?.membershipTier);
+    const isAuthenticatedUser = clerkAuth.isSignedIn;
+    switch (true) {
+      case !isAuthenticatedUser:
+        return <SignInButton>Get Started</SignInButton>;
+      case isAuthenticatedUser && !hasMemberShipTier:
+        return <span>Pick A Plan</span>;
+      case hasMemberShipTier &&
+        ["Freemium", "Lifestyle", "VIP Lifestyle"].includes(
+          memberShipTier as string
+        ):
+        return (
+          <Link href="/membership-tiers">
+            <span>Upgrade</span>
+          </Link>
+        );
+      case hasMemberShipTier &&
+        ["Elite Lifestyle"].includes(memberShipTier as string):
+        return (
+          <Link href="/membership-tiers">
+            <span>You Have The Best Plan</span>
+          </Link>
+        );
+
+      default:
+        return <span>Get Started</span>;
+    }
+  };
+
+  // WE MAY NOT WANT TO EVEN SHOW THIS UI FOR A USER ON ELITE - DON'T MAKE IT SUPER EASY TO DOWNGRADE?
 
   return (
     <div
@@ -174,14 +217,14 @@ export default function HowItWorks() {
                 variant="h1"
                 component="h2"
                 sx={{
-                  fontSize: { xs: '1.875rem', md: '2.25rem', lg: '3rem' },
-                  fontWeight: 'bold',
-                  marginBottom: '3.5rem',
-                  fontFamily: 'sans-serif',
-                  color: 'transparent',
-                  backgroundImage: 'linear-gradient(90deg, #2D9642, #C28F49)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
+                  fontSize: { xs: "1.875rem", md: "2.25rem", lg: "3rem" },
+                  fontWeight: "bold",
+                  marginBottom: "3.5rem",
+                  fontFamily: "sans-serif",
+                  color: "transparent",
+                  backgroundImage: "linear-gradient(90deg, #2D9642, #C28F49)",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
                 }}
               >
                 How Paylinq Works
@@ -294,7 +337,7 @@ export default function HowItWorks() {
                     "linear-gradient(90deg, #2D9642 0%, #C28F49 100%)",
                 }}
               >
-                <span>Get Your Paylinq Card</span>
+                {generateStartText()}
                 <ArrowRight size={18} />
               </motion.button>
             </div>
