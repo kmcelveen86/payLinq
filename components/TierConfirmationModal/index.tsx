@@ -70,7 +70,7 @@ const TierConfirmationModal: React.FC<TierConfirmationModalProps> = ({
                 </div>
                 <h2 className="text-xl font-bold text-gray-800">
                   {isFreemium
-                    ? "Confirm Free Membership"
+                    ? "Confirm Membership"
                     : "Confirm Membership Upgrade"}
                 </h2>
               </div>
@@ -199,7 +199,7 @@ const TierConfirmationModal: React.FC<TierConfirmationModalProps> = ({
                       Processing...
                     </span>
                   ) : isFreemium ? (
-                    "Get Free Membership"
+                    "Get Membership"
                   ) : (
                     "Confirm Upgrade"
                   )}

@@ -293,7 +293,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
             <PricingCard
               tierName="Freemium"
               tagline="Start your journey"
-              price={0}
+              price={5}
               color="bg-gray-50"
               accentColor="border-green-300"
               buttonColor="bg-linear-to-r from-[#2D9642] to-[#38b053]"
@@ -719,7 +719,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
             : disabled
             ? "Coming Soon"
             : tierName === "Freemium"
-            ? "Get Started Free"
+            ? "Get Started"
             : `Upgrade to ${tierName}`}
         </motion.button>
       </div>

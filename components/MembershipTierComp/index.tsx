@@ -40,7 +40,7 @@ const membershipTiers = [
     id: "freemium",
     name: "Freemium",
     tagline: "Start your journey",
-    price: 0,
+    price: 5,
     color: "bg-gray-50",
     accentColor: "border-green-300",
     buttonColor: "from-[#2D9642] to-[#38b053]",
@@ -557,7 +557,7 @@ const MembershipTierComp = () => {
                     Processing...
                   </span>
                 ) : selectedTier === "freemium" ? (
-                  "Get Free Membership"
+                  "Get Membership"
                 ) : (
                   "Upgrade Membership"
                 )}
@@ -638,7 +638,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
     if (currentTier) return "Your Active Plan";
     if (selected) return "Plan Selected";
     if (disabled) return "Coming Soon";
-    if (tier.name === "Freemium") return "Get Started Free";
+    if (tier.name === "Freemium") return "Get Started";
     return `Upgrade to ${tier.name}`;
   };
 
