@@ -228,7 +228,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
                     backgroundImage: "linear-gradient(90deg, #2D9642, #C28F49)",
                   }}
                 >
-                  {`Empowering Financial Growth Through Reward-Driven Spending`}
+                  {`AI-Driven Rewards. Real Purchasing Power.`}
                 </span>
               </div>
             </Typography>
@@ -238,7 +238,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
               component="div"
               className="text-white leading-relaxed xs:text-sm md:text-base lg:text-lg mt-6 mb-8"
             >
-              {`Use your Paylinq debit card for everyday purchases, earn rewards, and unlock exclusive perks. Plus, build credit by tracking your bill payments—all while turning your spending into opportunities.`}
+              {`Paylinq turns your everyday spending into UPP - our universal rewards currency - redeemable like cash, powered by AI to maximize your value.`}
             </Typography>
 
             {/* Mission statement */}
@@ -258,8 +258,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
                 component="div"
                 className="text-white font-light italic"
               >
-                {`"Our mission is to turn your everyday transactions into a way to
-                achieve your financial and lifestyle dreams."`}
+                {`"Our mission is to transform everyday spending into rewards that unlock real financial freedom."`}
               </Typography>
             </motion.div>
 

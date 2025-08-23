@@ -68,8 +68,7 @@ export default function WhyChoosePaylinq() {
                 component="div"
                 className="text-white leading-relaxed xs:text-sm md:text-base lg:text-lg"
               >
-                {`Our mission is to turn your everyday transactions into a way to
-                achieve your financial and lifestyle dreams.`}
+                {`Our mission is to transform everyday spending into rewards that unlock real financial freedom.`}
               </Typography>
             </motion.div>
           </Box>

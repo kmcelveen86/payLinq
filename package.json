@@ -73,5 +73,21 @@
     "prisma": "^6.5.0",
     "tailwindcss": "^4.0.17",
     "typescript": "^5"
-  }
+  },
+  "description": "A card issuing, rewards generating platform built with Next.js, NextAuth, Prisma, and Stripe.",
+  "main": "start-ngrok.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kmcelveen86/payLinq.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kmcelveen86/payLinq/issues"
+  },
+  "homepage": "https://github.com/kmcelveen86/payLinq#readme"
 }

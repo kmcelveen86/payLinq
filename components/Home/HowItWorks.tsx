@@ -26,7 +26,7 @@ const featureItems = [
     step: 2,
     title: "Make Everyday Purchases",
     description:
-      "Use your Paylinq Debit Card for all your transactions and start earning rewards immediately.",
+      "Paylinq turns your everyday spending into UPP - our universal rewards currency - redeemable like cash, powered by AI to maximize your value.",
     icon: <ShoppingBag size={28} className="text-[#2D9642]" />,
     image: <PaylinqShopping />,
     alt: "Person shopping with Paylinq card",
