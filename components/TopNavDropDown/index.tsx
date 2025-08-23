@@ -70,7 +70,7 @@ export default function TopNavDropDown() {
     {
       text: "Transaction History",
       icon: <History size={18} />,
-      path: "/user/transactions",
+      path: "/user/connected-accounts",
     },
     { text: "Help & Support", icon: <HelpCircle size={18} />, path: "/help" },
   ];

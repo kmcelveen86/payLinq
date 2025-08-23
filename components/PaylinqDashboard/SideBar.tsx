@@ -10,6 +10,7 @@ import {
   CreditCard,
   LogOut,
   User,
+  Banknote,
 } from "lucide-react";
 import React from "react";
 import { useRouter } from "next/navigation";
@@ -45,6 +46,11 @@ export default function SideBar(props: Props) {
     isError: isProfileError,
   } = useUserProfile();
   const { membershipTier, firstName, lastName, image } = profileData || {};
+
+  const handlePlaidConnect = () => {
+    console.log("ok");
+  };
+
   return (
     <motion.div variants={itemVariants} className="lg:col-span-1">
       <div className="bg-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl p-5">
@@ -130,15 +136,23 @@ export default function SideBar(props: Props) {
             <span>Dashboard</span>
           </button>
           <button
-            onClick={() => setActiveTab("transactions")}
+            onClick={() => setActiveTab("accounts")}
             className={`w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors ${
-              activeTab === "transactions"
+              activeTab === "accounts"
                 ? "bg-gradient-to-r from-[#2D9642]/20 to-[#C28F49]/20 border-l-4 border-[#2D9642]"
                 : ""
             }`}
           >
-            <Calendar size={18} className="mr-3 text-gray-400" />
-            <span>Transactions</span>
+            <Link href="/user/connected-accounts">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="appearance-none bg-transparent border-none p-0 cursor-pointer focus:outline-none mt-1 flex items-center text-sm font-medium text-gray-300 hover:text-white rounded-full bg-opacity-50 hover:bg-opacity-70 transition-all"
+              >
+                <Banknote size={18} className="mr-3 text-gray-400" />
+                <span>Linked Accounts</span>
+              </motion.button>
+            </Link>
           </button>
           <button
             onClick={() => setActiveTab("rewards")}
@@ -174,8 +188,7 @@ export default function SideBar(props: Props) {
             <span>Settings</span>
           </button>
         </div>
-
-        <motion.div
+        {/* <motion.div
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className="mt-6 p-4 rounded-lg bg-gray-700 bg-opacity-50"
@@ -194,6 +207,87 @@ export default function SideBar(props: Props) {
           <div className="mt-3 text-xs text-gray-400">
             <span>Card is active and ready to use</span>
           </div>
+        </motion.div> */}
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="mt-6 p-5 rounded-lg bg-gray-700 bg-opacity-50 border border-gray-600"
+        >
+          <div className="flex items-center mb-3">
+            <div className="p-3 rounded-full bg-[#2D9642]/20 mr-4">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="text-[#2D9642]"
+              >
+                <path
+                  d="M19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5Z"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M3 10H21"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M7 15H9"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M12 15H17"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-medium text-white">Connect Your Bank</h3>
+              <p className="text-gray-400 text-sm">
+                Link your accounts to track transactions
+              </p>
+            </div>
+          </div>
+
+          <motion.button
+            whileHover={{
+              scale: 1.02,
+              backgroundColor: "rgba(45, 150, 66, 0.3)",
+            }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => handlePlaidConnect()}
+            className="w-full py-2.5 mt-2 rounded-lg bg-[#2D9642]/20 text-[#2D9642] font-medium border border-[#2D9642]/30 flex items-center justify-center"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="mr-2"
+            >
+              <path
+                d="M12 5V19M5 12H19"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Connect Account
+          </motion.button>
         </motion.div>
         <SignOutButton>
           <span className="mt-8 w-full flex items-center justify-center text-gray-400 hover:text-white py-2 rounded-lg hover:bg-gray-700 transition-colors">
