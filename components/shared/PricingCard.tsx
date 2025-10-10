@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Check, Clock } from "lucide-react";
+import { TIER_COLORS, type TierName } from "@/constants/tierColors";
 
 // Type definitions
 type RewardType = {
@@ -69,14 +70,23 @@ const PricingCard: React.FC<PricingCardProps> = ({
       ? "Free"
       : `$${currentPrice}${annualBilling ? "/year" : "/month"}`;
 
+  // Get tier-specific colors
+  const tierColors = TIER_COLORS[tierName as TierName] || TIER_COLORS.White;
+
+  // Determine ring color based on tier
+  const getRingColor = () => {
+    if (tierName === "Gold" || tierName === "Black") return "ring-amber-400";
+    return "ring-slate-400";
+  };
+
   return (
     <motion.div
-      className={`rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 h-full ${
+      className={`rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 h-full ${
         selected || isCurrentPlan
-          ? "ring-2 ring-green-500 scale-[1.02]"
+          ? `ring-2 ${getRingColor()} scale-[1.02]`
           : "hover:scale-[1.02]"
-      } ${color} ${disabled ? "opacity-90" : ""}`}
-      whileHover={{ y: -5, boxShadow: "0 10px 40px rgba(0,0,0,0.1)" }}
+      } ${tierColors.background} ${tierColors.border} border ${disabled ? "opacity-90" : ""}`}
+      whileHover={{ y: -5, boxShadow: "0 10px 40px rgba(0,0,0,0.15)" }}
       transition={{ duration: 0.3 }}
     >
       <div className="h-7 flex flex-col">
@@ -85,7 +95,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
           <div
             className="text-white text-center py-1 h-7 font-semibold text-sm flex items-center justify-center"
             style={{
-              background: "linear-gradient(90deg, #2D9642 0%, #C28F49 100%)",
+              background: `linear-gradient(90deg, ${tierColors.button.from} 0%, ${tierColors.button.to} 100%)`,
             }}
           >
             <span className="flex items-center">
@@ -99,7 +109,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
             {recommended && (
               <div
                 className="text-white text-center py-1 h-7 font-semibold text-sm"
-                style={{ backgroundColor: "#C28F49" }}
+                style={{ backgroundColor: tierColors.button.from }}
               >
                 MOST POPULAR
               </div>
@@ -107,7 +117,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
             {isCurrentPlan && !recommended && (
               <div
                 className="text-white text-center py-1 h-7 font-semibold text-sm"
-                style={{ backgroundColor: "#2D9642" }}
+                style={{ backgroundColor: tierColors.button.from }}
               >
                 YOUR CURRENT PLAN
               </div>
@@ -120,8 +130,18 @@ const PricingCard: React.FC<PricingCardProps> = ({
         {/* Card Header */}
         <div className="flex justify-between items-start">
           <div>
-            <h3 className="text-xl font-bold text-gray-900">{tierName}</h3>
-            <p className="text-sm text-gray-500 mt-1">{tagline}</p>
+            <h3
+              className="text-xl font-bold"
+              style={{ color: tierName === "Black" ? tierColors.text.primary : "#1F2937" }}
+            >
+              {tierName}
+            </h3>
+            <p
+              className="text-sm mt-1"
+              style={{ color: tierName === "Black" ? tierColors.text.secondary : "#6B7280" }}
+            >
+              {tagline}
+            </p>
           </div>
           <motion.div
             whileHover={{ rotate: 5, scale: 1.1 }}
@@ -134,7 +154,8 @@ const PricingCard: React.FC<PricingCardProps> = ({
         {/* Price */}
         <div className="mt-6 mb-6">
           <motion.span
-            className="text-4xl font-bold text-gray-900"
+            className="text-4xl font-bold"
+            style={{ color: tierName === "Black" ? tierColors.text.primary : "#111827" }}
             initial={{ scale: 1 }}
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
@@ -144,8 +165,8 @@ const PricingCard: React.FC<PricingCardProps> = ({
         </div>
 
         {/* Rewards Section */}
-        <div className={`border-t ${accentColor} pt-4 mb-6`}>
-          <h4 className={`font-semibold mb-2 ${textColor}`}>Rewards</h4>
+        <div className="border-t pt-4 mb-6" style={{ borderColor: tierColors.accent }}>
+          <h4 className="font-semibold mb-2" style={{ color: tierColors.text.primary }}>Rewards</h4>
           <ul className="space-y-2">
             {rewards.map((reward, index) => (
               <motion.li
@@ -174,8 +195,8 @@ const PricingCard: React.FC<PricingCardProps> = ({
         </div>
 
         {/* Features List */}
-        <div className={`border-t ${accentColor} pt-4 mb-6`}>
-          <h4 className={`font-semibold mb-2 ${textColor}`}>Key Features</h4>
+        <div className="border-t pt-4 mb-6" style={{ borderColor: tierColors.accent }}>
+          <h4 className="font-semibold mb-2" style={{ color: tierColors.text.primary }}>Key Features</h4>
           <ul className="space-y-3">
             {features.map((feature, index) => (
               <motion.li
@@ -214,11 +235,14 @@ const PricingCard: React.FC<PricingCardProps> = ({
         <motion.button
           onClick={onSelect}
           disabled={disabled}
-          className={`w-full bg-gradient-to-r ${buttonColor} text-white font-semibold mb-8 py-3 px-4 rounded-lg transition-all duration-300 mt-auto shadow-md hover:shadow-lg ${
+          className={`w-full text-white font-semibold mb-8 py-3 px-4 rounded-lg transition-all duration-300 mt-auto shadow-md hover:shadow-lg ${
             disabled ? "opacity-70 cursor-not-allowed" : ""
           } ${
             selected || isCurrentPlan ? "ring-2 ring-white ring-opacity-70" : ""
           }`}
+          style={{
+            background: `linear-gradient(to right, ${tierColors.button.from}, ${tierColors.button.to})`,
+          }}
           whileHover={{
             scale: !disabled ? 1.03 : 1,
           }}
