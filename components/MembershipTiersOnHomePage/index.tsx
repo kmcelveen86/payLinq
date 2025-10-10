@@ -425,9 +425,9 @@ const FAQSection: React.FC = () => {
 
   const faqs: FAQItem[] = [
     {
-      question: "How do I redeem my Paylinq Reward points?",
+      question: "How do I redeem my PayLinq Reward points?",
       answer:
-        "Redeem Paylinq Points directly in the app or web dashboard. Go to Rewards → Redeem, then choose how to use your <strong>Universal Paylinq Points (UPP)</strong>: Shop instantly with participating brands online or in-store, or book travel—flights, hotels, or experiences. Redemptions are instant. No minimum balance required.",
+        "Redeem PayLinq Points directly in the app or web dashboard. Go to Rewards → Redeem, then choose how to use your <strong>Universal PayLinq Points (UPP)</strong>: Shop instantly with participating brands online or in-store, or book travel—flights, hotels, or experiences. Redemptions are instant. No minimum balance required.",
     },
     {
       question: "Can I upgrade my membership tier at any time?",
@@ -442,7 +442,7 @@ const FAQSection: React.FC = () => {
     {
       question: "What is the Loyalty Program?",
       answer:
-        "The Paylinq Loyalty Program lets members earn <strong>Universal Paylinq Points (UPP)</strong> on everyday spending. Each purchase made through a Paylinq Reward card or partner brand generates points that can be redeemed like cash—for shopping, travel, or experiences. Members also unlock higher earning rates, exclusive offers, and enhanced redemption values as they move up from White → Silver → Gold → Black tiers.",
+        "The PayLinq Loyalty Program lets members earn <strong>Universal PayLinq Points (UPP)</strong> on everyday spending. Each purchase made through a PayLinq Reward card or partner brand generates points that can be redeemed like cash—for shopping, travel, or experiences. Members also unlock higher earning rates, exclusive offers, and enhanced redemption values as they move up from White → Silver → Gold → Black tiers.",
     },
   ];
 
