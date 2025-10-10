@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import AvailableRewards from "./AvailableRewards";
 import LockedPremiumFeatures from "./LockedPremiumFeatures";
 import MultiplierDetails from "./MultiplierDetails";
-import PlanComparison from "./PlanComparison";
 import PlanUpgradeBanner from "./PlanUpgradeBanner";
 import PointsSummaryCard from "./PointsSummaryCard";
 import RecentTransactions from "./RecentTransactions";
@@ -145,8 +144,6 @@ const PaylinqDashboard = () => {
             {/* <AvailableRewards userData={userData} itemVariants={itemVariants} /> */}
 
             <LockedPremiumFeatures itemVariants={itemVariants} />
-
-            <PlanComparison itemVariants={itemVariants} />
           </motion.div>
         </motion.div>
       </main>

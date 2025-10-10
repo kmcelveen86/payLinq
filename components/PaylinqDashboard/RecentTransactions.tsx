@@ -49,9 +49,6 @@ export default function RecentTransactions(props: Props) {
                 <p className="text-green-500 text-sm">
                   +{transaction.points} pts
                 </p>
-                <span className="ml-1 text-xs text-gray-500">
-                  ({transaction.multiplier}x)
-                </span>
               </div>
             </div>
           </motion.div>
