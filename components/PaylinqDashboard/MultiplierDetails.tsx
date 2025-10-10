@@ -5,22 +5,26 @@ import { useUserProfile } from "@/app/hooks/useProfile";
 // Define tier-specific redemption values
 const TIER_REDEMPTION = {
   White: {
-    pointsFor10: 1000,
+    pointsEarned: 1000,
+    spendingAmount: 1000, // $1000 spent = 1000 points at 1pt/$1
     redemptionValue: 10,
     multiplier: 1,
   },
   Silver: {
-    pointsFor10: 1000,
+    pointsEarned: 1000,
+    spendingAmount: 1000, // $1000 spent = 1000 points at 1pt/$1
     redemptionValue: 12.50,
     multiplier: 1.25,
   },
   Gold: {
-    pointsFor10: 1000,
+    pointsEarned: 1000,
+    spendingAmount: 1000, // $1000 spent = 1000 points at 1pt/$1
     redemptionValue: 17.50,
     multiplier: 1.75,
   },
   Black: {
-    pointsFor10: 1000,
+    pointsEarned: 1000,
+    spendingAmount: 1000, // $1000 spent = 1000 points at 1pt/$1
     redemptionValue: 20,
     multiplier: 2,
   },
@@ -91,12 +95,14 @@ export default function MultiplierDetails(props: Props) {
           <div className="text-center mb-6">
             <div className="flex items-center justify-center gap-2 mb-2">
               <Coins size={24} className="text-[#C28F49]" />
-              <p className="text-gray-400 text-sm font-medium">Every $10 You Spend</p>
+              <p className="text-gray-400 text-sm font-medium">
+                Every ${redemptionInfo.spendingAmount.toLocaleString()} You Spend
+              </p>
             </div>
             <div className="flex items-center justify-center gap-4 my-4">
               <div className="text-center">
                 <div className="text-4xl font-bold text-white mb-1">
-                  {redemptionInfo.pointsFor10.toLocaleString()}
+                  {redemptionInfo.pointsEarned.toLocaleString()}
                 </div>
                 <p className="text-xs text-gray-400 uppercase tracking-wider">Points Earned</p>
               </div>

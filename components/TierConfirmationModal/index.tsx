@@ -96,9 +96,9 @@ const TierConfirmationModal: React.FC<TierConfirmationModalProps> = ({
                   )}
                 </p>
 
-                {/* Only show payment details for paid tiers */}
+                {/* Payment details for paid tiers */}
                 {price > 0 && (
-                  <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+                  <div className="bg-gray-50 rounded-lg p-4 border border-gray-100 mb-4">
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-gray-600">Membership tier:</span>
                       <span className="font-medium text-gray-800">
@@ -121,29 +121,124 @@ const TierConfirmationModal: React.FC<TierConfirmationModalProps> = ({
                   </div>
                 )}
 
-                {/* For White, show benefits instead of payment details */}
-                {isFreemium && (
-                  <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
-                    <div className="flex items-center mb-2">
-                      <CheckCircle size={16} className="text-green-500 mr-2" />
-                      <span className="text-gray-700">
-                        1x points on everyday purchases
-                      </span>
-                    </div>
-                    <div className="flex items-center mb-2">
-                      <CheckCircle size={16} className="text-green-500 mr-2" />
-                      <span className="text-gray-700">
-                        2x points on dining & travel
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <CheckCircle size={16} className="text-green-500 mr-2" />
-                      <span className="text-gray-700">
-                        Access to PayLinq Rewards Debit Card
-                      </span>
-                    </div>
-                  </div>
-                )}
+                {/* Benefits breakdown for all tiers */}
+                <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+                  <p className="text-sm font-semibold text-gray-800 mb-3">
+                    What you get:
+                  </p>
+                  {tierName === "White" && (
+                    <>
+                      <div className="flex items-center mb-2">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          1 point per $1 spent on all purchases
+                        </span>
+                      </div>
+                      <div className="flex items-center mb-2">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          1,000 points = $10 redemption value
+                        </span>
+                      </div>
+                      <div className="flex items-center mb-2">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          Points never expire
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          No points limits
+                        </span>
+                      </div>
+                    </>
+                  )}
+                  {tierName === "Silver" && (
+                    <>
+                      <div className="flex items-center mb-2">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          1 point per $1 spent on all purchases
+                        </span>
+                      </div>
+                      <div className="flex items-center mb-2">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          1,000 points = $12.50 redemption value
+                        </span>
+                      </div>
+                      <div className="flex items-center mb-2">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          Points never expire
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          No points limits
+                        </span>
+                      </div>
+                    </>
+                  )}
+                  {tierName === "Gold" && (
+                    <>
+                      <div className="flex items-center mb-2">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          1 point per $1 spent on all purchases
+                        </span>
+                      </div>
+                      <div className="flex items-center mb-2">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          1,000 points = $17.50 redemption value
+                        </span>
+                      </div>
+                      <div className="flex items-center mb-2">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          Points never expire
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          No points limits
+                        </span>
+                      </div>
+                    </>
+                  )}
+                  {tierName === "Black" && (
+                    <>
+                      <div className="flex items-center mb-2">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          1 point per $1 spent on all purchases
+                        </span>
+                      </div>
+                      <div className="flex items-center mb-2">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          1,000 points = $20 redemption value
+                        </span>
+                      </div>
+                      <div className="flex items-center mb-2">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          Points never expire
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <CheckCircle size={16} className="text-green-500 mr-2" />
+                        <span className="text-gray-700">
+                          No points limits
+                        </span>
+                      </div>
+                    </>
+                  )}
+                </div>
 
                 {price > 0 && (
                   <div className="flex items-start mt-4 p-3 bg-amber-50 rounded-lg border border-amber-100">
