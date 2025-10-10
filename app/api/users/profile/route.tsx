@@ -8,6 +8,8 @@ import { cookies } from "next/headers";
 
 // const prisma = new PrismaClient();
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const { userId, redirectToSignIn } = await auth();

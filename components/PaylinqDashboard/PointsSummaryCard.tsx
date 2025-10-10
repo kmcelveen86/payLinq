@@ -7,24 +7,24 @@ import { useUserProfile } from "@/app/hooks/useProfile";
 // Define tier-specific information
 const TIER_INFO = {
   White: {
-    maxPointsPerMonth: 10000,
     maxPointsPerYear: 120000,
     expirationMonths: 18,
+    redemptionRate: 0.01, // $0.01 per point ($10 redemption / 1000 points)
   },
   Silver: {
-    maxPointsPerMonth: 20000,
     maxPointsPerYear: 240000,
     expirationMonths: 24,
+    redemptionRate: 0.0125, // $0.0125 per point ($12.50 redemption / 1000 points)
   },
   Gold: {
-    maxPointsPerMonth: 30000,
     maxPointsPerYear: 360000,
     expirationMonths: 36,
+    redemptionRate: 0.0175, // $0.0175 per point ($17.50 redemption / 1000 points)
   },
   Black: {
-    maxPointsPerMonth: 50000,
     maxPointsPerYear: 600000,
     expirationMonths: 0, // Never expires
+    redemptionRate: 0.02, // $0.02 per point ($20 redemption / 1000 points)
   },
 };
 
@@ -79,45 +79,23 @@ export default function PointsSummaryCard(props: Props) {
 
       <motion.div
         whileHover={{ y: -5 }}
-        className="bg-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl p-5"
+        className="bg-gradient-to-br from-gray-800 to-[#C28F49]/10 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl p-5 border border-[#C28F49]/20"
       >
         <div className="flex justify-between">
-          <h3 className="text-gray-400 text-sm">Redemption Goal</h3>
-          <div className="p-2 rounded-lg bg-[#C28F49]/20">
-            <Gift size={18} className="text-[#C28F49]" />
+          <h3 className="text-gray-400 text-sm">Current Redemption Value</h3>
+          <div className="p-2 rounded-lg bg-gradient-to-br from-[#C28F49] to-amber-500">
+            <Gift size={18} className="text-white" />
           </div>
         </div>
-        <p className="text-xl font-bold mt-2">${userData.whiteLimits.redemptionValue} Redemption Value</p>
-        <div className="mt-2">
-          <div className="flex justify-between text-sm mb-1">
-            <span className="text-gray-400">Progress</span>
-            <span className="text-white">
-              {Math.floor(
-                (userData.totalPoints / userData.whiteLimits.pointsFor10) *
-                  100
-              )}
-              %
-            </span>
-          </div>
-          <div className="h-2 w-full bg-gray-700 rounded-full overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{
-                width: `${Math.floor(
-                  (userData.totalPoints /
-                    userData.whiteLimits.pointsFor10) *
-                    100
-                )}%`,
-              }}
-              transition={{ duration: 1, delay: 0.7 }}
-              className="h-full rounded-full bg-gradient-to-r from-[#C28F49] to-amber-400"
-            ></motion.div>
-          </div>
-          <p className="text-amber-400 text-sm mt-1">
-            {(
-              userData.whiteLimits.pointsFor10 - userData.totalPoints
-            ).toLocaleString()}{" "}
-            points to go
+        <div className="mt-3">
+          <p className="text-4xl font-bold bg-gradient-to-r from-[#C28F49] to-amber-400 bg-clip-text text-transparent">
+            ${(userData.totalPoints * tierInfo.redemptionRate).toFixed(2)}
+          </p>
+          <p className="text-xs text-gray-400 mt-1">Available to redeem now</p>
+        </div>
+        <div className="mt-4 pt-3 border-t border-gray-700/50">
+          <p className="text-xs text-gray-500 text-center">
+            Redeem anytime • No minimums • Points never expire
           </p>
         </div>
       </motion.div>
@@ -133,15 +111,14 @@ export default function PointsSummaryCard(props: Props) {
             <Award size={18} className="text-[#C28F49]" />
           </div>
         </div>
-        <p className="text-xl font-bold mt-2">Points Limits</p>
-        <div className="mt-3 space-y-2 text-sm">
+        <div className="mt-4 space-y-2 text-sm">
           <div className="flex items-center text-gray-300">
             <CheckCircle
               size={14}
               className="text-[#2D9642] mr-2 flex-shrink-0"
             />
             <span>
-              Monthly: {tierInfo.maxPointsPerMonth.toLocaleString()} points
+              Points never expire
             </span>
           </div>
           <div className="flex items-center text-gray-300">
@@ -150,18 +127,7 @@ export default function PointsSummaryCard(props: Props) {
               className="text-[#2D9642] mr-2 flex-shrink-0"
             />
             <span>
-              Yearly: {tierInfo.maxPointsPerYear.toLocaleString()} points
-            </span>
-          </div>
-          <div className="flex items-center text-gray-300">
-            <CheckCircle
-              size={14}
-              className="text-[#2D9642] mr-2 flex-shrink-0"
-            />
-            <span>
-              {tierInfo.expirationMonths === 0
-                ? "Points never expire"
-                : `Points expire in ${tierInfo.expirationMonths} months`}
+              No points limits
             </span>
           </div>
         </div>

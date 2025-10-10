@@ -82,7 +82,6 @@ const userData = {
     },
   ],
   whiteLimits: {
-    maxPointsPerMonth: 10000,
     maxPointsPerYear: 120000,
     pointMultipliers: {
       everyday: 1,
@@ -92,7 +91,6 @@ const userData = {
     redemptionRate: 0.10, // $0.10 per point ($10 spent = 100 points = $10 value)
     pointsFor10: 1000,
     redemptionValue: 10,
-    expirationMonths: 18,
   },
 };
 

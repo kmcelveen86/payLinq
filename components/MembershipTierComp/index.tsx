@@ -3,19 +3,15 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   CreditCard,
-  Check,
   Award,
   Gift,
-  Briefcase,
   Coffee,
-  Plane,
   Sparkle,
-  Clock,
   Shield,
-  Zap,
-  Star,
   CheckCircle,
   ArrowLeft,
+  Check,
+  Clock,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
@@ -23,16 +19,12 @@ import {
   useUpdateMembershipTier,
 } from "@/app/hooks/useProfile";
 import {
-  SignInButton,
-  SignOutButton,
-  useAuth,
-  useUser,
-  useSession,
   SignedIn,
   SignedOut,
-  SignUpButton,
+  SignInButton,
 } from "@clerk/nextjs";
 import TierConfirmationModal from "@/components/TierConfirmationModal";
+import PricingCard from "@/components/shared/PricingCard";
 
 // Membership tier data
 const membershipTiers = [
@@ -59,13 +51,13 @@ const membershipTiers = [
         comingSoon: true,
       },
       {
-        icon: <Plane size={18} />,
-        text: "Travel Benefits",
+        icon: <Sparkle size={18} />,
+        text: "AI Powered Shopping Assistant",
         comingSoon: true,
       },
       {
-        icon: <Briefcase size={18} />,
-        text: "Hotel Partner Benefits",
+        icon: <Gift size={18} />,
+        text: "Referral Bonus Program",
         comingSoon: true,
       },
     ],
@@ -76,7 +68,6 @@ const membershipTiers = [
     redemptionValue: 10,
     maxMonthlyPoints: 10000,
     maxAnnualPoints: 120000,
-    expiration: "18 months",
   },
   {
     id: "silver",
@@ -91,23 +82,12 @@ const membershipTiers = [
     icon: <Coffee className="h-8 w-8 text-[#2D9642]" />,
     features: [
       {
-        icon: <CreditCard size={18} />,
-        text: "All White Features",
-        comingSoon: true,
+        icon: <Check size={18} />,
+        text: "Everything in White",
       },
       {
-        icon: <Zap size={18} />,
-        text: "Exclusive Deals & Insights",
-        comingSoon: true,
-      },
-      {
-        icon: <Award size={18} />,
-        text: "Full Loyalty Program Access",
-        comingSoon: true,
-      },
-      {
-        icon: <Plane size={18} />,
-        text: "Premium Travel Benefits",
+        icon: <Clock size={18} />,
+        text: "",
         comingSoon: true,
       },
     ],
@@ -118,7 +98,6 @@ const membershipTiers = [
     redemptionValue: 12.50,
     maxMonthlyPoints: 20000,
     maxAnnualPoints: 240000,
-    expiration: "24 months",
   },
   {
     id: "gold",
@@ -133,28 +112,12 @@ const membershipTiers = [
     icon: <Gift className="h-8 w-8 text-[#C28F49]" />,
     features: [
       {
-        icon: <CreditCard size={18} />,
-        text: "All Silver Features",
-        comingSoon: true,
+        icon: <Check size={18} />,
+        text: "Everything in Silver",
       },
       {
-        icon: <Zap size={18} />,
-        text: "Priority Customer Support",
-        comingSoon: true,
-      },
-      {
-        icon: <Award size={18} />,
-        text: "VIP Events & Birthday Gift",
-        comingSoon: true,
-      },
-      {
-        icon: <Briefcase size={18} />,
-        text: "Financial Advice Sessions",
-        comingSoon: true,
-      },
-      {
-        icon: <Plane size={18} />,
-        text: "Premium Lounge Access",
+        icon: <Clock size={18} />,
+        text: "",
         comingSoon: true,
       },
     ],
@@ -165,7 +128,6 @@ const membershipTiers = [
     redemptionValue: 17.50,
     maxMonthlyPoints: 30000,
     maxAnnualPoints: 360000,
-    expiration: "36 months",
   },
   {
     id: "black",
@@ -180,28 +142,12 @@ const membershipTiers = [
     icon: <Sparkle className="h-8 w-8 text-[#C28F49]" />,
     features: [
       {
-        icon: <CreditCard size={18} />,
-        text: "All Gold Features",
-        comingSoon: true,
+        icon: <Check size={18} />,
+        text: "Everything in Gold",
       },
       {
-        icon: <Plane size={18} />,
-        text: "Luxury Travel Experiences",
-        comingSoon: true,
-      },
-      {
-        icon: <Star size={18} />,
-        text: "Dedicated Account Manager",
-        comingSoon: true,
-      },
-      {
-        icon: <Zap size={18} />,
-        text: "24/7 Concierge Services",
-        comingSoon: true,
-      },
-      {
-        icon: <Award size={18} />,
-        text: "Exclusive VIP Events",
+        icon: <Clock size={18} />,
+        text: "",
         comingSoon: true,
       },
     ],
@@ -212,7 +158,6 @@ const membershipTiers = [
     redemptionValue: 20,
     maxMonthlyPoints: 50000,
     maxAnnualPoints: 600000,
-    expiration: "Never expires",
   },
 ];
 
@@ -493,15 +438,30 @@ const MembershipTierComp = () => {
               transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
             >
               <PricingCard
-                tier={tier}
-                annualBilling={annualBilling}
+                tierName={tier.name}
+                tagline={tier.tagline}
+                price={tier.price}
+                color={tier.color}
+                accentColor={tier.accentColor}
+                buttonColor={tier.buttonColor}
+                buttonHoverColor={tier.buttonHoverColor}
+                textColor={tier.textColor}
+                icon={tier.icon}
+                features={tier.features}
+                rewards={tier.rewards}
+                pointsFor10={tier.pointsFor10}
+                redemptionValue={tier.redemptionValue}
+                maxMonthlyPoints={tier.maxMonthlyPoints}
+                maxAnnualPoints={tier.maxAnnualPoints}
+                recommended={tier.name === "White"}
                 selected={selectedTier === tier.id}
+                isCurrentPlan={profileData?.membershipTier === tier.name}
                 onSelect={() => handleSelectTier(tier.id)}
+                annualBilling={annualBilling}
                 // Only enable White for now (or already selected tier)
                 // ONLY FOR DEV PURPOSES
                 disabled={false}
                 // disabled={tier.id !== "white" && tier.id !== selectedTier}
-                currentTier={profileData?.membershipTier === tier.name}
               />
             </motion.div>
           ))}
@@ -595,204 +555,6 @@ const MembershipTierComp = () => {
         />
       )}
     </div>
-  );
-};
-
-// PricingCard Component
-interface PricingCardProps {
-  tier: (typeof membershipTiers)[0];
-  annualBilling: boolean;
-  selected: boolean;
-  onSelect: () => void;
-  disabled: boolean;
-  currentTier: boolean;
-}
-
-const PricingCard: React.FC<PricingCardProps> = ({
-  tier,
-  annualBilling,
-  selected,
-  onSelect,
-  disabled,
-  currentTier,
-}) => {
-  const annualPrice = Math.ceil(tier.price * 12 * 0.85); // 15% discount for annual billing
-  const currentPrice = annualBilling ? annualPrice : tier.price;
-  const priceDisplay =
-    currentPrice === 0
-      ? "Free"
-      : `$${currentPrice}${annualBilling ? "/year" : "/month"}`;
-
-  // Calculate background gradient for selected card
-  const selectedGradient =
-    tier.name === "White" || tier.name === "Silver"
-      ? "bg-gradient-to-r from-green-50 to-green-100"
-      : "bg-gradient-to-r from-amber-50 to-amber-100";
-
-  // Determine button text based on card state
-  const getButtonText = () => {
-    if (currentTier) return "Your Active Plan";
-    if (selected) return "Plan Selected";
-    if (disabled) return "Coming Soon";
-    if (tier.name === "White") return "Get Started";
-    return `Upgrade to ${tier.name}`;
-  };
-
-  return (
-    <motion.div
-      className={`rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 h-full
-        ${
-          selected
-            ? `ring-2 ${
-                tier.name.includes("Black") || tier.name.includes("Gold")
-                  ? "ring-amber-500"
-                  : "ring-green-500"
-              } scale-[1.02]`
-            : "hover:scale-[1.02]"
-        }
-        ${selected ? selectedGradient : tier.color}
-        ${disabled ? "opacity-75" : ""}`}
-      whileHover={{ y: -5, boxShadow: "0 10px 40px rgba(0,0,0,0.1)" }}
-      transition={{ duration: 0.3 }}
-    >
-      {currentTier && (
-        <div
-          className="text-white text-center py-1 font-semibold text-sm"
-          style={{ backgroundColor: "#2D9642" }}
-        >
-          YOUR CURRENT PLAN
-        </div>
-      )}
-
-      {selected && !currentTier && (
-        <div
-          className={`text-white text-center py-1 font-semibold text-sm ${
-            tier.name.includes("Black") || tier.name.includes("Gold")
-              ? "bg-amber-600"
-              : "bg-green-600"
-          }`}
-        >
-          SELECTED PLAN
-        </div>
-      )}
-
-      <div className="p-6 h-full flex flex-col">
-        {/* Card Header */}
-        <div className="flex justify-between items-start">
-          <div>
-            <h3 className="text-xl font-bold text-gray-900">{tier.name}</h3>
-            <p className="text-sm text-gray-500 mt-1">{tier.tagline}</p>
-          </div>
-          <motion.div
-            whileHover={{ rotate: 5, scale: 1.1 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-          >
-            {tier.icon}
-          </motion.div>
-        </div>
-
-        {/* Price */}
-        <div className="mt-6 mb-6">
-          <motion.span
-            className="text-4xl font-bold text-gray-900"
-            initial={{ scale: 1 }}
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
-          >
-            {priceDisplay}
-          </motion.span>
-        </div>
-
-        {/* Rewards Section */}
-        <div className={`border-t ${tier.accentColor} pt-4 mb-6`}>
-          <h4 className={`font-semibold mb-2 ${tier.textColor}`}>Rewards</h4>
-          <ul className="space-y-2">
-            {tier.rewards.map((reward, index) => (
-              <motion.li
-                key={index}
-                className="flex justify-between text-sm"
-                whileHover={{ x: 3 }}
-                transition={{ duration: 0.2 }}
-              >
-                <span className="text-gray-600">{reward.category}</span>
-                <span className="font-semibold">
-                  {reward.points} pts per $1
-                </span>
-              </motion.li>
-            ))}
-            <motion.li
-              className="flex justify-between text-sm"
-              whileHover={{ x: 3 }}
-              transition={{ duration: 0.2 }}
-            >
-              <span className="text-gray-600">
-                ${tier.pointsFor10.toLocaleString()} Spent = ${tier.redemptionValue} Value
-              </span>
-            </motion.li>
-          </ul>
-        </div>
-
-        {/* Features List */}
-        <div className={`border-t ${tier.accentColor} pt-4 mb-6`}>
-          <h4 className={`font-semibold mb-2 ${tier.textColor}`}>
-            Key Features
-          </h4>
-          <ul className="space-y-3">
-            {tier.features.map((feature, index) => (
-              <motion.li
-                key={index}
-                className="flex items-start"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                whileHover={{ x: 3 }}
-              >
-                <span
-                  className={`shrink-0 h-5 w-5 mr-2 ${
-                    feature.comingSoon ? "text-amber-500" : "text-green-500"
-                  }`}
-                >
-                  {feature.comingSoon ? (
-                    <Clock size={18} />
-                  ) : (
-                    <Check size={18} />
-                  )}
-                </span>
-                <div>
-                  <span className="text-sm text-gray-600">{feature.text}</span>
-                  {feature.comingSoon && (
-                    <span className="text-xs text-amber-600 block">
-                      Coming soon
-                    </span>
-                  )}
-                </div>
-              </motion.li>
-            ))}
-          </ul>
-        </div>
-
-        {/* CTA Button */}
-        <motion.button
-          onClick={onSelect}
-          disabled={disabled && !currentTier}
-          className={`w-full bg-gradient-to-r ${
-            tier.buttonColor
-          } text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 mb-4 mt-2 ${
-            disabled && !currentTier ? "opacity-50 cursor-not-allowed" : ""
-          } ${selected ? "ring-2 ring-white ring-opacity-70" : ""}`}
-          whileHover={{
-            background:
-              !disabled || currentTier
-                ? tier.buttonHoverColor
-                : tier.buttonColor,
-            scale: !disabled || currentTier ? 1.03 : 1,
-          }}
-          whileTap={{ scale: !disabled || currentTier ? 0.98 : 1 }}
-        >
-          {getButtonText()}
-        </motion.button>
-      </div>
-    </motion.div>
   );
 };
 

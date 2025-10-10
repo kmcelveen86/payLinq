@@ -3,6 +3,8 @@ import axios from "axios";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic';
+
 export async function DELETE(req: NextRequest) {
   const { userId } = await auth();
 
