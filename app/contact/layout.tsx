@@ -1,8 +1,8 @@
 import type { Metadata } from "next/types";
 
 export const metadata: Metadata = {
-  title: "Contact | Paylinq",
-  description: "Get in touch with Paylinq for all your payment processing needs.",
+  title: "Contact | PayLinq",
+  description: "Get in touch with PayLinq for all your payment processing needs.",
 };
 
 export default function PricingLayout({

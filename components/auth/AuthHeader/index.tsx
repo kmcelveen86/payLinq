@@ -34,7 +34,7 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({ isSignUpFlow }) => {
         </Typography>
         <Typography variant="body1" className="text-gray-300">
           {isSignUpFlow
-            ? "Join Paylinq and start your rewards journey"
+            ? "Join PayLinq and start your rewards journey"
             : "Sign in to access your rewards"}
         </Typography>
       </motion.div>

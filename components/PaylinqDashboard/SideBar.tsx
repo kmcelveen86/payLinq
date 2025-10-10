@@ -98,7 +98,7 @@ export default function SideBar(props: Props) {
               animate={{
                 width: `${Math.min(
                   (userData.pointsThisMonth /
-                    userData.freemiumLimits.maxPointsPerMonth) *
+                    userData.whiteLimits.maxPointsPerMonth) *
                     100,
                   100
                 )}%`,
@@ -112,7 +112,7 @@ export default function SideBar(props: Props) {
               This month: {userData.pointsThisMonth}
             </span>
             <span className="text-gray-400 text-xs">
-              Max: {userData.freemiumLimits.maxPointsPerMonth.toLocaleString()}
+              Max: {userData.whiteLimits.maxPointsPerMonth.toLocaleString()}
             </span>
           </div>
         </div>
@@ -185,7 +185,7 @@ export default function SideBar(props: Props) {
               <CreditCard size={24} className="text-[#2D9642]" />
             </div>
             <div>
-              <h3 className="font-medium">Paylinq Card</h3>
+              <h3 className="font-medium">PayLinq Card</h3>
               <p className="text-gray-400 text-sm">
                 **** **** **** {userData.cardLastFour}
               </p>

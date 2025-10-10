@@ -15,10 +15,10 @@ export interface User {
   image?: string;
   billingCycle?: "monthly" | "annual";
   membershipTier:
-  | "Freemium"
-  | "Lifestyle"
-  | "VIP Lifestyle"
-  | "Elite Lifestyle";
+  | "White"
+  | "Silver"
+  | "Gold"
+  | "Black";
 }
 
 export interface Address {

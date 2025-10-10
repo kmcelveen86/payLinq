@@ -27,25 +27,25 @@ export default function FAQSection() {
 
   const faqs = [
     {
-      question: "What is Paylinq?",
+      question: "What is PayLinq?",
       answer:
-        "Paylinq is a Fintech startup dedicated to empowering financially vulnerable individuals through innovative solutions. Our platform combines rewards, financial education, and tools designed to help you maximize your money while building better financial habits.",
+        "PayLinq is a Fintech startup dedicated to empowering financially vulnerable individuals through innovative solutions. Our platform combines rewards, financial education, and tools designed to help you maximize your money while building better financial habits.",
       icon: <MessageCircle size={22} />,
     },
     {
       question: "How does it work?",
       answer:
-        "Paylinq works by tracking purchases made with your Paylinq Debit Card. You'll earn points for everyday spending which can be redeemed for rewards. We also provide insights into your spending patterns and offer tools to help improve your financial health over time.",
+        "PayLinq works by tracking purchases made with your PayLinq Debit Card. You'll earn points for everyday spending which can be redeemed for rewards. We also provide insights into your spending patterns and offer tools to help improve your financial health over time.",
       icon: <Lightbulb size={22} />,
     },
     {
       question: "What are the benefits of joining the waitlist?",
       answer:
-        "By joining the Paylinq waitlist, you'll secure early access to our platform when we launch. Early adopters will receive special bonuses including extra reward points, exclusive merchant offers, and the opportunity to help shape our future features through direct feedback to our team.",
+        "By joining the PayLinq waitlist, you'll secure early access to our platform when we launch. Early adopters will receive special bonuses including extra reward points, exclusive merchant offers, and the opportunity to help shape our future features through direct feedback to our team.",
       icon: <Clock size={22} />,
     },
     {
-      question: "When will Paylinq be fully available?",
+      question: "When will PayLinq be fully available?",
       answer:
         "We're currently in our initial launch phase with core features available to our early access users. Our full platform with all planned features will be rolling out over the coming quarters, with major upgrades scheduled throughout 2025.",
       icon: <Sparkles size={22} />,
@@ -171,7 +171,7 @@ export default function FAQSection() {
                   backgroundImage: "linear-gradient(90deg, #2D9642, #C28F49)",
                 }}
               >
-                {`what's next for Paylinq?`}
+                {`what's next for PayLinq?`}
               </span>
             </Typography>
 

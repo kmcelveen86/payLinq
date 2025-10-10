@@ -125,7 +125,7 @@ const PaylinqFooter = () => {
                     backgroundImage: "linear-gradient(90deg, #2D9642, #C28F49)",
                   }}
                 >
-                  {`Paylinq`}
+                  {`PayLinq`}
                 </span>
               </div>
             </motion.div>
@@ -392,7 +392,7 @@ const PaylinqFooter = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-gray-500 text-sm"
             >
-              © {new Date().getFullYear()} Paylinq. All rights reserved.
+              © {new Date().getFullYear()} PayLinq. All rights reserved.
             </motion.p>
 
             <motion.p

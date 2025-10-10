@@ -14,29 +14,29 @@ import {
 const featureItems = [
   {
     step: 1,
-    title: "Get Your Paylinq Debit Card",
+    title: "Get Your PayLinq Debit Card",
     description:
-      "Receive your premium Paylinq Debit Card delivered right to your doorstep.",
+      "Receive your premium PayLinq Debit Card delivered right to your doorstep.",
     icon: <CreditCard size={28} className="text-[#2D9642]" />,
     image: <PaylinqDebit />,
-    alt: "Paylinq Debit Card",
+    alt: "PayLinq Debit Card",
     color: "#2D9642",
   },
   {
     step: 2,
     title: "Make Everyday Purchases",
     description:
-      "Paylinq turns your everyday spending into UPP - our universal rewards currency - redeemable like cash, powered by AI to maximize your value.",
+      "PayLinq turns your everyday spending into Universal PayLinq Points (UPP) - our universal rewards currency - redeemable like cash, powered by AI to maximize your value.",
     icon: <ShoppingBag size={28} className="text-[#2D9642]" />,
     image: <PaylinqShopping />,
-    alt: "Person shopping with Paylinq card",
+    alt: "Person shopping with PayLinq card",
     color: "#2D9642",
   },
   {
     step: 3,
     title: "Enjoy Exclusive Benefits",
     description:
-      "Be among the first to experience Paylinq and access premium rewards that will enhance your lifestyle.",
+      "Be among the first to experience PayLinq and access premium rewards that will enhance your lifestyle.",
     icon: <Award size={28} className="text-[#C28F49]" />,
     image: <PaylinqRewardsAndBenefits />,
     alt: "Rewards and benefits",
@@ -184,7 +184,7 @@ export default function HowItWorks() {
                   WebkitBackgroundClip: 'text',
                 }}
               >
-                How Paylinq Works
+                How PayLinq Works
               </Typography>
             </motion.div>
             <motion.div
@@ -195,7 +195,7 @@ export default function HowItWorks() {
             >
               <p className="text-gray-300 text-lg md:text-xl">
                 Elevate your everyday spending with rewards that match your
-                lifestyle. Follow these simple steps to begin your Paylinq
+                lifestyle. Follow these simple steps to begin your PayLinq
                 journey.
               </p>
             </motion.div>
@@ -294,7 +294,7 @@ export default function HowItWorks() {
                     "linear-gradient(90deg, #2D9642 0%, #C28F49 100%)",
                 }}
               >
-                <span>Get Your Paylinq Card</span>
+                <span>Get Your PayLinq Card</span>
                 <ArrowRight size={18} />
               </motion.button>
             </div>

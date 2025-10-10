@@ -5,17 +5,14 @@ import {
   Check,
   Award,
   Gift,
-  Briefcase,
   Coffee,
-  Plane,
   Sparkle,
   Clock,
   Shield,
-  Zap,
-  Star,
   AlertCircle,
   ChevronDown,
   ChevronUp,
+  Bot,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUserProfile } from "@/app/hooks/useProfile";
@@ -45,7 +42,8 @@ type PricingCardProps = {
   icon: React.ReactNode;
   features: FeatureType[];
   rewards: RewardType[];
-  pointsFor100: number;
+  pointsFor10: number;
+  redemptionValue: number;
   maxMonthlyPoints: number;
   maxAnnualPoints: number;
   expiration: string;
@@ -55,26 +53,6 @@ type PricingCardProps = {
   onSelect: () => void;
   annualBilling: boolean;
   disabled?: boolean;
-};
-
-type Tier = {
-  name: string;
-  price: number;
-};
-
-type ComingSoonValue = {
-  value: string | boolean;
-  comingSoon: boolean;
-};
-
-type TableFeature = {
-  name: string;
-  tiers: (boolean | string | ComingSoonValue)[];
-};
-
-type FeatureCategory = {
-  name: string;
-  features: TableFeature[];
 };
 
 type FAQItem = {
@@ -123,7 +101,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
 
   // Handle tier selection
   const handleSelectTier = (tierName: string): void => {
-    if (tierName !== "Freemium" && !profileData?.membershipTier) return; // Only allow upgrading if already a member
+    if (tierName !== "White" && !profileData?.membershipTier) return; // Only allow upgrading if already a member
     setSelectedTier(tierName);
     setTimeout(() => {
       router.push("/membership-tiers");
@@ -212,7 +190,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <h1 className="text-4xl font-bold text-gray-900 mb-3">
-              Choose Your Paylinq Membership
+              Choose Your PayLinq Membership
             </h1>
           </motion.div>
           <motion.p
@@ -238,7 +216,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
           )}
 
           {/* Billing Toggle */}
-          {selectedTier?.toLowerCase() === "freemium" ? null : (
+          {selectedTier?.toLowerCase() === "white" ? null : (
             <motion.div
               className="mt-8 flex items-center justify-center"
               initial={{ opacity: 0 }}
@@ -284,16 +262,16 @@ const MembershipTiersOnHomePage: React.FC = () => {
 
         {/* Pricing Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {/* Freemium Tier */}
+          {/* White Tier */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <PricingCard
-              tierName="Freemium"
+              tierName="White"
               tagline="Start your journey"
-              price={5}
+              price={10}
               color="bg-gray-50"
               accentColor="border-green-300"
               buttonColor="bg-linear-to-r from-[#2D9642] to-[#38b053]"
@@ -303,7 +281,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
               features={[
                 {
                   icon: <CreditCard size={18} />,
-                  text: "Paylinq Reward Debit Card",
+                  text: "PayLinq Reward Debit Card",
                   comingSoon: true
                 },
                 {
@@ -312,41 +290,40 @@ const MembershipTiersOnHomePage: React.FC = () => {
                   comingSoon: true,
                 },
                 {
-                  icon: <Plane size={18} />,
-                  text: "Travel Benefits",
+                  icon: <Bot size={18} />,
+                  text: "AI Powered Shopping Assistant",
                   comingSoon: true,
                 },
                 {
-                  icon: <Briefcase size={18} />,
-                  text: "Hotel Partner Benefits",
+                  icon: <Gift size={18} />,
+                  text: "Referral Bonus Program",
                   comingSoon: true,
                 },
               ]}
               rewards={[
                 { category: "Everyday Purchases", points: 1 },
-                { category: "Dining", points: 2 },
-                { category: "Travel", points: 2 },
               ]}
-              pointsFor100={20000}
+              pointsFor10={1000}
+              redemptionValue={10}
               maxMonthlyPoints={10000}
               maxAnnualPoints={120000}
               expiration="18 months"
               recommended={true}
-              selected={selectedTier?.toLocaleLowerCase() === "freemium"}
-              isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "freemium"}
-              onSelect={() => handleSelectTier("Freemium")}
+              selected={selectedTier?.toLocaleLowerCase() === "white"}
+              isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "white"}
+              onSelect={() => handleSelectTier("White")}
               annualBilling={annualBilling}
             />
           </motion.div>
 
-          {/* Lifestyle Tier */}
+          {/* Silver Tier */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <PricingCard
-              tierName="Lifestyle"
+              tierName="Silver"
               tagline="Enhance your rewards"
               price={20}
               color="bg-green-50"
@@ -357,41 +334,35 @@ const MembershipTiersOnHomePage: React.FC = () => {
               icon={<Coffee className="h-8 w-8 text-[#2D9642]" />}
               features={[
                 {
-                  icon: <CreditCard size={18} />,
-                  text: "All Freemium Features",
+                  icon: <Clock size={18} />,
+                  text: "",
+                  comingSoon: true,
                 },
-                { icon: <Zap size={18} />, text: "Exclusive Deals & Insights" },
-                {
-                  icon: <Award size={18} />,
-                  text: "Full Loyalty Program Access",
-                },
-                { icon: <Plane size={18} />, text: "Premium Travel Benefits" },
               ]}
               rewards={[
-                { category: "Everyday Purchases", points: 2 },
-                { category: "Dining", points: 3 },
-                { category: "Travel", points: 3 },
+                { category: "Everyday Purchases", points: 1 },
               ]}
-              pointsFor100={10000}
+              pointsFor10={1000}
+              redemptionValue={12.50}
               maxMonthlyPoints={20000}
               maxAnnualPoints={240000}
               expiration="24 months"
-              selected={selectedTier?.toLowerCase() === "lifestyle"}
-              isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "lifestyle"}
-              onSelect={() => handleSelectTier("Lifestyle")}
+              selected={selectedTier?.toLowerCase() === "silver"}
+              isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "silver"}
+              onSelect={() => handleSelectTier("Silver")}
               annualBilling={annualBilling}
-              disabled={profileData?.membershipTier !== "Lifestyle"}
+              disabled={profileData?.membershipTier !== "Silver"}
             />
           </motion.div>
 
-          {/* VIP Lifestyle Tier */}
+          {/* Gold Tier */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <PricingCard
-              tierName="VIP Lifestyle"
+              tierName="Gold"
               tagline="Premium experience"
               price={50}
               color="bg-amber-50"
@@ -402,47 +373,37 @@ const MembershipTiersOnHomePage: React.FC = () => {
               icon={<Gift className="h-8 w-8 text-[#C28F49]" />}
               features={[
                 {
-                  icon: <CreditCard size={18} />,
-                  text: "All Lifestyle Features",
+                  icon: <Clock size={18} />,
+                  text: "",
+                  comingSoon: true,
                 },
-                { icon: <Zap size={18} />, text: "Priority Customer Support" },
-                {
-                  icon: <Award size={18} />,
-                  text: "VIP Events & Birthday Gift",
-                },
-                {
-                  icon: <Briefcase size={18} />,
-                  text: "Financial Advice Sessions",
-                },
-                { icon: <Plane size={18} />, text: "Premium Lounge Access" },
               ]}
               rewards={[
-                { category: "Everyday Purchases", points: 3 },
-                { category: "Dining", points: 4 },
-                { category: "Travel", points: 4 },
+                { category: "Everyday Purchases", points: 1 },
               ]}
-              pointsFor100={6667}
+              pointsFor10={1000}
+              redemptionValue={17.50}
               maxMonthlyPoints={30000}
               maxAnnualPoints={360000}
               expiration="36 months"
-              selected={selectedTier?.toLowerCase() === "vip lifestyle"}
-              isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "vip lifestyle"}
-              onSelect={() => handleSelectTier("VIP Lifestyle")}
+              selected={selectedTier?.toLowerCase() === "gold"}
+              isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "gold"}
+              onSelect={() => handleSelectTier("Gold")}
               annualBilling={annualBilling}
-              disabled={profileData?.membershipTier?.toLowerCase() !== "vip lifestyle"}
+              disabled={profileData?.membershipTier?.toLowerCase() !== "gold"}
             />
           </motion.div>
 
-          {/* Elite Lifestyle Tier */}
+          {/* Black Tier */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
             <PricingCard
-              tierName="Elite Lifestyle"
+              tierName="Black"
               tagline="Luxury redefined"
-              price={75}
+              price={70}
               color="bg-amber-50"
               accentColor="border-amber-400"
               buttonColor="bg-linear-to-r from-[#C28F49] to-[#d9a55c]"
@@ -451,46 +412,27 @@ const MembershipTiersOnHomePage: React.FC = () => {
               icon={<Sparkle className="h-8 w-8 text-[#C28F49]" />}
               features={[
                 {
-                  icon: <CreditCard size={18} />,
-                  text: "All VIP Lifestyle Features",
+                  icon: <Clock size={18} />,
+                  text: "",
+                  comingSoon: true,
                 },
-                {
-                  icon: <Plane size={18} />,
-                  text: "Luxury Travel Experiences",
-                },
-                { icon: <Star size={18} />, text: "Dedicated Account Manager" },
-                { icon: <Zap size={18} />, text: "24/7 Concierge Services" },
-                { icon: <Award size={18} />, text: "Exclusive VIP Events" },
               ]}
               rewards={[
-                { category: "Everyday Purchases", points: 5 },
-                { category: "Dining", points: 5 },
-                { category: "Travel", points: 5 },
+                { category: "Everyday Purchases", points: 1 },
               ]}
-              pointsFor100={5000}
+              pointsFor10={1000}
+              redemptionValue={20}
               maxMonthlyPoints={50000}
               maxAnnualPoints={600000}
               expiration="Never expires"
-              selected={selectedTier === "Elite Lifestyle"}
-              isCurrentPlan={profileData?.membershipTier === "Elite Lifestyle"}
-              onSelect={() => handleSelectTier("Elite Lifestyle")}
+              selected={selectedTier === "Black"}
+              isCurrentPlan={profileData?.membershipTier === "Black"}
+              onSelect={() => handleSelectTier("Black")}
               annualBilling={annualBilling}
-              disabled={profileData?.membershipTier !== "Elite Lifestyle"}
+              disabled={profileData?.membershipTier !== "Black"}
             />
           </motion.div>
         </div>
-
-        {/* Feature Comparison Table */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <FeatureComparisonTable
-            annualBilling={annualBilling}
-            currentTier={profileData?.membershipTier || null}
-          />
-        </motion.div>
 
         {/* FAQ Section */}
         <motion.div
@@ -518,7 +460,8 @@ const PricingCard: React.FC<PricingCardProps> = ({
   icon,
   features,
   rewards,
-  pointsFor100,
+  pointsFor10,
+  redemptionValue,
   maxMonthlyPoints,
   maxAnnualPoints,
   expiration,
@@ -632,9 +575,9 @@ const PricingCard: React.FC<PricingCardProps> = ({
               whileHover={{ x: 3 }}
               transition={{ duration: 0.2 }}
             >
-              <span className="text-gray-600">$100 Redemption</span>
+              <span className="text-gray-600">${redemptionValue.toFixed(2)} Redemption</span>
               <span className="font-semibold">
-                {pointsFor100.toLocaleString()} points
+                {pointsFor10.toLocaleString()} points
               </span>
             </motion.li>
           </ul>
@@ -677,28 +620,6 @@ const PricingCard: React.FC<PricingCardProps> = ({
           </ul>
         </div>
 
-        <div className={`border-t ${accentColor} pt-4 mb-6 flex-grow`}>
-          <h4 className={`font-semibold mb-2 ${textColor}`}>Point Limits</h4>
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Monthly Maximum</span>
-              <span className="font-semibold">
-                {maxMonthlyPoints.toLocaleString()} points
-              </span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Annual Maximum</span>
-              <span className="font-semibold">
-                {maxAnnualPoints.toLocaleString()} points
-              </span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Expiration</span>
-              <span className="font-semibold">{expiration}</span>
-            </div>
-          </div>
-        </div>
-
         {/* CTA Button */}
         <motion.button
           onClick={onSelect}
@@ -718,274 +639,12 @@ const PricingCard: React.FC<PricingCardProps> = ({
             ? "Plan Selected"
             : disabled
             ? "Coming Soon"
-            : tierName === "Freemium"
+            : tierName === "White"
             ? "Get Started"
             : `Upgrade to ${tierName}`}
         </motion.button>
       </div>
     </motion.div>
-  );
-};
-
-// Feature Comparison Table Component
-const FeatureComparisonTable: React.FC<{
-  annualBilling: boolean;
-  currentTier: string | null;
-}> = ({ annualBilling, currentTier }) => {
-  const tiers: Tier[] = [
-    { name: "Freemium", price: 0 },
-    { name: "Lifestyle", price: 20 },
-    { name: "VIP Lifestyle", price: 50 },
-    { name: "Elite Lifestyle", price: 75 },
-  ];
-
-  const featureCategories: FeatureCategory[] = [
-    {
-      name: "Card Benefits",
-      features: [
-        { name: "Paylinq Reward Debit Card", tiers: [{ value: true, comingSoon: true }, true, true, true] },
-        {
-          name: "Digital Card",
-          tiers: [{ value: true, comingSoon: true }, true, true, true],
-        },
-        {
-          name: "Priority Customer Support",
-          tiers: [false, false, true, true],
-        },
-        {
-          name: "Dedicated Account Manager",
-          tiers: [false, false, false, true],
-        },
-      ],
-    },
-    {
-      name: "Financial Tools",
-      features: [
-        { name: "Financial Insights", tiers: [false, true, true, true] },
-        {
-          name: "Financial Education Resources",
-          tiers: [false, true, true, true],
-        },
-        {
-          name: "Financial Advice Sessions",
-          tiers: [false, false, true, true],
-        },
-      ],
-    },
-    {
-      name: "Travel & Lifestyle",
-      features: [
-        {
-          name: "Loyalty Program Access",
-          tiers: [
-            { value: "Basic", comingSoon: true },
-            "Full",
-            "Premium",
-            "Premium",
-          ],
-        },
-        {
-          name: "Travel Benefits",
-          tiers: [
-            { value: "Economy", comingSoon: true },
-            "Standard Travel Benefits",
-            "Premium Travel Benefits",
-            "Luxury Travel Benefits",
-          ],
-        },
-        {
-          name: "Hotel Partners",
-          tiers: [
-            { value: "Standard", comingSoon: true },
-            "Standard Hotels",
-            "Premium Hotels",
-            "Luxury Hotels",
-          ],
-        },
-        {
-          name: "Lounge Access",
-          tiers: [false, false, "Premium Lounges", "Exclusive Lounges"],
-        },
-      ],
-    },
-    {
-      name: "VIP Benefits",
-      features: [
-        { name: "VIP Events", tiers: [false, false, true, "Exclusive VIP"] },
-        { name: "Birthday Gift", tiers: [false, false, true, true] },
-        { name: "Concierge Services", tiers: [false, false, false, "24/7"] },
-        {
-          name: "Luxury Experiences",
-          tiers: [false, false, false, true],
-        },
-      ],
-    },
-  ];
-
-  return (
-    <div className="bg-[#F2F2F0] rounded-2xl shadow-lg overflow-hidden mb-16">
-      <div
-        className="p-6 border-b"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(45, 150, 66, 0.05) 0%, rgba(194, 143, 73, 0.05) 100%)",
-        }}
-      >
-        <h2 className="text-2xl font-bold text-gray-900">Feature Comparison</h2>
-        <p className="text-gray-600 mt-1">
-          Compare all features across our membership tiers
-        </p>
-        <div className="mt-3 text-sm flex items-center text-amber-600">
-          <motion.span
-            className="inline-block w-3 h-3 bg-amber-100 border border-amber-300 rounded-full mr-2"
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
-          ></motion.span>
-          Features with a dot indicator are coming soon
-        </div>
-      </div>
-
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(45, 150, 66, 0.05) 0%, rgba(194, 143, 73, 0.05) 100%)",
-              }}
-            >
-              <th className="py-4 px-6 text-left text-sm font-semibold text-gray-600 w-1/5">
-                Feature
-              </th>
-              {tiers.map((tier, index) => {
-                const annualPrice = Math.ceil(tier.price * 12 * 0.85);
-                const priceDisplay =
-                  tier.price === 0
-                    ? "Free"
-                    : `${annualBilling ? annualPrice : tier.price}${
-                        annualBilling ? "/year" : "/month"
-                      }`;
-                const isAvailable = tier.name === "Freemium";
-                const isCurrentTier = tier.name === currentTier;
-
-                return (
-                  <th
-                    key={index}
-                    className={`py-4 px-6 text-center text-sm font-semibold ${
-                      isCurrentTier ? "bg-green-50" : ""
-                    } w-1/5`}
-                  >
-                    <div className="relative">
-                      {isCurrentTier && (
-                        <motion.div
-                          className="absolute -top-4 left-0 right-0 mx-auto text-xs font-bold text-green-700 bg-green-100 rounded-t-lg py-1 px-2 w-fit"
-                          // animate={{ y: [0, -3, 0] }}
-                          // transition={{
-                          //   duration: 2,
-                          //   repeat: Infinity,
-                          //   repeatDelay: 3,
-                          // }}
-                        >
-                          CURRENT PLAN
-                        </motion.div>
-                      )}
-                      <span className="block text-lg font-bold text-gray-900 leading-6">
-                        {tier.name}
-                      </span>
-                      <span className="text-base">{priceDisplay}</span>
-                      {!isAvailable && tier.name !== currentTier && (
-                        <motion.span
-                          className="inline-block mt-1 px-2 py-1 text-xs rounded-full"
-                          style={{
-                            background: "rgba(45, 150, 66, 0.1)",
-                            color: "#2D9642",
-                          }}
-                          whileHover={{ scale: 1.05 }}
-                        >
-                          Coming Soon
-                        </motion.span>
-                      )}
-                    </div>
-                  </th>
-                );
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            {featureCategories.map((category, categoryIndex) => (
-              <React.Fragment key={categoryIndex}>
-                <tr className="bg-linear-to-r from-green-50 to-amber-50">
-                  <td colSpan={5} className="py-3 px-6 font-bold text-gray-800">
-                    {category.name}
-                  </td>
-                </tr>
-                {category.features.map((feature, featureIndex) => (
-                  <motion.tr
-                    key={featureIndex}
-                    className="border-t"
-                    whileHover={{ backgroundColor: "rgba(45, 150, 66, 0.03)" }}
-                  >
-                    <td className="py-4 px-6 text-sm text-gray-700">
-                      {feature.name}
-                    </td>
-                    {feature.tiers.map((value, tierIndex) => {
-                      const isCurrentTierCell =
-                        tiers[tierIndex].name === currentTier;
-
-                      return (
-                        <td
-                          key={tierIndex}
-                          className={`py-4 px-6 text-center text-sm ${
-                            isCurrentTierCell ? "bg-green-50" : ""
-                          }`}
-                        >
-                          {typeof value === "boolean" ? (
-                            value ? (
-                              <motion.div
-                                whileHover={{ scale: 1.2 }}
-                                transition={{
-                                  type: "spring",
-                                  stiffness: 400,
-                                  damping: 10,
-                                }}
-                              >
-                                <Check className="mx-auto h-5 w-5 text-green-500" />
-                              </motion.div>
-                            ) : (
-                              <span className="block mx-auto h-5 w-5 text-gray-300">
-                                —
-                              </span>
-                            )
-                          ) : typeof value === "object" ? (
-                            <motion.div
-                              className="relative inline-flex items-center justify-center"
-                              whileHover={{ scale: 1.05 }}
-                            >
-                              <span className="text-gray-700 font-medium">
-                                {value.value}
-                              </span>
-                              <motion.span
-                                className="absolute -top-1 right-[-10px] w-2 h-2 bg-amber-400 rounded-full"
-                                animate={{ scale: [1, 1.3, 1] }}
-                                transition={{ duration: 2, repeat: Infinity }}
-                              ></motion.span>
-                            </motion.div>
-                          ) : (
-                            <span className="text-gray-700 font-medium">
-                              {value}
-                            </span>
-                          )}
-                        </td>
-                      );
-                    })}
-                  </motion.tr>
-                ))}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
   );
 };
 
@@ -999,24 +658,24 @@ const FAQSection: React.FC = () => {
 
   const faqs: FAQItem[] = [
     {
-      question: "How do I redeem my Paylinq Reward points?",
+      question: "How do I redeem my PayLinq Reward points?",
       answer:
-        "You can redeem your Paylinq Reward points through our mobile app or web portal. Simply navigate to the Rewards section, select 'Redeem Points', and choose from options including gift cards, travel bookings, or merchandise.",
+        "You can redeem your PayLinq Reward points through our mobile app or web portal. Simply navigate to the Rewards section, select 'Redeem Points', and choose from options including gift cards, travel bookings, or merchandise.",
     },
     {
       question: "Can I upgrade my membership tier at any time?",
       answer:
-        "Currently, only the Freemium tier is available. We're working hard to launch our premium tiers soon! Once available, you'll be able to upgrade your membership tier at any time through your account settings.",
+        "Currently, only the White tier is available. We're working hard to launch our premium tiers soon! Once available, you'll be able to upgrade your membership tier at any time through your account settings.",
     },
     {
       question: "Do unused points roll over to the next month?",
       answer:
-        "Yes, unused points remain in your account until they reach their expiration date, which varies by tier (18 months for Freemium, 24 months for Lifestyle, 36 months for VIP Lifestyle, and no expiration for Elite Lifestyle).",
+        "Yes, unused points remain in your account until they reach their expiration date, which varies by tier (18 months for White, 24 months for Silver, 36 months for Gold, and no expiration for Black).",
     },
     {
-      question: "How does credit reporting work with Paylinq?",
+      question: "How does credit reporting work with PayLinq?",
       answer:
-        "Credit reporting is coming soon to Paylinq! When available, we'll report your payments to major credit bureaus to help build your credit history. The number of accounts you can report will vary by membership tier.",
+        "Credit reporting is coming soon to PayLinq! When available, we'll report your payments to major credit bureaus to help build your credit history. The number of accounts you can report will vary by membership tier.",
     },
     {
       question: "What is the Loyalty Program?",

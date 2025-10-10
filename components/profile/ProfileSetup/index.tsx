@@ -109,14 +109,14 @@ export default function ProfileSetup() {
           <div className="flex justify-center mb-4">
             <CreditCard className="h-12 w-12 text-[#2D9642] mr-2" />
             <span className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2D9642] to-[#C28F49]">
-              Paylinq
+              PayLinq
             </span>
           </div>
           <h2 className="text-2xl md:text-3xl font-bold text-white">
             Complete Your Profile
           </h2>
           <p className="mt-2 text-gray-400">
-            {`Let's set up your account to get the most out of Paylinq`}
+            {`Let's set up your account to get the most out of PayLinq`}
           </p>
         </motion.div>
 
@@ -685,7 +685,7 @@ export default function ProfileSetup() {
                     Profile Completed!
                   </h3>
                   <p className="text-gray-300 mb-8 max-w-md mx-auto">
-                    Thank you for setting up your profile. Your Paylinq account
+                    Thank you for setting up your profile. Your PayLinq account
                     is now ready to use!
                   </p>
                   <Link href="/user/dashboard">

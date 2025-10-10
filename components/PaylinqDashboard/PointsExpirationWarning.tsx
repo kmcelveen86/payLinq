@@ -9,25 +9,25 @@ type Props = {
 
 // Define expiration periods for each tier
 const EXPIRATION_INFO = {
-  Freemium: {
+  White: {
     period: "18 months",
     message:
-      "With the Freemium plan, your points expire after 18 months. Upgrade to Lifestyle or higher to extend your points' validity period.",
+      "With the White plan, your points expire after 18 months. Upgrade to Silver or higher to extend your points' validity period.",
   },
-  Lifestyle: {
+  Silver: {
     period: "24 months",
     message:
-      "With your Lifestyle plan, your points expire after 24 months. Upgrade to VIP Lifestyle or higher for even longer validity periods.",
+      "With your Silver plan, your points expire after 24 months. Upgrade to Gold or higher for even longer validity periods.",
   },
-  "VIP Lifestyle": {
+  Gold: {
     period: "36 months",
     message:
-      "With your VIP Lifestyle plan, your points expire after 36 months. Upgrade to Elite Lifestyle for points that never expire.",
+      "With your Gold plan, your points expire after 36 months. Upgrade to Black for points that never expire.",
   },
-  "Elite Lifestyle": {
+  Black: {
     period: "Never",
     message:
-      "Congratulations! With your Elite Lifestyle plan, your points never expire. Enjoy unlimited time to use your rewards.",
+      "Congratulations! With your Black plan, your points never expire. Enjoy unlimited time to use your rewards.",
   },
 };
 
@@ -36,21 +36,21 @@ export default function PointsExpirationWarning(props: Props) {
 
   const { data: profileData, isLoading, error } = useUserProfile();
 
-  // If loading or error, or profileData is undefined, use Freemium as default
+  // If loading or error, or profileData is undefined, use White as default
   const hasProfile = profileData && !isLoading && !error;
 
-  // Get current membership tier with fallback to Freemium
+  // Get current membership tier with fallback to White
   const currentTier = hasProfile
-    ? profileData?.membershipTier || "Freemium"
-    : "Freemium";
+    ? profileData?.membershipTier || "White"
+    : "White";
 
   // Get tier-specific information
   const tierInfo =
     EXPIRATION_INFO[currentTier as keyof typeof EXPIRATION_INFO] ||
-    EXPIRATION_INFO["Freemium"];
+    EXPIRATION_INFO["White"];
 
-  // Determine if this is the Elite tier (for styling)
-  const isEliteTier = currentTier === "Elite Lifestyle";
+  // Determine if this is the Black tier (for styling)
+  const isEliteTier = currentTier === "Black";
 
   // If still loading, show a skeleton
   if (isLoading) {
@@ -76,7 +76,7 @@ export default function PointsExpirationWarning(props: Props) {
   let warningMessage = tierInfo.message;
   if (error || !hasProfile) {
     warningMessage =
-      "Your points expire after 18 months on the Freemium plan. Complete your profile to access more membership options.";
+      "Your points expire after 18 months on the White plan. Complete your profile to access more membership options.";
   }
 
   return (

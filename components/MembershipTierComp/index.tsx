@@ -37,10 +37,10 @@ import TierConfirmationModal from "@/components/TierConfirmationModal";
 // Membership tier data
 const membershipTiers = [
   {
-    id: "freemium",
-    name: "Freemium",
+    id: "white",
+    name: "White",
     tagline: "Start your journey",
-    price: 5,
+    price: 10,
     color: "bg-gray-50",
     accentColor: "border-green-300",
     buttonColor: "from-[#2D9642] to-[#38b053]",
@@ -50,7 +50,7 @@ const membershipTiers = [
     features: [
       {
         icon: <CreditCard size={18} />,
-        text: "Paylinq Reward Debit Card",
+        text: "PayLinq Reward Debit Card",
         comingSoon: true,
       },
       {
@@ -71,17 +71,16 @@ const membershipTiers = [
     ],
     rewards: [
       { category: "Everyday Purchases", points: 1 },
-      { category: "Dining", points: 2 },
-      { category: "Travel", points: 2 },
     ],
-    pointsFor100: 20000,
+    pointsFor10: 1000,
+    redemptionValue: 10,
     maxMonthlyPoints: 10000,
     maxAnnualPoints: 120000,
     expiration: "18 months",
   },
   {
-    id: "lifestyle",
-    name: "Lifestyle",
+    id: "silver",
+    name: "Silver",
     tagline: "Enhance your rewards",
     price: 20,
     color: "bg-green-50",
@@ -93,7 +92,7 @@ const membershipTiers = [
     features: [
       {
         icon: <CreditCard size={18} />,
-        text: "All Freemium Features",
+        text: "All White Features",
         comingSoon: true,
       },
       {
@@ -113,18 +112,17 @@ const membershipTiers = [
       },
     ],
     rewards: [
-      { category: "Everyday Purchases", points: 2 },
-      { category: "Dining", points: 3 },
-      { category: "Travel", points: 3 },
+      { category: "Everyday Purchases", points: 1 },
     ],
-    pointsFor100: 10000,
+    pointsFor10: 1000,
+    redemptionValue: 12.50,
     maxMonthlyPoints: 20000,
     maxAnnualPoints: 240000,
     expiration: "24 months",
   },
   {
-    id: "vip-lifestyle",
-    name: "VIP Lifestyle",
+    id: "gold",
+    name: "Gold",
     tagline: "Premium experience",
     price: 50,
     color: "bg-amber-50",
@@ -136,7 +134,7 @@ const membershipTiers = [
     features: [
       {
         icon: <CreditCard size={18} />,
-        text: "All Lifestyle Features",
+        text: "All Silver Features",
         comingSoon: true,
       },
       {
@@ -161,20 +159,19 @@ const membershipTiers = [
       },
     ],
     rewards: [
-      { category: "Everyday Purchases", points: 3 },
-      { category: "Dining", points: 4 },
-      { category: "Travel", points: 4 },
+      { category: "Everyday Purchases", points: 1 },
     ],
-    pointsFor100: 6667,
+    pointsFor10: 1000,
+    redemptionValue: 17.50,
     maxMonthlyPoints: 30000,
     maxAnnualPoints: 360000,
     expiration: "36 months",
   },
   {
-    id: "elite-lifestyle",
-    name: "Elite Lifestyle",
+    id: "black",
+    name: "Black",
     tagline: "Luxury redefined",
-    price: 75,
+    price: 70,
     color: "bg-amber-50",
     accentColor: "border-amber-400",
     buttonColor: "from-[#C28F49] to-[#d9a55c]",
@@ -184,7 +181,7 @@ const membershipTiers = [
     features: [
       {
         icon: <CreditCard size={18} />,
-        text: "All VIP Lifestyle Features",
+        text: "All Gold Features",
         comingSoon: true,
       },
       {
@@ -209,11 +206,10 @@ const membershipTiers = [
       },
     ],
     rewards: [
-      { category: "Everyday Purchases", points: 5 },
-      { category: "Dining", points: 5 },
-      { category: "Travel", points: 5 },
+      { category: "Everyday Purchases", points: 1 },
     ],
-    pointsFor100: 5000,
+    pointsFor10: 1000,
+    redemptionValue: 20,
     maxMonthlyPoints: 50000,
     maxAnnualPoints: 600000,
     expiration: "Never expires",
@@ -234,7 +230,7 @@ const MembershipTierComp = () => {
 
   // Fetch user profile
   const { data: profileData, isLoading: isProfileLoading } = useUserProfile();
-  const hasPlan = profileData?.membershipTier !== "Freemium";
+  const hasPlan = profileData?.membershipTier !== "White";
 
   // Mutation to update membership tier
   const { mutate: updateTier, isPending: isUpdating } =
@@ -291,8 +287,8 @@ const MembershipTierComp = () => {
         { tierName: selectedTierDetails.name, annualBilling },
         {
           onSuccess: () => {
-            const isFreemium = selectedTier.toLowerCase() === "freemium";
-            const successText = isFreemium
+            const isWhite = selectedTier.toLowerCase() === "white";
+            const successText = isWhite
               ? `You're now a ${selectedTierDetails.name} member!`
               : `You've successfully upgraded to the ${selectedTierDetails.name} tier!`;
 
@@ -394,7 +390,7 @@ const MembershipTierComp = () => {
           <div className="flex items-center">
             <CreditCard className="h-8 w-8 text-[#2D9642] mr-2" />
             <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2D9642] to-[#C28F49]">
-              Paylinq
+              PayLinq
             </span>
           </div>
         </motion.div>
@@ -411,7 +407,7 @@ const MembershipTierComp = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <h1 className="text-4xl font-bold text-gray-900 mb-3">
-              Choose Your Paylinq Membership
+              Choose Your PayLinq Membership
             </h1>
           </motion.div>
           <motion.p
@@ -424,7 +420,7 @@ const MembershipTierComp = () => {
           </motion.p>
 
           {/* Billing Toggle */}
-          {selectedTier?.toLocaleLowerCase() === "freemium" ? null : (
+          {selectedTier?.toLocaleLowerCase() === "white" ? null : (
             <motion.div
               className="mt-8 flex items-center justify-center"
               initial={{ opacity: 0 }}
@@ -501,10 +497,10 @@ const MembershipTierComp = () => {
                 annualBilling={annualBilling}
                 selected={selectedTier === tier.id}
                 onSelect={() => handleSelectTier(tier.id)}
-                // Only enable Freemium for now (or already selected tier)
+                // Only enable White for now (or already selected tier)
                 // ONLY FOR DEV PURPOSES
                 disabled={false}
-                // disabled={tier.id !== "freemium" && tier.id !== selectedTier}
+                // disabled={tier.id !== "white" && tier.id !== selectedTier}
                 currentTier={profileData?.membershipTier === tier.name}
               />
             </motion.div>
@@ -556,7 +552,7 @@ const MembershipTierComp = () => {
                     </svg>
                     Processing...
                   </span>
-                ) : selectedTier === "freemium" ? (
+                ) : selectedTier === "white" ? (
                   "Get Membership"
                 ) : (
                   "Upgrade Membership"
@@ -595,7 +591,7 @@ const MembershipTierComp = () => {
           }
           isAnnual={annualBilling}
           isPending={isUpdating}
-          isFreemium={selectedTier === "freemium"}
+          isFreemium={selectedTier === "white"}
         />
       )}
     </div>
@@ -629,7 +625,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
   // Calculate background gradient for selected card
   const selectedGradient =
-    tier.name === "Freemium" || tier.name === "Lifestyle"
+    tier.name === "White" || tier.name === "Silver"
       ? "bg-gradient-to-r from-green-50 to-green-100"
       : "bg-gradient-to-r from-amber-50 to-amber-100";
 
@@ -638,7 +634,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
     if (currentTier) return "Your Active Plan";
     if (selected) return "Plan Selected";
     if (disabled) return "Coming Soon";
-    if (tier.name === "Freemium") return "Get Started";
+    if (tier.name === "White") return "Get Started";
     return `Upgrade to ${tier.name}`;
   };
 
@@ -648,7 +644,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
         ${
           selected
             ? `ring-2 ${
-                tier.name.includes("Elite") || tier.name.includes("VIP")
+                tier.name.includes("Black") || tier.name.includes("Gold")
                   ? "ring-amber-500"
                   : "ring-green-500"
               } scale-[1.02]`
@@ -671,7 +667,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
       {selected && !currentTier && (
         <div
           className={`text-white text-center py-1 font-semibold text-sm ${
-            tier.name.includes("Elite") || tier.name.includes("VIP")
+            tier.name.includes("Black") || tier.name.includes("Gold")
               ? "bg-amber-600"
               : "bg-green-600"
           }`}
@@ -729,9 +725,8 @@ const PricingCard: React.FC<PricingCardProps> = ({
               whileHover={{ x: 3 }}
               transition={{ duration: 0.2 }}
             >
-              <span className="text-gray-600">$100 Redemption</span>
-              <span className="font-semibold">
-                {tier.pointsFor100.toLocaleString()} points
+              <span className="text-gray-600">
+                ${tier.pointsFor10.toLocaleString()} Spent = ${tier.redemptionValue} Value
               </span>
             </motion.li>
           </ul>
@@ -774,31 +769,6 @@ const PricingCard: React.FC<PricingCardProps> = ({
               </motion.li>
             ))}
           </ul>
-        </div>
-
-        {/* Point Limits */}
-        <div className={`border-t ${tier.accentColor} pt-4 mb-6 grow`}>
-          <h4 className={`font-semibold mb-2 ${tier.textColor}`}>
-            Point Limits
-          </h4>
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Monthly Maximum</span>
-              <span className="font-semibold">
-                {tier.maxMonthlyPoints.toLocaleString()} points
-              </span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Annual Maximum</span>
-              <span className="font-semibold">
-                {tier.maxAnnualPoints.toLocaleString()} points
-              </span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Expiration</span>
-              <span className="font-semibold">{tier.expiration}</span>
-            </div>
-          </div>
         </div>
 
         {/* CTA Button */}

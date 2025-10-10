@@ -22,7 +22,7 @@ const prompt = Prompt({
 
 export const metadata: Metadata = {
   title: "PayLinq",
-  description: "Official Paylinq website",
+  description: "Official PayLinq website",
   other: {
     'impact-site-verification': '61693c8a-2f1f-4473-b964-08c494e60c58',
   },

@@ -6,25 +6,25 @@ import { useUserProfile } from "@/app/hooks/useProfile";
 
 // Define the tier information for each plan
 const TIER_INFO = {
-  Freemium: {
+  White: {
     tagline:
       "You earn 1x points on everyday purchases, 2x points on dining & travel.",
-    nextTier: "Lifestyle",
+    nextTier: "Silver",
     pointsMultiplier: { everyday: 1, dining: 2, travel: 2 },
   },
-  Lifestyle: {
+  Silver: {
     tagline:
       "You earn 2x points on everyday purchases, 3x points on dining & travel.",
-    nextTier: "VIP Lifestyle",
+    nextTier: "Gold",
     pointsMultiplier: { everyday: 2, dining: 3, travel: 3 },
   },
-  "VIP Lifestyle": {
+  Gold: {
     tagline:
       "You earn 3x points on everyday purchases, 4x points on dining & travel.",
-    nextTier: "Elite Lifestyle",
+    nextTier: "Black",
     pointsMultiplier: { everyday: 3, dining: 4, travel: 4 },
   },
-  "Elite Lifestyle": {
+  Black: {
     tagline:
       "You earn 5x points on all purchases including everyday, dining & travel.",
     nextTier: null, // No next tier
@@ -58,7 +58,7 @@ export default function PlanUpgradeBanner({
       : {
           tagline:
             "You're not earning any points yet. Upgrade to start earning rewards!",
-          nextTier: "Freemium",
+          nextTier: "White",
           pointsMultiplier: { everyday: 0, dining: 0, travel: 0 },
         };
 
@@ -99,7 +99,7 @@ export default function PlanUpgradeBanner({
           >
             {currentTier === "No Plan"
               ? "Choose a Plan"
-              : currentTier === "Elite Lifestyle"
+              : currentTier === "Black"
               ? "Downgrade Plan"
               : "Upgrade Plan"}
             <ArrowUpRight size={16} className="ml-2" />

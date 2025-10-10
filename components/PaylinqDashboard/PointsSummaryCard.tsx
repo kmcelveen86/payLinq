@@ -6,22 +6,22 @@ import { useUserProfile } from "@/app/hooks/useProfile";
 
 // Define tier-specific information
 const TIER_INFO = {
-  Freemium: {
+  White: {
     maxPointsPerMonth: 10000,
     maxPointsPerYear: 120000,
     expirationMonths: 18,
   },
-  Lifestyle: {
+  Silver: {
     maxPointsPerMonth: 20000,
     maxPointsPerYear: 240000,
     expirationMonths: 24,
   },
-  "VIP Lifestyle": {
+  Gold: {
     maxPointsPerMonth: 30000,
     maxPointsPerYear: 360000,
     expirationMonths: 36,
   },
-  "Elite Lifestyle": {
+  Black: {
     maxPointsPerMonth: 50000,
     maxPointsPerYear: 600000,
     expirationMonths: 0, // Never expires
@@ -37,11 +37,11 @@ export default function PointsSummaryCard(props: Props) {
 
   // Get user's membership tier
   const { data: profileData } = useUserProfile();
-  const currentTier = profileData?.membershipTier || "Freemium";
+  const currentTier = profileData?.membershipTier || "White";
 
   // Get tier-specific limits
   const tierInfo =
-    TIER_INFO[currentTier as keyof typeof TIER_INFO] || TIER_INFO["Freemium"];
+    TIER_INFO[currentTier as keyof typeof TIER_INFO] || TIER_INFO["White"];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -70,7 +70,7 @@ export default function PointsSummaryCard(props: Props) {
             <span className="text-white">
               $
               {(
-                userData.totalPoints * userData.freemiumLimits.redemptionRate
+                userData.totalPoints * userData.whiteLimits.redemptionRate
               ).toFixed(2)}
             </span>
           </div>
@@ -87,13 +87,13 @@ export default function PointsSummaryCard(props: Props) {
             <Gift size={18} className="text-[#C28F49]" />
           </div>
         </div>
-        <p className="text-xl font-bold mt-2">$100 Cash Equivalent</p>
+        <p className="text-xl font-bold mt-2">${userData.whiteLimits.redemptionValue} Redemption Value</p>
         <div className="mt-2">
           <div className="flex justify-between text-sm mb-1">
             <span className="text-gray-400">Progress</span>
             <span className="text-white">
               {Math.floor(
-                (userData.totalPoints / userData.freemiumLimits.pointsFor100) *
+                (userData.totalPoints / userData.whiteLimits.pointsFor10) *
                   100
               )}
               %
@@ -105,7 +105,7 @@ export default function PointsSummaryCard(props: Props) {
               animate={{
                 width: `${Math.floor(
                   (userData.totalPoints /
-                    userData.freemiumLimits.pointsFor100) *
+                    userData.whiteLimits.pointsFor10) *
                     100
                 )}%`,
               }}
@@ -115,7 +115,7 @@ export default function PointsSummaryCard(props: Props) {
           </div>
           <p className="text-amber-400 text-sm mt-1">
             {(
-              userData.freemiumLimits.pointsFor100 - userData.totalPoints
+              userData.whiteLimits.pointsFor10 - userData.totalPoints
             ).toLocaleString()}{" "}
             points to go
           </p>

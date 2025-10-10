@@ -27,19 +27,19 @@ export default function PlanComparison(props: Props) {
               <th className="text-left pb-3">Feature</th>
               <th className="text-center pb-3 px-2">
                 <div className="flex flex-col items-center">
-                  <span className="text-gray-300 font-medium">Freemium</span>
+                  <span className="text-gray-300 font-medium">White</span>
                   <span className="text-xs text-gray-400">Current</span>
                 </div>
               </th>
               <th className="text-center pb-3 px-2">
                 <div className="flex flex-col items-center">
-                  <span className="text-gray-300">Lifestyle</span>
+                  <span className="text-gray-300">Silver</span>
                   <span className="text-xs text-gray-500">$20/mo</span>
                 </div>
               </th>
               <th className="text-center pb-3 px-2">
                 <div className="flex flex-col items-center">
-                  <span className="text-[#2D9642]">VIP</span>
+                  <span className="text-[#2D9642]">Gold</span>
                   <span className="text-xs text-[#2D9642]">$50/mo</span>
                 </div>
               </th>

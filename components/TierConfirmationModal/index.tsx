@@ -12,7 +12,7 @@ interface TierConfirmationModalProps {
   price: number;
   isAnnual: boolean;
   isPending: boolean;
-  isFreemium?: boolean; // Add this prop to identify Freemium tier
+  isFreemium?: boolean; // Add this prop to identify White tier
 }
 
 const TierConfirmationModal: React.FC<TierConfirmationModalProps> = ({
@@ -81,7 +81,7 @@ const TierConfirmationModal: React.FC<TierConfirmationModalProps> = ({
                     <>
                       {`You're about to start your `}
                       <span className="font-semibold text-gray-800">
-                        Freemium
+                        White
                       </span>{" "}
                       membership.
                     </>
@@ -121,7 +121,7 @@ const TierConfirmationModal: React.FC<TierConfirmationModalProps> = ({
                   </div>
                 )}
 
-                {/* For Freemium, show benefits instead of payment details */}
+                {/* For White, show benefits instead of payment details */}
                 {isFreemium && (
                   <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
                     <div className="flex items-center mb-2">
@@ -139,7 +139,7 @@ const TierConfirmationModal: React.FC<TierConfirmationModalProps> = ({
                     <div className="flex items-center">
                       <CheckCircle size={16} className="text-green-500 mr-2" />
                       <span className="text-gray-700">
-                        Access to Paylinq Rewards Debit Card
+                        Access to PayLinq Rewards Debit Card
                       </span>
                     </div>
                   </div>
