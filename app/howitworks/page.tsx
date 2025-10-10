@@ -369,7 +369,7 @@ export default function HowItWorksContent() {
               {
                 question: "What happens to my points if I don't use them?",
                 answer:
-                  "Points expiration varies by membership tier: White (18 months), Silver (24 months), Gold (36 months), and Black (never expires). You'll receive notifications before points are set to expire.",
+                  "Your points never expire! They remain in your account and you can accumulate and use them whenever you're ready.",
               },
               {
                 question: "How do I track my rewards and spending?",

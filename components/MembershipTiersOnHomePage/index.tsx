@@ -2,58 +2,21 @@
 import React, { useState, useEffect } from "react";
 import {
   CreditCard,
-  Check,
   Award,
   Gift,
   Coffee,
   Sparkle,
   Clock,
-  Shield,
   AlertCircle,
   ChevronDown,
   ChevronUp,
   Bot,
+  Check,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUserProfile } from "@/app/hooks/useProfile";
 import { useRouter } from "next/navigation";
-
-// Type definitions
-type RewardType = {
-  category: string;
-  points: number;
-};
-
-type FeatureType = {
-  icon: React.ReactNode;
-  text: string;
-  comingSoon?: boolean;
-};
-
-type PricingCardProps = {
-  tierName: string;
-  tagline: string;
-  price: number;
-  color: string;
-  accentColor: string;
-  buttonColor: string;
-  buttonHoverColor: string;
-  textColor: string;
-  icon: React.ReactNode;
-  features: FeatureType[];
-  rewards: RewardType[];
-  pointsFor10: number;
-  redemptionValue: number;
-  maxMonthlyPoints: number;
-  maxAnnualPoints: number;
-  expiration: string;
-  recommended?: boolean;
-  selected?: boolean;
-  isCurrentPlan?: boolean;
-  onSelect: () => void;
-  annualBilling: boolean;
-  disabled?: boolean;
-};
+import PricingCard from "@/components/shared/PricingCard";
 
 type FAQItem = {
   question: string;
@@ -307,7 +270,6 @@ const MembershipTiersOnHomePage: React.FC = () => {
               redemptionValue={10}
               maxMonthlyPoints={10000}
               maxAnnualPoints={120000}
-              expiration="18 months"
               recommended={true}
               selected={selectedTier?.toLocaleLowerCase() === "white"}
               isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "white"}
@@ -334,6 +296,10 @@ const MembershipTiersOnHomePage: React.FC = () => {
               icon={<Coffee className="h-8 w-8 text-[#2D9642]" />}
               features={[
                 {
+                  icon: <Check size={18} />,
+                  text: "Everything in White",
+                },
+                {
                   icon: <Clock size={18} />,
                   text: "",
                   comingSoon: true,
@@ -346,12 +312,10 @@ const MembershipTiersOnHomePage: React.FC = () => {
               redemptionValue={12.50}
               maxMonthlyPoints={20000}
               maxAnnualPoints={240000}
-              expiration="24 months"
               selected={selectedTier?.toLowerCase() === "silver"}
               isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "silver"}
               onSelect={() => handleSelectTier("Silver")}
               annualBilling={annualBilling}
-              disabled={profileData?.membershipTier !== "Silver"}
             />
           </motion.div>
 
@@ -373,6 +337,10 @@ const MembershipTiersOnHomePage: React.FC = () => {
               icon={<Gift className="h-8 w-8 text-[#C28F49]" />}
               features={[
                 {
+                  icon: <Check size={18} />,
+                  text: "Everything in Silver",
+                },
+                {
                   icon: <Clock size={18} />,
                   text: "",
                   comingSoon: true,
@@ -385,12 +353,10 @@ const MembershipTiersOnHomePage: React.FC = () => {
               redemptionValue={17.50}
               maxMonthlyPoints={30000}
               maxAnnualPoints={360000}
-              expiration="36 months"
               selected={selectedTier?.toLowerCase() === "gold"}
               isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "gold"}
               onSelect={() => handleSelectTier("Gold")}
               annualBilling={annualBilling}
-              disabled={profileData?.membershipTier?.toLowerCase() !== "gold"}
             />
           </motion.div>
 
@@ -412,6 +378,10 @@ const MembershipTiersOnHomePage: React.FC = () => {
               icon={<Sparkle className="h-8 w-8 text-[#C28F49]" />}
               features={[
                 {
+                  icon: <Check size={18} />,
+                  text: "Everything in Gold",
+                },
+                {
                   icon: <Clock size={18} />,
                   text: "",
                   comingSoon: true,
@@ -424,12 +394,10 @@ const MembershipTiersOnHomePage: React.FC = () => {
               redemptionValue={20}
               maxMonthlyPoints={50000}
               maxAnnualPoints={600000}
-              expiration="Never expires"
               selected={selectedTier === "Black"}
               isCurrentPlan={profileData?.membershipTier === "Black"}
               onSelect={() => handleSelectTier("Black")}
               annualBilling={annualBilling}
-              disabled={profileData?.membershipTier !== "Black"}
             />
           </motion.div>
         </div>
@@ -444,207 +412,6 @@ const MembershipTiersOnHomePage: React.FC = () => {
         </motion.div>
       </div>
     </div>
-  );
-};
-
-// TODO BREAK THIS OUT
-const PricingCard: React.FC<PricingCardProps> = ({
-  tierName,
-  tagline,
-  price,
-  color,
-  accentColor,
-  buttonColor,
-  buttonHoverColor,
-  textColor,
-  icon,
-  features,
-  rewards,
-  pointsFor10,
-  redemptionValue,
-  maxMonthlyPoints,
-  maxAnnualPoints,
-  expiration,
-  recommended = false,
-  selected = false,
-  isCurrentPlan = false,
-  onSelect,
-  annualBilling,
-  disabled = false,
-}) => {
-  const annualPrice = Math.ceil(price * 12 * 0.85); // 15% discount for annual billing
-  const currentPrice = annualBilling ? annualPrice : price;
-  const priceDisplay =
-    currentPrice === 0
-      ? "Free"
-      : `$${currentPrice}${annualBilling ? "/year" : "/month"}`;
-
-  return (
-    <motion.div
-      className={`rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 h-full ${
-        selected || isCurrentPlan
-          ? "ring-2 ring-green-500 scale-[1.02]"
-          : "hover:scale-[1.02]"
-      } ${color} ${disabled ? "opacity-90" : ""}`}
-      whileHover={{ y: -5, boxShadow: "0 10px 40px rgba(0,0,0,0.1)" }}
-      transition={{ duration: 0.3 }}
-    >
-      <div className="h-7 flex flex-col">
-        {recommended && isCurrentPlan ? (
-          // Combined banner for both recommended and current plan
-          <div
-            className="text-white text-center py-1 h-7 font-semibold text-sm flex items-center justify-center"
-            style={{
-              background: "linear-gradient(90deg, #2D9642 0%, #C28F49 100%)",
-            }}
-          >
-            <span className="flex items-center">
-              <Check size={16} className="mr-1" />
-              CURRENT POPULAR PLAN
-            </span>
-          </div>
-        ) : (
-          <>
-            {/* Separate banners if we needed */}
-            {recommended && (
-              <div
-                className="text-white text-center py-1 h-7 font-semibold text-sm"
-                style={{ backgroundColor: "#C28F49" }}
-              >
-                MOST POPULAR
-              </div>
-            )}
-            {isCurrentPlan && !recommended && (
-              <div
-                className="text-white text-center py-1 h-7 font-semibold text-sm"
-                style={{ backgroundColor: "#2D9642" }}
-              >
-                YOUR CURRENT PLAN
-              </div>
-            )}
-          </>
-        )}
-      </div>
-
-      <div className="p-6 h-full flex flex-col">
-        {/* Card Header */}
-        <div className="flex justify-between items-start">
-          <div>
-            <h3 className="text-xl font-bold text-gray-900">{tierName}</h3>
-            <p className="text-sm text-gray-500 mt-1">{tagline}</p>
-          </div>
-          <motion.div
-            whileHover={{ rotate: 5, scale: 1.1 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-          >
-            {icon}
-          </motion.div>
-        </div>
-
-        {/* Price */}
-        <div className="mt-6 mb-6">
-          <motion.span
-            className="text-4xl font-bold text-gray-900"
-            initial={{ scale: 1 }}
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
-          >
-            {priceDisplay}
-          </motion.span>
-        </div>
-
-        {/* Rewards Section */}
-        <div className={`border-t ${accentColor} pt-4 mb-6`}>
-          <h4 className={`font-semibold mb-2 ${textColor}`}>Rewards</h4>
-          <ul className="space-y-2">
-            {rewards.map((reward, index) => (
-              <motion.li
-                key={index}
-                className="flex justify-between text-sm"
-                whileHover={{ x: 3 }}
-                transition={{ duration: 0.2 }}
-              >
-                <span className="text-gray-600">{reward.category}</span>
-                <span className="font-semibold">
-                  {reward.points} pts per $1
-                </span>
-              </motion.li>
-            ))}
-            <motion.li
-              className="flex justify-between text-sm"
-              whileHover={{ x: 3 }}
-              transition={{ duration: 0.2 }}
-            >
-              <span className="text-gray-600">${redemptionValue.toFixed(2)} Redemption</span>
-              <span className="font-semibold">
-                {pointsFor10.toLocaleString()} points
-              </span>
-            </motion.li>
-          </ul>
-        </div>
-
-        {/* Features List */}
-        <div className={`border-t ${accentColor} pt-4 mb-6`}>
-          <h4 className={`font-semibold mb-2 ${textColor}`}>Key Features</h4>
-          <ul className="space-y-3">
-            {features.map((feature, index) => (
-              <motion.li
-                key={index}
-                className="flex items-start"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                whileHover={{ x: 3 }}
-              >
-                <span
-                  className={`shrink-0 h-5 w-5 mr-2 ${
-                    feature.comingSoon ? "text-amber-500" : "text-green-500"
-                  }`}
-                >
-                  {feature.comingSoon ? (
-                    <Clock size={18} />
-                  ) : (
-                    <Check size={18} />
-                  )}
-                </span>
-                <div>
-                  <span className="text-sm text-gray-600">{feature.text}</span>
-                  {feature.comingSoon && (
-                    <span className="text-xs text-amber-600 block">
-                      Coming soon
-                    </span>
-                  )}
-                </div>
-              </motion.li>
-            ))}
-          </ul>
-        </div>
-
-        {/* CTA Button */}
-        <motion.button
-          onClick={onSelect}
-          disabled={disabled}
-          className={`w-full ${buttonColor} text-white font-semibold mb-8 py-3 px-4 rounded-lg transition-all duration-300 mt-auto ${
-            disabled ? "opacity-70 cursor-not-allowed" : ""
-          }`}
-          whileHover={{
-            background: !disabled ? buttonHoverColor : buttonColor,
-            scale: !disabled ? 1.03 : 1,
-          }}
-          whileTap={{ scale: !disabled ? 0.98 : 1 }}
-        >
-          {isCurrentPlan
-            ? `Your Active Plan`
-            : selected
-            ? "Plan Selected"
-            : disabled
-            ? "Coming Soon"
-            : tierName === "White"
-            ? "Get Started"
-            : `Upgrade to ${tierName}`}
-        </motion.button>
-      </div>
-    </motion.div>
   );
 };
 
@@ -670,7 +437,7 @@ const FAQSection: React.FC = () => {
     {
       question: "Do unused points roll over to the next month?",
       answer:
-        "Yes, unused points remain in your account until they reach their expiration date, which varies by tier (18 months for White, 24 months for Silver, 36 months for Gold, and no expiration for Black).",
+        "Yes, unused points remain in your account and never expire. You can accumulate and use them whenever you're ready.",
     },
     {
       question: "How does credit reporting work with PayLinq?",

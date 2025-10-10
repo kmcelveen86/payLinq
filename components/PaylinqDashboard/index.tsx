@@ -6,7 +6,6 @@ import LockedPremiumFeatures from "./LockedPremiumFeatures";
 import MultiplierDetails from "./MultiplierDetails";
 import PlanComparison from "./PlanComparison";
 import PlanUpgradeBanner from "./PlanUpgradeBanner";
-import PointsExpirationWarning from "./PointsExpirationWarning";
 import PointsSummaryCard from "./PointsSummaryCard";
 import RecentTransactions from "./RecentTransactions";
 import SideBar from "./SideBar";
@@ -148,8 +147,6 @@ const PaylinqDashboard = () => {
             <LockedPremiumFeatures itemVariants={itemVariants} />
 
             <PlanComparison itemVariants={itemVariants} />
-
-            <PointsExpirationWarning itemVariants={itemVariants} />
           </motion.div>
         </motion.div>
       </main>

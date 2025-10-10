@@ -92,27 +92,9 @@ export default function SideBar(props: Props) {
               {userData.totalPoints.toLocaleString()}
             </span>
           </div>
-          <div className="h-2 w-full bg-gray-700 rounded-full overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{
-                width: `${Math.min(
-                  (userData.pointsThisMonth /
-                    userData.whiteLimits.maxPointsPerMonth) *
-                    100,
-                  100
-                )}%`,
-              }}
-              transition={{ duration: 1, delay: 0.5 }}
-              className="h-full rounded-full bg-gradient-to-r from-[#2D9642] to-[#C28F49]"
-            ></motion.div>
-          </div>
           <div className="flex justify-between mt-1">
             <span className="text-gray-400 text-xs">
               This month: {userData.pointsThisMonth}
-            </span>
-            <span className="text-gray-400 text-xs">
-              Max: {userData.whiteLimits.maxPointsPerMonth.toLocaleString()}
             </span>
           </div>
         </div>
