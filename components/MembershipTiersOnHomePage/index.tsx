@@ -425,29 +425,24 @@ const FAQSection: React.FC = () => {
 
   const faqs: FAQItem[] = [
     {
-      question: "How do I redeem my PayLinq Reward points?",
+      question: "How do I redeem my Paylinq Reward points?",
       answer:
-        "You can redeem your PayLinq Reward points through our mobile app or web portal. Simply navigate to the Rewards section, select 'Redeem Points', and choose from options including gift cards, travel bookings, or merchandise.",
+        "Redeem Paylinq Points directly in the app or web dashboard. Go to Rewards → Redeem, then choose how to use your <strong>Universal Paylinq Points (UPP)</strong>: Shop instantly with participating brands online or in-store, or book travel—flights, hotels, or experiences. Redemptions are instant. No minimum balance required.",
     },
     {
       question: "Can I upgrade my membership tier at any time?",
       answer:
-        "Currently, only the White tier is available. We're working hard to launch our premium tiers soon! Once available, you'll be able to upgrade your membership tier at any time through your account settings.",
+        "Yes. You can upgrade your PayLinq membership tier at any time from your Account → Membership page. When you upgrade: Your new tier benefits activate immediately, any unused rewards or balance carry over, and the new tier fee is prorated based on your billing cycle. You can also downgrade or cancel before your next renewal period.",
     },
     {
       question: "Do unused points roll over to the next month?",
       answer:
-        "Yes, unused points remain in your account and never expire. You can accumulate and use them whenever you're ready.",
-    },
-    {
-      question: "How does credit reporting work with PayLinq?",
-      answer:
-        "Credit reporting is coming soon to PayLinq! When available, we'll report your payments to major credit bureaus to help build your credit history. The number of accounts you can report will vary by membership tier.",
+        "Yes. Unused PayLinq Reward Points automatically roll over each month and never expire as long as your account remains active. If your membership lapses or is closed, points are held for 90 days and can be reinstated upon reactivation.",
     },
     {
       question: "What is the Loyalty Program?",
       answer:
-        "Our Loyalty Program is an exclusive marketplace that will offer special deals and discounts from partner merchants. This feature is coming soon, and access and available offers will vary by membership tier, with premium tiers enjoying exclusive high-value offers.",
+        "The Paylinq Loyalty Program lets members earn <strong>Universal Paylinq Points (UPP)</strong> on everyday spending. Each purchase made through a Paylinq Reward card or partner brand generates points that can be redeemed like cash—for shopping, travel, or experiences. Members also unlock higher earning rates, exclusive offers, and enhanced redemption values as they move up from White → Silver → Gold → Black tiers.",
     },
   ];
 
@@ -507,7 +502,7 @@ const FAQSection: React.FC = () => {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <p>{faq.answer}</p>
+                    <p dangerouslySetInnerHTML={{ __html: faq.answer }} />
                   </motion.div>
                 )}
               </AnimatePresence>

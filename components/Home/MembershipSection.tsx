@@ -32,40 +32,57 @@ export default function RoadmapSection() {
 
   const roadmapItems = [
     {
-      phase: "Phase 1 (MVP)",
+      phase: "Phase 1 (Q1)",
       title: "Track Purchases, Earn Points",
-      description:
-        "Start earning points daily just by making purchases with your PayLinq Debit Card.",
+      objective: "Launch PayLinq's core earning engine.",
+      features: [
+        "Link PayLinq Debit Card.",
+        "Automatically track every purchase.",
+        "Earn UPP on eligible transactions.",
+        "View real-time points and spending analytics.",
+        "Access Rewards dashboard with redemption preview.",
+      ],
       status: "Current Phase",
       icon: <BarChart4 size={24} className="text-[#2D9642]" />,
       color: "from-[#2D9642] to-[#38B053]",
       lightColor: "bg-green-50",
       darkColor: "bg-[#2D9642]",
-      timeline: "Now",
+      timeline: "Q1",
     },
     {
-      phase: "Phase 2",
-      title: "Redeem Points, Build Credit",
-      description:
-        "Soon, you'll be able to redeem your points for flights, hotels, and exclusive perks at our partner merchants. Plus, you'll build credit simply by making purchases.",
+      phase: "Phase 2 (Q2)",
+      title: "Redeem, Upgrade, and Engage",
+      objective:
+        "Expand user value through redemption options and tier upgrades.",
+      features: [
+        "Enable full UPP redemption for shopping, travel, and gift.",
+        "Introduce Silver and Gold membership tiers with higher earning rates.",
+        "Launch merchant offers and bonus campaigns.",
+        "Add referral rewards and in-app notifications.",
+      ],
       status: "Coming Soon",
       icon: <Award size={24} className="text-[#2D9642]" />,
       color: "from-[#2D9642] to-[#38B053]",
       lightColor: "bg-green-50",
       darkColor: "bg-[#2D9642]",
-      timeline: "Q2 2025",
+      timeline: "Q2",
     },
     {
-      phase: "Phase 3",
-      title: "Transform Your Finances",
-      description:
-        "We're creating a world where financial management is seamless and rewarding. Imagine earning up to 4x points on purchases, receiving luxury perks, and getting exclusive financial advice—PayLinq is your partner for it all.",
+      phase: "Phase 3 (Q3)",
+      title: "Ecosystem Expansion",
+      objective: "Scale PayLinq into a full lifestyle rewards ecosystem.",
+      features: [
+        "Integrate premium partners (travel, entertainment, retail).",
+        "Launch Black Tier with elite benefits and concierge access.",
+        "Add PayLinq Marketplace for direct point spending.",
+        "Introduce AI-powered spend insights and reward optimization.",
+      ],
       status: "Future Vision",
       icon: <LucideRocket size={24} className="text-[#C28F49]" />,
       color: "from-[#C28F49] to-[#D9A55C]",
       lightColor: "bg-amber-50",
       darkColor: "bg-[#C28F49]",
-      timeline: "Q4 2025",
+      timeline: "Q3",
     },
   ];
 
@@ -231,14 +248,39 @@ export default function RoadmapSection() {
               </div>
 
               {/* Card Body */}
-              <div className={`${item.lightColor} p-6 grow`}>
+              <div className={`${item.lightColor} p-6 grow flex flex-col`}>
                 <h4
                   className="text-xl font-bold mb-3"
                   style={{ color: index === 2 ? "#C28F49" : "#2D9642" }}
                 >
                   {item.title}
                 </h4>
-                <p className="text-gray-600 mb-6">{item.description}</p>
+
+                {/* Objective */}
+                <p className="text-gray-700 font-medium mb-4">
+                  <span className="font-bold">Objective:</span> {item.objective}
+                </p>
+
+                {/* Features List */}
+                <div className="mb-6">
+                  <p className="font-bold text-gray-800 mb-2">Features:</p>
+                  <ul className="space-y-2">
+                    {item.features.map((feature, featureIndex) => (
+                      <li
+                        key={featureIndex}
+                        className="flex items-start text-gray-600"
+                      >
+                        <span
+                          className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full"
+                          style={{
+                            backgroundColor: index === 2 ? "#C28F49" : "#2D9642",
+                          }}
+                        ></span>
+                        <span className="text-sm">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
                 {/* Card progress indicator */}
                 <div className="mt-auto">
@@ -246,8 +288,7 @@ export default function RoadmapSection() {
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{
-                        width:
-                          index === 0 ? "100%" : index === 1 ? "30%" : "10%",
+                        width: index === 0 ? "20%" : "0%",
                       }}
                       transition={{ duration: 1.5, delay: 0.5 }}
                       className={`h-full ${item.darkColor}`}
@@ -257,7 +298,7 @@ export default function RoadmapSection() {
               </div>
 
               {/* Card Footer */}
-              <div className="p-4 bg-white border-t border-gray-100">
+              <div className={`p-4 ${item.lightColor} border-t border-gray-200 flex justify-center`}>
                 <div
                   className={`inline-flex items-center px-4 py-2 rounded-full ${item.darkColor} text-white`}
                 >
