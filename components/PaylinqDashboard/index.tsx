@@ -78,7 +78,7 @@ const PaylinqDashboard = () => {
                 <div className="flex items-center">
                   <CreditCard size={32} className="text-[#2D9642] mr-2" />
                   <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2D9642] to-[#C28F49]">
-                    Paylinq
+                    PayLinq
                   </span>
                 </div>
                 <div className="flex items-center space-x-4">

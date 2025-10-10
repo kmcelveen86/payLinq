@@ -238,7 +238,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
               component="div"
               className="text-white leading-relaxed xs:text-sm md:text-base lg:text-lg mt-6 mb-8"
             >
-              {`Paylinq turns your everyday spending into UPP - our universal rewards currency - redeemable like cash, powered by AI to maximize your value.`}
+              {`PayLinq turns your everyday spending into Universal PayLinq Points (UPP) - our universal rewards currency - redeemable like cash, powered by AI to maximize your value.`}
             </Typography>
 
             {/* Mission statement */}

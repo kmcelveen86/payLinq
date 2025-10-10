@@ -39,7 +39,7 @@ export default function ProfileSideBar({
 
   // Use the React Query hook to fetch user profile data
   const { data: userProfile, isLoading } = useUserProfile();
-  const membershipTier = userProfile?.membershipTier || "Freemium";
+  const membershipTier = userProfile?.membershipTier || "White";
 
   // Compute full name for display
   const fullName =

@@ -78,7 +78,7 @@ export default function HowItWorksContent() {
       title: "Sign Up & Get Your Card",
       icon: <CreditCard className="w-8 h-8" />,
       description:
-        "Create your account, verify your identity, and receive your personalized Paylinq rewards card within days.",
+        "Create your account, verify your identity, and receive your personalized PayLinq rewards card within days.",
       color: "from-[#2D9642] to-[#38b053]",
       image: <PaylinqSignUpGetCard />,
     },
@@ -167,7 +167,7 @@ export default function HowItWorksContent() {
             className="text-center mb-16"
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#2D9642] to-[#C28F49]">
-              How Paylinq Works
+              How PayLinq Works
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Earn rewards on every purchase, enjoy exclusive perks, and take
@@ -305,7 +305,7 @@ export default function HowItWorksContent() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl font-bold mb-2">Why Choose Paylinq</h2>
+            <h2 className="text-3xl font-bold mb-2">Why Choose PayLinq</h2>
             <div className="w-24 h-1 bg-gradient-to-r from-[#2D9642] to-[#C28F49] mx-auto"></div>
           </motion.div>
 
@@ -349,7 +349,7 @@ export default function HowItWorksContent() {
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-[#2D9642] to-[#C28F49] mx-auto mb-4"></div>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Get answers to the most common questions about Paylinq rewards and
+              Get answers to the most common questions about PayLinq rewards and
               membership
             </p>
           </motion.div>
@@ -369,12 +369,12 @@ export default function HowItWorksContent() {
               {
                 question: "What happens to my points if I don't use them?",
                 answer:
-                  "Points expiration varies by membership tier: Freemium (18 months), Lifestyle (24 months), VIP Lifestyle (36 months), and Elite Lifestyle (never expires). You'll receive notifications before points are set to expire.",
+                  "Points expiration varies by membership tier: White (18 months), Silver (24 months), Gold (36 months), and Black (never expires). You'll receive notifications before points are set to expire.",
               },
               {
                 question: "How do I track my rewards and spending?",
                 answer:
-                  "The Paylinq dashboard and mobile app provide real-time tracking for all your transactions, point earnings, and available rewards. You can also set up custom spending categories and alerts to help manage your finances.",
+                  "The PayLinq dashboard and mobile app provide real-time tracking for all your transactions, point earnings, and available rewards. You can also set up custom spending categories and alerts to help manage your finances.",
               },
             ].map((faq, index) => (
               <motion.div

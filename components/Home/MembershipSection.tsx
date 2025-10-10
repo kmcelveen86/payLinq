@@ -35,7 +35,7 @@ export default function RoadmapSection() {
       phase: "Phase 1 (MVP)",
       title: "Track Purchases, Earn Points",
       description:
-        "Start earning points daily just by making purchases with your Paylinq Debit Card.",
+        "Start earning points daily just by making purchases with your PayLinq Debit Card.",
       status: "Current Phase",
       icon: <BarChart4 size={24} className="text-[#2D9642]" />,
       color: "from-[#2D9642] to-[#38B053]",
@@ -59,7 +59,7 @@ export default function RoadmapSection() {
       phase: "Phase 3",
       title: "Transform Your Finances",
       description:
-        "We're creating a world where financial management is seamless and rewarding. Imagine earning up to 4x points on purchases, receiving luxury perks, and getting exclusive financial advice—Paylinq is your partner for it all.",
+        "We're creating a world where financial management is seamless and rewarding. Imagine earning up to 4x points on purchases, receiving luxury perks, and getting exclusive financial advice—PayLinq is your partner for it all.",
       status: "Future Vision",
       icon: <LucideRocket size={24} className="text-[#C28F49]" />,
       color: "from-[#C28F49] to-[#D9A55C]",

@@ -6,8 +6,8 @@ import Link from "next/link";
 
 // Define tier-specific locked features and next tiers
 const TIER_FEATURES = {
-  Freemium: {
-    nextTier: "Lifestyle",
+  White: {
+    nextTier: "Silver",
     lockedFeatures: [
       "Enhanced Credit Reporting",
       "Premium Travel Benefits",
@@ -15,8 +15,8 @@ const TIER_FEATURES = {
       "Exclusive VIP Events",
     ],
   },
-  Lifestyle: {
-    nextTier: "VIP Lifestyle",
+  Silver: {
+    nextTier: "Gold",
     lockedFeatures: [
       "Priority Customer Support",
       "VIP Events & Birthday Gift",
@@ -24,8 +24,8 @@ const TIER_FEATURES = {
       "Premium Lounge Access",
     ],
   },
-  "VIP Lifestyle": {
-    nextTier: "Elite Lifestyle",
+  Gold: {
+    nextTier: "Black",
     lockedFeatures: [
       "Luxury Travel Experiences",
       "Dedicated Account Manager",
@@ -33,7 +33,7 @@ const TIER_FEATURES = {
       "Exclusive VIP Events",
     ],
   },
-  "Elite Lifestyle": {
+  Black: {
     nextTier: null,
     lockedFeatures: [],
   },
@@ -49,16 +49,16 @@ export default function LockedPremiumFeatures(props: Props) {
   // Fetch user profile
   const { data: profileData, isLoading } = useUserProfile();
 
-  // Get current tier with fallback to Freemium
-  const currentTier = profileData?.membershipTier || "Freemium";
+  // Get current tier with fallback to White
+  const currentTier = profileData?.membershipTier || "White";
 
   // Get tier-specific information
   const tierInfo =
     TIER_FEATURES[currentTier as keyof typeof TIER_FEATURES] ||
-    TIER_FEATURES["Freemium"];
+    TIER_FEATURES["White"];
 
-  // If user has Elite tier or no next tier, don't show this component
-  if (currentTier === "Elite Lifestyle" || !tierInfo.nextTier) {
+  // If user has Black tier or no next tier, don't show this component
+  if (currentTier === "Black" || !tierInfo.nextTier) {
     return null;
   }
 

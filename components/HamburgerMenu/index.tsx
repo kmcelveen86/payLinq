@@ -121,7 +121,7 @@ export default function HamburgerMenu() {
               src="/logos/paylinq-logo-new.png"
               width={40}
               height={40}
-              alt="Paylinq Logo"
+              alt="PayLinq Logo"
               className="object-contain"
             />
           </div>
@@ -169,12 +169,12 @@ export default function HamburgerMenu() {
                   <Image
                     src="/logos/paylinq-logo-new.png"
                     fill
-                    alt="Paylinq Logo"
+                    alt="PayLinq Logo"
                     className="object-contain"
                   />
                 </div>
                 <span className="font-bold text-xl bg-gradient-to-r from-[#2D9642] to-[#C28F49] bg-clip-text text-transparent">
-                  Paylinq
+                  PayLinq
                 </span>
               </div>
               <motion.button

@@ -89,7 +89,7 @@ export default function TopNavComp() {
                   src="/logos/paylinq-logo-new.png"
                   width={70}
                   height={70}
-                  alt="Paylinq Logo"
+                  alt="PayLinq Logo"
                   className="sm:ml-4 lg:ml-[133px] transition-transform duration-300 group-hover:scale-105"
                 />
                 {/* Logo glow effect */}

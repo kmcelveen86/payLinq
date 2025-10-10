@@ -7,7 +7,7 @@ const userData = {
   pointsThisMonth: 1250,
   pointsToNextReward: 155,
   cardLastFour: "4832",
-  planTier: "FreemiumFake",
+  planTier: "WhiteFake",
   memberSince: "October 2023",
   recentTransactions: [
     {
@@ -81,7 +81,7 @@ const userData = {
       discount: "$100 value",
     },
   ],
-  freemiumLimits: {
+  whiteLimits: {
     maxPointsPerMonth: 10000,
     maxPointsPerYear: 120000,
     pointMultipliers: {
@@ -89,8 +89,9 @@ const userData = {
       dining: 2,
       travel: 2,
     },
-    redemptionRate: 0.005, // $0.005 per point
-    pointsFor100: 20000,
+    redemptionRate: 0.10, // $0.10 per point ($10 spent = 100 points = $10 value)
+    pointsFor10: 1000,
+    redemptionValue: 10,
     expirationMonths: 18,
   },
 };

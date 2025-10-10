@@ -4,29 +4,33 @@ import { useUserProfile } from "@/app/hooks/useProfile";
 
 // Define tier-specific multipliers
 const TIER_MULTIPLIERS = {
-  Freemium: {
+  White: {
     everyday: 1,
     dining: 2,
     travel: 2,
-    pointsFor100: 20000,
+    pointsFor10: 1000,
+    redemptionValue: 10,
   },
-  Lifestyle: {
+  Silver: {
     everyday: 2,
     dining: 3,
     travel: 3,
-    pointsFor100: 10000,
+    pointsFor10: 1000,
+    redemptionValue: 12.50,
   },
-  "VIP Lifestyle": {
+  Gold: {
     everyday: 3,
     dining: 4,
     travel: 4,
-    pointsFor100: 6667,
+    pointsFor10: 1000,
+    redemptionValue: 17.50,
   },
-  "Elite Lifestyle": {
+  Black: {
     everyday: 5,
     dining: 5,
     travel: 5,
-    pointsFor100: 5000,
+    pointsFor10: 1000,
+    redemptionValue: 20,
   },
 };
 
@@ -42,13 +46,13 @@ export default function MultiplierDetails(props: Props) {
   } = useUserProfile();
   const { itemVariants } = props;
 
-  // Get current tier with fallback to Freemium
-  const currentTier = profileData?.membershipTier || "Freemium";
+  // Get current tier with fallback to White
+  const currentTier = profileData?.membershipTier || "White";
 
   // Get multipliers for the current tier
   const multipliers =
     TIER_MULTIPLIERS[currentTier as keyof typeof TIER_MULTIPLIERS] ||
-    TIER_MULTIPLIERS.Freemium;
+    TIER_MULTIPLIERS.White;
 
   // Skeleton loader
   if (isProfileLoading) {
@@ -129,8 +133,8 @@ export default function MultiplierDetails(props: Props) {
 
       <div className="mt-4 text-center text-sm text-gray-400">
         <p>
-          For every {multipliers.pointsFor100.toLocaleString()} points earned,
-          you can redeem for $100 in value.
+          For every {multipliers.pointsFor10.toLocaleString()} points earned from $10 spent,
+          you can redeem for ${multipliers.redemptionValue.toFixed(2)} in value.
         </p>
       </div>
     </motion.div>

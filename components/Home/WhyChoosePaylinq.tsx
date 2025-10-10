@@ -60,7 +60,7 @@ export default function WhyChoosePaylinq() {
                 gutterBottom
                 className="text-white leading-relaxed xs:text-sm md:text-base lg:text-lg"
               >
-                {` We know how stressful it can be to manage bills and build credit. That&#39;s why we&#39;re building Paylinq—to make your financial journey simpler, more rewarding, and
+                {` We know how stressful it can be to manage bills and build credit. That&#39;s why we&#39;re building PayLinq—to make your financial journey simpler, more rewarding, and
                 enjoyable.`}
               </Typography>
               <Typography
