@@ -175,8 +175,10 @@ const PricingCard: React.FC<PricingCardProps> = ({
                 whileHover={{ x: 3 }}
                 transition={{ duration: 0.2 }}
               >
-                <span className="text-gray-600">{reward.category}</span>
-                <span className="font-semibold">
+                <span style={{ color: tierName === "Black" ? tierColors.text.accent : "#4B5563" }}>
+                  {reward.category}
+                </span>
+                <span className="font-semibold" style={{ color: tierName === "Black" ? tierColors.text.accent : "#111827" }}>
                   {reward.points} pts per $1
                 </span>
               </motion.li>
@@ -186,8 +188,10 @@ const PricingCard: React.FC<PricingCardProps> = ({
               whileHover={{ x: 3 }}
               transition={{ duration: 0.2 }}
             >
-              <span className="text-gray-600">${redemptionValue.toFixed(2)} Redemption</span>
-              <span className="font-semibold">
+              <span style={{ color: tierName === "Black" ? tierColors.text.accent : "#4B5563" }}>
+                ${redemptionValue.toFixed(2)} Redemption
+              </span>
+              <span className="font-semibold" style={{ color: tierName === "Black" ? tierColors.text.accent : "#111827" }}>
                 {pointsFor10.toLocaleString()} points
               </span>
             </motion.li>
@@ -208,9 +212,12 @@ const PricingCard: React.FC<PricingCardProps> = ({
                 whileHover={{ x: 3 }}
               >
                 <span
-                  className={`shrink-0 h-5 w-5 mr-2 ${
-                    feature.comingSoon ? "text-amber-500" : "text-green-500"
-                  }`}
+                  className="shrink-0 h-5 w-5 mr-2"
+                  style={{
+                    color: feature.comingSoon
+                      ? (tierName === "Black" ? "#F59E0B" : "#F59E0B")
+                      : (tierName === "Black" ? tierColors.text.primary : "#10B981")
+                  }}
                 >
                   {feature.comingSoon ? (
                     <Clock size={18} />
@@ -219,9 +226,17 @@ const PricingCard: React.FC<PricingCardProps> = ({
                   )}
                 </span>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-600">{feature.text}</span>
+                  <span
+                    className="text-sm"
+                    style={{ color: tierName === "Black" ? tierColors.text.accent : "#4B5563" }}
+                  >
+                    {feature.text}
+                  </span>
                   {feature.comingSoon && (
-                    <span className="text-xs text-amber-600">
+                    <span
+                      className="text-xs"
+                      style={{ color: tierName === "Black" ? "#FCD34D" : "#D97706" }}
+                    >
                       Coming soon
                     </span>
                   )}
