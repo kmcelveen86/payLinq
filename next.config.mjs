@@ -9,7 +9,7 @@ const nextConfig = {
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      "@marketplace": new URL("./packages/paylinq-marketplace/src", import.meta.url).pathname,
+      "@marketplace": new URL("./components/Marketplace", import.meta.url).pathname,
     };
     return config;
   },
