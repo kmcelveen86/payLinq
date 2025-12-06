@@ -26,7 +26,7 @@
         "./*"
       ],
       "@marketplace/*": [
-        "./packages/paylinq-marketplace/src/*"
+        "./components/Marketplace/*"
       ]
     },
     "target": "ES2017"
