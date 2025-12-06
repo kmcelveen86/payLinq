@@ -8,19 +8,33 @@ import {
 } from "@/components/Home/";
 import TopNavComp from "@/components/TopNav/TopNavComp";
 import PaylinqFooter from "@/components/PaylinqFooter";
-import { Box, Button, Typography, useMediaQuery, Link } from "@mui/material";
-import TopNav from "@/components/TopNav";
-// import { useAuth, useSession, useUser } from "@clerk/nextjs";
+import { Box } from "@mui/material";
+import { auth } from "@clerk/nextjs/server";
+import { prisma } from "@/lib/prisma";
+import MarketplaceWrapper from "@/components/MarketplaceWrapper";
 
 export default async function HomePage() {
-  // const { isLoaded, session, isSignedIn } = useSession();
-  // const clerkUser = useUser();
-  // const clerkAuth = useAuth();
-  // console.log("🚀 ~ TopNavComp ~ authclerk:", clerkAuth);
-  // console.log("🚀 ~ TopNavComp ~ userclerk:", clerkUser);
-  // const email = clerkUser?.primaryEmailAddress?.emailAddress;
-  // const session = await auth();
-  // const user = session?.user?.email;
+  const { userId } = await auth();
+  let showMarketplace = false;
+
+  if (userId) {
+    const user = await prisma.user.findUnique({
+      where: { clerkId: userId },
+      select: { membershipTier: true },
+    });
+    if (user?.membershipTier) {
+      showMarketplace = true;
+    }
+  }
+
+  if (showMarketplace) {
+    return (
+      <Box className="bg-background min-h-screen">
+        <TopNavComp />
+        <MarketplaceWrapper />
+      </Box>
+    );
+  }
 
   return (
     <Box className="bg-black p-0 w-full">
