@@ -5,7 +5,7 @@
 import { PrismaClient } from '@prisma/client'
 import { Pool, neonConfig } from '@neondatabase/serverless'
 import { PrismaNeon } from '@prisma/adapter-neon'
-import ws from 'ws'
+// import ws from 'ws'
 
 // neonConfig.webSocketConstructor = ws
 const connectionString = `${process.env.POSTGRES_PRISMA_URL}`
@@ -19,7 +19,7 @@ const adapter = new PrismaNeon(pool)
 // Learn more:
 // https://pris.ly/d/help/next-js-best-practices
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient }
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
 
 export const prisma = globalForPrisma.prisma || new PrismaClient({ adapter } as any)
 
