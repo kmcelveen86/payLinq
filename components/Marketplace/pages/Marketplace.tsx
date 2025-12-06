@@ -13,6 +13,8 @@ import { Card, CardContent } from '@marketplace/components/ui/card';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import marketplaceHero from '@marketplace/assets/marketplace-hero.jpg';
 
+import Image from 'next/image';
+
 const Marketplace = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>('All');
@@ -112,10 +114,11 @@ const Marketplace = () => {
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary via-primary to-[hsl(var(--hero-gradient-to))] text-primary-foreground overflow-hidden">
         <div className="absolute inset-0 opacity-20">
-          <img 
+          <Image 
             src={heroItems[heroIndex].image} 
             alt="Hero"
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
           />
         </div>
         <div className="relative container mx-auto px-4 py-16 md:py-24">

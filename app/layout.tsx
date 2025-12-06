@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.className} ${taviraj.className} ${prompt.className}`}
+      className={`dark ${inter.className} ${taviraj.className} ${prompt.className}`}
     >
       <body>
         <ClerkProvider
