@@ -176,7 +176,7 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p>UPP is Paylinq's universal reward currency redeemable anywhere Paylinq is accepted.</p>
+                    <p>{`UPP is Paylinq's universal reward currency redeemable anywhere Paylinq is accepted.`}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
