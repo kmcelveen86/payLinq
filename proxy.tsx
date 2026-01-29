@@ -14,6 +14,28 @@ export default clerkMiddleware(
   async (auth, req) => {
     const { userId, sessionClaims, redirectToSignIn } = await auth();
 
+    // Get the hostname from the request headers
+    const hostname = req.headers.get("host");
+
+    // Handle subdomain routing for merchant
+    // This logic checks if the subdomain is "merchant" (e.g. merchant.localhost:3000 or merchant.getpaylinq.com)
+    let currentHost = hostname;
+    if (process.env.NODE_ENV === "development" && hostname?.includes("localhost")) {
+      // local development handling if needed, though usually just splitting by dot works fine
+      // keeping it simple for now
+    }
+
+    const subdomain = hostname?.split(".")[0];
+    if (subdomain === "merchant") {
+      // Rewrite the URL to the /merchant path
+      const url = req.nextUrl.clone();
+      // Avoid infinite loop if already at /merchant
+      if (!url.pathname.startsWith('/merchant')) {
+        url.pathname = `/merchant${url.pathname}`;
+        return NextResponse.rewrite(url);
+      }
+    }
+
     // Handle geolocation restrictions first
     if (isBlockRoute(req)) {
       return;
