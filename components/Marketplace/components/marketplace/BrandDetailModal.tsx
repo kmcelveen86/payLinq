@@ -10,11 +10,11 @@ import { Badge } from '@marketplace/components/ui/badge';
 import { UPPBadge } from './UPPBadge';
 import { Card, CardContent, CardHeader, CardTitle } from '@marketplace/components/ui/card';
 import { Separator } from '@marketplace/components/ui/separator';
-import { 
-  Heart, 
-  Share2, 
-  MapPin, 
-  Navigation, 
+import {
+  Heart,
+  Share2,
+  MapPin,
+  Navigation,
   Clock,
   TrendingUp,
   Sparkles,
@@ -78,8 +78,12 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
         {/* Header Block */}
         <div className="flex flex-col items-center text-center space-y-4 pt-4">
           {/* Logo */}
-          <div className="w-24 h-24 flex items-center justify-center text-6xl bg-muted rounded-2xl">
-            {brand.logo}
+          <div className="w-24 h-24 flex items-center justify-center text-6xl bg-muted rounded-2xl overflow-hidden">
+            {brand.logo.startsWith('http') || brand.logo.startsWith('/') ? (
+              <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" />
+            ) : (
+              brand.logo
+            )}
           </div>
 
           {/* Brand Name & Tagline */}
@@ -97,14 +101,14 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
 
           {/* Tags & UPP Badge */}
           <div className="flex flex-wrap gap-2 justify-center items-center">
-            <UPPBadge 
-              rate={brand.uppEarningRate} 
-              type={brand.uppEarningType} 
+            <UPPBadge
+              rate={brand.uppEarningRate}
+              type={brand.uppEarningType}
               size="md"
             />
             {brand.tags.map((tag) => (
-              <Badge 
-                key={tag} 
+              <Badge
+                key={tag}
                 variant="outline"
                 className={cn(
                   'text-xs px-2 py-1 capitalize',
@@ -123,7 +127,7 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
           <Button size="lg" className="w-full">
             Shop & Earn UPP
           </Button>
-          
+
           <div className="flex gap-2">
             <Button variant="outline" className="flex-1">
               <Heart className="h-4 w-4 mr-2" />
@@ -184,7 +188,7 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
           </CardHeader>
           <CardContent className="space-y-2">
             <p className="text-lg font-semibold text-primary">
-              {brand.uppEarningType === 'percentage' 
+              {brand.uppEarningType === 'percentage'
                 ? `${brand.uppEarningRate}% back in UPP`
                 : `${brand.uppEarningRate} UPP per $10 spent`
               }

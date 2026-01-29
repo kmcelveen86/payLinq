@@ -319,5 +319,65 @@ export async function POST(req: Request) {
     }
   }
 
+  // Handle organization.created event
+  if (eventType === "organization.created") {
+    const { id, name, slug, image_url, created_at } = evt.data;
+
+    try {
+      await prisma.merchant.create({
+        data: {
+          clerkOrgId: id,
+          name: name,
+          slug: slug,
+          logo: image_url,
+          // You can map other fields as needed
+        }
+      });
+      console.log(`Created new merchant for org ${id}: ${name}`);
+      return new Response("Merchant created successfully", { status: 200 });
+    } catch (error) {
+      console.error("Error creating merchant:", error);
+      return new Response("Error creating merchant", { status: 500 });
+    }
+  }
+
+  // Handle organization.updated event
+  if (eventType === "organization.updated") {
+    const { id, name, slug, image_url } = evt.data;
+
+    try {
+      const merchant = await prisma.merchant.findUnique({
+        where: { clerkOrgId: id },
+      });
+
+      if (merchant) {
+        await prisma.merchant.update({
+          where: { id: merchant.id },
+          data: {
+            name: name,
+            slug: slug,
+            logo: image_url,
+          }
+        });
+        console.log(`Updated merchant for org ${id}: ${name}`);
+      } else {
+        // Fallback: create if missing
+        await prisma.merchant.create({
+          data: {
+            clerkOrgId: id,
+            name: name,
+            slug: slug,
+            logo: image_url,
+          }
+        });
+        console.log(`Created missing merchant for org ${id} on update`);
+      }
+      return new Response("Merchant updated successfully", { status: 200 });
+    } catch (error) {
+      console.error("Error updating merchant:", error);
+      return new Response("Error updating merchant", { status: 500 });
+    }
+  }
+
   return new Response("Webhook received", { status: 200 });
 }

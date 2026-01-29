@@ -2,6 +2,7 @@
 
 import { Box, Typography, Button } from "@mui/material";
 import { ArrowRight, LayoutDashboard, Store } from "lucide-react";
+import Link from "next/link";
 
 export default function MerchantDashboard() {
     return (
@@ -37,14 +38,16 @@ export default function MerchantDashboard() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center mt-4">
-                    <Button
-                        variant="contained"
-                        size="large"
-                        className="bg-primary hover:bg-primary/90 text-white font-medium px-6 md:px-8 py-3 rounded-lg normal-case text-base w-full sm:w-auto"
-                    >
-                        Get Started
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
+                    <Link href="/dashboard" className="w-full sm:w-auto">
+                        <Button
+                            variant="contained"
+                            size="large"
+                            className="bg-primary hover:bg-primary/90 text-white font-medium px-6 md:px-8 py-3 rounded-lg normal-case text-base w-full"
+                        >
+                            Get Started
+                            <ArrowRight className="ml-2 h-5 w-5" />
+                        </Button>
+                    </Link>
                     <Button
                         variant="outlined"
                         size="large"

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Box } from "@mui/material";
+import { OrganizationSwitcher, UserButton, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 
 // We can reuse the main font or pick a new one. sticking to Inter for now.
 const inter = Inter({ subsets: ["latin"] });
@@ -26,8 +27,27 @@ export default function MerchantLayout({
                         <span className="text-foreground">Merchant</span>
                     </div>
                     <div className="flex items-center gap-4">
-                        {/* Placeholder for future merchant nav items / auth user */}
-                        <div className="text-sm text-muted-foreground">v1.0.0</div>
+                        <SignedIn>
+                            <OrganizationSwitcher
+                                afterCreateOrganizationUrl="/dashboard"
+                                afterLeaveOrganizationUrl="/dashboard"
+                                afterSelectOrganizationUrl="/dashboard"
+                                afterSelectPersonalUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/user/dashboard`}
+                                appearance={{
+                                    elements: {
+                                        organizationSwitcherTrigger: "py-2 px-3 border border-border rounded-md hover:bg-secondary/50 transition-colors"
+                                    }
+                                }}
+                            />
+                            <UserButton />
+                        </SignedIn>
+                        <SignedOut>
+                            <SignInButton mode="modal">
+                                <button className="text-sm font-medium hover:text-primary transition-colors">
+                                    Sign In
+                                </button>
+                            </SignInButton>
+                        </SignedOut>
                     </div>
                 </div>
             </header>

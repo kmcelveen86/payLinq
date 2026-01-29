@@ -11,14 +11,18 @@ interface LocalMerchantCardProps {
 
 export const LocalMerchantCard = ({ merchant, onClick }: LocalMerchantCardProps) => {
   return (
-    <Card 
+    <Card
       className="min-w-[280px] sm:min-w-[320px] cursor-pointer hover:shadow-lg transition-all duration-300"
       onClick={() => onClick(merchant)}
     >
       <CardContent className="p-4 space-y-3">
         {/* Merchant Image/Logo */}
-        <div className="w-full h-32 bg-muted rounded-lg flex items-center justify-center text-6xl">
-          {merchant.logo}
+        <div className="w-full h-32 bg-muted rounded-lg flex items-center justify-center text-6xl overflow-hidden">
+          {merchant.logo.startsWith('http') || merchant.logo.startsWith('/') ? (
+            <img src={merchant.logo} alt={merchant.name} className="w-full h-full object-cover" />
+          ) : (
+            merchant.logo
+          )}
         </div>
 
         {/* Info */}
@@ -28,9 +32,9 @@ export const LocalMerchantCard = ({ merchant, onClick }: LocalMerchantCardProps)
               <h3 className="font-semibold text-base">{merchant.name}</h3>
               <p className="text-sm text-muted-foreground">{merchant.category}</p>
             </div>
-            <UPPBadge 
-              rate={merchant.uppEarningRate} 
-              type={merchant.uppEarningType} 
+            <UPPBadge
+              rate={merchant.uppEarningRate}
+              type={merchant.uppEarningType}
               size="sm"
             />
           </div>
@@ -45,7 +49,7 @@ export const LocalMerchantCard = ({ merchant, onClick }: LocalMerchantCardProps)
 
           {/* Action Buttons */}
           <div className="flex gap-2 pt-2">
-            <Button 
+            <Button
               className="flex-1"
               onClick={(e) => {
                 e.stopPropagation();
@@ -54,8 +58,8 @@ export const LocalMerchantCard = ({ merchant, onClick }: LocalMerchantCardProps)
             >
               Shop Now
             </Button>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="icon"
               onClick={(e) => {
                 e.stopPropagation();

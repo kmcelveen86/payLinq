@@ -20,7 +20,7 @@ async function startNgrok() {
 
     console.log(`
 🚀 Ngrok tunnel established at: ${listener.url()}
-📝 Use this URL in your Clerk webhook settings: ${listener.url()}/api/webhook/clerk
+📝 Use this URL in your Clerk webhook settings: ${listener.url()}/api/webhooks/clerk
     `);
 
     // Keep the process running

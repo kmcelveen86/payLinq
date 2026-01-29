@@ -12,6 +12,8 @@ import { Button } from '@marketplace/components/ui/button';
 import { Card, CardContent } from '@marketplace/components/ui/card';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import marketplaceHero from '@marketplace/assets/marketplace-hero.jpg';
+import { useQuery } from '@tanstack/react-query';
+import { getMerchants } from '@/app/actions/getMerchants';
 
 import Image from 'next/image';
 
@@ -23,6 +25,31 @@ const Marketplace = () => {
   const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
   const [heroIndex, setHeroIndex] = useState(0);
 
+  // Fetch real merchants
+  const { data: realMerchants = [] } = useQuery({
+    queryKey: ['merchants'],
+    queryFn: getMerchants,
+  });
+
+  // Merge mock and real brands
+  const allBrands = useMemo(() => {
+    const mappedRealBrands: Brand[] = realMerchants.map((m: any) => ({
+      id: m.id,
+      name: m.name,
+      logo: m.logo || (m.name ? m.name[0] : '?'),
+      category: m.category || 'Other',
+      uppEarningRate: 5, // Default earning rate for new shops
+      uppEarningType: 'percentage',
+      tags: ['new', 'local'], // Tag them as new local shops
+      isLocal: true,
+      tagline: m.description ? m.description.substring(0, 30) + '...' : 'New Local Merchant',
+      description: m.description || 'Visit our store to earn rewards.',
+      offers: [],
+    }));
+
+    return [...mockBrands, ...mappedRealBrands];
+  }, [realMerchants]);
+
   // Hero carousel items
   const heroItems = [
     { title: 'Shop Anywhere', subtitle: 'Earn UPP Everywhere', image: marketplaceHero },
@@ -32,7 +59,7 @@ const Marketplace = () => {
 
   // Filter and sort brands
   const filteredBrands = useMemo(() => {
-    let filtered = mockBrands;
+    let filtered = allBrands;
 
     // Search filter
     if (searchQuery) {
@@ -44,9 +71,9 @@ const Marketplace = () => {
 
     // Category filter
     if (selectedCategory !== 'All') {
-      filtered = filtered.filter((brand) => 
-        selectedCategory === 'Local' 
-          ? brand.isLocal 
+      filtered = filtered.filter((brand) =>
+        selectedCategory === 'Local'
+          ? brand.isLocal
           : brand.category === selectedCategory
       );
     }
@@ -64,12 +91,12 @@ const Marketplace = () => {
         filtered = [...filtered].sort((a, b) => b.uppEarningRate - a.uppEarningRate);
         break;
       case 'trending':
-        filtered = [...filtered].sort((a, b) => 
+        filtered = [...filtered].sort((a, b) =>
           (b.tags.includes('trending') ? 1 : 0) - (a.tags.includes('trending') ? 1 : 0)
         );
         break;
       case 'newest':
-        filtered = [...filtered].sort((a, b) => 
+        filtered = [...filtered].sort((a, b) =>
           (b.tags.includes('new') ? 1 : 0) - (a.tags.includes('new') ? 1 : 0)
         );
         break;
@@ -84,21 +111,21 @@ const Marketplace = () => {
     }
 
     return filtered;
-  }, [searchQuery, selectedCategory, filterType, sortType]);
+  }, [searchQuery, selectedCategory, filterType, sortType, allBrands]);
 
-  const localMerchants = useMemo(() => 
-    mockBrands.filter((brand) => brand.isLocal),
-    []
+  const localMerchants = useMemo(() =>
+    allBrands.filter((brand) => brand.isLocal),
+    [allBrands]
   );
 
-  const trendingBrands = useMemo(() => 
-    mockBrands.filter((brand) => brand.tags.includes('trending')),
-    []
+  const trendingBrands = useMemo(() =>
+    allBrands.filter((brand) => brand.tags.includes('trending')),
+    [allBrands]
   );
 
-  const topEarners = useMemo(() => 
-    [...mockBrands].sort((a, b) => b.uppEarningRate - a.uppEarningRate).slice(0, 6),
-    []
+  const topEarners = useMemo(() =>
+    [...allBrands].sort((a, b) => b.uppEarningRate - a.uppEarningRate).slice(0, 6),
+    [allBrands]
   );
 
   const nextHero = () => {
@@ -114,8 +141,8 @@ const Marketplace = () => {
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary via-primary to-[hsl(var(--hero-gradient-to))] text-primary-foreground overflow-hidden">
         <div className="absolute inset-0 opacity-20">
-          <Image 
-            src={heroItems[heroIndex].image} 
+          <Image
+            src={heroItems[heroIndex].image}
             alt="Hero"
             fill
             className="object-cover"
@@ -130,7 +157,7 @@ const Marketplace = () => {
               {heroItems[heroIndex].subtitle}
             </p>
           </div>
-          
+
           {/* Hero Navigation */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4">
             <Button
@@ -146,11 +173,10 @@ const Marketplace = () => {
                 <button
                   key={idx}
                   onClick={() => setHeroIndex(idx)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    idx === heroIndex 
-                      ? 'bg-primary-foreground w-8' 
+                  className={`w-2 h-2 rounded-full transition-all ${idx === heroIndex
+                      ? 'bg-primary-foreground w-8'
                       : 'bg-primary-foreground/50'
-                  }`}
+                    }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
               ))}
@@ -172,11 +198,11 @@ const Marketplace = () => {
         {/* Search & Filters */}
         <section className="space-y-6">
           <SearchBar value={searchQuery} onChange={setSearchQuery} />
-          
+
           <div className="space-y-4">
-            <CategoryChips 
-              selected={selectedCategory} 
-              onSelect={setSelectedCategory} 
+            <CategoryChips
+              selected={selectedCategory}
+              onSelect={setSelectedCategory}
             />
             <FilterBar
               filterType={filterType}
@@ -197,9 +223,9 @@ const Marketplace = () => {
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
               {filteredBrands.map((brand) => (
-                <BrandCard 
-                  key={brand.id} 
-                  brand={brand} 
+                <BrandCard
+                  key={brand.id}
+                  brand={brand}
                   onClick={setSelectedBrand}
                 />
               ))}
@@ -242,9 +268,9 @@ const Marketplace = () => {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
             {trendingBrands.slice(0, 6).map((brand) => (
-              <BrandCard 
-                key={brand.id} 
-                brand={brand} 
+              <BrandCard
+                key={brand.id}
+                brand={brand}
                 onClick={setSelectedBrand}
               />
             ))}
@@ -258,9 +284,9 @@ const Marketplace = () => {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
             {topEarners.map((brand) => (
-              <BrandCard 
-                key={brand.id} 
-                brand={brand} 
+              <BrandCard
+                key={brand.id}
+                brand={brand}
                 onClick={setSelectedBrand}
               />
             ))}
