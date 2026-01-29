@@ -54,6 +54,8 @@ model User {
   bannedBy                String?
   bannedUntil             DateTime?
   bannedUntilReason       String?
+
+  favorites               MerchantFavorite[]
 }
 
 model Waitlist {
@@ -265,6 +267,8 @@ model Merchant {
   locations   Location[]
   offers      Offer[]
   analytics   MerchantAnalytics?
+
+  favoritedBy MerchantFavorite[]
 }
 
 model Location {
@@ -314,4 +318,16 @@ model MerchantAnalytics {
    totalCustomers    Int @default(0)
    
    updatedAt   DateTime  @updatedAt
+}
+
+model MerchantFavorite {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  merchantId String
+  merchant  Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, merchantId])
+  @@index([merchantId])
 }

@@ -15,6 +15,7 @@ export const mockBrands: Brand[] = [
     offers: [
       { id: '1', title: 'Weekend Bonus', description: 'Extra 2% UPP this weekend', bonusUpp: 200 }
     ],
+    affiliateLink: 'https://www.target.com',
   },
   {
     id: '2',

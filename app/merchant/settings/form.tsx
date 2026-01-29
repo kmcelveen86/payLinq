@@ -23,7 +23,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/Marketplace/components/ui/select";
-import { updateMerchantProfile } from "@/app/actions/updateMerchantProfile";
+import { updateMerchantProfile, type MerchantProfileData } from "@/app/actions/updateMerchantProfile";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
@@ -56,7 +56,15 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
 
     function onSubmit(data: MerchantFormValues) {
         startTransition(async () => {
-            const result = await updateMerchantProfile(data as any);
+            const formData = {
+                ...data,
+                // Ensure optional fields are handled correctly
+                website: data.website || null,
+                description: data.description || null,
+                affiliateLink: data.affiliateLink || null,
+                commissionRate: data.commissionRate || 0,
+            };
+            const result = await updateMerchantProfile(formData);
 
             if (result.success) {
                 toast.success("Settings saved successfully");

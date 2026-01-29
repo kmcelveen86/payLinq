@@ -6,11 +6,11 @@ import { revalidatePath } from "next/cache";
 
 export type MerchantProfileData = {
     name: string;
-    website: string;
-    description: string;
+    website?: string | null;
+    description?: string | null;
     integrationType: string;
-    affiliateLink: string;
-    commissionRate: number;
+    affiliateLink?: string | null;
+    commissionRate?: number | string | null;
 };
 
 export async function updateMerchantProfile(formData: MerchantProfileData) {
@@ -21,6 +21,8 @@ export async function updateMerchantProfile(formData: MerchantProfileData) {
     }
 
     try {
+        const commissionRate = formData.commissionRate ? Number(formData.commissionRate) : 0;
+
         await prisma.merchant.update({
             where: {
                 clerkOrgId: orgId,
@@ -31,7 +33,7 @@ export async function updateMerchantProfile(formData: MerchantProfileData) {
                 description: formData.description,
                 integrationType: formData.integrationType,
                 affiliateLink: formData.affiliateLink,
-                commissionRate: Number(formData.commissionRate),
+                commissionRate: isNaN(commissionRate) ? 0 : commissionRate,
             },
         });
 

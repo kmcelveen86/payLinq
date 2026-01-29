@@ -108,12 +108,16 @@ export async function POST(request: NextRequest) {
       { status: existingUser ? 200 : 201 }
     );
   } catch (error) {
+    if ((error as Error).message === 'NEXT_REDIRECT') {
+      throw error;
+    }
     console.error("Error updating user profile:", error);
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }
     );
   }
+
 }
 
 // export async function PUT(request: NextRequest) {

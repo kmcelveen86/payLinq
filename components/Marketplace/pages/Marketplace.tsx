@@ -45,6 +45,10 @@ const Marketplace = () => {
       tagline: m.description ? m.description.substring(0, 30) + '...' : 'New Local Merchant',
       description: m.description || 'Visit our store to earn rewards.',
       offers: [],
+      affiliateLink: m.affiliateLink,
+      website: m.website,
+      integrationType: m.integrationType,
+      isFavorited: m.isFavorited,
     }));
 
     return [...mockBrands, ...mappedRealBrands];
@@ -71,11 +75,15 @@ const Marketplace = () => {
 
     // Category filter
     if (selectedCategory !== 'All') {
-      filtered = filtered.filter((brand) =>
-        selectedCategory === 'Local'
-          ? brand.isLocal
-          : brand.category === selectedCategory
-      );
+      if (selectedCategory === 'Favorites') {
+        filtered = filtered.filter((brand) => brand.isFavorited);
+      } else {
+        filtered = filtered.filter((brand) =>
+          selectedCategory === 'Local'
+            ? brand.isLocal
+            : brand.category === selectedCategory
+        );
+      }
     }
 
     // Online/Local filter
@@ -174,8 +182,8 @@ const Marketplace = () => {
                   key={idx}
                   onClick={() => setHeroIndex(idx)}
                   className={`w-2 h-2 rounded-full transition-all ${idx === heroIndex
-                      ? 'bg-primary-foreground w-8'
-                      : 'bg-primary-foreground/50'
+                    ? 'bg-primary-foreground w-8'
+                    : 'bg-primary-foreground/50'
                     }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
