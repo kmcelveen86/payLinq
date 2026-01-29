@@ -26,6 +26,12 @@ export default function MerchantLayout({
                         <span className="text-muted-foreground font-normal">|</span>
                         <span className="text-foreground">Merchant</span>
                     </div>
+
+                    <nav className="hidden md:flex items-center gap-6">
+                        <a href="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">Dashboard</a>
+                        <a href="/settings" className="text-sm font-medium hover:text-primary transition-colors">Settings</a>
+                    </nav>
+
                     <div className="flex items-center gap-4">
                         <SignedIn>
                             <OrganizationSwitcher

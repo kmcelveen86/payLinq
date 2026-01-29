@@ -253,6 +253,12 @@ model Merchant {
   description String?
   category    String?
   
+  // Infrastructure Settings
+  integrationType String?   @default("manual") // manual, api, affiliate, marketplace
+  affiliateLink   String?
+  apiKey          String?
+  commissionRate  Float?    @default(0.0)
+  
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
