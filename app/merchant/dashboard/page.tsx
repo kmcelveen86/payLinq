@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 export default async function MerchantDashboardPage() {
     const { orgId } = await auth();
 
-    if (!orgId) return null;
+    if (!orgId) redirect("/");
 
     const merchant = await prisma.merchant.findUnique({
         where: {

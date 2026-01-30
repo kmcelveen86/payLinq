@@ -18,10 +18,12 @@ import {
     SignedOut,
     SignInButton,
     OrganizationSwitcher,
+    useOrganization,
 } from "@clerk/nextjs";
 
 export default function MerchantMobileMenu() {
     const { user } = useUser();
+    const { organization } = useOrganization();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
 
@@ -51,7 +53,7 @@ export default function MerchantMobileMenu() {
         visible: { opacity: 1 },
     };
 
-    const menuItems = [
+    const baseItems = [
         {
             text: "Dashboard",
             href: "/dashboard",
@@ -63,6 +65,8 @@ export default function MerchantMobileMenu() {
             icon: <Settings size={20} className="text-foreground" />,
         },
     ];
+
+    const menuItems = organization ? baseItems : [];
 
     if (!isMounted) return null;
 
