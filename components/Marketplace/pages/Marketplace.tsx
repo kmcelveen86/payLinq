@@ -37,13 +37,13 @@ const Marketplace = () => {
       name: m.name,
       logo: m.logo || (m.name ? m.name[0] : '?'),
       category: m.category || 'Other',
-      uppEarningRate: 5, // Default earning rate for new shops
-      uppEarningType: 'percentage',
-      tags: ['new', 'local'], // Tag them as new local shops
-      isLocal: true,
-      tagline: m.description ? m.description.substring(0, 30) + '...' : 'New Local Merchant',
+      uppEarningRate: m.uppEarningRate || 5,
+      uppEarningType: m.uppEarningType || 'percentage',
+      tags: m.tags && m.tags.length > 0 ? m.tags : ['new'],
+      isLocal: m.presence === 'local' || m.presence === 'both',
+      tagline: m.tagline || (m.description ? m.description.substring(0, 30) + '...' : 'Merchant partner'),
       description: m.description || 'Visit our store to earn rewards.',
-      offers: [],
+      offers: m.offers || [],
       affiliateLink: m.affiliateLink,
       website: m.website,
       integrationType: m.integrationType,
@@ -68,7 +68,8 @@ const Marketplace = () => {
     if (searchQuery) {
       filtered = filtered.filter((brand) =>
         brand.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        brand.category.toLowerCase().includes(searchQuery.toLowerCase())
+        brand.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        brand.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
       );
     }
 

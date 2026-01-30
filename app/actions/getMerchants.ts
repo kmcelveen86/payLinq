@@ -25,7 +25,8 @@ export async function getMerchants() {
                     where: {
                         userId: internalUserId ?? "",
                     }
-                }
+                },
+                offers: true
             }
         });
 

@@ -254,6 +254,12 @@ model Merchant {
   website     String?
   description String?
   category    String?
+  tags        String[]
+  // isLocal     Boolean     @default(false) // Deprecated in favor of presence
+  presence    String      @default("online") // online, local, both
+  tagline     String?
+  uppEarningRate Float?
+  uppEarningType String? // percentage, fixed
   
   // Infrastructure Settings
   integrationType String?   @default("manual") // manual, api, affiliate, marketplace
@@ -299,6 +305,7 @@ model Offer {
   description String
   discount    String?   // e.g. "10% OFF" or "$5.00"
   pointsMultiplier Float? @default(1.0)
+  bonusUpp    Int?
   
   startDate   DateTime?
   endDate     DateTime?
