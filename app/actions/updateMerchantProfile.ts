@@ -15,6 +15,7 @@ export type MerchantProfileData = {
     tagline?: string | null;
     tags?: string[] | null;
     presence?: string; // online, local, both
+    category?: string | null;
     uppEarningRate?: number | string | null;
     uppEarningType?: string | null;
 };
@@ -43,6 +44,7 @@ export async function updateMerchantProfile(formData: MerchantProfileData) {
                 commissionRate: isNaN(commissionRate) ? 0 : commissionRate,
                 // New fields
                 tagline: formData.tagline,
+                category: formData.category,
                 tags: formData.tags || [],
                 presence: formData.presence || "online",
                 uppEarningRate: isNaN(uppEarningRate) ? 0 : uppEarningRate,

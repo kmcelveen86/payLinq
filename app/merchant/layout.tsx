@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import { OrganizationSwitcher, UserButton, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
+import MerchantMobileMenu from "@/components/MerchantMobileMenu";
 
 // We can reuse the main font or pick a new one. sticking to Inter for now.
 const inter = Inter({ subsets: ["latin"] });
@@ -12,6 +13,8 @@ export const metadata: Metadata = {
     title: "PayLinq Merchant",
     description: "Merchant Portal for PayLinq",
 };
+
+// ... existing code ...
 
 export default function MerchantLayout({
     children,
@@ -47,26 +50,31 @@ export default function MerchantLayout({
 
                     <div className="flex items-center gap-4">
                         <SignedIn>
-                            <OrganizationSwitcher
-                                afterCreateOrganizationUrl="/dashboard"
-                                afterLeaveOrganizationUrl="/dashboard"
-                                afterSelectOrganizationUrl="/dashboard"
-                                afterSelectPersonalUrl={`${process.env.NEXT_PUBLIC_BASE_URL || "https://getpaylinq.com"}/user/dashboard`}
-                                appearance={{
-                                    elements: {
-                                        organizationSwitcherTrigger: "py-2 px-3 border border-border rounded-md hover:bg-secondary/50 transition-colors"
-                                    }
-                                }}
-                            />
-                            <UserButton />
+                            <div className="hidden md:flex items-center gap-4">
+                                <OrganizationSwitcher
+                                    afterCreateOrganizationUrl="/dashboard"
+                                    afterLeaveOrganizationUrl="/dashboard"
+                                    afterSelectOrganizationUrl="/dashboard"
+                                    afterSelectPersonalUrl={`${process.env.NEXT_PUBLIC_BASE_URL || "https://getpaylinq.com"}/user/dashboard`}
+                                    appearance={{
+                                        elements: {
+                                            organizationSwitcherTrigger: "py-2 px-3 border border-border rounded-md hover:bg-secondary/50 transition-colors"
+                                        }
+                                    }}
+                                />
+                                <UserButton />
+                            </div>
                         </SignedIn>
                         <SignedOut>
                             <SignInButton mode="modal">
-                                <button className="text-sm font-medium hover:text-primary transition-colors">
+                                <button className="hidden md:block text-sm font-medium hover:text-primary transition-colors">
                                     Sign In
                                 </button>
                             </SignInButton>
                         </SignedOut>
+
+                        {/* Mobile Menu */}
+                        <MerchantMobileMenu />
                     </div>
                 </div>
             </header>

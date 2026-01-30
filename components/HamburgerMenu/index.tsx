@@ -15,6 +15,7 @@ import {
   Menu,
   X,
   CreditCard,
+  Store,
 } from "lucide-react";
 import {
   useAuth,
@@ -38,8 +39,8 @@ export default function HamburgerMenu() {
   const userFullName =
     clerkUser?.user?.fullName ?? profileDataFullName
       ? `${profileData?.firstName
-          .charAt(0)
-          .toUpperCase()}${profileData?.lastName.charAt(0).toUpperCase()}`
+        .charAt(0)
+        .toUpperCase()}${profileData?.lastName.charAt(0).toUpperCase()}`
       : "U";
   const userEmail = clerkUser?.user?.primaryEmailAddress as any;
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -96,6 +97,11 @@ export default function HamburgerMenu() {
       text: "How it works",
       href: "/howitworks",
       icon: <HelpCircle size={20} className="text-gray-600" />,
+    },
+    {
+      text: "Merchant Portal",
+      href: "/merchant",
+      icon: <Store size={20} className="text-gray-600" />,
     },
     // {
     //   text: "Features",
