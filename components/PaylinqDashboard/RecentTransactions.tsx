@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 import userData from "./data";
 import { Category, getCategoryColor } from "./utils";
@@ -18,9 +19,9 @@ export default function RecentTransactions(props: Props) {
     >
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-lg font-bold">Recent Transactions</h3>
-        <button className="text-sm text-gray-400 hover:text-white flex items-center">
+        <Link href="/user/transactions" className="text-sm text-gray-400 hover:text-white flex items-center transition-colors">
           View All <ChevronRight size={16} />
-        </button>
+        </Link>
       </div>
 
       <div className="space-y-4">

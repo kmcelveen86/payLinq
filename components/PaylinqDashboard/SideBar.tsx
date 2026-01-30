@@ -140,7 +140,7 @@ export default function SideBar(props: Props) {
             <span>Dashboard</span>
           </button>
           <button
-            onClick={() => setActiveTab("transactions")}
+            onClick={() => router.push("/user/transactions")}
             className={`w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors ${activeTab === "transactions"
               ? "bg-gradient-to-r from-[#2D9642]/20 to-[#C28F49]/20 border-l-4 border-[#2D9642]"
               : ""

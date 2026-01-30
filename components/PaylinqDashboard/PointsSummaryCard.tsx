@@ -43,6 +43,18 @@ export default function PointsSummaryCard(props: Props) {
   const tierInfo =
     TIER_INFO[currentTier as keyof typeof TIER_INFO] || TIER_INFO["White"];
 
+
+  // Calculate value based on 1000-point blocks
+  const redeemableBlockCount = Math.floor(userData.totalPoints / 1000);
+  const redeemablePoints = redeemableBlockCount * 1000;
+  const redeemableValue = redeemablePoints * tierInfo.redemptionRate;
+
+  // Calculate distinct cash equivalent (raw value) vs redeemable value
+  // User requested to see $0 until 1000 points, so we apply the block logic to "Current Redemption Value"
+  // We will also apply it to "Cash equivalent" to avoid confusion, or keys off user request.
+  // "I should see $0" implies they want the displayed number to represent what they can get NOW.
+  const displayValue = redeemableValue;
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <motion.div
@@ -66,10 +78,10 @@ export default function PointsSummaryCard(props: Props) {
             </span>
           </div>
           <div className="flex justify-between">
-            <span>Cash equivalent:</span>
+            <span>Redeemable Value:</span>
             <span className="text-white">
               $
-              {(userData.totalPoints * tierInfo.redemptionRate).toLocaleString(
+              {displayValue.toLocaleString(
                 undefined,
                 { minimumFractionDigits: 2, maximumFractionDigits: 2 }
               )}
@@ -90,7 +102,7 @@ export default function PointsSummaryCard(props: Props) {
         </div>
         <div className="mt-3">
           <p className="text-4xl font-bold bg-gradient-to-r from-[#C28F49] to-amber-400 bg-clip-text text-transparent">
-            ${(userData.totalPoints * tierInfo.redemptionRate).toLocaleString(
+            ${displayValue.toLocaleString(
               undefined,
               { minimumFractionDigits: 2, maximumFractionDigits: 2 }
             )}
@@ -99,7 +111,7 @@ export default function PointsSummaryCard(props: Props) {
         </div>
         <div className="mt-4 pt-3 border-t border-gray-700/50">
           <p className="text-xs text-gray-500 text-center">
-            Redeem anytime • No minimums • Points never expire
+            Redeem anytime • 1,000 point increments • Points never expire
           </p>
         </div>
       </motion.div>
