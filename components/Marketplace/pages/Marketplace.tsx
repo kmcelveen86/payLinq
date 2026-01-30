@@ -165,10 +165,10 @@ const Marketplace = () => {
         {/* Brand Grid */}
         <section>
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold tracking-tight">
+            <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
               {searchQuery ? 'Search Results' : 'Explore Merchants'}
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-zinc-500 dark:text-zinc-400">
               {filteredBrands.length} {filteredBrands.length === 1 ? 'result' : 'results'} found
             </p>
           </div>
@@ -201,8 +201,8 @@ const Marketplace = () => {
           <section className="pt-8 border-t border-dashed">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="text-2xl font-bold tracking-tight">Trending Now</h2>
-                <p className="text-muted-foreground mt-1">Hot merchants earning top rewards</p>
+                <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">Trending Now</h2>
+                <p className="text-zinc-500 dark:text-zinc-400 mt-1">Hot merchants earning top rewards</p>
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">

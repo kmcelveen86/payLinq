@@ -70,10 +70,10 @@ export const ModernBrandCard = ({ brand, onClick, onFavorite }: ModernBrandCardP
 
                 {/* Content */}
                 <div className="space-y-1 mb-3">
-                    <h3 className="font-bold text-lg leading-tight text-foreground group-hover:text-primary transition-colors">
+                    <h3 className="font-bold text-lg leading-tight text-zinc-900 dark:text-white group-hover:text-primary transition-colors">
                         {brand.name}
                     </h3>
-                    <p className="text-sm text-muted-foreground">{brand.category}</p>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400">{brand.category}</p>
                 </div>
 
                 {/* Reward Badge */}

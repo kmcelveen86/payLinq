@@ -63,7 +63,7 @@ export const ModernFilterBar = ({
                         value={searchQuery}
                         onChange={(e) => onSearchChange(e.target.value)}
                         placeholder="Search merchants, categories, or tags..."
-                        className="w-full h-12 pl-10 pr-4 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm text-sm"
+                        className="w-full h-12 pl-10 pr-4 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm text-sm text-zinc-900 dark:text-white"
                     />
                 </div>
 

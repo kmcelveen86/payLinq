@@ -125,11 +125,11 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                         <div className="flex flex-col items-center text-center gap-4">
                             <div className="space-y-2 flex flex-col items-center">
                                 <div className="flex items-center gap-3">
-                                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">{brand.name}</h2>
+                                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-zinc-900 dark:text-white">{brand.name}</h2>
                                     <Badge variant="secondary" className="rounded-full px-3">{brand.category}</Badge>
                                 </div>
                                 {brand.tagline && (
-                                    <p className="text-lg text-muted-foreground">{brand.tagline}</p>
+                                    <p className="text-lg text-zinc-500 dark:text-zinc-400">{brand.tagline}</p>
                                 )}
                                 <div className="flex items-center gap-4 text-sm text-muted-foreground pt-1 justify-center">
                                     {brand.isLocal && brand.address && (
@@ -159,12 +159,12 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                             <div className="md:col-span-2 space-y-8">
                                 {/* Description */}
                                 <div>
-                                    <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                                    <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 text-zinc-900 dark:text-white">
                                         <Info className="h-5 w-5 text-primary" />
                                         About
                                     </h3>
                                     <div className="max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
-                                        <p className="text-muted-foreground leading-relaxed">
+                                        <p className="text-zinc-600 dark:text-zinc-300 leading-relaxed">
                                             {brand.description || "No description available."}
                                         </p>
                                     </div>
@@ -173,7 +173,7 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                                 {/* Store Info (Local Only) */}
                                 {brand.isLocal && (
                                     <div className="bg-zinc-100 dark:bg-zinc-900 rounded-2xl p-6 space-y-4">
-                                        <h3 className="font-semibold flex items-center gap-2">
+                                        <h3 className="font-semibold flex items-center gap-2 text-zinc-900 dark:text-white">
                                             <Store className="h-5 w-5" />
                                             Store Information
                                         </h3>
