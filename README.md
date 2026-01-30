@@ -208,6 +208,19 @@ Or run:
 npm run view-db
 ```
 
+
+## NGROK setup
+
+```bash
+ngrok http merchant.localhost:3000
+```
+1. Copy the https url (the https://ea083d0f72ad.ngrok-free.app part)
+ a. e.g. `Forwarding                    https://ea083d0f72ad.ngrok-free.app -> http://merchant.localhost:3000`
+2. Head over to https://dashboard.clerk.com/apps/app_2uzhP1BYKXIfrKesJa0ZmkeVs3d/instances/ins_2uzhP7uo9uS9zernvAN68G1cI2A/webhooks or go to clerk dashboard and search "webhooks".
+3. Add the https url to the Webhooks section and append `/api/webhooks/clerk` to it e.g. `https://ea083d0f72ad.ngrok-free.app/api/webhooks/clerk`
+4. copy the webhook signing secret from the clerk dashboard and add it to the `SIGNING_SECRET` environment variable
+5. restart the server if necessary.
+
 ## Deployment
 
 The application is deployed on Vercel with a Neon PostgreSQL database. Environment variables are managed through Vercel's dashboard.

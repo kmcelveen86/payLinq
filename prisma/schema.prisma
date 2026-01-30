@@ -54,6 +54,8 @@ model User {
   bannedBy                String?
   bannedUntil             DateTime?
   bannedUntilReason       String?
+
+  favorites               MerchantFavorite[]
 }
 
 model Waitlist {
@@ -241,4 +243,91 @@ model StripeTransaction {
   declineReason       String?
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
+}
+
+model Merchant {
+  id          String      @id @default(cuid())
+  clerkOrgId  String      @unique
+  name        String
+  slug        String?     @unique
+  logo        String?
+  website     String?
+  description String?
+  category    String?
+  
+  // Infrastructure Settings
+  integrationType String?   @default("manual") // manual, api, affiliate, marketplace
+  affiliateLink   String?
+  apiKey          String?
+  commissionRate  Float?    @default(0.0)
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  locations   Location[]
+  offers      Offer[]
+  analytics   MerchantAnalytics?
+
+  favoritedBy MerchantFavorite[]
+}
+
+model Location {
+  id          String    @id @default(cuid())
+  merchantId  String
+  merchant    Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  
+  name        String?   // e.g. "Downtown Branch"
+  address     String
+  city        String
+  state       String
+  postalCode  String
+  country     String    @default("US")
+  
+  latitude    Float?
+  longitude   Float?
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Offer {
+  id          String    @id @default(cuid())
+  merchantId  String
+  merchant    Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  
+  title       String
+  description String
+  discount    String?   // e.g. "10% OFF" or "$5.00"
+  pointsMultiplier Float? @default(1.0)
+  
+  startDate   DateTime?
+  endDate     DateTime?
+  isActive    Boolean   @default(true)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model MerchantAnalytics {
+   id          String    @id @default(cuid())
+   merchantId  String    @unique
+   merchant    Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+   totalTransactions Int @default(0)
+   totalRevenue      Float @default(0.0)
+   totalCustomers    Int @default(0)
+   
+   updatedAt   DateTime  @updatedAt
+}
+
+model MerchantFavorite {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  merchantId String
+  merchant  Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, merchantId])
+  @@index([merchantId])
 }

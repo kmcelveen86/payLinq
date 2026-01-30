@@ -10,13 +10,14 @@ import {
   CreditCard,
   LogOut,
   User,
+  Store, // Added Store icon
 } from "lucide-react";
 import React from "react";
 import { useRouter } from "next/navigation";
 import userData from "./data";
 import Link from "next/link";
 import { useUserProfile } from "@/app/hooks/useProfile";
-import { SignOutButton } from "@clerk/nextjs";
+import { SignOutButton, useOrganizationList } from "@clerk/nextjs"; // Added useOrganizationList
 import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
@@ -31,6 +32,13 @@ export default function SideBar(props: Props) {
   const { activeTab, setActiveTab, userData, itemVariants } = props;
   const queryClient = useQueryClient();
 
+  // Check for organization memberships
+  const { userMemberships, isLoaded: isOrgLoaded, setActive } = useOrganizationList({
+    userMemberships: {
+      infinite: true,
+    },
+  });
+
   const handleLogout = () => {
     queryClient.invalidateQueries({ queryKey: ["userProfile"] });
   };
@@ -39,12 +47,33 @@ export default function SideBar(props: Props) {
     router.push("/user/profile-edit");
     setActiveTab("settings");
   };
+
+  const handleMerchantClick = async () => {
+    if (!isOrgLoaded || !userMemberships.data?.[0]?.organization?.id || !setActive) return;
+
+    // Set the active organization to the first one available
+    const orgId = userMemberships.data[0].organization.id;
+    try {
+      await setActive({ organization: orgId });
+    } catch (err) {
+      console.error("Failed to set active organization", err);
+    }
+
+    // Construct merchant URL: http://localhost:3000 -> http://merchant.localhost:3000
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const merchantUrl = baseUrl.replace("://", "://merchant.") + "/dashboard";
+    window.location.href = merchantUrl;
+  };
+
   const {
     data: profileData,
     isLoading: isProfileLoading,
     isError: isProfileError,
   } = useUserProfile();
   const { membershipTier, firstName, lastName, image } = profileData || {};
+
+  const hasMerchants = isOrgLoaded && userMemberships.count > 0;
+
   return (
     <motion.div variants={itemVariants} className="lg:col-span-1">
       <div className="bg-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl p-5">
@@ -54,10 +83,10 @@ export default function SideBar(props: Props) {
               src={image}
               alt={firstName}
               className="h-24 w-24 rounded-full border-4 border-[#2D9642] mb-4"
-              // onError={(e) => {
-              //   // If image fails to load, show default avatar
-              //   e.currentTarget.src = "/default-avatar.png";
-              // }}
+            // onError={(e) => {
+            //   // If image fails to load, show default avatar
+            //   e.currentTarget.src = "/default-avatar.png";
+            // }}
             />
           ) : (
             // <div className="w-full h-full bg-gray-700 flex items-center justify-center">
@@ -102,55 +131,61 @@ export default function SideBar(props: Props) {
         <div className="space-y-2">
           <button
             onClick={() => setActiveTab("overview")}
-            className={`w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors ${
-              activeTab === "overview"
-                ? "bg-gradient-to-r from-[#2D9642]/20 to-[#C28F49]/20 border-l-4 border-[#2D9642]"
-                : ""
-            }`}
+            className={`w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors ${activeTab === "overview"
+              ? "bg-gradient-to-r from-[#2D9642]/20 to-[#C28F49]/20 border-l-4 border-[#2D9642]"
+              : ""
+              }`}
           >
             <Home size={18} className="mr-3 text-gray-400" />
             <span>Dashboard</span>
           </button>
           <button
             onClick={() => setActiveTab("transactions")}
-            className={`w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors ${
-              activeTab === "transactions"
-                ? "bg-gradient-to-r from-[#2D9642]/20 to-[#C28F49]/20 border-l-4 border-[#2D9642]"
-                : ""
-            }`}
+            className={`w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors ${activeTab === "transactions"
+              ? "bg-gradient-to-r from-[#2D9642]/20 to-[#C28F49]/20 border-l-4 border-[#2D9642]"
+              : ""
+              }`}
           >
             <Calendar size={18} className="mr-3 text-gray-400" />
             <span>Transactions</span>
           </button>
           <button
             onClick={() => setActiveTab("rewards")}
-            className={`w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors ${
-              activeTab === "rewards"
-                ? "bg-gradient-to-r from-[#2D9642]/20 to-[#C28F49]/20 border-l-4 border-[#2D9642]"
-                : ""
-            }`}
+            className={`w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors ${activeTab === "rewards"
+              ? "bg-gradient-to-r from-[#2D9642]/20 to-[#C28F49]/20 border-l-4 border-[#2D9642]"
+              : ""
+              }`}
           >
             <Gift size={18} className="mr-3 text-gray-400" />
             <span>Rewards</span>
           </button>
           <button
             onClick={() => setActiveTab("analytics")}
-            className={`w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors ${
-              activeTab === "analytics"
-                ? "bg-gradient-to-r from-[#2D9642]/20 to-[#C28F49]/20 border-l-4 border-[#2D9642]"
-                : ""
-            }`}
+            className={`w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors ${activeTab === "analytics"
+              ? "bg-gradient-to-r from-[#2D9642]/20 to-[#C28F49]/20 border-l-4 border-[#2D9642]"
+              : ""
+              }`}
           >
             <TrendingUp size={18} className="mr-3 text-gray-400" />
             <span>Analytics</span>
           </button>
+
+          {hasMerchants && (
+            <button
+              onClick={handleMerchantClick}
+              className="w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors text-emerald-400 hover:text-emerald-300"
+            >
+              <Store size={18} className="mr-3" />
+              <span>Merchant Portal</span>
+            </button>
+          )}
+
           <button
             onClick={handleOnClick}
-            className={`w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors ${
-              activeTab === "settings"
-                ? "bg-gradient-to-r from-[#2D9642]/20 to-[#C28F49]/20 border-l-4 border-[#2D9642]"
-                : ""
-            }`}
+            className={`w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors ${activeTab === "settings"
+              ? "bg-gradient-to-r from-[#2D9642]/20 to-[#C28F49]/20 border-l-4 border-[#2D9642]"
+              : ""
+              }`}
           >
             <Settings size={18} className="mr-3 text-gray-400" />
             <span>Settings</span>

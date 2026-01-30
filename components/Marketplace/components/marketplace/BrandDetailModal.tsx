@@ -1,4 +1,8 @@
 import { Brand } from '@marketplace/types/marketplace';
+import { useState, useEffect } from 'react';
+import { toggleFavorite } from '@/app/actions/toggleFavorite';
+import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import {
   Dialog,
   DialogContent,
@@ -10,11 +14,11 @@ import { Badge } from '@marketplace/components/ui/badge';
 import { UPPBadge } from './UPPBadge';
 import { Card, CardContent, CardHeader, CardTitle } from '@marketplace/components/ui/card';
 import { Separator } from '@marketplace/components/ui/separator';
-import { 
-  Heart, 
-  Share2, 
-  MapPin, 
-  Navigation, 
+import {
+  Heart,
+  Share2,
+  MapPin,
+  Navigation,
   Clock,
   TrendingUp,
   Sparkles,
@@ -36,6 +40,40 @@ interface BrandDetailModalProps {
 }
 
 export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModalProps) => {
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (brand) {
+      setIsFavorited(!!brand.isFavorited);
+    }
+  }, [brand]);
+
+  const handleToggleFavorite = async () => {
+    if (!brand) return;
+
+    // Optimistic update
+    const previousState = isFavorited;
+    setIsFavorited(!previousState);
+
+    try {
+      const result = await toggleFavorite(brand.id);
+      if (!result.success) {
+        // Revert on failure
+        setIsFavorited(previousState);
+        toast.error("Failed to update favorite");
+      } else {
+        toast.success(result.favorited ? "Added to favorites" : "Removed from favorites");
+        // Invalidate merchants query to refresh the list in Marketplace
+        queryClient.invalidateQueries({ queryKey: ['merchants'] });
+      }
+    } catch (error) {
+      setIsFavorited(previousState);
+      toast.error("Something went wrong");
+    }
+  };
+
   if (!brand) return null;
 
   const getTagIcon = (tag: string) => {
@@ -78,8 +116,12 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
         {/* Header Block */}
         <div className="flex flex-col items-center text-center space-y-4 pt-4">
           {/* Logo */}
-          <div className="w-24 h-24 flex items-center justify-center text-6xl bg-muted rounded-2xl">
-            {brand.logo}
+          <div className="w-24 h-24 flex items-center justify-center text-6xl bg-muted rounded-2xl overflow-hidden">
+            {brand.logo.startsWith('http') || brand.logo.startsWith('/') ? (
+              <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" />
+            ) : (
+              brand.logo
+            )}
           </div>
 
           {/* Brand Name & Tagline */}
@@ -97,14 +139,14 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
 
           {/* Tags & UPP Badge */}
           <div className="flex flex-wrap gap-2 justify-center items-center">
-            <UPPBadge 
-              rate={brand.uppEarningRate} 
-              type={brand.uppEarningType} 
+            <UPPBadge
+              rate={brand.uppEarningRate}
+              type={brand.uppEarningType}
               size="md"
             />
             {brand.tags.map((tag) => (
-              <Badge 
-                key={tag} 
+              <Badge
+                key={tag}
                 variant="outline"
                 className={cn(
                   'text-xs px-2 py-1 capitalize',
@@ -120,14 +162,27 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
 
         {/* Core Action Area */}
         <div className="space-y-3 py-4">
-          <Button size="lg" className="w-full">
+          <Button
+            size="lg"
+            className="w-full"
+            onClick={() => {
+              if (brand.affiliateLink) {
+                window.open(brand.affiliateLink, '_blank');
+              }
+            }}
+            disabled={!brand.affiliateLink}
+          >
             Shop & Earn UPP
           </Button>
-          
+
           <div className="flex gap-2">
-            <Button variant="outline" className="flex-1">
-              <Heart className="h-4 w-4 mr-2" />
-              Favorite
+            <Button
+              variant="outline"
+              className="flex-1"
+              onClick={handleToggleFavorite}
+            >
+              <Heart className={cn("h-4 w-4 mr-2", isFavorited && "fill-current text-red-500")} />
+              {isFavorited ? "Favorited" : "Favorite"}
             </Button>
             <Button variant="outline" className="flex-1">
               <Share2 className="h-4 w-4 mr-2" />
@@ -184,7 +239,7 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
           </CardHeader>
           <CardContent className="space-y-2">
             <p className="text-lg font-semibold text-primary">
-              {brand.uppEarningType === 'percentage' 
+              {brand.uppEarningType === 'percentage'
                 ? `${brand.uppEarningRate}% back in UPP`
                 : `${brand.uppEarningRate} UPP per $10 spent`
               }
@@ -253,7 +308,16 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
 
         {/* Mobile Sticky CTA - shown at bottom on small screens */}
         <div className="sticky bottom-0 left-0 right-0 bg-background pt-4 pb-2 border-t sm:hidden">
-          <Button size="lg" className="w-full">
+          <Button
+            size="lg"
+            className="w-full"
+            onClick={() => {
+              if (brand.affiliateLink) {
+                window.open(brand.affiliateLink, '_blank');
+              }
+            }}
+            disabled={!brand.affiliateLink}
+          >
             Shop & Earn UPP
           </Button>
         </div>

@@ -9,6 +9,7 @@ interface CategoryChipsProps {
 
 const categories: CategoryType[] = [
   'All',
+  'Favorites',
   'Fashion',
   'Beauty',
   'Travel',
@@ -28,8 +29,8 @@ export const CategoryChips = ({ selected, onSelect }: CategoryChipsProps) => {
           variant={selected === category ? 'default' : 'outline'}
           className={cn(
             'cursor-pointer whitespace-nowrap px-4 py-2 transition-colors',
-            selected === category 
-              ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
+            selected === category
+              ? 'bg-primary text-primary-foreground hover:bg-primary/90'
               : 'hover:bg-secondary'
           )}
           onClick={() => onSelect(category)}

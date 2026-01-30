@@ -21,9 +21,10 @@ import {
   CreditCard,
   History,
   HelpCircle,
+  Store,
 } from "lucide-react";
 import TopNav from ".";
-import { SignOutButton, useAuth, useSession, useUser } from "@clerk/nextjs";
+import { SignOutButton, useAuth, useSession, useUser, useOrganizationList } from "@clerk/nextjs";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function TopNavDropDown() {
@@ -55,25 +56,88 @@ export default function TopNavDropDown() {
     queryClient.resetQueries({ queryKey: ["userProfile"] });
   };
 
-  const menuItems = [
-    { text: "Dashboard", icon: <User size={18} />, path: "/user/dashboard" },
-    {
-      text: "Account Settings",
-      icon: <Settings size={18} />,
-      path: "/user/profile-edit",
-    },
-    {
-      text: "Payment Methods",
-      icon: <CreditCard size={18} />,
-      path: "/user/payments",
-    },
-    {
-      text: "Transaction History",
-      icon: <History size={18} />,
-      path: "/user/transactions",
-    },
-    { text: "Help & Support", icon: <HelpCircle size={18} />, path: "/help" },
-  ];
+  const menuItems: {
+    text: string;
+    icon: React.ReactNode;
+    path: string;
+    onClick?: (e: React.MouseEvent) => void;
+  }[] = [
+      { text: "Dashboard", icon: <User size={18} />, path: "/user/dashboard" },
+      {
+        text: "Account Settings",
+        icon: <Settings size={18} />,
+        path: "/user/profile-edit",
+      },
+      {
+        text: "Payment Methods",
+        icon: <CreditCard size={18} />,
+        path: "/user/payments",
+      },
+      {
+        text: "Transaction History",
+        icon: <History size={18} />,
+        path: "/user/transactions",
+      },
+      { text: "Help & Support", icon: <HelpCircle size={18} />, path: "/help" },
+    ];
+
+  // Check if user has any organization memberships
+  const hasOrgAccess = clerkUser?.user?.organizationMemberships && clerkUser.user.organizationMemberships.length > 0;
+
+  if (hasOrgAccess) {
+    // Construct dynamic merchant URL ensuring it works on both localhost and prod
+    let merchantUrl = "/merchant/dashboard"; // Default fallback
+
+    if (typeof window !== "undefined") {
+      const host = window.location.host;
+      const protocol = window.location.protocol;
+
+      // If already on merchant subdomain, just go to dashboard
+      if (host.startsWith("merchant.")) {
+        merchantUrl = "/dashboard";
+      } else {
+        // Otherwise prepend merchant subdomain
+        // Handle localhost special case (subdomain comes before port)
+        // e.g. localhost:3000 -> merchant.localhost:3000
+        // prod: paylinq.com -> merchant.paylinq.com
+        const baseHost = host.replace("www.", "");
+        merchantUrl = `${protocol}//merchant.${baseHost}/dashboard`;
+      }
+    }
+
+    const { isLoaded, setActive, userMemberships } = useOrganizationList({
+      userMemberships: {
+        infinite: true,
+      },
+    });
+
+    const handleMerchantClick = async (e: React.MouseEvent) => {
+      e.preventDefault(); // Prevent immediate navigation
+
+      // Find the first organization membership
+      const firstOrg = clerkUser.user?.organizationMemberships?.[0];
+
+      if (firstOrg && setActive) {
+        try {
+          // Set active organization
+          await setActive({ organization: firstOrg.organization.id });
+        } catch (err) {
+          console.error("Failed to set active organization:", err);
+        }
+      }
+
+      handleClose();
+      // Manually navigate after session update
+      window.location.href = merchantUrl;
+    }
+
+    menuItems.unshift({
+      text: "Merchant Portal",
+      icon: <Store size={18} />,
+      path: merchantUrl,
+      onClick: handleMerchantClick,
+    });
+  }
 
   // Animation variants
   const menuItemVariants = {
@@ -210,7 +274,13 @@ export default function TopNavDropDown() {
                   <MenuItem
                     component={Link}
                     href={item.path}
-                    onClick={handleClose}
+                    onClick={(e) => {
+                      if (item.onClick) {
+                        item.onClick(e);
+                      } else {
+                        handleClose();
+                      }
+                    }}
                     sx={{
                       padding: "10px 16px",
                       margin: "0 8px",

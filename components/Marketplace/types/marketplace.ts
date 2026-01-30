@@ -15,6 +15,8 @@ export interface Brand {
   coordinates?: { lat: number; lng: number };
   offers?: Offer[];
   featuredItems?: FeaturedItem[];
+  affiliateLink?: string;
+  isFavorited?: boolean;
 }
 
 export interface Offer {
@@ -32,22 +34,23 @@ export interface FeaturedItem {
   category: string;
 }
 
-export type CategoryType = 
-  | 'Fashion' 
-  | 'Beauty' 
-  | 'Travel' 
-  | 'Electronics' 
-  | 'Dining' 
-  | 'Grocery' 
-  | 'Entertainment' 
-  | 'Local' 
+export type CategoryType =
+  | 'Fashion'
+  | 'Beauty'
+  | 'Travel'
+  | 'Electronics'
+  | 'Dining'
+  | 'Grocery'
+  | 'Entertainment'
+  | 'Local'
+  | 'Favorites'
   | 'All';
 
 export type FilterType = 'online' | 'local' | 'both';
 
-export type SortType = 
-  | 'recommended' 
-  | 'highest-upp' 
-  | 'trending' 
-  | 'newest' 
+export type SortType =
+  | 'recommended'
+  | 'highest-upp'
+  | 'trending'
+  | 'newest'
   | 'near-me';

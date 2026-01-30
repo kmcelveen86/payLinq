@@ -43,14 +43,18 @@ export const BrandCard = ({ brand, onClick }: BrandCardProps) => {
   };
 
   return (
-    <Card 
+    <Card
       className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
       onClick={() => onClick(brand)}
     >
       <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
         {/* Brand Logo */}
-        <div className="w-20 h-20 flex items-center justify-center text-5xl bg-muted rounded-xl group-hover:scale-110 transition-transform duration-300">
-          {brand.logo}
+        <div className="w-20 h-20 flex items-center justify-center text-5xl bg-muted rounded-xl group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+          {brand.logo.startsWith('http') || brand.logo.startsWith('/') ? (
+            <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" />
+          ) : (
+            brand.logo
+          )}
         </div>
 
         {/* Brand Info */}
@@ -60,9 +64,9 @@ export const BrandCard = ({ brand, onClick }: BrandCardProps) => {
         </div>
 
         {/* UPP Badge */}
-        <UPPBadge 
-          rate={brand.uppEarningRate} 
-          type={brand.uppEarningType} 
+        <UPPBadge
+          rate={brand.uppEarningRate}
+          type={brand.uppEarningType}
           size="sm"
         />
 
@@ -70,8 +74,8 @@ export const BrandCard = ({ brand, onClick }: BrandCardProps) => {
         {brand.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 justify-center">
             {brand.tags.map((tag) => (
-              <Badge 
-                key={tag} 
+              <Badge
+                key={tag}
                 variant="outline"
                 className={cn(
                   'text-xs px-2 py-0.5 capitalize',
@@ -94,7 +98,7 @@ export const BrandCard = ({ brand, onClick }: BrandCardProps) => {
         )}
 
         {/* CTA Button */}
-        <Button 
+        <Button
           className="w-full mt-2"
           onClick={(e) => {
             e.stopPropagation();

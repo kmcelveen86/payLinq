@@ -1,7 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { geolocation } from "@vercel/functions";
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"; // Make sure this path matches your prisma client import
+import { prisma } from "@/lib/prisma";
 
 const isProtectedRoute = createRouteMatcher([
   "/user/dashboard(.*)",
@@ -12,17 +12,60 @@ const allowedCountries = ["US"];
 
 export default clerkMiddleware(
   async (auth, req) => {
-    const { userId, sessionClaims, redirectToSignIn } = await auth();
+
+    // Skip for webhook endpoints - MUST BE FIRST
+    if (req.nextUrl.pathname.startsWith("/api/webhooks/clerk")) {
+      return;
+    }
+
+    const { userId, sessionClaims, redirectToSignIn, orgId } = await auth();
+
+    // Get the hostname from the request headers
+    const hostname = req.headers.get("host");
+    const searchParams = req.nextUrl.searchParams;
+
+    // Handle subdomain routing for merchant
+    const subdomain = hostname?.split(".")[0];
+    if (subdomain === "merchant") {
+      const path = req.nextUrl.pathname;
+
+      // Protect Merchant Dashboard & Onboarding
+      // We consider anything other than the landing page ("/") to be protected in the merchant flow for now,
+      // or specific known paths like /dashboard and /onboarding
+      const isProtectedMerchantRoute = path.startsWith("/dashboard") || path.startsWith("/onboarding");
+
+      if (isProtectedMerchantRoute && !userId) {
+        return redirectToSignIn();
+      }
+
+      // Redirect to dashboard if User is logged in AND has an Org, but is trying to access onboarding
+      if (path.startsWith("/onboarding") && userId && orgId) {
+        const dashboardUrl = new URL("/dashboard", req.url);
+        return NextResponse.redirect(dashboardUrl);
+      }
+
+      // Redirect to onboarding if User is logged in but trying to access dashboard without an Org
+      // Note: Clerk provides `orgId` if the user has an active organization selected.
+      // If they don't, we should push them to onboarding.
+      if (path.startsWith("/dashboard") && userId && !orgId) {
+        const onboardingUrl = new URL("/onboarding", req.url);
+        return NextResponse.redirect(onboardingUrl);
+      }
+
+      // Rewrite the URL to the /merchant path
+      const url = req.nextUrl.clone();
+      // Avoid infinite loop if already at /merchant
+      if (!url.pathname.startsWith('/merchant')) {
+        url.pathname = `/merchant${url.pathname}`;
+        return NextResponse.rewrite(url);
+      }
+    }
 
     // Handle geolocation restrictions first
     if (isBlockRoute(req)) {
       return;
     }
 
-    // Skip for webhook endpoints
-    if (req.nextUrl.pathname.startsWith("/api/webhooks/clerk")) {
-      return;
-    }
 
     // Use Vercel's `geolocation()` function to get the client's country
     const { country } = geolocation(req);
@@ -83,7 +126,7 @@ export default clerkMiddleware(
       }
     }
 
-    // Handle protected routes
+    // Handle protected routes for Main App
     if (!userId && isProtectedRoute(req)) {
       return redirectToSignIn();
     }
