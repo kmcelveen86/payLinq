@@ -10,7 +10,7 @@ interface FavoritesChartProps {
 
 export function FavoritesChart({ data, total }: FavoritesChartProps) {
     return (
-        <Card className="col-span-1 md:col-span-3">
+        <Card className="col-span-1 md:col-span-2">
             <CardHeader>
                 <CardTitle>Total Favorites: {total}</CardTitle>
             </CardHeader>
@@ -42,10 +42,12 @@ export function FavoritesChart({ data, total }: FavoritesChartProps) {
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                 <Tooltip
                                     contentStyle={{
-                                        backgroundColor: "hsl(var(--background))",
+                                        backgroundColor: "hsl(var(--card))",
                                         borderColor: "hsl(var(--border))",
-                                        borderRadius: "8px"
+                                        borderRadius: "8px",
+                                        color: "hsl(var(--foreground))"
                                     }}
+                                    itemStyle={{ color: "hsl(var(--foreground))" }}
                                 />
                                 <Area
                                     type="monotone"
