@@ -18,8 +18,8 @@ export function UPPMetrics() {
                         </div>
                         <span className="text-sm font-medium text-yellow-500">Total UPP Issued</span>
                     </div>
-                    <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-bold">142,500</span>
+                    <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+                        <span className="text-2xl lg:text-3xl font-bold">142,500</span>
                         <span className="text-xs text-muted-foreground">Tokens</span>
                     </div>
                     <div className="mt-3 text-xs text-muted-foreground">
@@ -29,12 +29,12 @@ export function UPPMetrics() {
 
                 <div className="space-y-4">
                     {/* Avg per Tx */}
-                    <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg border border-border/50">
-                        <div className="flex items-center gap-3">
-                            <Zap className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-sm font-medium">Avg UPP / Tx</span>
+                    <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between p-3 bg-muted/30 rounded-lg border border-border/50 gap-2 xl:gap-0">
+                        <div className="flex items-center gap-2">
+                            <Zap className="h-4 w-4 text-muted-foreground shrink-0" />
+                            <span className="text-xs lg:text-sm font-medium whitespace-nowrap">Avg UPP / Tx</span>
                         </div>
-                        <span className="font-bold">120 UPP</span>
+                        <span className="font-bold whitespace-nowrap">120 UPP</span>
                     </div>
 
                     {/* Campaign Performance */}

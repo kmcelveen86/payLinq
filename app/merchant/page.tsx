@@ -55,7 +55,7 @@ export default function MerchantDashboard() {
                         <>
                             <SignedIn>
                                 {isLoaded && organization && (
-                                    <Link href="/dashboard" className="block h-full">
+                                    <Link href="/merchant/dashboard" className="block h-full">
                                         <motion.div
                                             whileHover={{ scale: 1.02, y: -2 }}
                                             whileTap={{ scale: 0.98 }}
@@ -72,7 +72,7 @@ export default function MerchantDashboard() {
                                 )}
                             </SignedIn>
                             <SignedOut>
-                                <SignInButton mode="modal" forceRedirectUrl="/dashboard">
+                                <SignInButton mode="modal" forceRedirectUrl="/merchant/dashboard">
                                     <motion.div
                                         whileHover={{ scale: 1.02, y: -2 }}
                                         whileTap={{ scale: 0.98 }}
@@ -93,7 +93,7 @@ export default function MerchantDashboard() {
                         <>
                             <SignedIn>
                                 {isLoaded && organization && (
-                                    <Link href="/settings" className="block h-full">
+                                    <Link href="/merchant/settings" className="block h-full">
                                         <motion.div
                                             whileHover={{ scale: 1.02, y: -2 }}
                                             whileTap={{ scale: 0.98 }}
@@ -110,7 +110,7 @@ export default function MerchantDashboard() {
                                 )}
                             </SignedIn>
                             <SignedOut>
-                                <SignInButton mode="modal" forceRedirectUrl="/settings">
+                                <SignInButton mode="modal" forceRedirectUrl="/merchant/settings">
                                     <motion.div
                                         whileHover={{ scale: 1.02, y: -2 }}
                                         whileTap={{ scale: 0.98 }}
@@ -130,7 +130,7 @@ export default function MerchantDashboard() {
 
                     <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center items-center">
                         <SignedIn>
-                            <Link href="/dashboard" className="w-full sm:w-auto">
+                            <Link href="/merchant/dashboard" className="w-full sm:w-auto">
                                 <Button
                                     size="lg"
                                     className="w-full sm:w-auto sm:min-w-[200px] h-14 text-lg font-medium rounded-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all"

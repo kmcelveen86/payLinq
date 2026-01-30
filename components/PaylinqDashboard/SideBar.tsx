@@ -176,7 +176,7 @@ export default function SideBar(props: Props) {
               className="w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors text-emerald-400 hover:text-emerald-300"
             >
               <Store size={18} className="mr-3" />
-              <span>Merchant Portal</span>
+              <span className="bg-gradient-to-r from-[#2D9642] to-[#C28F49] brightness-125 bg-clip-text text-transparent font-bold">Merchant Portal</span>
             </button>
           )}
 

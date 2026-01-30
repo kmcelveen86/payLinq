@@ -299,7 +299,12 @@ export default function TopNavDropDown() {
                       <span className="mr-3" style={{ color: "#2D9642" }}>
                         {item.icon}
                       </span>
-                      <Typography variant="body1">{item.text}</Typography>
+                      <Typography
+                        variant="body1"
+                        className={item.text === "Merchant Portal" ? "bg-gradient-to-r from-[#2D9642] to-[#C28F49] brightness-125 bg-clip-text text-transparent font-bold inline-block" : ""}
+                      >
+                        {item.text}
+                      </Typography>
                     </motion.div>
                   </MenuItem>
                 </motion.div>

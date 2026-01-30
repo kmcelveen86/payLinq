@@ -22,14 +22,14 @@ export function TransactionInsights() {
             </CardHeader>
             <CardContent className="space-y-8">
                 {/* Metrics Comparison */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="p-4 bg-muted/30 rounded-xl border border-border/50 space-y-2">
                         <div className="flex items-center gap-2 text-muted-foreground">
-                            <ShoppingBag className="h-4 w-4" />
-                            <span className="text-xs font-medium">Avg Order Value (AOV)</span>
+                            <ShoppingBag className="h-4 w-4 shrink-0" />
+                            <span className="text-[10px] lg:text-xs font-medium whitespace-nowrap">Avg Order Value (AOV)</span>
                         </div>
-                        <div className="flex items-baseline gap-2">
-                            <span className="text-2xl font-bold text-foreground">$85.40</span>
+                        <div className="flex items-baseline gap-2 flex-wrap">
+                            <span className="text-xl lg:text-2xl font-bold text-foreground">$85.40</span>
                             <span className="text-xs text-green-500">+37%</span>
                         </div>
                         <p className="text-[10px] text-muted-foreground">vs. $62.10 (General Cust.)</p>
@@ -37,23 +37,23 @@ export function TransactionInsights() {
 
                     <div className="p-4 bg-muted/30 rounded-xl border border-border/50 space-y-2">
                         <div className="flex items-center gap-2 text-muted-foreground">
-                            <TrendingUp className="h-4 w-4" />
-                            <span className="text-xs font-medium">Repeat Purchase Rate</span>
+                            <TrendingUp className="h-4 w-4 shrink-0" />
+                            <span className="text-[10px] lg:text-xs font-medium whitespace-nowrap">Repeat Purchase Rate</span>
                         </div>
-                        <div className="flex items-baseline gap-2">
-                            <span className="text-2xl font-bold text-foreground">42%</span>
+                        <div className="flex items-baseline gap-2 flex-wrap">
+                            <span className="text-xl lg:text-2xl font-bold text-foreground">42%</span>
                             <span className="text-xs text-green-500">+15%</span>
                         </div>
                         <p className="text-[10px] text-muted-foreground">PayLinq users buy 2.1x more often</p>
                     </div>
 
-                    <div className="p-4 bg-muted/30 rounded-xl border border-border/50 space-y-2">
+                    <div className="p-4 bg-muted/30 rounded-xl border border-border/50 space-y-2 col-span-1 sm:col-span-2 lg:col-span-1">
                         <div className="flex items-center gap-2 text-muted-foreground">
-                            <Clock className="h-4 w-4" />
-                            <span className="text-xs font-medium">Avg. Purchase Freq.</span>
+                            <Clock className="h-4 w-4 shrink-0" />
+                            <span className="text-[10px] lg:text-xs font-medium whitespace-nowrap">Avg. Purchase Freq.</span>
                         </div>
-                        <div className="flex items-baseline gap-2">
-                            <span className="text-2xl font-bold text-foreground">18d</span>
+                        <div className="flex items-baseline gap-2 flex-wrap">
+                            <span className="text-xl lg:text-2xl font-bold text-foreground">18d</span>
                             <span className="text-xs text-green-500">-4d</span>
                         </div>
                         <p className="text-[10px] text-muted-foreground">Days between orders</p>

@@ -49,8 +49,8 @@ export default async function MerchantLayout({
 
                     {orgId && (
                         <nav className="hidden md:flex items-center gap-6">
-                            <Link href="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">Dashboard</Link>
-                            <Link href="/settings" className="text-sm font-medium hover:text-primary transition-colors">Settings</Link>
+                            <Link href="/merchant/dashboard" className="text-sm font-medium hover:text-primary transition-colors">Dashboard</Link>
+                            <Link href="/merchant/settings" className="text-sm font-medium hover:text-primary transition-colors">Settings</Link>
                         </nav>
                     )}
 
@@ -85,7 +85,7 @@ export default async function MerchantLayout({
                 </div>
             </header>
 
-            <main className="container mx-auto px-6 py-8">
+            <main className="w-full px-0 py-8">
                 {children}
             </main>
         </Box>

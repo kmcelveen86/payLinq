@@ -1,16 +1,15 @@
 "use client";
 
-import { CreateOrganization, OrganizationSwitcher, useOrganization } from "@clerk/nextjs";
+import { OrganizationList, useOrganization } from "@clerk/nextjs";
 import { Store, TrendingUp, ShieldCheck, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/Marketplace/components/ui/button";
 
 export default function MerchantOnboarding() {
     const { organization, isLoaded } = useOrganization();
-    console.log("🚀 ~ MerchantOnboarding ~ organization:", organization)
 
     return (
-        <div className="min-h-[calc(100vh-64px)] bg-background relative overflow-hidden flex flex-col items-center justify-center p-4">
+        <div className="min-h-[calc(100vh-64px)] bg-background relative overflow-x-hidden flex flex-col items-center justify-center p-0 sm:p-4">
             {/* Background Effects */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-primary/10 blur-[100px] rounded-full mix-blend-screen opacity-40 animate-pulse" />
@@ -21,7 +20,7 @@ export default function MerchantOnboarding() {
             <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center z-10">
 
                 {/* Left Side: Context & Value Prop */}
-                <div className="text-center lg:text-left space-y-8">
+                <div className="text-center lg:text-left space-y-8 px-4 sm:px-0">
                     <div className="space-y-4">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
                             <Store className="h-4 w-4" />
@@ -56,53 +55,21 @@ export default function MerchantOnboarding() {
                 </div>
 
                 {/* Right Side: Clerk Components */}
-                <div className="bg-card/50 backdrop-blur-xl border border-white/10 dark:border-white/5 rounded-3xl p-6 md:p-8 shadow-2xl space-y-8 max-w-md mx-auto w-full">
-
-                    <div className="space-y-4">
-                        <div className="text-center">
-                            <p className="text-sm font-medium text-muted-foreground mb-3">Switch Organization</p>
-                            <OrganizationSwitcher
-                                afterCreateOrganizationUrl="/dashboard"
-                                afterSelectOrganizationUrl="/dashboard"
-                                afterSelectPersonalUrl={`${process.env.NEXT_PUBLIC_BASE_URL || "https://getpaylinq.com"}/user/dashboard`}
-                                appearance={{
-                                    elements: {
-                                        rootBox: "w-full flex justify-center",
-                                        organizationSwitcherTrigger: "w-full justify-center border border-input py-2.5 rounded-xl hover:bg-muted/50 transition-all text-foreground",
-                                        organizationSwitcherPopoverCard: "max-w-[calc(100vw-2rem)]",
-                                    }
-                                }}
-                            />
-                        </div>
-
-                        <div className="relative">
-                            <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t border-border" />
-                            </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-background px-2 text-muted-foreground">Or</span>
-                            </div>
-                        </div>
-
-                        <div className="flex justify-center w-full overflow-hidden">
-                            <CreateOrganization
-                                afterCreateOrganizationUrl="/dashboard"
-                                appearance={{
-                                    elements: {
-                                        rootBox: "w-full max-w-full",
-                                        card: "shadow-none border-none p-0 w-full max-w-full bg-transparent gap-4",
-                                        headerTitle: "text-xl font-bold text-center text-foreground",
-                                        headerSubtitle: "text-center text-muted-foreground mb-4",
-                                        formButtonPrimary: "bg-primary hover:bg-primary/90 rounded-xl h-11",
-                                        formFieldInput: "rounded-xl h-11 border-input bg-background",
-                                        scrollBox: "max-w-full w-full",
-                                        navbar: "hidden", // Hide navbar if it causes issues, or style it
-                                    }
-                                }}
-                            />
-                        </div>
-                    </div>
-
+                <div className="bg-card/50 backdrop-blur-xl border-y sm:border border-white/10 dark:border-white/5 sm:rounded-3xl w-full sm:mx-auto px-4 py-8 sm:px-8 shadow-none sm:shadow-2xl space-y-8 max-w-lg overflow-hidden">
+                    <OrganizationList
+                        afterCreateOrganizationUrl="/merchant/dashboard"
+                        afterSelectOrganizationUrl="/merchant/dashboard"
+                        afterSelectPersonalUrl={`${process.env.NEXT_PUBLIC_BASE_URL || "https://getpaylinq.com"}/user/dashboard`}
+                        hidePersonal={false}
+                        appearance={{
+                            elements: {
+                                rootBox: "w-full max-w-full box-border",
+                                card: "shadow-none border-none bg-transparent w-full max-w-full box-border",
+                                scrollBox: "w-full max-w-full",
+                                navbar: "hidden",
+                            }
+                        }}
+                    />
                 </div>
             </div>
         </div>
