@@ -40,6 +40,7 @@ const merchantFormSchema = z.object({
 
     // New Fields
     tagline: z.string().optional(),
+    category: z.string().optional(),
     tagsRaw: z.string().optional(), // Virtual field for UI
     presence: z.string().default("online").optional(),
     uppEarningRate: z.coerce.number().min(0).optional(),
@@ -70,6 +71,7 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
             commissionRate: merchant.commissionRate || 0,
 
             tagline: merchant.tagline || "",
+            category: merchant.category || "",
             tagsRaw: merchant.tags ? merchant.tags.join(", ") : "",
             presence: merchant.presence || "online",
             uppEarningRate: merchant.uppEarningRate || 0,
@@ -93,6 +95,7 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
                 commissionRate: data.commissionRate || 0,
 
                 tagline: data.tagline || null,
+                category: data.category || null,
                 tags: tagsArray,
                 presence: data.presence || "online",
                 uppEarningRate: data.uppEarningRate || 0,
@@ -137,6 +140,34 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
                                     <FormControl>
                                         <Input placeholder="Acme Corp" className="h-11" {...field} />
                                     </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="category"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Category</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger className="h-11">
+                                                <SelectValue placeholder="Select category" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value="Fashion">Fashion</SelectItem>
+                                            <SelectItem value="Beauty">Beauty</SelectItem>
+                                            <SelectItem value="Travel">Travel</SelectItem>
+                                            <SelectItem value="Electronics">Electronics</SelectItem>
+                                            <SelectItem value="Dining">Dining</SelectItem>
+                                            <SelectItem value="Grocery">Grocery</SelectItem>
+                                            <SelectItem value="Entertainment">Entertainment</SelectItem>
+                                            <SelectItem value="Other">Other</SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -365,7 +396,7 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
                     </div>
                 </div>
 
-                <div className="flex justify-end pt-4">
+                <div className="flex justify-center md:justify-end pt-4">
                     <motion.button
                         type="submit"
                         disabled={isPending || isSuccess}
