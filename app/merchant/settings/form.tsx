@@ -151,7 +151,7 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
                             <LucideLink className="h-5 w-5 text-gold" />
                         </div>
                         <div>
-                            <h3 className="text-xl font-semibold">Integration & Rewards</h3>
+                            <h3 className="text-xl font-semibold">{`Integration & Rewards`}</h3>
                             <p className="text-sm text-muted-foreground">Configure how customers shop and earn rewards</p>
                         </div>
                     </div>
@@ -199,7 +199,7 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
                                                 </div>
                                             </FormControl>
                                             <FormDescription>
-                                                The destination URL for "Shop Now" buttons.
+                                                {`The destination URL for "Shop Now" buttons.`}
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>

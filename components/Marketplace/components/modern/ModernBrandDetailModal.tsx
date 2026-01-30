@@ -207,7 +207,7 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                                                 <div key={item.id} className="min-w-[140px] space-y-3 group cursor-pointer">
                                                     <div className="w-[140px] h-[140px] bg-zinc-100 dark:bg-zinc-900 rounded-2xl flex items-center justify-center text-4xl group-hover:bg-primary/5 transition-colors">
                                                         {/* Placeholder for item image */}
-                                                        🏷️
+                                                        {`🏷️`}
                                                     </div>
                                                     <p className="text-sm font-medium text-center group-hover:text-primary transition-colors">{item.category}</p>
                                                 </div>
@@ -263,7 +263,7 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                                         }}
                                         disabled={!brand.affiliateLink}
                                     >
-                                        Shop & Earn
+                                        {`Shop & Earn`}
                                         <ArrowRight className="ml-2 h-5 w-5" />
                                     </Button>
                                 </div>
@@ -284,7 +284,7 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                         }}
                         disabled={!brand.affiliateLink}
                     >
-                        Shop & Earn
+                        {`Shop & Earn`}
                     </Button>
                 </div>
             </DialogContent>
