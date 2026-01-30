@@ -63,6 +63,7 @@ const Marketplace = () => {
       description: m.description || 'Visit our store to earn rewards.',
       offers: m.offers || [],
       affiliateLink: m.affiliateLink,
+      testAffiliateLink: m.testAffiliateLink,
       website: m.website,
       integrationType: m.integrationType,
       isFavorited: m.isFavorited,

@@ -10,6 +10,7 @@ export type MerchantProfileData = {
     description?: string | null;
     integrationType: string;
     affiliateLink?: string | null;
+    testAffiliateLink?: string | null;  // Added field
     commissionRate?: number | string | null;
     // New fields
     tagline?: string | null;
@@ -41,6 +42,7 @@ export async function updateMerchantProfile(formData: MerchantProfileData) {
                 description: formData.description,
                 integrationType: formData.integrationType,
                 affiliateLink: formData.affiliateLink,
+                testAffiliateLink: formData.testAffiliateLink,
                 commissionRate: isNaN(commissionRate) ? 0 : commissionRate,
                 // New fields
                 tagline: formData.tagline,

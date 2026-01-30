@@ -4,20 +4,29 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/Marketpla
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ArrowRight } from "lucide-react";
 
-export function AcquisitionFunnel() {
-    const funnelData = [
-        { name: "Clicks", value: 12450, color: "#3b82f6" },
-        { name: "Visits", value: 8320, color: "#8b5cf6" },
-        { name: "Added to Cart", value: 3100, color: "#f97316" },
-        { name: "Purchases", value: 1850, color: "#22c55e" },
+export function AcquisitionFunnel({ funnelData, trafficSources }: {
+    funnelData?: { name: string, value: number, color: string }[],
+    trafficSources?: { name: string, percentage: number }[]
+}) {
+    const displayFunnel = funnelData || [
+        { name: "Clicks", value: 0, color: "#3b82f6" },
+        { name: "Visits", value: 0, color: "#8b5cf6" },
+        { name: "Added to Cart", value: 0, color: "#f97316" },
+        { name: "Purchases", value: 0, color: "#22c55e" },
     ];
 
-    const trafficSources = [
-        { name: "Deal Search", percentage: 45 },
-        { name: "Category Browse", percentage: 30 },
-        { name: "Featured Placement", percentage: 15 },
-        { name: "Direct Link", percentage: 10 },
+    const displaySources = trafficSources || [
+        { name: "Direct", percentage: 0 },
+        { name: "Search", percentage: 0 }
     ];
+
+    // Calculate conversion (Purchases / Visits)
+    const visits = displayFunnel.find(f => f.name === "Visits")?.value || 0;
+    const purchases = displayFunnel.find(f => f.name === "Purchases")?.value || 0;
+    const conversionRate = visits > 0 ? (purchases / visits) * 100 : 0;
+
+    const payLinqPercentage = displaySources.find(s => s.name === "PayLinq App")?.percentage || 0;
+
 
     return (
         <Card className="col-span-1 md:col-span-2">
@@ -30,12 +39,12 @@ export function AcquisitionFunnel() {
                     <div className="flex items-center justify-between">
                         <h4 className="text-sm font-medium text-muted-foreground">Click-to-Purchase Funnel</h4>
                         <span className="text-xs text-green-500 font-medium bg-green-500/10 px-2 py-0.5 rounded-full">
-                            14.8% Overall Conv.
+                            {conversionRate.toFixed(1)}% Overall Conv.
                         </span>
                     </div>
                     <div className="h-[200px] w-full">
                         <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={funnelData} layout="vertical" margin={{ left: 0, right: 30 }}>
+                            <BarChart data={displayFunnel} layout="vertical" margin={{ left: 0, right: 30 }}>
                                 <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} strokeOpacity={0.1} />
                                 <XAxis type="number" hide />
                                 <YAxis
@@ -73,10 +82,10 @@ export function AcquisitionFunnel() {
                         <div className="p-4 bg-muted/30 rounded-xl border border-border/50 space-y-3">
                             <div className="flex items-center justify-between">
                                 <span className="text-sm font-medium">PayLinq Traffic</span>
-                                <span className="text-sm font-bold text-foreground">38%</span>
+                                <span className="text-sm font-bold text-foreground">{payLinqPercentage}%</span>
                             </div>
                             <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                                <div className="h-full bg-primary w-[38%]" />
+                                <div className="h-full bg-primary" style={{ width: `${payLinqPercentage}%` }} />
                             </div>
                             <p className="text-xs text-muted-foreground">Percentage of your total site traffic attributed to PayLinq referrals.</p>
                         </div>
@@ -85,7 +94,7 @@ export function AcquisitionFunnel() {
                     <div className="space-y-4">
                         <h4 className="text-sm font-medium text-muted-foreground">Source Breakdown</h4>
                         <div className="space-y-3">
-                            {trafficSources.map((source, i) => (
+                            {displaySources.map((source, i) => (
                                 <div key={i} className="flex items-center justify-between text-sm">
                                     <span className="text-muted-foreground">{source.name}</span>
                                     <div className="flex items-center gap-2">

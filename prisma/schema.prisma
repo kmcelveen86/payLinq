@@ -266,6 +266,7 @@ model Merchant {
   // Infrastructure Settings
   integrationType String?   @default("manual") // manual, api, affiliate, marketplace
   affiliateLink   String?
+  testAffiliateLink String?
   apiKey          String?
   commissionRate  Float?    @default(0.0)
   
@@ -281,6 +282,7 @@ model Merchant {
   apiKeys     MerchantApiKey[]
   webhooks    WebhookSubscriber[]
   paylinqTransactions PaylinqTransaction[]
+  analyticsEvents AnalyticsEvent[]
 }
 
 model Location {
@@ -435,4 +437,21 @@ model WalletTransaction {
   createdAt         DateTime           @default(now())
   
   @@index([walletId])
+}
+
+model AnalyticsEvent {
+  id          String   @id @default(cuid())
+  merchantId  String
+  merchant    Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  
+  type        String   // page_view, add_to_cart, checkout_start, purchase
+  userId      String?  // PayLinq User ID (if available)
+  sessionId   String?  // Visitor session ID
+  source      String?  // paylinq, direct, google, etc.
+  metadata    Json?
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([merchantId, type])
+  @@index([createdAt])
 }

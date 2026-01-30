@@ -38,6 +38,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { HeartExplosion } from "./HeartExplosion";
 import { getPaylinqUser } from "@/app/actions/user";
+import { trackEvent } from "@/app/actions/track";
 
 interface ModernBrandDetailModalProps {
     brand: Brand | null;
@@ -293,8 +294,18 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                                     <Button
                                         size="lg"
                                         className="w-full h-12 text-lg font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all rounded-xl"
-                                        onClick={() => {
-                                            const targetUrl = brand.affiliateLink || brand.website;
+                                        onClick={async () => {
+                                            // Determine which link to use based on environment
+                                            let targetUrl = brand.affiliateLink || brand.website;
+
+                                            // Override with test link if in development and available
+                                            if (process.env.NODE_ENV === "development" && brand.testAffiliateLink) {
+                                                targetUrl = brand.testAffiliateLink;
+                                            }
+
+                                            // Track the click (fire and forget)
+                                            trackEvent(brand.id, "click", { targetUrl });
+
                                             if (targetUrl) {
                                                 const separator = targetUrl.includes("?") ? "&" : "?";
                                                 const idToUse = dbUserId || user?.id; // Prefer DB ID
@@ -304,7 +315,7 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                                                 window.open(finalUrl, "_blank");
                                             }
                                         }}
-                                        disabled={!brand.affiliateLink && !brand.website}
+                                        disabled={!brand.affiliateLink && !brand.website && !(process.env.NODE_ENV === "development" && brand.testAffiliateLink)}
                                     >
                                         {`Shop & Earn`}
                                         <ArrowRight className="ml-2 h-5 w-5" />
@@ -321,7 +332,14 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                         size="lg"
                         className="w-full h-12 text-lg font-semibold rounded-xl"
                         onClick={() => {
-                            const targetUrl = brand.affiliateLink || brand.website;
+                            // Determine which link to use based on environment
+                            let targetUrl = brand.affiliateLink || brand.website;
+
+                            // Override with test link if in development and available
+                            if (process.env.NODE_ENV === "development" && brand.testAffiliateLink) {
+                                targetUrl = brand.testAffiliateLink;
+                            }
+
                             if (targetUrl) {
                                 const separator = targetUrl.includes("?") ? "&" : "?";
                                 const idToUse = dbUserId || user?.id; // Prefer DB ID
@@ -331,13 +349,13 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                                 window.open(finalUrl, "_blank");
                             }
                         }}
-                        disabled={!brand.affiliateLink && !brand.website}
+                        disabled={!brand.affiliateLink && !brand.website && !(process.env.NODE_ENV === "development" && brand.testAffiliateLink)}
                     >
                         {`Shop & Earn`}
                     </Button>
                 </div>
             </DialogContent>
-        </Dialog>
+        </Dialog >
     );
 };
 
