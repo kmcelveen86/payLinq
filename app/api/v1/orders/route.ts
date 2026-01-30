@@ -128,6 +128,21 @@ export async function POST(req: NextRequest) {
             metadata: result.metadata
         });
 
+        // 7. Log Analytics Event (Purchase)
+        await prisma.analyticsEvent.create({
+            data: {
+                merchantId: merchant.id,
+                type: "purchase", // Standardized event type
+                userId: user.id,
+                source: metadata?.source || "api",
+                metadata: {
+                    transactionId: result.id,
+                    amount: amount_cents,
+                    currency: currency
+                }
+            }
+        });
+
         return NextResponse.json({
             id: result.id,
             status: "success",

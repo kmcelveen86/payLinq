@@ -12,6 +12,7 @@ import { AcquisitionFunnel } from "@/components/Merchant/Dashboard/Analytics/Acq
 import { TransactionInsights } from "@/components/Merchant/Dashboard/Analytics/TransactionInsights";
 import { UPPMetrics } from "@/components/Merchant/Dashboard/Analytics/UPPMetrics";
 import { BusinessImpact } from "@/components/Merchant/Dashboard/Analytics/BusinessImpact";
+import { RecentPurchases } from "@/components/Merchant/Dashboard/RecentPurchases";
 
 export default async function MerchantDashboardPage() {
     const { orgId } = await auth();
@@ -83,7 +84,10 @@ export default async function MerchantDashboardPage() {
 
             {/* Row 4: Growth & ROI */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <AcquisitionFunnel />
+                <AcquisitionFunnel
+                    funnelData={transactionalData.acquisitionFunnel}
+                    trafficSources={transactionalData.trafficSources}
+                />
                 <BusinessImpact
                     revenue={transactionalData.revenue}
                     avgOrderValue={transactionalData.avgOrderValue}
@@ -104,6 +108,11 @@ export default async function MerchantDashboardPage() {
                     avgUppPerTx={transactionalData.avgUppPerTx}
                     uppIssuedThisMonth={transactionalData.uppIssuedThisMonth}
                 />
+            </div>
+
+            {/* Row 6: Recent Activity */}
+            <div className="grid grid-cols-1 gap-6">
+                <RecentPurchases transactions={transactionalData.transactions} />
             </div>
         </Box>
     );

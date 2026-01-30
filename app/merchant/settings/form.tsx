@@ -36,6 +36,7 @@ const merchantFormSchema = z.object({
     description: z.string().optional(),
     integrationType: z.string(),
     affiliateLink: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
+    testAffiliateLink: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
     commissionRate: z.coerce.number().min(0).max(100).optional(),
 
     // New Fields
@@ -68,6 +69,7 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
             description: merchant.description || "",
             integrationType: merchant.integrationType || "manual",
             affiliateLink: merchant.affiliateLink || "",
+            testAffiliateLink: merchant.testAffiliateLink || "", // used for dev mode only
             commissionRate: merchant.commissionRate || 0,
 
             tagline: merchant.tagline || "",
@@ -92,6 +94,7 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
                 website: data.website || null,
                 description: data.description || null,
                 affiliateLink: data.affiliateLink || null,
+                testAffiliateLink: data.testAffiliateLink || null, // Include in submit
                 commissionRate: data.commissionRate || 0,
 
                 tagline: data.tagline || null,
@@ -112,11 +115,16 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
         });
     }
 
+    function onError(errors: any) {
+        toast.error("Please fix the errors in the form before saving.");
+        console.error("Form validation errors:", errors);
+    }
+
     const integrationType = form.watch("integrationType");
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-8">
 
                 {/* Profile Section */}
                 <div className="bg-card border rounded-2xl p-8 shadow-sm space-y-6">
@@ -282,13 +290,13 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
                         />
 
                         {integrationType === "affiliate" && (
-                            <div className="p-4 bg-primary/5 rounded-xl border border-primary/10">
+                            <div className="p-4 bg-primary/5 rounded-xl border border-primary/10 space-y-4">
                                 <FormField
                                     control={form.control}
                                     name="affiliateLink"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Affiliate Tracking Link</FormLabel>
+                                            <FormLabel>Affiliate Tracking Link (Production)</FormLabel>
                                             <FormControl>
                                                 <div className="relative">
                                                     <LucideLink className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -296,7 +304,27 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
                                                 </div>
                                             </FormControl>
                                             <FormDescription>
-                                                {`The destination URL for "Shop Now" buttons.`}
+                                                {`The destination URL for "Shop Now" buttons in production.`}
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="testAffiliateLink"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Test Affiliate Link (Development)</FormLabel>
+                                            <FormControl>
+                                                <div className="relative">
+                                                    <LucideLink className="absolute left-3 top-3 h-4 w-4 text-orange-500" />
+                                                    <Input placeholder="http://localhost:3000?ref=paylinq" className="pl-9 h-11 border-orange-200 focus-visible:ring-orange-500" {...field} />
+                                                </div>
+                                            </FormControl>
+                                            <FormDescription className="text-orange-600/80">
+                                                {`Used ONLY when NODE_ENV is 'development'. Useful for localhost testing.`}
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>

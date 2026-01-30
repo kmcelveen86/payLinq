@@ -163,6 +163,61 @@ export async function getMerchantAnalytics() {
         offerPerformance.conversionRate = (offerPerformance.redemptions / offerPerformance.views) * 100;
     }
 
+    // 12. Acquisition Funnel Data
+    const funnelEvents = await prisma.analyticsEvent.groupBy({
+        by: ['type'],
+        where: { merchantId },
+        _count: {
+            id: true
+        }
+    });
+
+    const counts = {
+        page_view: 0,
+        add_to_cart: 0,
+        purchase: 0,
+        click: 0 // Track clicks
+    };
+
+    funnelEvents.forEach(e => {
+        if (e.type === 'page_view') counts.page_view = e._count.id;
+        if (e.type === 'add_to_cart') counts.add_to_cart = e._count.id;
+        if (e.type === 'purchase') counts.purchase = e._count.id;
+        if (e.type === 'click') counts.click = e._count.id;
+    });
+
+    const acquisitionFunnel = [
+        { name: "Clicks", value: offerPerformance.clicks + counts.click, color: "#3b82f6" }, // Offers + Direct Clicks
+        { name: "Visits", value: counts.page_view, color: "#8b5cf6" },
+        { name: "Added to Cart", value: counts.add_to_cart, color: "#f97316" },
+        { name: "Purchases", value: counts.purchase, color: "#22c55e" },
+    ];
+
+    // 13. Traffic Sources
+    const sourceStats = await prisma.analyticsEvent.groupBy({
+        by: ['source'],
+        where: { merchantId },
+        _count: {
+            id: true
+        }
+    });
+
+    const totalEvents = sourceStats.reduce((acc, curr) => acc + curr._count.id, 0);
+
+    // Map of known sources to friendly names
+    const sourceNames: Record<string, string> = {
+        "paylinq": "PayLinq App",
+        "paylinq-app": "PayLinq App", // New default
+        "paylinq-vendor-site": "Direct Link",
+        "api": "API Integration",
+        "direct": "Direct"
+    };
+
+    const trafficSources = sourceStats.map(s => ({
+        name: sourceNames[s.source || ""] || s.source || "Unknown",
+        percentage: totalEvents > 0 ? Math.round((s._count.id / totalEvents) * 100) : 0
+    })).sort((a, b) => b.percentage - a.percentage).slice(0, 5); // Top 5
+
     return {
         revenue: totalRevenue,
         uppIssued: totalUppIssued,
@@ -174,7 +229,9 @@ export async function getMerchantAnalytics() {
         repeatPurchaseRate,
         avgPurchasesPerCustomer,
         totalRedemptions: salesCount,
-        offerPerformance, // Add this new object
+        offerPerformance,
+        acquisitionFunnel, // New Data
+        trafficSources,    // New Data
         customerLoyalty: { new: newCustomers, returning: returningCustomers },
         transactions: transactions.map(t => ({
             ...t,
