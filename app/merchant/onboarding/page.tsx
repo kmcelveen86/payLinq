@@ -68,7 +68,8 @@ export default function MerchantOnboarding() {
                                 appearance={{
                                     elements: {
                                         rootBox: "w-full flex justify-center",
-                                        organizationSwitcherTrigger: "w-full justify-center border border-input py-2.5 rounded-xl hover:bg-muted/50 transition-all text-foreground"
+                                        organizationSwitcherTrigger: "w-full justify-center border border-input py-2.5 rounded-xl hover:bg-muted/50 transition-all text-foreground",
+                                        organizationSwitcherPopoverCard: "max-w-[calc(100vw-2rem)]",
                                     }
                                 }}
                             />
@@ -83,17 +84,19 @@ export default function MerchantOnboarding() {
                             </div>
                         </div>
 
-                        <div className="flex justify-center">
+                        <div className="flex justify-center w-full overflow-hidden">
                             <CreateOrganization
                                 afterCreateOrganizationUrl="/dashboard"
                                 appearance={{
                                     elements: {
-                                        rootBox: "w-full",
-                                        card: "shadow-none border-none p-0 w-full bg-transparent gap-4",
+                                        rootBox: "w-full max-w-full",
+                                        card: "shadow-none border-none p-0 w-full max-w-full bg-transparent gap-4",
                                         headerTitle: "text-xl font-bold text-center text-foreground",
                                         headerSubtitle: "text-center text-muted-foreground mb-4",
                                         formButtonPrimary: "bg-primary hover:bg-primary/90 rounded-xl h-11",
-                                        formFieldInput: "rounded-xl h-11 border-input bg-background"
+                                        formFieldInput: "rounded-xl h-11 border-input bg-background",
+                                        scrollBox: "max-w-full w-full",
+                                        navbar: "hidden", // Hide navbar if it causes issues, or style it
                                     }
                                 }}
                             />

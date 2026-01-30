@@ -4,6 +4,13 @@ import { getFavoriteAnalytics } from "@/app/actions/merchant/getFavoriteAnalytic
 import { FavoritesChart } from "@/components/Merchant/Dashboard/FavoritesChart";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import { MockSalesChart } from "@/components/Merchant/Dashboard/MockSalesChart";
+import { MockOfferStats } from "@/components/Merchant/Dashboard/MockOfferStats";
+import { MockCustomerInsights } from "@/components/Merchant/Dashboard/MockCustomerInsights";
+import { AcquisitionFunnel } from "@/components/Merchant/Dashboard/Analytics/AcquisitionFunnel";
+import { TransactionInsights } from "@/components/Merchant/Dashboard/Analytics/TransactionInsights";
+import { UPPMetrics } from "@/components/Merchant/Dashboard/Analytics/UPPMetrics";
+import { BusinessImpact } from "@/components/Merchant/Dashboard/Analytics/BusinessImpact";
 
 export default async function MerchantDashboardPage() {
     const { orgId } = await auth();
@@ -26,13 +33,14 @@ export default async function MerchantDashboardPage() {
     const totalFavorites = analyticsResult.success && analyticsResult.total ? analyticsResult.total : 0;
 
     return (
-        <Box className="p-6 md:p-10 max-w-6xl mx-auto">
-            <div className="mb-8">
+        <Box className="p-6 md:p-10 max-w-7xl mx-auto space-y-8">
+            <div className="">
                 <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
                 <p className="text-muted-foreground mt-2">Welcome back to {merchant.name}</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {/* Row 1: Summary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="p-6 rounded-2xl border border-border bg-card shadow-sm">
                     <h2 className="text-sm font-medium mb-2 text-muted-foreground">Integration</h2>
                     <div className="flex items-center gap-2">
@@ -54,7 +62,29 @@ export default async function MerchantDashboardPage() {
                 </div>
             </div>
 
-            <FavoritesChart data={analyticsData} total={totalFavorites} />
+            {/* Row 2: Sales & Offers */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <MockSalesChart />
+                <MockOfferStats />
+            </div>
+
+            {/* Row 3: Favorites & Customers */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <FavoritesChart data={analyticsData} total={totalFavorites} />
+                <MockCustomerInsights />
+            </div>
+
+            {/* Row 4: Growth & ROI */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <AcquisitionFunnel />
+                <BusinessImpact />
+            </div>
+
+            {/* Row 5: Deep Dive */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <TransactionInsights />
+                <UPPMetrics />
+            </div>
         </Box>
     );
 }
