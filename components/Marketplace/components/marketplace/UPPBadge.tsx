@@ -15,14 +15,14 @@ export const UPPBadge = ({ rate, type, size = 'md', className }: UPPBadgeProps) 
     lg: 'text-base px-4 py-1.5',
   };
 
-  const displayText = type === 'percentage' 
+  const displayText = type === 'percentage'
     ? `Earn ${rate}% UPP`
     : `Earn ${rate} UPP per $10`;
 
   return (
-    <Badge 
+    <Badge
       className={cn(
-        'bg-success-light text-success-light-foreground hover:bg-success-light font-semibold',
+        'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-200 dark:hover:bg-emerald-900/50 font-semibold border border-emerald-200 dark:border-emerald-800',
         sizeClasses[size],
         className
       )}
