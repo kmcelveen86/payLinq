@@ -23,17 +23,15 @@ export default async function MerchantSettingsPage() {
     }
 
     return (
-        <div className="container mx-auto max-w-4xl py-10 px-6">
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-                <p className="text-muted-foreground mt-2">
+        <div className="container mx-auto max-w-5xl py-8 px-4 sm:px-6">
+            <div className="mb-8 space-y-1">
+                <h1 className="text-3xl font-bold tracking-tight text-foreground">Settings</h1>
+                <p className="text-muted-foreground text-lg">
                     Manage your business profile and integration settings.
                 </p>
             </div>
 
-            <div className="bg-card border rounded-xl p-6 shadow-sm">
-                <MerchantSettingsForm merchant={merchant} />
-            </div>
+            <MerchantSettingsForm merchant={merchant} />
         </div>
     );
 }

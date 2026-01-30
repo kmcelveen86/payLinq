@@ -25,7 +25,7 @@ import {
 } from "@/components/Marketplace/components/ui/select";
 import { updateMerchantProfile, type MerchantProfileData } from "@/app/actions/updateMerchantProfile";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Store, Link as LucideLink, Percent } from "lucide-react";
 
 // Schema definition
 const merchantFormSchema = z.object({
@@ -79,119 +79,63 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <div className="space-y-4">
-                    <h3 className="text-lg font-medium">Profile Information</h3>
-                    <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Business Name</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Acme Corp" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
 
-                    <FormField
-                        control={form.control}
-                        name="description"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Description</FormLabel>
-                                <FormControl>
-                                    <Textarea
-                                        placeholder="Tell us about your business..."
-                                        className="resize-none"
-                                        {...field}
-                                    />
-                                </FormControl>
-                                <FormDescription>
-                                    This will be displayed on the marketplace.
-                                </FormDescription>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                {/* Profile Section */}
+                <div className="bg-card border rounded-2xl p-8 shadow-sm space-y-6">
+                    <div className="flex items-center gap-3 pb-4 border-b">
+                        <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                            <Store className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-semibold">Business Profile</h3>
+                            <p className="text-sm text-muted-foreground">Manage your public storefront details</p>
+                        </div>
+                    </div>
 
-                    <FormField
-                        control={form.control}
-                        name="website"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Website</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="https://example.com" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                </div>
-
-                <div className="space-y-4">
-                    <h3 className="text-lg font-medium pt-4 border-t">Integration Settings</h3>
-
-                    <FormField
-                        control={form.control}
-                        name="integrationType"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Integration Type</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select integration type" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        <SelectItem value="manual">Manual (No Integration)</SelectItem>
-                                        <SelectItem value="affiliate">Affiliate Link</SelectItem>
-                                        <SelectItem value="api">Direct API</SelectItem>
-                                        <SelectItem value="marketplace">Marketplace Sync</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <FormDescription>
-                                    How users will shop at your store.
-                                </FormDescription>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-                    {integrationType === "affiliate" && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <FormField
                             control={form.control}
-                            name="affiliateLink"
+                            name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Affiliate Tracking Link</FormLabel>
+                                    <FormLabel>Business Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="https://example.com?ref=paylinq" {...field} />
+                                        <Input placeholder="Acme Corp" className="h-11" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                        The link users will be redirected to when they click "Shop Now".
-                                    </FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                    )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                             control={form.control}
-                            name="commissionRate"
+                            name="website"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Commission Rate (%)</FormLabel>
+                                    <FormLabel>Website</FormLabel>
                                     <FormControl>
-                                        <Input type="number" step="0.1" {...field} />
+                                        <Input placeholder="https://example.com" className="h-11" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="description"
+                            render={({ field }) => (
+                                <FormItem className="md:col-span-2">
+                                    <FormLabel>Description</FormLabel>
+                                    <FormControl>
+                                        <Textarea
+                                            placeholder="Tell customers what distinguishes your brand..."
+                                            className="resize-none min-h-[120px]"
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormDescription>
-                                        The percentage of revenue shared with Paylinq.
+                                        This will be displayed on your marketplace listing.
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
@@ -200,9 +144,101 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
                     </div>
                 </div>
 
-                <div className="flex justify-end">
-                    <Button type="submit" disabled={isPending}>
-                        {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {/* Integration Section */}
+                <div className="bg-card border rounded-2xl p-8 shadow-sm space-y-6">
+                    <div className="flex items-center gap-3 pb-4 border-b">
+                        <div className="h-10 w-10 rounded-full bg-gold/10 flex items-center justify-center">
+                            <LucideLink className="h-5 w-5 text-gold" />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-semibold">Integration & Rewards</h3>
+                            <p className="text-sm text-muted-foreground">Configure how customers shop and earn rewards</p>
+                        </div>
+                    </div>
+
+                    <div className="space-y-6">
+                        <FormField
+                            control={form.control}
+                            name="integrationType"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Integration Type</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger className="h-11">
+                                                <SelectValue placeholder="Select integration type" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value="manual">Manual (No Integration)</SelectItem>
+                                            <SelectItem value="affiliate">Affiliate Link</SelectItem>
+                                            <SelectItem value="api">Direct API</SelectItem>
+                                            <SelectItem value="marketplace">Marketplace Sync</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <FormDescription>
+                                        Determines how we track sales and attribute rewards.
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        {integrationType === "affiliate" && (
+                            <div className="p-4 bg-primary/5 rounded-xl border border-primary/10">
+                                <FormField
+                                    control={form.control}
+                                    name="affiliateLink"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Affiliate Tracking Link</FormLabel>
+                                            <FormControl>
+                                                <div className="relative">
+                                                    <LucideLink className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                                    <Input placeholder="https://example.com?ref=paylinq" className="pl-9 h-11" {...field} />
+                                                </div>
+                                            </FormControl>
+                                            <FormDescription>
+                                                The destination URL for "Shop Now" buttons.
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        )}
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <FormField
+                                control={form.control}
+                                name="commissionRate"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Commission Rate (%)</FormLabel>
+                                        <FormControl>
+                                            <div className="relative">
+                                                <Percent className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                                <Input type="number" step="0.1" className="pl-9 h-11" {...field} />
+                                            </div>
+                                        </FormControl>
+                                        <FormDescription>
+                                            The revenue share percentage for Paylinq.
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex justify-end pt-4">
+                    <Button
+                        type="submit"
+                        disabled={isPending}
+                        className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary h-12 px-8 text-lg shadow-lg shadow-primary/20 rounded-xl"
+                    >
+                        {isPending && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
                         Save Changes
                     </Button>
                 </div>
