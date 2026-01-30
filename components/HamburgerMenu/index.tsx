@@ -233,7 +233,7 @@ export default function HamburgerMenu() {
                         <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-800 mr-3">
                           {item.icon}
                         </span>
-                        <span className="font-medium">{item.text}</span>
+                        <span className={`font-medium ${item.text === "Merchant Portal" ? "bg-gradient-to-r from-[#2D9642] to-[#C28F49] brightness-125 bg-clip-text text-transparent font-bold" : ""}`}>{item.text}</span>
                         <ChevronRight
                           size={16}
                           className="ml-auto text-gray-500 group-hover:text-white"
