@@ -1,11 +1,14 @@
 "use client";
 
-import { CreateOrganization, OrganizationSwitcher } from "@clerk/nextjs";
+import { CreateOrganization, OrganizationSwitcher, useOrganization } from "@clerk/nextjs";
 import { Store, TrendingUp, ShieldCheck, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/Marketplace/components/ui/button";
 
 export default function MerchantOnboarding() {
+    const { organization, isLoaded } = useOrganization();
+    console.log("🚀 ~ MerchantOnboarding ~ organization:", organization)
+
     return (
         <div className="min-h-[calc(100vh-64px)] bg-background relative overflow-hidden flex flex-col items-center justify-center p-4">
             {/* Background Effects */}

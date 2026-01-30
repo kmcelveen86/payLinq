@@ -4,10 +4,13 @@ import { Box } from "@mui/material";
 import { ArrowRight, LayoutDashboard, Store, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/Marketplace/components/ui/button";
-import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, useOrganization } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 
 export default function MerchantDashboard() {
+    const { organization, isLoaded } = useOrganization();
+    console.log("🚀 ~ MerchantDashboard ~ organization:", organization)
+
     return (
         <div className="min-h-[calc(100vh-64px)] bg-background relative overflow-hidden flex items-center justify-center p-4">
             {/* Background Effects */}
@@ -51,20 +54,22 @@ export default function MerchantDashboard() {
                         {/* Dashboard Card */}
                         <>
                             <SignedIn>
-                                <Link href="/dashboard" className="block h-full">
-                                    <motion.div
-                                        whileHover={{ scale: 1.02, y: -2 }}
-                                        whileTap={{ scale: 0.98 }}
-                                        className="p-6 rounded-2xl bg-gradient-to-br from-white/50 to-white/10 dark:from-white/5 dark:to-transparent border border-white/20 dark:border-white/5 hover:border-primary/50 transition-all cursor-pointer group/card h-full"
-                                    >
-                                        <LayoutDashboard className="h-8 w-8 mb-4 text-primary group-hover/card:scale-110 transition-transform" />
-                                        <h3 className="font-semibold text-xl mb-2 flex items-center gap-2">
-                                            Dashboard
-                                            <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover/card:opacity-100 group-hover/card:translate-x-0 transition-all text-primary" />
-                                        </h3>
-                                        <p className="text-muted-foreground">Detailed analytics, real-time transaction tracking, and insights.</p>
-                                    </motion.div>
-                                </Link>
+                                {isLoaded && organization && (
+                                    <Link href="/dashboard" className="block h-full">
+                                        <motion.div
+                                            whileHover={{ scale: 1.02, y: -2 }}
+                                            whileTap={{ scale: 0.98 }}
+                                            className="p-6 rounded-2xl bg-gradient-to-br from-white/50 to-white/10 dark:from-white/5 dark:to-transparent border border-white/20 dark:border-white/5 hover:border-primary/50 transition-all cursor-pointer group/card h-full"
+                                        >
+                                            <LayoutDashboard className="h-8 w-8 mb-4 text-primary group-hover/card:scale-110 transition-transform" />
+                                            <h3 className="font-semibold text-xl mb-2 flex items-center gap-2">
+                                                Dashboard
+                                                <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover/card:opacity-100 group-hover/card:translate-x-0 transition-all text-primary" />
+                                            </h3>
+                                            <p className="text-muted-foreground">Detailed analytics, real-time transaction tracking, and insights.</p>
+                                        </motion.div>
+                                    </Link>
+                                )}
                             </SignedIn>
                             <SignedOut>
                                 <SignInButton mode="modal" forceRedirectUrl="/dashboard">
@@ -87,20 +92,22 @@ export default function MerchantDashboard() {
                         {/* Settings Card */}
                         <>
                             <SignedIn>
-                                <Link href="/settings" className="block h-full">
-                                    <motion.div
-                                        whileHover={{ scale: 1.02, y: -2 }}
-                                        whileTap={{ scale: 0.98 }}
-                                        className="p-6 rounded-2xl bg-gradient-to-br from-white/50 to-white/10 dark:from-white/5 dark:to-transparent border border-white/20 dark:border-white/5 hover:border-gold/50 transition-all cursor-pointer group/card h-full"
-                                    >
-                                        <Store className="h-8 w-8 mb-4 text-gold group-hover/card:scale-110 transition-transform" />
-                                        <h3 className="font-semibold text-xl mb-2 flex items-center gap-2">
-                                            Store Settings
-                                            <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover/card:opacity-100 group-hover/card:translate-x-0 transition-all text-gold" />
-                                        </h3>
-                                        <p className="text-muted-foreground">Customize your public profile, rewards, and integration preferences.</p>
-                                    </motion.div>
-                                </Link>
+                                {isLoaded && organization && (
+                                    <Link href="/settings" className="block h-full">
+                                        <motion.div
+                                            whileHover={{ scale: 1.02, y: -2 }}
+                                            whileTap={{ scale: 0.98 }}
+                                            className="p-6 rounded-2xl bg-gradient-to-br from-white/50 to-white/10 dark:from-white/5 dark:to-transparent border border-white/20 dark:border-white/5 hover:border-gold/50 transition-all cursor-pointer group/card h-full"
+                                        >
+                                            <Store className="h-8 w-8 mb-4 text-gold group-hover/card:scale-110 transition-transform" />
+                                            <h3 className="font-semibold text-xl mb-2 flex items-center gap-2">
+                                                Store Settings
+                                                <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover/card:opacity-100 group-hover/card:translate-x-0 transition-all text-gold" />
+                                            </h3>
+                                            <p className="text-muted-foreground">Customize your public profile, rewards, and integration preferences.</p>
+                                        </motion.div>
+                                    </Link>
+                                )}
                             </SignedIn>
                             <SignedOut>
                                 <SignInButton mode="modal" forceRedirectUrl="/settings">

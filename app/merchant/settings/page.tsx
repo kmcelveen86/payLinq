@@ -9,7 +9,7 @@ export default async function MerchantSettingsPage() {
     const { orgId } = await auth();
 
     if (!orgId) {
-        redirect("/merchant/onboarding");
+        redirect("/");
     }
 
     const merchant = await prisma.merchant.findUnique({

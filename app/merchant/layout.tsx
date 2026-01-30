@@ -16,11 +16,17 @@ export const metadata: Metadata = {
 
 // ... existing code ...
 
-export default function MerchantLayout({
+import { auth } from "@clerk/nextjs/server";
+
+// ...
+
+export default async function MerchantLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const { orgId } = await auth();
+
     return (
         <Box className={`merchant-layout min-h-screen bg-background ${inter.className}`}>
             {/* Simple Merchant Header */}
@@ -41,12 +47,12 @@ export default function MerchantLayout({
                         <span className="text-foreground">Merchant</span>
                     </div>
 
-                    <SignedIn>
+                    {orgId && (
                         <nav className="hidden md:flex items-center gap-6">
-                            <a href="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">Dashboard</a>
-                            <a href="/settings" className="text-sm font-medium hover:text-primary transition-colors">Settings</a>
+                            <Link href="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">Dashboard</Link>
+                            <Link href="/settings" className="text-sm font-medium hover:text-primary transition-colors">Settings</Link>
                         </nav>
-                    </SignedIn>
+                    )}
 
                     <div className="flex items-center gap-4">
                         <SignedIn>
