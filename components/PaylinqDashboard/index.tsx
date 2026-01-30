@@ -14,7 +14,7 @@ import { CreditCard, Bell, User } from "lucide-react";
 import Link from "next/link";
 import { useUserProfile } from "@/app/hooks/useProfile";
 
-const PaylinqDashboard = () => {
+const PaylinqDashboard = ({ initialWalletData }: { initialWalletData?: any }) => {
   const {
     data: profileData,
     isLoading: isProfileLoading,
@@ -22,6 +22,14 @@ const PaylinqDashboard = () => {
   } = useUserProfile();
   const { firstName, image } = profileData || {};
   const [activeTab, setActiveTab] = useState("overview");
+
+  // Merge static data with real data if available
+  const displayData = {
+    ...userData,
+    totalPoints: initialWalletData?.totalPoints ?? userData.totalPoints,
+    pointsThisMonth: initialWalletData?.pointsThisMonth ?? userData.pointsThisMonth,
+    recentTransactions: initialWalletData?.transactions ?? userData.recentTransactions,
+  };
 
   // Animation variants
   const containerVariants = {
@@ -92,10 +100,10 @@ const PaylinqDashboard = () => {
                         src={image}
                         alt={firstName}
                         className="h-9 w-9 rounded-full border-2 border-[#C28F49]"
-                        // onError={(e) => {
-                        //   // If image fails to load, show default avatar
-                        //   e.currentTarget.src = "/default-avatar.png";
-                        // }}
+                      // onError={(e) => {
+                      //   // If image fails to load, show default avatar
+                      //   e.currentTarget.src = "/default-avatar.png";
+                      // }}
                       />
                     ) : (
                       <User size={40} className="text-gray-400" />
@@ -121,7 +129,7 @@ const PaylinqDashboard = () => {
         >
           <SideBar
             itemVariants={itemVariants}
-            userData={userData}
+            userData={displayData}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
           />
@@ -132,12 +140,12 @@ const PaylinqDashboard = () => {
           >
             <PlanUpgradeBanner itemVariants={itemVariants} />
 
-            <PointsSummaryCard userData={userData} />
+            <PointsSummaryCard userData={displayData} />
 
             <MultiplierDetails itemVariants={itemVariants} />
 
             <RecentTransactions
-              userData={userData}
+              userData={displayData}
               itemVariants={itemVariants}
             />
 

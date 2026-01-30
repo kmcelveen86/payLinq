@@ -69,9 +69,10 @@ export default function PointsSummaryCard(props: Props) {
             <span>Cash equivalent:</span>
             <span className="text-white">
               $
-              {(
-                userData.totalPoints * userData.whiteLimits.redemptionRate
-              ).toFixed(2)}
+              {(userData.totalPoints * tierInfo.redemptionRate).toLocaleString(
+                undefined,
+                { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+              )}
             </span>
           </div>
         </div>
@@ -89,7 +90,10 @@ export default function PointsSummaryCard(props: Props) {
         </div>
         <div className="mt-3">
           <p className="text-4xl font-bold bg-gradient-to-r from-[#C28F49] to-amber-400 bg-clip-text text-transparent">
-            ${(userData.totalPoints * tierInfo.redemptionRate).toFixed(2)}
+            ${(userData.totalPoints * tierInfo.redemptionRate).toLocaleString(
+              undefined,
+              { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+            )}
           </p>
           <p className="text-xs text-gray-400 mt-1">Available to redeem now</p>
         </div>

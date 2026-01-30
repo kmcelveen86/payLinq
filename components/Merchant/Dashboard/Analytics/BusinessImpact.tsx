@@ -3,7 +3,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Marketplace/components/ui/card";
 import { DollarSign, Users, LineChart, ArrowUpRight } from "lucide-react";
 
-export function BusinessImpact() {
+export function BusinessImpact({ revenue, avgOrderValue, cac }: { revenue?: number, avgOrderValue?: number, cac?: number }) {
+    const displayRevenue = revenue !== undefined ? revenue : 124592;
+    const displayAov = avgOrderValue !== undefined ? avgOrderValue : 0;
+    const displayCac = cac !== undefined ? cac : 0;
+
     return (
         <Card className="col-span-1">
             <CardHeader>
@@ -20,7 +24,8 @@ export function BusinessImpact() {
                         </div>
                         <span className="text-xs bg-muted px-2 py-0.5 rounded-full">YTD</span>
                     </div>
-                    <p className="text-2xl font-bold">$124,592</p>
+                    {/* Calculated as: Sum of all PaylinqTransaction amounts for this merchant (cents / 100) */}
+                    <p className="text-2xl font-bold">${displayRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                     <p className="text-xs text-muted-foreground mt-1">Earnings after commissions</p>
                 </div>
 
@@ -42,13 +47,15 @@ export function BusinessImpact() {
                 <div className="grid grid-cols-2 gap-4 pt-2">
                     <div className="space-y-1">
                         <p className="text-xs text-muted-foreground">Customer Acquisition Cost (CAC)</p>
-                        <p className="text-lg font-bold">$12.50</p>
-                        <p className="text-[10px] text-green-500">-20% vs Avg</p>
+                        <p className="text-lg font-bold">${displayCac.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                        <p className="text-[10px] text-green-500">Live Data</p>
                     </div>
                     <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground">Customer Lifetime Value (LTV)</p>
-                        <p className="text-lg font-bold">$480</p>
-                        <p className="text-[10px] text-green-500">High Value</p>
+                        {/* We replaced LTV with Avg Order Value since we have real data for it */}
+                        <p className="text-xs text-muted-foreground">Avg Order Value</p>
+                        {/* Calculated as: Total Revenue / Total Number of Transactions */}
+                        <p className="text-lg font-bold">${displayAov.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                        <p className="text-[10px] text-green-500">Live Data</p>
                     </div>
                 </div>
 

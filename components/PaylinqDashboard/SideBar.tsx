@@ -123,7 +123,7 @@ export default function SideBar(props: Props) {
           </div>
           <div className="flex justify-between mt-1">
             <span className="text-gray-400 text-xs">
-              This month: {userData.pointsThisMonth}
+              This month: {userData.pointsThisMonth.toLocaleString()}
             </span>
           </div>
         </div>

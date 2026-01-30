@@ -50,6 +50,7 @@ export default async function MerchantLayout({
                     {orgId && (
                         <nav className="hidden md:flex items-center gap-6">
                             <Link href="/merchant/dashboard" className="text-sm font-medium hover:text-primary transition-colors">Dashboard</Link>
+                            <Link href="/merchant/developers" className="text-sm font-medium hover:text-primary transition-colors">Developers</Link>
                             <Link href="/merchant/settings" className="text-sm font-medium hover:text-primary transition-colors">Settings</Link>
                         </nav>
                     )}
