@@ -13,6 +13,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'; // Can remove if not u
 import marketplaceHero from '@marketplace/assets/marketplace-hero.jpg';
 import { useQuery } from '@tanstack/react-query';
 import { getMerchants } from '@/app/actions/getMerchants';
+import { toggleFavorite } from "@/app/actions/toggleFavorite";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 import Image from 'next/image';
 
@@ -23,6 +26,21 @@ const Marketplace = () => {
   const [sortType, setSortType] = useState<SortType>('recommended');
   const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
   const [heroIndex, setHeroIndex] = useState(0);
+  const queryClient = useQueryClient();
+
+  const handleToggleFavorite = async (brandId: string) => {
+    try {
+      const result = await toggleFavorite(brandId);
+      if (result.success) {
+        toast.success(result.favorited ? "Added to favorites" : "Removed from favorites");
+        queryClient.invalidateQueries({ queryKey: ["merchants"] });
+      } else {
+        toast.error(result.error?.toString() || "Failed to toggle favorite");
+      }
+    } catch (error) {
+      toast.error("An error occurred");
+    }
+  };
 
   // Fetch real merchants
   const { data: realMerchants = [] } = useQuery({
@@ -182,14 +200,7 @@ const Marketplace = () => {
                   key={brand.id}
                   brand={brand}
                   onClick={setSelectedBrand}
-                  onFavorite={async (id) => {
-                    // We can just open the modal to toggle favorite for now, OR implement direct toggle
-                    // For a better UX, let's open the modal which already has the logic
-                    // Or ideally, we should expose the toggle logic here.
-                    // Given constraints, I'll pass the toggle logic if accessible, 
-                    // but since Toggle logic is inside Modal currently, let's just select the brand to open modal.
-                    setSelectedBrand(brand);
-                  }}
+                  onFavorite={(id) => handleToggleFavorite(id)}
                 />
               ))}
             </div>

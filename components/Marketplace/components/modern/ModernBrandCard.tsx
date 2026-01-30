@@ -1,12 +1,12 @@
-"use client";
-
+import { useState, useEffect } from "react";
 import { Brand } from "@marketplace/types/marketplace";
 import { UPPBadge } from "../marketplace/UPPBadge";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { cn } from "../../lib/utils";
 import { Heart, MapPin, Sparkles, Star, TrendingUp } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { HeartExplosion } from "./HeartExplosion";
 
 interface ModernBrandCardProps {
     brand: Brand;
@@ -15,6 +15,15 @@ interface ModernBrandCardProps {
 }
 
 export const ModernBrandCard = ({ brand, onClick, onFavorite }: ModernBrandCardProps) => {
+    const [showConfetti, setShowConfetti] = useState(false);
+
+    useEffect(() => {
+        if (showConfetti) {
+            const timer = setTimeout(() => setShowConfetti(false), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [showConfetti]);
+
     const getTagIcon = (tag: string) => {
         switch (tag) {
             case "local": return <MapPin className="h-3 w-3" />;
@@ -42,16 +51,22 @@ export const ModernBrandCard = ({ brand, onClick, onFavorite }: ModernBrandCardP
                         size="icon"
                         variant="ghost"
                         className={cn(
-                            "h-8 w-8 rounded-full bg-white/80 backdrop-blur-sm shadow-sm hover:bg-white transition-all",
-                            brand.isFavorited ? "text-red-500" : "text-muted-foreground"
+                            "h-8 w-8 rounded-full bg-white/80 backdrop-blur-sm shadow-sm hover:bg-white transition-all hover:scale-110 active:scale-95 relative",
+                            brand.isFavorited ? "text-red-500 hover:text-red-600" : "text-zinc-400 hover:text-red-400 dark:text-zinc-400"
                         )}
                         onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
+                            if (!brand.isFavorited) {
+                                setShowConfetti(true);
+                            }
                             if (onFavorite) onFavorite(brand.id);
                         }}
                     >
                         <Heart className={cn("h-4 w-4", brand.isFavorited && "fill-current")} />
+                        <AnimatePresence>
+                            {showConfetti && <HeartExplosion />}
+                        </AnimatePresence>
                     </Button>
                 </div>
             </div>
