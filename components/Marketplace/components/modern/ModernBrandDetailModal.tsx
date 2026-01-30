@@ -4,6 +4,7 @@ import { Brand } from "@marketplace/types/marketplace";
 import { useState, useEffect } from "react";
 import { toggleFavorite } from "@/app/actions/toggleFavorite";
 import { useQueryClient } from "@tanstack/react-query";
+import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
 import {
     Dialog,
@@ -36,6 +37,7 @@ import {
 } from "../ui/tooltip";
 import { motion, AnimatePresence } from "framer-motion";
 import { HeartExplosion } from "./HeartExplosion";
+import { getPaylinqUser } from "@/app/actions/user";
 
 interface ModernBrandDetailModalProps {
     brand: Brand | null;
@@ -43,11 +45,26 @@ interface ModernBrandDetailModalProps {
     onOpenChange: (open: boolean) => void;
 }
 
+
 export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBrandDetailModalProps) => {
     const [isFavorited, setIsFavorited] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showConfetti, setShowConfetti] = useState(false);
+    const [dbUserId, setDbUserId] = useState<string | null>(null);
     const queryClient = useQueryClient();
+    const { user } = useUser();
+
+    useEffect(() => {
+        const fetchDbUser = async () => {
+            if (user?.id) {
+                const dbUser = await getPaylinqUser();
+                if (dbUser) {
+                    setDbUserId(dbUser.id);
+                }
+            }
+        };
+        fetchDbUser();
+    }, [user?.id]);
 
     useEffect(() => {
         if (showConfetti) {
@@ -277,11 +294,17 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                                         size="lg"
                                         className="w-full h-12 text-lg font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all rounded-xl"
                                         onClick={() => {
-                                            if (brand.affiliateLink) {
-                                                window.open(brand.affiliateLink, "_blank");
+                                            const targetUrl = brand.affiliateLink || brand.website;
+                                            if (targetUrl) {
+                                                const separator = targetUrl.includes("?") ? "&" : "?";
+                                                const idToUse = dbUserId || user?.id; // Prefer DB ID
+                                                const finalUrl = idToUse
+                                                    ? `${targetUrl}${separator}userId=${idToUse}`
+                                                    : targetUrl;
+                                                window.open(finalUrl, "_blank");
                                             }
                                         }}
-                                        disabled={!brand.affiliateLink}
+                                        disabled={!brand.affiliateLink && !brand.website}
                                     >
                                         {`Shop & Earn`}
                                         <ArrowRight className="ml-2 h-5 w-5" />
@@ -298,11 +321,17 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                         size="lg"
                         className="w-full h-12 text-lg font-semibold rounded-xl"
                         onClick={() => {
-                            if (brand.affiliateLink) {
-                                window.open(brand.affiliateLink, "_blank");
+                            const targetUrl = brand.affiliateLink || brand.website;
+                            if (targetUrl) {
+                                const separator = targetUrl.includes("?") ? "&" : "?";
+                                const idToUse = dbUserId || user?.id; // Prefer DB ID
+                                const finalUrl = idToUse
+                                    ? `${targetUrl}${separator}userId=${idToUse}`
+                                    : targetUrl;
+                                window.open(finalUrl, "_blank");
                             }
                         }}
-                        disabled={!brand.affiliateLink}
+                        disabled={!brand.affiliateLink && !brand.website}
                     >
                         {`Shop & Earn`}
                     </Button>

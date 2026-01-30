@@ -44,7 +44,12 @@ export default function RecentTransactions(props: Props) {
               </div>
             </div>
             <div className="text-right">
-              <p className="font-medium">${transaction.amount.toFixed(2)}</p>
+              <p className="font-medium">
+                ${transaction.amount.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </p>
               <div className="flex items-center justify-end">
                 <p className="text-green-500 text-sm">
                   +{transaction.points} pts

@@ -16,6 +16,8 @@ export interface Brand {
   offers?: Offer[];
   featuredItems?: FeaturedItem[];
   affiliateLink?: string;
+  website?: string;
+  integrationType?: string;
   isFavorited?: boolean;
 }
 

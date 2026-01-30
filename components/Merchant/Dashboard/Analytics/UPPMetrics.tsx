@@ -3,11 +3,69 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Marketplace/components/ui/card";
 import { Coins, Zap, Trophy } from "lucide-react";
 
-export function UPPMetrics() {
+import { useState, useEffect } from "react";
+import { getMerchantAnalytics } from "@/app/actions/analytics";
+
+export function UPPMetrics({
+    uppIssued,
+    avgUppPerTx,
+    uppIssuedThisMonth
+}: {
+    uppIssued?: number,
+    avgUppPerTx?: number,
+    uppIssuedThisMonth?: number
+}) {
+    const [displayIssued, setDisplayIssued] = useState(uppIssued !== undefined ? uppIssued : 142500);
+    const [displayAvgUpp, setDisplayAvgUpp] = useState(avgUppPerTx !== undefined ? avgUppPerTx : 120);
+    const [displayMonthIssued, setDisplayMonthIssued] = useState(uppIssuedThisMonth !== undefined ? uppIssuedThisMonth : 15000);
+
+    useEffect(() => {
+        // Update local state if prop changes (initial load)
+        if (uppIssued !== undefined) {
+            setDisplayIssued(uppIssued);
+        }
+        if (avgUppPerTx !== undefined) {
+            setDisplayAvgUpp(avgUppPerTx);
+        }
+        if (uppIssuedThisMonth !== undefined) {
+            setDisplayMonthIssued(uppIssuedThisMonth);
+        }
+    }, [uppIssued, avgUppPerTx, uppIssuedThisMonth]);
+
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            try {
+                const data = await getMerchantAnalytics();
+                if (data && typeof data.uppIssued === 'number') {
+                    setDisplayIssued(data.uppIssued);
+                }
+                if (data && typeof data.avgUppPerTx === 'number') {
+                    setDisplayAvgUpp(data.avgUppPerTx);
+                }
+                if (data && typeof data.uppIssuedThisMonth === 'number') {
+                    setDisplayMonthIssued(data.uppIssuedThisMonth);
+                }
+            } catch (error) {
+                console.error("Failed to poll UPP metrics:", error);
+            }
+        }, 5000); // Poll every 5 seconds
+
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <Card className="col-span-1">
             <CardHeader>
-                <CardTitle className="text-lg font-medium">UPP Tokenomics</CardTitle>
+                <div className="flex justify-between items-center">
+                    <CardTitle className="text-lg font-medium">UPP Tokenomics</CardTitle>
+                    <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        </span>
+                        <span className="text-[10px] font-medium text-green-600 uppercase tracking-wider">Live</span>
+                    </div>
+                </div>
             </CardHeader>
             <CardContent className="space-y-6">
                 {/* Total Issued */}
@@ -19,11 +77,13 @@ export function UPPMetrics() {
                         <span className="text-sm font-medium text-yellow-500">Total UPP Issued</span>
                     </div>
                     <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
-                        <span className="text-2xl lg:text-3xl font-bold">142,500</span>
+                        <span className="text-2xl lg:text-3xl font-bold transition-all duration-300">
+                            {displayIssued.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                        </span>
                         <span className="text-xs text-muted-foreground">Tokens</span>
                     </div>
                     <div className="mt-3 text-xs text-muted-foreground">
-                        <span className="text-green-500 font-medium">+15k</span> this month
+                        <span className="text-green-500 font-medium">+{displayMonthIssued.toLocaleString()}</span> this month
                     </div>
                 </div>
 
@@ -32,9 +92,9 @@ export function UPPMetrics() {
                     <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between p-3 bg-muted/30 rounded-lg border border-border/50 gap-2 xl:gap-0">
                         <div className="flex items-center gap-2">
                             <Zap className="h-4 w-4 text-muted-foreground shrink-0" />
-                            <span className="text-xs lg:text-sm font-medium whitespace-nowrap">Avg UPP / Tx</span>
+                            <span className="text-xs lg:text-sm font-medium whitespace-nowrap">Avg UPP / Transaction</span>
                         </div>
-                        <span className="font-bold whitespace-nowrap">120 UPP</span>
+                        <span className="font-bold whitespace-nowrap">{Math.round(displayAvgUpp)} UPP</span>
                     </div>
 
                     {/* Campaign Performance */}

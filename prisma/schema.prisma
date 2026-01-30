@@ -56,6 +56,8 @@ model User {
   bannedUntilReason       String?
 
   favorites               MerchantFavorite[]
+  paylinqTransactions     PaylinqTransaction[]
+  wallet                  UserWallet?
 }
 
 model Waitlist {
@@ -275,6 +277,10 @@ model Merchant {
   analytics   MerchantAnalytics?
 
   favoritedBy MerchantFavorite[]
+  
+  apiKeys     MerchantApiKey[]
+  webhooks    WebhookSubscriber[]
+  paylinqTransactions PaylinqTransaction[]
 }
 
 model Location {
@@ -310,6 +316,11 @@ model Offer {
   startDate   DateTime?
   endDate     DateTime?
   isActive    Boolean   @default(true)
+
+  // Analytics
+  views       Int       @default(0)
+  clicks      Int       @default(0)
+  redemptions Int       @default(0)
   
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -337,4 +348,91 @@ model MerchantFavorite {
 
   @@unique([userId, merchantId])
   @@index([merchantId])
+}
+
+model MerchantApiKey {
+  id          String   @id @default(cuid())
+  merchantId  String
+  merchant    Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  
+  name        String?  // e.g. "Production Key"
+  keyPrefix   String   // First 8 chars for display
+  hashedKey   String   // Bcrypt hash of full key
+  scopes      String[] // ["orders:write", "webhooks:read"]
+  
+  lastUsed    DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([merchantId])
+}
+
+model WebhookSubscriber {
+  id          String   @id @default(cuid())
+  merchantId  String
+  merchant    Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  
+  url         String
+  secret      String   // For signing payloads
+  events      String[] // ["order.created", "upp.awarded"]
+  isActive    Boolean  @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([merchantId])
+}
+
+model PaylinqTransaction {
+  id          String   @id @default(cuid())
+  merchantId  String
+  merchant    Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  amount      Int      // In cents
+  currency    String   @default("usd")
+  status      String   @default("COMPLETED") // PENDING, COMPLETED, REFUNDED
+  
+  uppEarned   Float    @default(0.0)
+  metadata    Json?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  walletTransaction WalletTransaction?
+  
+  @@index([merchantId])
+  @@index([userId])
+}
+
+model UserWallet {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  balance     Float    @default(0.0)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  transactions WalletTransaction[]
+}
+
+model WalletTransaction {
+  id                String             @id @default(cuid())
+  walletId          String
+  wallet            UserWallet         @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  
+  amount            Float              // Positive for earn, negative for spend
+  type              String             // EARN, REDEEM, ADJUSTMENT
+  description       String?
+  
+  paylinqTransactionId String?         @unique
+  paylinqTransaction PaylinqTransaction? @relation(fields: [paylinqTransactionId], references: [id])
+  
+  createdAt         DateTime           @default(now())
+  
+  @@index([walletId])
 }

@@ -1,11 +1,12 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { Box } from "@mui/material";
 import { getFavoriteAnalytics } from "@/app/actions/merchant/getFavoriteAnalytics";
+import { getMerchantAnalytics } from "@/app/actions/analytics";
 import { FavoritesChart } from "@/components/Merchant/Dashboard/FavoritesChart";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { MockSalesChart } from "@/components/Merchant/Dashboard/MockSalesChart";
-import { MockOfferStats } from "@/components/Merchant/Dashboard/MockOfferStats";
+import { OfferStats } from "@/components/Merchant/Dashboard/OfferStats";
 import { MockCustomerInsights } from "@/components/Merchant/Dashboard/MockCustomerInsights";
 import { AcquisitionFunnel } from "@/components/Merchant/Dashboard/Analytics/AcquisitionFunnel";
 import { TransactionInsights } from "@/components/Merchant/Dashboard/Analytics/TransactionInsights";
@@ -31,6 +32,9 @@ export default async function MerchantDashboardPage() {
     const analyticsResult = await getFavoriteAnalytics();
     const analyticsData = analyticsResult.success && analyticsResult.data ? analyticsResult.data : [];
     const totalFavorites = analyticsResult.success && analyticsResult.total ? analyticsResult.total : 0;
+
+    // Fetch real transactional analytics
+    const transactionalData = await getMerchantAnalytics();
 
     return (
         <Box className="p-6 md:p-10 max-w-7xl mx-auto space-y-8">
@@ -64,26 +68,42 @@ export default async function MerchantDashboardPage() {
 
             {/* Row 2: Sales & Offers */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <MockSalesChart />
-                <MockOfferStats />
+                <MockSalesChart revenueData={transactionalData.revenueData} />
+                <OfferStats offerPerformance={transactionalData.offerPerformance} />
             </div>
 
             {/* Row 3: Favorites & Customers */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <FavoritesChart data={analyticsData} total={totalFavorites} />
-                <MockCustomerInsights />
+                <MockCustomerInsights
+                    newCustomers={transactionalData.customerLoyalty.new}
+                    returningCustomers={transactionalData.customerLoyalty.returning}
+                />
             </div>
 
             {/* Row 4: Growth & ROI */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <AcquisitionFunnel />
-                <BusinessImpact />
+                <BusinessImpact
+                    revenue={transactionalData.revenue}
+                    avgOrderValue={transactionalData.avgOrderValue}
+                    cac={transactionalData.cac}
+                />
             </div>
 
             {/* Row 5: Deep Dive */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <TransactionInsights />
-                <UPPMetrics />
+                <TransactionInsights
+                    activityData={transactionalData.activityData}
+                    avgOrderValue={transactionalData.avgOrderValue}
+                    repeatRate={transactionalData.repeatPurchaseRate}
+                    purchaseFreq={transactionalData.avgPurchasesPerCustomer}
+                />
+                <UPPMetrics
+                    uppIssued={transactionalData.uppIssued}
+                    avgUppPerTx={transactionalData.avgUppPerTx}
+                    uppIssuedThisMonth={transactionalData.uppIssuedThisMonth}
+                />
             </div>
         </Box>
     );

@@ -3,11 +3,20 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Marketplace/components/ui/card";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 
-export function MockCustomerInsights() {
+export function MockCustomerInsights({ newCustomers = 35, returningCustomers = 65 }: { newCustomers?: number, returningCustomers?: number }) {
+    const total = newCustomers + returningCustomers;
+    const returningPercentage = total > 0 ? Math.round((returningCustomers / total) * 100) : 0;
+
     const data = [
-        { name: "New Customers", value: 35 },
-        { name: "Returning", value: 65 },
+        { name: "New Customers", value: newCustomers },
+        { name: "Returning", value: returningCustomers },
     ];
+
+    // Handle empty state if no data
+    if (total === 0) {
+        data[0].value = 1; // Placeholder for visualization
+        data[1].value = 0;
+    }
 
     const COLORS = ["#2D9642", "#C28F49"]; // Brand colors
 
@@ -65,7 +74,7 @@ export function MockCustomerInsights() {
 
                 <div className="text-center pt-2 border-t border-border">
                     <p className="text-sm text-muted-foreground">
-                        <span className="font-semibold text-foreground">65%</span> of your sales come from returning customers.
+                        <span className="font-semibold text-foreground">{returningPercentage}%</span> of your customers are returning.
                     </p>
                 </div>
             </CardContent>

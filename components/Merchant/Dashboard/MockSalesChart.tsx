@@ -4,8 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/Marketpla
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid } from "recharts";
 import { TrendingUp } from "lucide-react";
 
-export function MockSalesChart() {
-    const data = [
+export function MockSalesChart({ revenueData }: { revenueData?: any[] }) {
+    // Default mock data if no live data provided
+    const defaultData = [
         { date: "Jan 1", revenue: 120 },
         { date: "Jan 5", revenue: 350 },
         { date: "Jan 10", revenue: 280 },
@@ -15,13 +16,22 @@ export function MockSalesChart() {
         { date: "Jan 30", revenue: 1050 },
     ];
 
+    const data = revenueData && revenueData.length > 0 ? revenueData : defaultData;
+
+    // Calculate simple growth rate using last vs first data point for display
+    const firstVal = data.length > 0 ? data[0].revenue : 1;
+    const lastVal = data.length > 0 ? data[data.length - 1].revenue : 1;
+    // Prevent division by zero
+    const growthRate = firstVal > 0 ? ((lastVal - firstVal) / firstVal) * 100 : 0;
+
     return (
         <Card className="col-span-1 md:col-span-2">
             <CardHeader>
                 <div className="flex items-center justify-between">
                     <CardTitle className="text-lg font-medium">Revenue Overview</CardTitle>
                     <div className="flex items-center text-sm text-green-500 bg-green-500/10 px-2 py-1 rounded-full">
-                        <TrendingUp className="mr-1 h-3 w-3" /> +12.5%
+                        <TrendingUp className="mr-1 h-3 w-3" />
+                        {data === defaultData ? "+12.5%" : (growthRate >= 0 ? "+" : "") + growthRate.toFixed(1) + "%"}
                     </div>
                 </div>
             </CardHeader>

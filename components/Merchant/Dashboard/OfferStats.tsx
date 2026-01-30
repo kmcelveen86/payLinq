@@ -3,7 +3,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Marketplace/components/ui/card";
 import { MousePointerClick, Ticket, Percent } from "lucide-react";
 
-export function MockOfferStats() {
+export function OfferStats({ offerPerformance }: {
+    offerPerformance?: { views: number, clicks: number, redemptions: number, conversionRate: number }
+}) {
+    const stats = offerPerformance || { views: 0, clicks: 0, redemptions: 0, conversionRate: 0 };
+
     return (
         <Card className="col-span-1">
             <CardHeader>
@@ -18,9 +22,11 @@ export function MockOfferStats() {
                     <div className="min-w-0 flex-1">
                         <p className="text-sm font-medium text-muted-foreground mb-1">Views</p>
                         <div className="flex items-baseline gap-2 flex-wrap">
-                            <p className="text-3xl md:text-2xl xl:text-3xl font-bold text-foreground">2,543</p>
-                            <span className="text-[10px] font-semibold bg-green-500/10 text-green-500 px-2 py-0.5 rounded-full whitespace-nowrap">
-                                +8%
+                            <p className="text-3xl md:text-2xl xl:text-3xl font-bold text-foreground">
+                                {stats.views.toLocaleString()}
+                            </p>
+                            <span className="text-[10px] font-semibold bg-blue-500/10 text-blue-500 px-2 py-0.5 rounded-full whitespace-nowrap">
+                                Live
                             </span>
                         </div>
                     </div>
@@ -36,10 +42,12 @@ export function MockOfferStats() {
                     <div className="min-w-0 flex-1">
                         <p className="text-sm font-medium text-muted-foreground mb-1">Redemptions</p>
                         <div className="flex items-baseline gap-2 flex-wrap">
-                            <p className="text-3xl md:text-2xl xl:text-3xl font-bold text-foreground">342</p>
-                            <span className="text-[10px] font-semibold bg-green-500/10 text-green-500 px-2 py-0.5 rounded-full whitespace-nowrap">
+                            <p className="text-3xl md:text-2xl xl:text-3xl font-bold text-foreground">
+                                {stats.redemptions.toLocaleString()}
+                            </p>
+                            {/* <span className="text-[10px] font-semibold bg-green-500/10 text-green-500 px-2 py-0.5 rounded-full whitespace-nowrap">
                                 +12%
-                            </span>
+                            </span> */}
                         </div>
                     </div>
                 </div>
@@ -54,10 +62,14 @@ export function MockOfferStats() {
                     <div className="min-w-0 flex-1">
                         <p className="text-sm font-medium text-muted-foreground mb-1">Conversion</p>
                         <div className="flex items-baseline gap-2 flex-wrap">
-                            <p className="text-3xl md:text-2xl xl:text-3xl font-bold text-foreground">13.4%</p>
-                            <span className="text-[10px] font-semibold bg-muted text-muted-foreground px-2 py-0.5 rounded-full whitespace-nowrap">
-                                Stable
-                            </span>
+                            <p className="text-3xl md:text-2xl xl:text-3xl font-bold text-foreground">
+                                {stats.conversionRate.toFixed(1)}%
+                            </p>
+                            {stats.conversionRate > 0 && (
+                                <span className="text-[10px] font-semibold bg-green-500/10 text-green-500 px-2 py-0.5 rounded-full whitespace-nowrap">
+                                    Active
+                                </span>
+                            )}
                         </div>
                     </div>
                 </div>
