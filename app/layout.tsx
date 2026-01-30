@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Analytics } from "@vercel/analytics/next"
 import { Toaster } from "react-hot-toast";
 import { dark } from "@clerk/themes";
 import { Suspense } from "react";
@@ -99,6 +100,7 @@ export default function RootLayout({
                 }}
               />
               {children}
+              <Analytics />
             </Suspense>
           </ReactQueryProvider>
         </ClerkProvider>
