@@ -35,6 +35,7 @@ import {
     TooltipTrigger,
 } from "../ui/tooltip";
 import { motion, AnimatePresence } from "framer-motion";
+import { HeartExplosion } from "./HeartExplosion";
 
 interface ModernBrandDetailModalProps {
     brand: Brand | null;
@@ -45,7 +46,15 @@ interface ModernBrandDetailModalProps {
 export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBrandDetailModalProps) => {
     const [isFavorited, setIsFavorited] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [showConfetti, setShowConfetti] = useState(false);
     const queryClient = useQueryClient();
+
+    useEffect(() => {
+        if (showConfetti) {
+            const timer = setTimeout(() => setShowConfetti(false), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [showConfetti]);
 
     useEffect(() => {
         if (brand) {
@@ -57,6 +66,9 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
         if (!brand) return;
 
         const previousState = isFavorited;
+        if (!previousState) {
+            setShowConfetti(true);
+        }
         setIsFavorited(!previousState);
 
         try {
@@ -109,10 +121,16 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                             <Button
                                 size="icon"
                                 variant="secondary"
-                                className="rounded-full bg-white/80 backdrop-blur-sm shadow-sm hover:bg-white"
+                                className={cn(
+                                    "rounded-full bg-white/80 backdrop-blur-sm shadow-sm hover:bg-white transition-all hover:scale-110 active:scale-95 relative",
+                                    isFavorited ? "text-red-500 hover:text-red-600" : "text-zinc-400 hover:text-red-400 dark:text-zinc-400"
+                                )}
                                 onClick={handleToggleFavorite}
                             >
-                                <Heart className={cn("h-5 w-5", isFavorited ? "fill-red-500 text-red-500" : "text-muted-foreground")} />
+                                <Heart className={cn("h-5 w-5", isFavorited && "fill-current")} />
+                                <AnimatePresence>
+                                    {showConfetti && <HeartExplosion />}
+                                </AnimatePresence>
                             </Button>
                             <Button size="icon" variant="secondary" className="rounded-full bg-white/80 backdrop-blur-sm shadow-sm hover:bg-white">
                                 <Share2 className="h-5 w-5 text-muted-foreground" />
