@@ -163,9 +163,11 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                                         <Info className="h-5 w-5 text-primary" />
                                         About
                                     </h3>
-                                    <p className="text-muted-foreground leading-relaxed">
-                                        {brand.description || "No description available."}
-                                    </p>
+                                    <div className="max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
+                                        <p className="text-muted-foreground leading-relaxed">
+                                            {brand.description || "No description available."}
+                                        </p>
+                                    </div>
                                 </div>
 
                                 {/* Store Info (Local Only) */}

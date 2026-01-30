@@ -11,6 +11,12 @@ export type MerchantProfileData = {
     integrationType: string;
     affiliateLink?: string | null;
     commissionRate?: number | string | null;
+    // New fields
+    tagline?: string | null;
+    tags?: string[] | null;
+    presence?: string; // online, local, both
+    uppEarningRate?: number | string | null;
+    uppEarningType?: string | null;
 };
 
 export async function updateMerchantProfile(formData: MerchantProfileData) {
@@ -22,6 +28,7 @@ export async function updateMerchantProfile(formData: MerchantProfileData) {
 
     try {
         const commissionRate = formData.commissionRate ? Number(formData.commissionRate) : 0;
+        const uppEarningRate = formData.uppEarningRate ? Number(formData.uppEarningRate) : 0;
 
         await prisma.merchant.update({
             where: {
@@ -34,6 +41,12 @@ export async function updateMerchantProfile(formData: MerchantProfileData) {
                 integrationType: formData.integrationType,
                 affiliateLink: formData.affiliateLink,
                 commissionRate: isNaN(commissionRate) ? 0 : commissionRate,
+                // New fields
+                tagline: formData.tagline,
+                tags: formData.tags || [],
+                presence: formData.presence || "online",
+                uppEarningRate: isNaN(uppEarningRate) ? 0 : uppEarningRate,
+                uppEarningType: formData.uppEarningType || "percentage",
             },
         });
 
