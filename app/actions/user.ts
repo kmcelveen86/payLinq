@@ -80,5 +80,59 @@ export async function getPaylinqUser() {
         }
     });
 
+
     return user;
+}
+
+export async function getAllUserTransactions() {
+    const { userId } = await auth();
+    if (!userId) return [];
+
+    const user = await prisma.user.findFirst({
+        where: {
+            OR: [
+                { clerkId: userId },
+                { id: userId }
+            ]
+        },
+        include: {
+            paylinqTransactions: {
+                orderBy: { createdAt: "desc" },
+                include: {
+                    merchant: true
+                }
+            },
+        },
+    });
+
+    if (!user) return [];
+
+    return user.paylinqTransactions.map((tx) => {
+        // Try to extract item name from metadata
+        let itemName = "Order";
+        if (tx.metadata && typeof tx.metadata === 'object' && !Array.isArray(tx.metadata)) {
+            // @ts-ignore
+            if (tx.metadata.item_name) itemName = tx.metadata.item_name;
+            // @ts-ignore
+            else if (tx.metadata.description) itemName = tx.metadata.description;
+        }
+
+        return {
+            id: tx.id,
+            merchant: tx.merchant.name,
+            merchantLogo: tx.merchant.logo, // Assuming this field exists or is null
+            date: new Date(tx.createdAt).toLocaleDateString("en-US", {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }),
+            amount: tx.amount / 100,
+            points: tx.uppEarned,
+            itemName: itemName,
+            status: tx.status,
+            category: "shopping" // Placeholder
+        };
+    });
 }
