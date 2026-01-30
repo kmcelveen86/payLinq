@@ -43,6 +43,10 @@ export default function RootLayout({
           waitlistUrl="/user/join-waitlist"
           appearance={{
             baseTheme: dark,
+            elements: {
+              modalContent: "max-sm:w-screen max-sm:h-screen max-sm:max-w-none max-sm:max-h-none max-sm:rounded-none max-sm:border-none max-sm:m-0",
+              card: "max-sm:w-screen max-sm:h-screen max-sm:max-w-none max-sm:max-h-none max-sm:rounded-none max-sm:border-none max-sm:shadow-none",
+            },
           }}
         >
           <ReactQueryProvider>

@@ -26,7 +26,7 @@ export default function MerchantDashboard() {
                 transition={{ duration: 0.6 }}
                 className="relative max-w-4xl w-full"
             >
-                <div className="bg-card/50 backdrop-blur-xl border border-white/10 dark:border-white/5 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden group">
+                <div className="bg-card/50 backdrop-blur-xl border border-white/10 dark:border-white/5 rounded-3xl p-6 md:p-12 shadow-2xl relative overflow-hidden group">
                     {/* Brand Gradient Border Top */}
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-green-400 to-gold" />
 
@@ -46,7 +46,7 @@ export default function MerchantDashboard() {
 
                         <p className="text-xl text-muted-foreground leading-relaxed">
                             Welcome to the next generation of commerce. <br className="hidden md:block" />
-                            Manage your entire business from one beautiful command center.
+                            Manage your entire business from the command center for our <span className="bg-gradient-to-r from-[#2D9642] to-[#C28F49] brightness-125 bg-clip-text text-transparent font-bold">valued merchants</span>.
                         </p>
                     </div>
 
@@ -128,12 +128,12 @@ export default function MerchantDashboard() {
                         </>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center items-center">
                         <SignedIn>
                             <Link href="/dashboard" className="w-full sm:w-auto">
                                 <Button
                                     size="lg"
-                                    className="w-full sm:w-auto min-w-[200px] h-14 text-lg font-medium rounded-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all"
+                                    className="w-full sm:w-auto sm:min-w-[200px] h-14 text-lg font-medium rounded-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all"
                                 >
                                     Get Started
                                 </Button>
@@ -144,7 +144,7 @@ export default function MerchantDashboard() {
                                 <SignInButton mode="modal">
                                     <Button
                                         size="lg"
-                                        className="w-full sm:w-auto min-w-[200px] h-14 text-lg font-medium rounded-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all"
+                                        className="w-full sm:w-auto sm:min-w-[200px] h-14 text-lg font-medium rounded-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all"
                                     >
                                         Get Started
                                     </Button>
@@ -155,7 +155,7 @@ export default function MerchantDashboard() {
                             <Button
                                 variant="outline"
                                 size="lg"
-                                className="w-full sm:w-auto min-w-[200px] h-14 text-lg font-medium rounded-xl border-2 hover:bg-secondary/50"
+                                className="w-full sm:w-auto sm:min-w-[200px] h-14 text-lg font-medium rounded-xl border-2 hover:bg-secondary/50"
                             >
                                 Learn More
                                 <ExternalLink className="ml-2 h-4 w-4" />
