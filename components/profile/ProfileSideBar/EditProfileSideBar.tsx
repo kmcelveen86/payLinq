@@ -117,6 +117,11 @@ const ProfileSidebar = ({
             label: "Payment Methods",
             icon: <CreditCard size={18} />,
           },
+          {
+            key: "subscription",
+            label: "Subscription",
+            icon: <CreditCard size={18} />,
+          },
           { key: "security", label: "Security", icon: <Shield size={18} /> },
         ].map((tab) => (
           <motion.button

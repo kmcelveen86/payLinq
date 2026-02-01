@@ -1,25 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
-import { stripe } from "@/lib/stripe";
+import { stripe, STRIPE_PRICES } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 
-// Price IDs from environment
+// Price IDs map from STRIPE_PRICES
 const PRICE_IDS: Record<string, { month: string; year: string }> = {
   White: {
-    month: process.env.STRIPE_PRICE_WHITE_MONTHLY!,
-    year: process.env.STRIPE_PRICE_WHITE_YEARLY!,
+    month: STRIPE_PRICES.WHITE.MONTHLY,
+    year: STRIPE_PRICES.WHITE.YEARLY,
   },
   Silver: {
-    month: process.env.STRIPE_PRICE_SILVER_MONTHLY!,
-    year: process.env.STRIPE_PRICE_SILVER_YEARLY!,
+    month: STRIPE_PRICES.SILVER.MONTHLY,
+    year: STRIPE_PRICES.SILVER.YEARLY,
   },
   Gold: {
-    month: process.env.STRIPE_PRICE_GOLD_MONTHLY!,
-    year: process.env.STRIPE_PRICE_GOLD_YEARLY!,
+    month: STRIPE_PRICES.GOLD.MONTHLY,
+    year: STRIPE_PRICES.GOLD.YEARLY,
   },
   Black: {
-    month: process.env.STRIPE_PRICE_BLACK_MONTHLY!,
-    year: process.env.STRIPE_PRICE_BLACK_YEARLY!,
+    month: STRIPE_PRICES.BLACK.MONTHLY,
+    year: STRIPE_PRICES.BLACK.YEARLY,
   },
 };
 
@@ -61,7 +61,8 @@ export async function POST(req: NextRequest) {
     });
 
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      console.error(`Checkout failed: User not found in database for Clerk ID ${userId}`);
+      return NextResponse.json({ error: "User not found" }, { status: 400 });
     }
 
     // Get or create Stripe customer
@@ -85,6 +86,61 @@ export async function POST(req: NextRequest) {
           stripeCustomerId: customerId,
         }
       });
+    }
+
+    // Check for active subscriptions to prevent duplicates
+    const subscriptions = await stripe.subscriptions.list({
+      customer: customerId,
+      status: 'active',
+      limit: 1,
+    });
+
+    if (subscriptions.data.length > 0) {
+      const activeSub = subscriptions.data[0];
+      const subscriptionItemId = activeSub.items.data[0].id;
+
+      // Get the price ID for the selected tier and interval
+      const priceId = PRICE_IDS[tier][interval];
+
+      if (!priceId) {
+        return NextResponse.json(
+          { error: `Price ID not configured for ${tier} ${interval}` },
+          { status: 500 }
+        );
+      }
+
+      const wasCanceled = activeSub.cancel_at_period_end;
+
+      // Update the existing subscription
+      await stripe.subscriptions.update(activeSub.id, {
+        items: [
+          {
+            id: subscriptionItemId,
+            price: priceId,
+          },
+        ],
+        cancel_at_period_end: false, // Ensure subscription is not canceled
+        proration_behavior: "always_invoice", // Charge immediately for upgrades
+      });
+
+      // Check notification preferences before creating notification
+      const userPreferences = await prisma.notificationPreferences.findUnique({
+        where: { userId: user.id },
+      });
+
+      if (userPreferences?.app !== false) {
+        // Create a notification for the update
+        await prisma.notification.create({
+          data: {
+            userId: user.id,
+            title: "Subscription Updated",
+            message: `Your subscription has been successfully updated to the ${tier} plan.`,
+            type: "success",
+          },
+        });
+      }
+
+      return NextResponse.json({ updated: true, reactivated: wasCanceled });
     }
 
     // Get the price ID for the selected tier and interval

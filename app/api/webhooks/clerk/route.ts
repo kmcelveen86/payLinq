@@ -57,111 +57,52 @@ export async function POST(req: Request) {
     } = evt.data;
     const primaryEmail = email_addresses?.[0]?.email_address;
 
-    // Check if user was created using email/password
-    // TODO: IS THIS IDEAL?
-    const createdUsingCreds =
-      evt.data.email_addresses?.[0]?.verification?.strategy === "email_code";
+    if (!primaryEmail) {
+      return new Response("No email address found", { status: 400 });
+    }
 
-    // Check if user was created using Google OAuth
-    const googleAccount = external_accounts?.find(
-      (account) =>
-        account.provider === "google" || account.provider === "oauth_google"
-    );
+    try {
+      const existingUser = await prisma.user.findUnique({
+        where: { email: primaryEmail },
+      });
 
-    // Proceed if created using either email/password or Google OAuth
-    if (createdUsingCreds || googleAccount) {
-      if (!primaryEmail) {
-        return new Response("No email address found", { status: 400 });
+      if (existingUser) {
+        // Update existing user with Clerk ID
+        await prisma.user.update({
+          where: { id: existingUser.id },
+          data: {
+            clerkId: id,
+            emailVerified: new Date(),
+          },
+        });
+        console.log(`Updated existing user ${existingUser.id} with Clerk ID ${id}`);
+      } else {
+        // Create new user
+        const newUser = await prisma.user.create({
+          data: {
+            clerkId: id,
+            email: primaryEmail,
+            firstName: first_name || null,
+            lastName: last_name || null,
+            image: image_url || null,
+            emailVerified: new Date(),
+          },
+        });
+
+        // Create notification preferences
+        await prisma.notificationPreferences.create({
+          data: {
+            userId: newUser.id,
+            email: true,
+            sms: false,
+            app: false,
+          },
+        });
+        console.log(`Created new user ${newUser.id} for Clerk User ${id}`);
       }
-      // CREATED USING EMAIL/PASSWORD
-      if (createdUsingCreds) {
-        try {
-          const existingUser = await prisma.user.findUnique({
-            where: { email: primaryEmail },
-          });
-
-          if (existingUser) {
-            // Update existing user with Clerk ID
-            await prisma.user.update({
-              where: { id: existingUser.id },
-              data: {
-                clerkId: id,
-                emailVerified: new Date(), // Set emailVerified for OAuth users
-              },
-            });
-          } else {
-            // Create new user
-            const newUser = await prisma.user.create({
-              data: {
-                clerkId: id,
-                email: primaryEmail,
-                firstName: first_name || null,
-                lastName: last_name || null,
-                image: image_url || null,
-                emailVerified: new Date(), // Set emailVerified for OAuth users
-              },
-            });
-
-            // Create notification preferences
-            await prisma.notificationPreferences.create({
-              data: {
-                userId: newUser.id,
-                email: true,
-                sms: false,
-                app: false,
-              },
-            });
-          }
-        } catch (error) {
-          console.error("Error creating user:", error);
-          return new Response("Error creating user", { status: 500 });
-        }
-      }
-      // CREATED USING GOOGLE OAUTH
-      else {
-        try {
-          // Check if user already exists by email
-          const existingUser = await prisma.user.findUnique({
-            where: { email: primaryEmail },
-          });
-
-          if (existingUser) {
-            // Update existing user with Clerk ID
-            await prisma.user.update({
-              where: { id: existingUser.id },
-              data: {
-                clerkId: id,
-                emailVerified: new Date(), // Set emailVerified for OAuth users
-              },
-            });
-          } else {
-            // Create new user
-            const newUser = await prisma.user.create({
-              data: {
-                clerkId: id,
-                email: primaryEmail,
-                firstName: first_name || null,
-                lastName: last_name || null,
-                image: image_url || null,
-                emailVerified: new Date(), // Set emailVerified for OAuth users
-              },
-            });
-
-            // Create notification preferences
-            await prisma.notificationPreferences.create({
-              data: {
-                userId: newUser.id,
-                email: true,
-                sms: false,
-                app: false,
-              },
-            });
-          }
-        } catch (error) {
-          console.error("Error creating user:", error);
-          return new Response("Error creating user", { status: 500 });
-        }
-      }
+    } catch (error) {
+      console.error("Error creating user:", error);
+      return new Response("Error creating user", { status: 500 });
     }
   }
 

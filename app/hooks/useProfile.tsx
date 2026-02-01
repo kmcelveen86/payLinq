@@ -12,6 +12,8 @@ import {
   // updatePaymentMethod,
   // deletePaymentMethod,
   uploadProfileImage,
+  fetchSubscriptionStatus,
+  createPortalSession,
 } from "@/app/api/userService";
 import { toast } from "react-hot-toast";
 import { ProfileFormData } from "../schemas/profile";
@@ -38,7 +40,7 @@ export const useUserProfile = () => {
   return useQuery({
     queryKey: ["userProfile"],
     queryFn: fetchUserProfile,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: Infinity, // Never stale until explicit invalidation
   });
 };
 
@@ -62,6 +64,7 @@ export const useUpdateUserProfile = () => {
           city: data.city,
           state: data.state,
           postalCode: data.postalCode,
+          notifications: data.notifications,
         },
       });
 
@@ -91,7 +94,7 @@ export const useUserAddress = () => {
   return useQuery({
     queryKey: ["userAddress"],
     queryFn: fetchUserAddress,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: Infinity,
   });
 };
 
@@ -116,7 +119,7 @@ export const useNotificationPreferences = () => {
   return useQuery({
     queryKey: ["notificationPreferences"],
     queryFn: fetchNotificationPreferences,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: Infinity,
   });
 };
 
@@ -227,6 +230,31 @@ export const useUpdateMembershipTier = () => {
 //     },
 //   });
 // };
+
+// Subscription Hooks
+export const useSubscriptionStatus = () => {
+  return useQuery({
+    queryKey: ["subscriptionStatus"],
+    queryFn: fetchSubscriptionStatus,
+    staleTime: Infinity,
+  });
+};
+
+export const useManageSubscription = () => {
+  return useMutation({
+    mutationFn: createPortalSession,
+    onSuccess: (data: { url: string }) => {
+      // Redirect to Stripe Customer Portal
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    },
+    onError: (error) => {
+      console.error("Error creating portal session:", error);
+      toast.error("Failed to redirect to billing portal");
+    },
+  });
+};
 
 // React Query hook for profile image upload
 export const useProfileImage = () => {
