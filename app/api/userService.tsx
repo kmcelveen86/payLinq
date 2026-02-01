@@ -51,7 +51,7 @@ export const fetchUserProfile = async (): Promise<User> => {
 export const updateDatabaseUser = async ({
   userData,
 }: {
-  userData: Partial<User>;
+  userData: Partial<User> & { notifications?: any };
 }) => {
   const response = await apiClient.put("/profile", {
     ...userData,
@@ -116,6 +116,17 @@ export const updateMembershipTier = async (
   params: UpdateMembershipTierParams
 ): Promise<UpdateMembershipTierResponse> => {
   const response = await apiClient.post("/membership-tier", params);
+  return response.data;
+};
+
+// Subscription Services
+export const fetchSubscriptionStatus = async () => {
+  const response = await axios.get("/api/stripe/subscription-status");
+  return response.data;
+};
+
+export const createPortalSession = async (returnUrl?: string) => {
+  const response = await axios.post("/api/stripe/customer-portal", { returnUrl });
   return response.data;
 };
 

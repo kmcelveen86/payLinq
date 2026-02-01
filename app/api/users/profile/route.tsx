@@ -4,6 +4,7 @@ import { formatDistance, format, add } from "date-fns";
 import { profileSchema, profileUpdateSchema } from "@/app/schemas/profile";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { stripe, STRIPE_PRICES } from "@/lib/stripe";
 import { cookies } from "next/headers";
 
 // const prisma = new PrismaClient();
@@ -32,7 +33,125 @@ export async function GET(request: NextRequest) {
     });
 
     if (!user) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+      // JIT Provisioning: If user exists in Clerk but not in DB (e.g., after DB reset)
+      // fetch from Clerk and create in DB.
+      console.log(`User ${userId} not found in DB. Attempting JIT provisioning...`);
+
+      if (!email) {
+        return NextResponse.json({ message: "User not found and no email in session" }, { status: 404 });
+      }
+
+      try {
+        // Check if user exists in Stripe
+        let stripeCustomerId: string | undefined;
+        let membershipTier: string | null = null;
+        let billingCycle: string | null = null;
+
+        const stripeCustomers = await stripe.customers.list({
+          email: email,
+          limit: 1,
+        });
+
+        if (stripeCustomers.data.length > 0) {
+          stripeCustomerId = stripeCustomers.data[0].id;
+          console.log(`Found existing Stripe customer ${stripeCustomerId} for ${email}`);
+
+          // Check for active subscriptions
+          const subscriptions = await stripe.subscriptions.list({
+            customer: stripeCustomerId,
+            status: "active",
+            limit: 1,
+          });
+
+          if (subscriptions.data.length > 0) {
+            const sub = subscriptions.data[0];
+            const priceId = sub.items.data[0].price.id;
+
+            // Determine Billing Cycle
+            if (sub.items.data[0].price.recurring?.interval === "year") {
+              billingCycle = "yearly";
+            }
+
+            // Determine Tier from Price ID
+            if (priceId === STRIPE_PRICES.SILVER.MONTHLY || priceId === STRIPE_PRICES.SILVER.YEARLY) {
+              membershipTier = "Silver";
+            } else if (priceId === STRIPE_PRICES.GOLD.MONTHLY || priceId === STRIPE_PRICES.GOLD.YEARLY) {
+              membershipTier = "Gold";
+            } else if (priceId === STRIPE_PRICES.BLACK.MONTHLY || priceId === STRIPE_PRICES.BLACK.YEARLY) {
+              membershipTier = "Black";
+            } else if (priceId === STRIPE_PRICES.WHITE.MONTHLY || priceId === STRIPE_PRICES.WHITE.YEARLY) {
+              membershipTier = "White";
+            }
+
+            console.log(`Restored subscription: ${membershipTier} (${billingCycle})`);
+          }
+        }
+
+        // Create the user in the database
+        const newUser = await prisma.user.create({
+          data: {
+            clerkId: userId,
+            email: email,
+            firstName: clerkUser?.firstName || null,
+            lastName: clerkUser?.lastName || null,
+            image: clerkUser?.imageUrl || null,
+            emailVerified: new Date(),
+            billingCycle: billingCycle,
+            membershipTier: membershipTier,
+            stripeCustomerId: stripeCustomerId, // Add direct link if schema supports it
+          },
+        });
+
+        // Link Stripe Customer Model if one was found
+        if (stripeCustomerId) {
+          await prisma.stripeCustomer.create({
+            data: {
+              userId: newUser.id,
+              stripeCustomerId: stripeCustomerId,
+            }
+          });
+        }
+
+        // Create default notification preferences
+        await prisma.notificationPreferences.create({
+          data: {
+            userId: newUser.id,
+            email: true,
+            sms: false,
+            app: false,
+          },
+        });
+
+        console.log(`Successfully provisioned user ${newUser.id} for Clerk User ${userId}`);
+
+        // Return the newly created user profile
+        return NextResponse.json({
+          billingCycle: newUser.billingCycle,
+          firstName: newUser.firstName || "",
+          lastName: newUser.lastName || "",
+          email: newUser.email,
+          phoneNumber: newUser.phoneNumber || "",
+          dateOfBirth: "",
+          address: "",
+          city: "",
+          state: "",
+          postalCode: "",
+          profileImage: newUser.image || null,
+          membershipTier: newUser.membershipTier,
+          notifications: {
+            email: true,
+            sms: false,
+            app: false,
+          },
+          banned: newUser.banned,
+          bannedReason: newUser.bannedReason,
+          updatedAt: newUser.updatedAt,
+        });
+
+      } catch (createError) {
+        console.error("Failed to JIT provision user:", createError);
+        return NextResponse.json({ message: "User not found and provisioning failed" }, { status: 500 });
+      }
     }
 
     // Format the response

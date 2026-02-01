@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useUser } from "@clerk/nextjs";
+import axios from "axios";
 import TopNavComp from "@/components/TopNav/TopNavComp";
 import { TIER_COLORS, TierName } from "@/constants/tierColors";
 import { Check, Sparkles, Crown, Star, Zap, Loader2 } from "lucide-react";
@@ -137,6 +138,7 @@ export default function PricingPage() {
 
   // Use state for current plan instead of direct prop access
   const [currentPlan, setCurrentPlan] = useState<TierName | null>(null);
+  const [subscribingTier, setSubscribingTier] = useState<TierName | null>(null);
 
   const getPrice = (tier: StripeTier) => {
     if (isYearly) {
@@ -156,25 +158,35 @@ export default function PricingPage() {
       return;
     }
 
+    setSubscribingTier(tierName);
+
     try {
-      const response = await fetch("/api/stripe/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          tier: tierName,
-          interval: isYearly ? "year" : "month",
-        }),
+      const response = await axios.post("/api/stripe/create-checkout-session", {
+        tier: tierName,
+        interval: isYearly ? "year" : "month",
       });
 
-      const data = await response.json();
-
-      if (data.url) {
-        window.location.href = data.url;
+      if (response.data.url) {
+        window.location.href = response.data.url;
+      } else if (response.data.updated) {
+        import("react-hot-toast").then(({ toast }) => {
+          if (response.data.reactivated) {
+            toast.success("Welcome back! Subscription reactivated successfully.");
+          } else {
+            toast.success("Subscription updated successfully!");
+          }
+          setTimeout(() => {
+            window.location.href = "/user/profile-edit";
+          }, 2000);
+        });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating checkout session:", error);
+      const errorMessage = error.response?.data?.error || "Failed to start checkout. Please try again.";
+      import("react-hot-toast").then(({ toast }) => {
+        toast.error(errorMessage);
+      });
+      setSubscribingTier(null);
     }
   };
 
@@ -391,11 +403,11 @@ export default function PricingPage() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => handleSubscribe(tierName)}
-                      disabled={isCurrentPlan}
+                      disabled={isCurrentPlan || subscribingTier !== null}
                       className={`w-full py-3 px-4 rounded-xl font-semibold text-sm transition-all duration-300 mb-6 ${isCurrentPlan
                         ? "bg-neutral-800 text-neutral-500 cursor-not-allowed"
-                        : "shadow-lg hover:shadow-xl"
-                        }`}
+                        : "shadow-lg hover:shadow-xl cursor-pointer"
+                        } ${subscribingTier !== null && subscribingTier !== tierName ? "opacity-50 cursor-not-allowed" : ""}`}
                       style={
                         !isCurrentPlan
                           ? {
@@ -406,7 +418,16 @@ export default function PricingPage() {
                           : undefined
                       }
                     >
-                      {isCurrentPlan ? "Current Plan" : "Subscribe Now"}
+                      {isCurrentPlan ? (
+                        "Current Plan"
+                      ) : subscribingTier === tierName ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Subscribing...</span>
+                        </div>
+                      ) : (
+                        "Subscribe Now"
+                      )}
                     </motion.button>
 
                     {/* Features */}

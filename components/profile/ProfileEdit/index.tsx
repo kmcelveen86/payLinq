@@ -10,6 +10,7 @@ import AddressForm from "@/components/profile/AddressForm";
 import NotificationsForm from "@/components/profile/NotificationsForm";
 import PaymentMethods from "@/components/profile/PaymentMethods";
 import SecuritySettings from "@/components/profile/SecuritySettings";
+import SubscriptionSettings from "@/components/profile/SubscriptionSettings";
 
 import {
   useUserProfile,
@@ -77,6 +78,48 @@ const ProfileEdit = () => {
   // const formattedDate = format(new Date(profileData?.dateOfBirth as any), 'MM dd yyyy');
   // console.log("🚀 ~ ProfileEdit ~ formattedDate:", formattedDate)
 
+  // Helper to check for deep equality of notification preferences
+  const areNotificationsEqual = (a: any, b: any) => {
+    if (!a && !b) return true;
+    if (!a || !b) return false;
+    return (
+      a.email === b.email &&
+      a.sms === b.sms &&
+      a.app === b.app
+    );
+  };
+
+  // Check if form has changes
+  const hasChanges = React.useMemo(() => {
+    if (!profileData) return false;
+
+    const normalize = (val: any) => (val === null || val === undefined ? "" : val);
+
+    const personalInfoChanged =
+      normalize(formData.firstName) !== normalize(profileData.firstName) ||
+      normalize(formData.lastName) !== normalize(profileData.lastName) ||
+      normalize(formData.phoneNumber) !== normalize(profileData.phoneNumber) ||
+      normalize(formData.dateOfBirth) !== normalize(profileData.dateOfBirth);
+
+    const addressChanged =
+      normalize(formData.address) !== normalize(profileData.address) ||
+      normalize(formData.city) !== normalize(profileData.city) ||
+      normalize(formData.state) !== normalize(profileData.state) ||
+      normalize(formData.postalCode) !== normalize(profileData.postalCode);
+
+    // For notifications, use the defaults if not present in profileData
+    const currentNotifications = formData.notifications || { email: true, sms: false, app: true };
+    const savedNotifications = (profileData as any).notifications || { email: true, sms: false, app: true }; // Assuming defaults
+
+    // However, profileData usually comes with correct defaults from the API now. 
+    // Let's rely on what's in profileData, or the same defaults used in formData init
+
+    // We need to compare correctly.
+    const notificationsChanged = !areNotificationsEqual(currentNotifications, savedNotifications);
+
+    return personalInfoChanged || addressChanged || notificationsChanged;
+  }, [formData, profileData]);
+
   const paymentMethods = [
     {
       id: "card1",
@@ -93,6 +136,7 @@ const ProfileEdit = () => {
     { id: "address", label: "Address" },
     { id: "notifications", label: "Notifications" },
     { id: "payment", label: "Payment Methods" },
+    { id: "subscription", label: "Subscription" },
     { id: "security", label: "Security Settings" },
   ];
 
@@ -130,6 +174,10 @@ const ProfileEdit = () => {
         setLoading(false);
         setSaveSuccess(true);
         setTimeout(() => setSaveSuccess(false), 3000);
+      },
+      onError: (error) => {
+        setLoading(false);
+        // Toast is already handled in the hook, but we need to stop the spinner
       },
     });
   };
@@ -273,8 +321,8 @@ const ProfileEdit = () => {
                   key={section.id}
                   onClick={() => selectSection(section.id)}
                   className={`w-full text-left px-4 py-3 hover:bg-gray-700 transition-colors ${activeSection === section.id
-                      ? "bg-gray-700 font-medium"
-                      : ""
+                    ? "bg-gray-700 font-medium"
+                    : ""
                     }`}
                 >
                   {section.label}
@@ -359,8 +407,10 @@ const ProfileEdit = () => {
               />
             )}
 
+            {activeSection === "subscription" && <SubscriptionSettings />}
+
             {/* Sticky Save Button on Mobile */}
-            {activeSection !== "security" && (
+            {activeSection !== "security" && activeSection !== "subscription" && (
               <div className="lg:bg-gray-800 lg:border-t lg:border-gray-700 lg:rounded-b-xl lg:p-4 lg:flex lg:justify-end">
                 <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-900 p-4 border-t border-gray-800 flex justify-center z-10">
                   {saveSuccess && (
@@ -371,13 +421,13 @@ const ProfileEdit = () => {
                   {activeSection !== "security" && (
                     <button
                       type="submit"
-                      disabled={loading}
+                      disabled={loading || !hasChanges}
                       className={`
                   w-full px-6 py-3 bg-gradient-to-r from-[#2D9642] to-[#C28F49] 
                   rounded-lg font-medium text-white flex items-center justify-center
                   transition-all duration-300 ease-in-out
-                  ${loading
-                          ? "opacity-90 cursor-not-allowed"
+                  ${loading || !hasChanges
+                          ? "opacity-50 cursor-not-allowed grayscale"
                           : "hover:shadow-lg hover:shadow-green-700/30 hover:brightness-110 active:scale-95"
                         }
                 `}
@@ -416,13 +466,13 @@ const ProfileEdit = () => {
                 {/* Desktop Save Button */}
                 <button
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || !hasChanges}
                   className={`
                   hidden lg:flex px-6 py-2 bg-gradient-to-r from-[#2D9642] to-[#C28F49] 
                   rounded-lg font-medium text-white items-center
                   transition-all duration-300 ease-in-out
-                  ${loading
-                      ? "opacity-90 cursor-not-allowed"
+                  ${loading || !hasChanges
+                      ? "opacity-50 cursor-not-allowed grayscale"
                       : "hover:shadow-lg hover:shadow-green-700/30 hover:scale-105 hover:brightness-110 active:scale-95"
                     }
                 `}
@@ -451,6 +501,8 @@ const ProfileEdit = () => {
                       </svg>
                       Saving...
                     </>
+                  ) : saveSuccess ? (
+                    "Saved!"
                   ) : (
                     "Save Changes"
                   )}

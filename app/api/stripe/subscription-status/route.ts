@@ -1,17 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
-import { stripe } from "@/lib/stripe";
+import { stripe, STRIPE_PRICES } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import Stripe from "stripe";
 
 // Tier mapping based on price IDs
 const TIER_MAP: Record<string, string> = {
-  [process.env.STRIPE_PRICE_SILVER_MONTHLY!]: "silver",
-  [process.env.STRIPE_PRICE_SILVER_YEARLY!]: "silver",
-  [process.env.STRIPE_PRICE_GOLD_MONTHLY!]: "gold",
-  [process.env.STRIPE_PRICE_GOLD_YEARLY!]: "gold",
-  [process.env.STRIPE_PRICE_BLACK_MONTHLY!]: "black",
-  [process.env.STRIPE_PRICE_BLACK_YEARLY!]: "black",
+  [STRIPE_PRICES.SILVER.MONTHLY]: "silver",
+  [STRIPE_PRICES.SILVER.YEARLY]: "silver",
+  [STRIPE_PRICES.GOLD.MONTHLY]: "gold",
+  [STRIPE_PRICES.GOLD.YEARLY]: "gold",
+  [STRIPE_PRICES.BLACK.MONTHLY]: "black",
+  [STRIPE_PRICES.BLACK.YEARLY]: "black",
+  [STRIPE_PRICES.WHITE.MONTHLY]: "white",
+  [STRIPE_PRICES.WHITE.YEARLY]: "white",
 };
 
 interface SubscriptionStatus {
@@ -106,7 +108,7 @@ export async function GET(req: NextRequest) {
       tier: subscription.status === "active" || subscription.status === "trialing" ? tier : "white",
       status: statusMap[subscription.status] || "none",
       billingPeriod,
-      currentPeriodEnd: currentPeriodEnd 
+      currentPeriodEnd: currentPeriodEnd
         ? new Date(currentPeriodEnd * 1000).toISOString()
         : null,
       cancelAtPeriodEnd: subscription.cancel_at_period_end,
@@ -116,7 +118,14 @@ export async function GET(req: NextRequest) {
       },
     };
 
-    return NextResponse.json(status);
+    // Fetch customer details to get balance
+    const customer = await stripe.customers.retrieve(user.stripeCustomerId);
+    const balance = (customer as Stripe.Customer).invoice_credit_balance || 0;
+
+    return NextResponse.json({
+      ...status,
+      balance: balance, // Amount in cents (negative means credit)
+    });
   } catch (error) {
     console.error("Error fetching subscription status:", error);
     return NextResponse.json(

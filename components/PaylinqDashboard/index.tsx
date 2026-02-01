@@ -13,6 +13,7 @@ import userData from "./data";
 import { CreditCard, Bell, User } from "lucide-react";
 import Link from "next/link";
 import { useUserProfile } from "@/app/hooks/useProfile";
+import { useNotifications } from "@/app/hooks/useNotifications";
 
 const PaylinqDashboard = ({ initialWalletData }: { initialWalletData?: any }) => {
   const {
@@ -20,6 +21,10 @@ const PaylinqDashboard = ({ initialWalletData }: { initialWalletData?: any }) =>
     isLoading: isProfileLoading,
     isError: isProfileError,
   } = useUserProfile();
+
+  const { data: notifications } = useNotifications();
+  const unreadCount = notifications?.filter(n => !n.read).length || 0;
+
   const { firstName, image } = profileData || {};
   const [activeTab, setActiveTab] = useState("overview");
 
@@ -88,12 +93,16 @@ const PaylinqDashboard = ({ initialWalletData }: { initialWalletData?: any }) =>
                   </span>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <button className="relative p-2 rounded-full hover:bg-gray-700 transition-colors">
-                    <Bell size={20} />
-                    <span className="absolute top-0 right-0 h-4 w-4 bg-[#2D9642] rounded-full flex items-center justify-center text-xs">
-                      3
-                    </span>
-                  </button>
+                  <Link href="/user/notifications">
+                    <button className="relative p-2 rounded-full hover:bg-gray-700 transition-colors">
+                      <Bell size={20} />
+                      {unreadCount > 0 && (
+                        <span className="absolute top-0 right-0 h-4 w-4 bg-[#2D9642] rounded-full flex items-center justify-center text-xs">
+                          {unreadCount}
+                        </span>
+                      )}
+                    </button>
+                  </Link>
                   <div className="flex items-center space-x-3">
                     {image ? (
                       <img

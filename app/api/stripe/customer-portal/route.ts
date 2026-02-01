@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     // Get optional return URL from request body
     const body = await req.json().catch(() => ({}));
     const returnUrl =
-      body.returnUrl || `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`;
+      body.returnUrl || `${process.env.NEXT_PUBLIC_APP_URL}/user/dashboard`;
 
     // Create customer portal session
     const portalSession = await stripe.billingPortal.sessions.create({
