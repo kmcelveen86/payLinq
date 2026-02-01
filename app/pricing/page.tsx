@@ -469,8 +469,8 @@ export default function PricingPage() {
               a: "We accept all major credit cards, debit cards, and PayPal through our secure Stripe payment system.",
             },
             {
-              q: "Is there a free trial for paid plans?",
-              a: "All paid plans come with a 14-day free trial. Cancel anytime during the trial and you won't be charged.",
+              q: "Can I cancel my subscription?",
+              a: "Yes, you can cancel your subscription at any time. Your access will continue until the end of your billing period.",
             },
             {
               q: "What happens to my data if I downgrade?",
@@ -509,7 +509,7 @@ export default function PricingPage() {
             </h2>
             <p className="text-neutral-700 mb-8 max-w-xl mx-auto">
               Join thousands of users who have transformed their financial lives with PayLinq.
-              Start your free trial today.
+              Start your journey today.
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -517,7 +517,7 @@ export default function PricingPage() {
               onClick={() => handleSubscribe("Gold")}
               className="px-8 py-4 bg-neutral-900 text-white font-semibold rounded-xl shadow-xl hover:bg-neutral-800 transition-colors"
             >
-              Start Free Trial
+              Get Started
             </motion.button>
           </div>
 

@@ -170,11 +170,15 @@ const ProfileEdit = () => {
     setIsMobileMenuOpen(false);
   };
 
-  const lastUpdatedText = userObj?.updatedAt
-    ? formatDistance(new Date(userObj.updatedAt), new Date(), {
+  const lastUpdatedText = profileData?.updatedAt
+    ? formatDistance(new Date(profileData.updatedAt), new Date(), {
+      addSuffix: true,
+    })
+    : userObj?.updatedAt
+      ? formatDistance(new Date(userObj.updatedAt), new Date(), {
         addSuffix: true,
       })
-    : "Just now";
+      : "Just now";
 
   // Find the label for the active section
   const activeSectionLabel = sections.find(
@@ -249,9 +253,8 @@ const ProfileEdit = () => {
             <span>{activeSectionLabel}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className={`h-5 w-5 transition-transform ${
-                isMobileMenuOpen ? "rotate-180" : ""
-              }`}
+              className={`h-5 w-5 transition-transform ${isMobileMenuOpen ? "rotate-180" : ""
+                }`}
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -269,11 +272,10 @@ const ProfileEdit = () => {
                 <button
                   key={section.id}
                   onClick={() => selectSection(section.id)}
-                  className={`w-full text-left px-4 py-3 hover:bg-gray-700 transition-colors ${
-                    activeSection === section.id
+                  className={`w-full text-left px-4 py-3 hover:bg-gray-700 transition-colors ${activeSection === section.id
                       ? "bg-gray-700 font-medium"
                       : ""
-                  }`}
+                    }`}
                 >
                   {section.label}
                 </button>
@@ -374,11 +376,10 @@ const ProfileEdit = () => {
                   w-full px-6 py-3 bg-gradient-to-r from-[#2D9642] to-[#C28F49] 
                   rounded-lg font-medium text-white flex items-center justify-center
                   transition-all duration-300 ease-in-out
-                  ${
-                    loading
-                      ? "opacity-90 cursor-not-allowed"
-                      : "hover:shadow-lg hover:shadow-green-700/30 hover:brightness-110 active:scale-95"
-                  }
+                  ${loading
+                          ? "opacity-90 cursor-not-allowed"
+                          : "hover:shadow-lg hover:shadow-green-700/30 hover:brightness-110 active:scale-95"
+                        }
                 `}
                     >
                       {loading ? (
@@ -420,11 +421,10 @@ const ProfileEdit = () => {
                   hidden lg:flex px-6 py-2 bg-gradient-to-r from-[#2D9642] to-[#C28F49] 
                   rounded-lg font-medium text-white items-center
                   transition-all duration-300 ease-in-out
-                  ${
-                    loading
+                  ${loading
                       ? "opacity-90 cursor-not-allowed"
                       : "hover:shadow-lg hover:shadow-green-700/30 hover:scale-105 hover:brightness-110 active:scale-95"
-                  }
+                    }
                 `}
                 >
                   {loading ? (

@@ -71,7 +71,7 @@ export const useUpdateUserProfile = () => {
     },
     onSuccess: (data) => {
       // Update the cache with the new data
-      queryClient.setQueryData(["userProfile"], data);
+      // queryClient.setQueryData(["userProfile"], data);
 
       // Invalidate any cached queries to ensure fresh data
       queryClient.invalidateQueries({ queryKey: ["userProfile"] });
