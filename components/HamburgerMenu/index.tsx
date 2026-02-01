@@ -87,6 +87,8 @@ export default function HamburgerMenu() {
     }),
   };
 
+  const hasOrgAccess = (clerkUser.user?.organizationMemberships?.length ?? 0) > 0;
+
   const menuItems = [
     {
       text: "Home",
@@ -98,21 +100,15 @@ export default function HamburgerMenu() {
       href: "/howitworks",
       icon: <HelpCircle size={20} className="text-gray-600" />,
     },
-    {
-      text: "Merchant Portal",
-      href: "/merchant",
-      icon: <Store size={20} className="text-gray-600" />,
-    },
-    // {
-    //   text: "Features",
-    //   href: "/membership-tiers",
-    //   icon: <Tag size={20} className="text-gray-600" />,
-    // },
-    // {
-    //   text: "Contact",
-    //   href: "/contact",
-    //   icon: <Mail size={20} className="text-gray-600" />,
-    // },
+    ...(hasOrgAccess
+      ? [
+        {
+          text: "Merchant Portal",
+          href: "/merchant",
+          icon: <Store size={20} className="text-gray-600" />,
+        },
+      ]
+      : []),
   ];
 
   if (!isMounted) return null;

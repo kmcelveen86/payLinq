@@ -64,7 +64,14 @@ const MembershipTiersOnHomePage: React.FC = () => {
 
   // Handle tier selection
   const handleSelectTier = (tierName: string): void => {
-    if (tierName !== "White" && !profileData?.membershipTier) return; // Only allow upgrading if already a member
+    // If user is not logged in, redirect to sign-up
+    if (!profileData && !isProfileLoading) {
+      window.location.href = "/sign-up?redirect_url=/pricing";
+      return;
+    }
+
+    if (tierName !== "White" && !profileData?.membershipTier) return;
+
     setSelectedTier(tierName);
     setTimeout(() => {
       router.push("/membership-tiers");
@@ -187,9 +194,8 @@ const MembershipTiersOnHomePage: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.8 }}
             >
               <span
-                className={`mr-3 text-sm font-medium ${
-                  !annualBilling ? "text-green-700" : "text-gray-500"
-                }`}
+                className={`mr-3 text-sm font-medium ${!annualBilling ? "text-green-700" : "text-gray-500"
+                  }`}
               >
                 Monthly
               </span>
@@ -212,9 +218,8 @@ const MembershipTiersOnHomePage: React.FC = () => {
                 />
               </button>
               <span
-                className={`ml-3 text-sm font-medium ${
-                  annualBilling ? "text-green-700" : "text-gray-500"
-                }`}
+                className={`ml-3 text-sm font-medium ${annualBilling ? "text-green-700" : "text-gray-500"
+                  }`}
               >
                 Annually{" "}
                 <span className="text-amber-600 font-bold">(Save 15%)</span>
@@ -275,6 +280,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
               isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "white"}
               onSelect={() => handleSelectTier("White")}
               annualBilling={annualBilling}
+              buttonText={(!profileData && !isProfileLoading) ? "Get Started" : undefined}
             />
           </motion.div>
 
@@ -316,6 +322,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
               isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "silver"}
               onSelect={() => handleSelectTier("Silver")}
               annualBilling={annualBilling}
+              buttonText={(!profileData && !isProfileLoading) ? "Start Free Trial" : undefined}
             />
           </motion.div>
 
@@ -357,6 +364,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
               isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "gold"}
               onSelect={() => handleSelectTier("Gold")}
               annualBilling={annualBilling}
+              buttonText={(!profileData && !isProfileLoading) ? "Start Free Trial" : undefined}
             />
           </motion.div>
 
@@ -398,6 +406,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
               isCurrentPlan={profileData?.membershipTier === "Black"}
               onSelect={() => handleSelectTier("Black")}
               annualBilling={annualBilling}
+              buttonText={(!profileData && !isProfileLoading) ? "Start Free Trial" : undefined}
             />
           </motion.div>
         </div>

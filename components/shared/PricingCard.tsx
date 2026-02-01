@@ -38,6 +38,7 @@ export type PricingCardProps = {
   onSelect: () => void;
   annualBilling: boolean;
   disabled?: boolean;
+  buttonText?: string;
 };
 
 const PricingCard: React.FC<PricingCardProps> = ({
@@ -62,6 +63,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
   onSelect,
   annualBilling,
   disabled = false,
+  buttonText,
 }) => {
   const annualPrice = Math.ceil(price * 12 * 0.85); // 15% discount for annual billing
   const currentPrice = annualBilling ? annualPrice : price;
@@ -81,11 +83,10 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
   return (
     <motion.div
-      className={`rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 h-full ${
-        selected || isCurrentPlan
-          ? `ring-2 ${getRingColor()} scale-[1.02]`
-          : "hover:scale-[1.02]"
-      } ${tierColors.background} ${tierColors.border} border ${disabled ? "opacity-90" : ""}`}
+      className={`rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 h-full ${selected || isCurrentPlan
+        ? `ring-2 ${getRingColor()} scale-[1.02]`
+        : "hover:scale-[1.02]"
+        } ${tierColors.background} ${tierColors.border} border ${disabled ? "opacity-90" : ""}`}
       whileHover={{ y: -5, boxShadow: "0 10px 40px rgba(0,0,0,0.15)" }}
       transition={{ duration: 0.3 }}
     >
@@ -250,11 +251,9 @@ const PricingCard: React.FC<PricingCardProps> = ({
         <motion.button
           onClick={onSelect}
           disabled={disabled}
-          className={`w-full text-white font-semibold mb-8 py-3 px-4 rounded-lg transition-all duration-300 mt-auto shadow-md hover:shadow-lg ${
-            disabled ? "opacity-70 cursor-not-allowed" : ""
-          } ${
-            selected || isCurrentPlan ? "ring-2 ring-white ring-opacity-70" : ""
-          }`}
+          className={`w-full text-white font-semibold mb-8 py-3 px-4 rounded-lg transition-all duration-300 mt-auto shadow-md hover:shadow-lg ${disabled ? "opacity-70 cursor-not-allowed" : ""
+            } ${selected || isCurrentPlan ? "ring-2 ring-white ring-opacity-70" : ""
+            }`}
           style={{
             background: `linear-gradient(to right, ${tierColors.button.from}, ${tierColors.button.to})`,
           }}
@@ -263,15 +262,17 @@ const PricingCard: React.FC<PricingCardProps> = ({
           }}
           whileTap={{ scale: !disabled ? 0.98 : 1 }}
         >
-          {isCurrentPlan
-            ? `Your Active Plan`
-            : selected
-            ? "Plan Selected"
-            : disabled
-            ? "Coming Soon"
-            : tierName === "White"
-            ? "Get Started"
-            : `Upgrade to ${tierName}`}
+          {buttonText
+            ? buttonText
+            : isCurrentPlan
+              ? `Your Active Plan`
+              : selected
+                ? "Plan Selected"
+                : disabled
+                  ? "Coming Soon"
+                  : tierName === "White"
+                    ? "Get Started"
+                    : `Upgrade to ${tierName}`}
         </motion.button>
       </div>
     </motion.div>

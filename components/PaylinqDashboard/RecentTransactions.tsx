@@ -25,7 +25,7 @@ export default function RecentTransactions(props: Props) {
       </div>
 
       <div className="space-y-4">
-        {userData.recentTransactions.map((transaction) => (
+        {userData.recentTransactions.slice(0, 5).map((transaction) => (
           <motion.div
             key={transaction.id}
             whileHover={{ x: 5 }}

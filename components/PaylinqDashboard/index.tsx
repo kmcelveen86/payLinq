@@ -109,7 +109,7 @@ const PaylinqDashboard = ({ initialWalletData }: { initialWalletData?: any }) =>
                       <User size={40} className="text-gray-400" />
                     )}
                     <span className="font-medium hidden md:block">
-                      {userData.name}
+                      {firstName || userData.name}
                     </span>
                   </div>
                 </div>
