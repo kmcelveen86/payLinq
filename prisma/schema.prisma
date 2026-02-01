@@ -43,6 +43,7 @@ model User {
   updatedAt               DateTime                 @updatedAt
   membershipTier          String?
   billingCycle            String?                 @default("monthly") // monthly, yearly
+  stripeCustomerId        String?                 @unique // Direct Stripe customer ID for quick lookups
   accounts                Account[]
   Authenticator           Authenticator[]
   sessions                Session[]

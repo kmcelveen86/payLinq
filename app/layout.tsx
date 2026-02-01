@@ -40,6 +40,11 @@ export default function RootLayout({
     >
       <body>
         <ClerkProvider
+          allowedRedirectOrigins={[
+            'https://getpaylinq.com',
+            'https://merchant.getpaylinq.com',
+            'http://localhost:3000' // for development
+          ]}
           waitlistUrl="/user/join-waitlist"
           appearance={{
             baseTheme: dark,
