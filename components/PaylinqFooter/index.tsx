@@ -62,7 +62,7 @@ const PaylinqFooter = () => {
     {
       title: "Resources",
       links: [
-        { name: "How It Works", href: "/how-it-works" },
+        { name: "How It Works", href: "/howitworks" },
         { name: "FAQs", href: "/faqs" },
         { name: "Blog", href: "/blog" },
         { name: "Support Center", href: "/support" },

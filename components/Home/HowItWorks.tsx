@@ -4,7 +4,7 @@ import { motion, useInView, useAnimation } from "framer-motion";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { CreditCard, ShoppingBag, Award, ArrowRight } from "lucide-react";
+import { CreditCard, ShoppingBag, Award, ArrowRight, UserPlus, Gift } from "lucide-react";
 import {
   PaylinqDebit,
   PaylinqShopping,
@@ -14,32 +14,32 @@ import {
 const featureItems = [
   {
     step: 1,
-    title: "Get Your PayLinq Debit Card",
+    title: "Become a Member",
     description:
-      "Receive your premium PayLinq Debit Card delivered right to your doorstep.",
-    icon: <CreditCard size={28} className="text-[#2D9642]" />,
+      "Sign up for a PayLinq membership to unlock exclusive rewards and benefits.",
+    icon: <UserPlus size={28} className="text-[#2D9642]" />,
     image: <PaylinqDebit />,
-    alt: "PayLinq Debit Card",
+    alt: "PayLinq Membership",
     color: "#2D9642",
   },
   {
     step: 2,
-    title: "Make Everyday Purchases",
+    title: "Shop & Earn UPP",
     description:
-      "PayLinq turns your everyday spending into Universal PayLinq Points (UPP) - our universal rewards currency - redeemable like cash, powered by AI to maximize your value.",
+      "Shop at our partner merchants and earn Universal PayLinq Points (UPP) on every purchase.",
     icon: <ShoppingBag size={28} className="text-[#2D9642]" />,
     image: <PaylinqShopping />,
-    alt: "Person shopping with PayLinq card",
+    alt: "Shop and Earn",
     color: "#2D9642",
   },
   {
     step: 3,
-    title: "Enjoy Exclusive Benefits",
+    title: "Redeem Rewards",
     description:
-      "Be among the first to experience PayLinq and access premium rewards that will enhance your lifestyle.",
-    icon: <Award size={28} className="text-[#C28F49]" />,
+      "Use your UPP to redeem cash back, gift cards, and exclusive experiences.",
+    icon: <Gift size={28} className="text-[#C28F49]" />,
     image: <PaylinqRewardsAndBenefits />,
-    alt: "Rewards and benefits",
+    alt: "Redeem Rewards",
     color: "#C28F49",
   },
 ];
@@ -224,9 +224,8 @@ export default function HowItWorks() {
                   <div
                     className="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-lg mb-6 shadow-md"
                     style={{
-                      background: `linear-gradient(135deg, ${item.color}, ${
-                        item.color === "#2D9642" ? "#38B053" : "#D9A55C"
-                      })`,
+                      background: `linear-gradient(135deg, ${item.color}, ${item.color === "#2D9642" ? "#38B053" : "#D9A55C"
+                        })`,
                     }}
                   >
                     {item.step}
@@ -294,7 +293,7 @@ export default function HowItWorks() {
                     "linear-gradient(90deg, #2D9642 0%, #C28F49 100%)",
                 }}
               >
-                <span>Get Your PayLinq Card</span>
+                <span>Start Earning Rewards</span>
                 <ArrowRight size={18} />
               </motion.button>
             </div>

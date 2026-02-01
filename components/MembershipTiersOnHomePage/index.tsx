@@ -322,7 +322,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
               isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "silver"}
               onSelect={() => handleSelectTier("Silver")}
               annualBilling={annualBilling}
-              buttonText={(!profileData && !isProfileLoading) ? "Start Free Trial" : undefined}
+              buttonText={(!profileData && !isProfileLoading) ? "Get Started" : undefined}
             />
           </motion.div>
 
@@ -364,7 +364,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
               isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "gold"}
               onSelect={() => handleSelectTier("Gold")}
               annualBilling={annualBilling}
-              buttonText={(!profileData && !isProfileLoading) ? "Start Free Trial" : undefined}
+              buttonText={(!profileData && !isProfileLoading) ? "Get Started" : undefined}
             />
           </motion.div>
 
@@ -406,7 +406,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
               isCurrentPlan={profileData?.membershipTier === "Black"}
               onSelect={() => handleSelectTier("Black")}
               annualBilling={annualBilling}
-              buttonText={(!profileData && !isProfileLoading) ? "Start Free Trial" : undefined}
+              buttonText={(!profileData && !isProfileLoading) ? "Get Started" : undefined}
             />
           </motion.div>
         </div>

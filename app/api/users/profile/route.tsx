@@ -64,6 +64,7 @@ export async function GET(request: NextRequest) {
         },
       banned: user.banned,
       bannedReason: user.bannedReason,
+      updatedAt: user.updatedAt,
     };
 
     return NextResponse.json(profileData);
@@ -239,7 +240,7 @@ export async function PUT(request: NextRequest) {
     // Prepare update data only with fields that were provided
     const updateData: any = {};
 
-    updateData.updatedAt = new Date(clerkUser.updatedAt);
+    // updateData.updatedAt = new Date(clerkUser.updatedAt);
 
     // Only include fields that were provided in the request
     if (body.firstName !== undefined) updateData.firstName = body.firstName;
@@ -252,21 +253,54 @@ export async function PUT(request: NextRequest) {
       updateData.name = `${firstName} ${lastName}`.trim();
     }
 
-    if (body.phoneNumber !== undefined) updateData.phoneNumber = body.phoneNumber;
+    if (body.phoneNumber !== undefined) {
+      // Handle empty string as null to avoid unique constraint violation
+      if (body.phoneNumber === "") {
+        updateData.phoneNumber = null;
+      } else {
+        // Check if phone number is already in use by another user
+        const existingPhoneUser = await prisma.user.findFirst({
+          where: {
+            phoneNumber: body.phoneNumber,
+            NOT: {
+              id: existingUser.id,
+            },
+          },
+        });
+
+        if (existingPhoneUser) {
+          return NextResponse.json(
+            {
+              success: false,
+              message: "This phone number is already associated with another account.",
+            },
+            { status: 400 }
+          );
+        }
+        updateData.phoneNumber = body.phoneNumber;
+      }
+    }
 
     // IMPORTANT: Only include dateOfBirth if explicitly provided and valid
     if (body.dateOfBirth !== undefined && body.dateOfBirth !== null && body.dateOfBirth !== '') {
-      try {
-        const dateValue = new Date(body.dateOfBirth);
-        const formmattedDate = format(dateValue, "yyyy-MM-dd");
+      // Check if it's already in YYYY-MM-DD format
+      const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+      if (dateRegex.test(body.dateOfBirth)) {
+        updateData.dateOfBirth = body.dateOfBirth;
+      } else {
+        try {
+          // Fallback to previous logic for other formats
+          const dateValue = new Date(body.dateOfBirth);
+          const formmattedDate = format(dateValue, "yyyy-MM-dd");
 
-        // Update existing user
-        if (!isNaN(dateValue.getTime())) {
-          updateData.dateOfBirth = formmattedDate;
+          // Update existing user
+          if (!isNaN(dateValue.getTime())) {
+            updateData.dateOfBirth = formmattedDate;
+          }
+        } catch (error) {
+          // Simply don't include the date in the update if it's invalid
+          console.warn("Invalid date format provided, skipping dateOfBirth update");
         }
-      } catch (error) {
-        // Simply don't include the date in the update if it's invalid
-        console.warn("Invalid date format provided, skipping dateOfBirth update");
       }
     }
 

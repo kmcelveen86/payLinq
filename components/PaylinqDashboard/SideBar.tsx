@@ -192,7 +192,7 @@ export default function SideBar(props: Props) {
           </button>
         </div>
 
-        <motion.div
+        {/* <motion.div
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className="mt-6 p-4 rounded-lg bg-gray-700 bg-opacity-50"
@@ -211,7 +211,7 @@ export default function SideBar(props: Props) {
           <div className="mt-3 text-xs text-gray-400">
             <span>Card is active and ready to use</span>
           </div>
-        </motion.div>
+        </motion.div> */}
         <SignOutButton>
           <span className="mt-8 w-full flex items-center justify-center text-gray-400 hover:text-white py-2 rounded-lg hover:bg-gray-700 transition-colors">
             <LogOut size={18} className="mr-2" onClick={handleLogout} />

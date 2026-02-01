@@ -11,6 +11,7 @@ import {
   TrendingUp,
   Coffee,
   CheckCircle,
+  UserPlus,
 } from "lucide-react";
 import {
   PaylinqSignUpGetCard,
@@ -75,10 +76,10 @@ export default function HowItWorksContent() {
   // Steps data
   const steps = [
     {
-      title: "Sign Up & Get Your Card",
-      icon: <CreditCard className="w-8 h-8" />,
+      title: "Become a Member",
+      icon: <UserPlus className="w-8 h-8" />,
       description:
-        "Create your account, verify your identity, and receive your personalized PayLinq rewards card within days.",
+        "Create your account and unlock exclusive rewards and benefits instantly.",
       color: "from-[#2D9642] to-[#38b053]",
       image: <PaylinqSignUpGetCard />,
     },
@@ -86,7 +87,7 @@ export default function HowItWorksContent() {
       title: "Shop & Earn Points",
       icon: <Gift className="w-8 h-8" />,
       description:
-        "Use your card for everyday purchases and watch as points roll in. Earn extra points on dining, travel, and special promotions.",
+        "Shop at partner merchants and watch as points roll in. Earn extra points on dining, travel, and special promotions.",
       color: "from-[#2D9642] to-[#38b053]",
       image: <PaylinqShopEarnPoints />,
     },
@@ -187,11 +188,10 @@ export default function HowItWorksContent() {
                 <button
                   key={index}
                   onClick={() => setActiveStep(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    activeStep === index
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${activeStep === index
                       ? "bg-gradient-to-r from-[#2D9642] to-[#C28F49] w-12"
                       : "bg-gray-600"
-                  }`}
+                    }`}
                 />
               ))}
             </div>
@@ -213,9 +213,8 @@ export default function HowItWorksContent() {
                     <div
                       className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br mb-6 text-white shadow-lg"
                       style={{
-                        background: `linear-gradient(to right, ${
-                          steps[activeStep].color.split(" ")[1]
-                        }, ${steps[activeStep].color.split(" ")[2]})`,
+                        background: `linear-gradient(to right, ${steps[activeStep].color.split(" ")[1]
+                          }, ${steps[activeStep].color.split(" ")[2]})`,
                       }}
                     >
                       {steps[activeStep].icon}
