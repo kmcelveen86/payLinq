@@ -240,7 +240,7 @@ export async function POST(request: NextRequest) {
           data: {
             banned: true,
             bannedReason: `Stripe Dispute: ${dispute.reason}`,
-            membershipTier: 'White', // Downgrade to free
+            membershipTier: null, // Remove from any tier
           }
         });
 

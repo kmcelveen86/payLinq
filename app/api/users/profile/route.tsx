@@ -53,15 +53,17 @@ export async function GET(request: NextRequest) {
       membershipTier: user.membershipTier,
       notifications: user.notificationPreferences
         ? {
-            email: user.notificationPreferences.email,
-            sms: user.notificationPreferences.sms,
-            app: user.notificationPreferences.app,
-          }
+          email: user.notificationPreferences.email,
+          sms: user.notificationPreferences.sms,
+          app: user.notificationPreferences.app,
+        }
         : {
-            email: true,
-            sms: false,
-            app: true,
-          },
+          email: true,
+          sms: false,
+          app: true,
+        },
+      banned: user.banned,
+      bannedReason: user.bannedReason,
     };
 
     return NextResponse.json(profileData);
@@ -220,13 +222,13 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    
+
     // Get existing user data first
     const existingUser = await prisma.user.findUnique({
       where: { clerkId: clerkUser.id },
       include: { notificationPreferences: true }
     });
-    
+
     if (!existingUser) {
       return NextResponse.json(
         { message: "User not found" },
@@ -238,20 +240,20 @@ export async function PUT(request: NextRequest) {
     const updateData: any = {};
 
     updateData.updatedAt = new Date(clerkUser.updatedAt);
-    
+
     // Only include fields that were provided in the request
     if (body.firstName !== undefined) updateData.firstName = body.firstName;
     if (body.lastName !== undefined) updateData.lastName = body.lastName;
-    
+
     // Only update name if first or last name was provided
     if (body.firstName !== undefined || body.lastName !== undefined) {
       const firstName = body.firstName ?? existingUser.firstName ?? '';
       const lastName = body.lastName ?? existingUser.lastName ?? '';
       updateData.name = `${firstName} ${lastName}`.trim();
     }
-    
+
     if (body.phoneNumber !== undefined) updateData.phoneNumber = body.phoneNumber;
-    
+
     // IMPORTANT: Only include dateOfBirth if explicitly provided and valid
     if (body.dateOfBirth !== undefined && body.dateOfBirth !== null && body.dateOfBirth !== '') {
       try {
@@ -267,23 +269,23 @@ export async function PUT(request: NextRequest) {
         console.warn("Invalid date format provided, skipping dateOfBirth update");
       }
     }
-    
+
     if (body.address !== undefined) updateData.address = body.address;
     if (body.city !== undefined) updateData.city = body.city;
     if (body.state !== undefined) updateData.state = body.state;
     if (body.postalCode !== undefined) updateData.postalCode = body.postalCode;
-    
+
     // Only include notification preferences if any were provided
     if (body.notifications) {
       const notificationsUpdate: any = {};
-      
-      if (body.notifications.email !== undefined) 
+
+      if (body.notifications.email !== undefined)
         notificationsUpdate.email = body.notifications.email;
-      if (body.notifications.sms !== undefined) 
+      if (body.notifications.sms !== undefined)
         notificationsUpdate.sms = body.notifications.sms;
-      if (body.notifications.app !== undefined) 
+      if (body.notifications.app !== undefined)
         notificationsUpdate.app = body.notifications.app;
-      
+
       // Only update if at least one notification preference was provided
       if (Object.keys(notificationsUpdate).length > 0) {
         updateData.notificationPreferences = {
@@ -298,9 +300,9 @@ export async function PUT(request: NextRequest) {
         };
       }
     }
-    
+
     // console.log("Update data:", JSON.stringify(updateData, null, 2));
-    
+
     // Only proceed with update if there's something to update
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json({
@@ -320,17 +322,17 @@ export async function PUT(request: NextRequest) {
           postalCode: existingUser.postalCode,
           notifications: existingUser.notificationPreferences
             ? {
-                email: existingUser.notificationPreferences.email,
-                sms: existingUser.notificationPreferences.sms,
-                app: existingUser.notificationPreferences.app,
-              }
+              email: existingUser.notificationPreferences.email,
+              sms: existingUser.notificationPreferences.sms,
+              app: existingUser.notificationPreferences.app,
+            }
             : undefined,
         },
       });
     }
-    
-    
-    
+
+
+
     // Update user with only the provided fields
     const user = await prisma.user.update({
       where: { clerkId: clerkUser.id },
@@ -357,10 +359,10 @@ export async function PUT(request: NextRequest) {
         updatedAt: user.updatedAt,
         notifications: user.notificationPreferences
           ? {
-              email: user.notificationPreferences.email,
-              sms: user.notificationPreferences.sms,
-              app: user.notificationPreferences.app,
-            }
+            email: user.notificationPreferences.email,
+            sms: user.notificationPreferences.sms,
+            app: user.notificationPreferences.app,
+          }
           : undefined,
       },
     });
