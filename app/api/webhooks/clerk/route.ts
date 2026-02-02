@@ -260,27 +260,7 @@ export async function POST(req: Request) {
     }
   }
 
-  // Handle organization.created event
-  if (eventType === "organization.created") {
-    const { id, name, slug, image_url, created_at } = evt.data;
 
-    try {
-      await prisma.merchant.create({
-        data: {
-          clerkOrgId: id,
-          name: name,
-          slug: slug,
-          logo: image_url,
-          // You can map other fields as needed
-        }
-      });
-      console.log(`Created new merchant for org ${id}: ${name}`);
-      return new Response("Merchant created successfully", { status: 200 });
-    } catch (error) {
-      console.error("Error creating merchant:", error);
-      return new Response("Error creating merchant", { status: 500 });
-    }
-  }
 
   // Handle organization.updated event
   if (eventType === "organization.updated") {

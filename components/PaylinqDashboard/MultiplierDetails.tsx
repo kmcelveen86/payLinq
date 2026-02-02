@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { TrendingUp, Coins, Sparkles, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { useUserProfile } from "@/app/hooks/useProfile";
 
 // Define tier-specific redemption values
@@ -42,8 +43,9 @@ export default function MultiplierDetails(props: Props) {
   } = useUserProfile();
   const { itemVariants } = props;
 
-  // Get current tier with fallback to White
+  // Get current tier with fallback to White for safely accessing consts, but track *actual* presence
   const currentTier = profileData?.membershipTier || "White";
+  const hasTier = !!profileData?.membershipTier;
 
   // Get redemption info for the current tier
   const redemptionInfo =
@@ -62,6 +64,37 @@ export default function MultiplierDetails(props: Props) {
           <div className="h-6 bg-gray-700 rounded-full w-1/4"></div>
         </div>
         <div className="h-32 bg-gray-700/50 rounded-xl"></div>
+      </motion.div>
+    );
+  }
+
+  // NO TIER STATE -> Show "Unlock Rewards" CTA
+  if (!hasTier) {
+    return (
+      <motion.div
+        variants={itemVariants}
+        className="relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl p-8 border border-gray-700/50"
+      >
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#2D9642]/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
+
+        <div className="flex flex-col items-center justify-center text-center py-4">
+          <div className="p-4 rounded-full bg-[#2D9642]/10 mb-4 animate-pulse">
+            <Sparkles size={32} className="text-[#2D9642]" />
+          </div>
+          <h3 className="text-2xl font-bold text-white mb-2">Unlock Your Rewards Value</h3>
+          <p className="text-gray-400 max-w-md mb-6">
+            Upgrade to a membership plan to start seeing your potential earnings matrix here.
+            You could be earning up to <span className="text-white font-bold">$20</span> for every 1000 points!
+          </p>
+
+          <Link href="/pricing">
+            <button
+              className="px-6 py-3 bg-gradient-to-r from-[#2D9642] to-[#258036] hover:from-[#258036] hover:to-[#1e662b] text-white font-bold rounded-full shadow-lg hover:shadow-[#2D9642]/20 transition-all flex items-center gap-2"
+            >
+              See Membership Plans <ArrowRight size={16} />
+            </button>
+          </Link>
+        </div>
       </motion.div>
     );
   }

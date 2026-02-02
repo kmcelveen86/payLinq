@@ -75,7 +75,7 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
             tagline: merchant.tagline || "",
             category: merchant.category || "",
             tagsRaw: merchant.tags ? merchant.tags.join(", ") : "",
-            presence: merchant.presence || "online",
+            presence: merchant.presence || undefined,
             uppEarningRate: merchant.uppEarningRate || 0,
             uppEarningType: merchant.uppEarningType || "percentage",
         },
@@ -95,18 +95,21 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
                 description: data.description || null,
                 affiliateLink: data.affiliateLink || null,
                 testAffiliateLink: data.testAffiliateLink || null, // Include in submit
-                commissionRate: data.commissionRate || 0,
+                // Always use the existing negotiated rate, do not trust form data
+                commissionRate: merchant.commissionRate || 0,
 
                 tagline: data.tagline || null,
                 category: data.category || null,
                 tags: tagsArray,
                 presence: data.presence || "online",
-                uppEarningRate: data.uppEarningRate || 0,
-                uppEarningType: data.uppEarningType || "percentage",
+                // Lock reward settings to negotiated terms
+                uppEarningRate: merchant.uppEarningRate || 0,
+                uppEarningType: merchant.uppEarningType || "percentage",
             };
             const result = await updateMerchantProfile(formData);
 
             if (result.success) {
+                form.reset(data); // Reset form state to current values so isDirty becomes false
                 setIsSuccess(true);
                 toast.success("Settings saved successfully");
             } else {
@@ -334,26 +337,6 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
                         )}
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <FormField
-                                control={form.control}
-                                name="commissionRate"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Commission Rate (%)</FormLabel>
-                                        <FormControl>
-                                            <div className="relative">
-                                                <Percent className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                                <Input type="number" step="0.1" className="pl-9 h-11" {...field} />
-                                            </div>
-                                        </FormControl>
-                                        <FormDescription>
-                                            The revenue share percentage for Paylinq.
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
                             {/* Rewards Configuration */}
                             <FormField
                                 control={form.control}
@@ -379,47 +362,27 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
                                 )}
                             />
 
-                            <FormField
-                                control={form.control}
-                                name="uppEarningRate"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>UP Reward Rate</FormLabel>
-                                        <FormControl>
-                                            <div className="relative">
-                                                <div className="absolute left-3 top-3 h-4 w-4 flex items-center justify-center font-bold text-xs text-muted-foreground">UP</div>
-                                                <Input type="number" step="0.1" className="pl-9 h-11" {...field} />
-                                            </div>
-                                        </FormControl>
-                                        <FormDescription>
-                                            Amount/Percentage of UP earned per purchase.
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            {/* Read-only Commission Rate */}
+                            <div className="space-y-2">
+                                <FormLabel>Commission Rate</FormLabel>
+                                <div className="h-11 px-3 py-2 rounded-md border border-input bg-muted text-muted-foreground text-sm flex items-center">
+                                    {merchant.commissionRate || 0}%
+                                </div>
+                                <FormDescription>
+                                    The negotiated revenue share percentage for Paylinq.
+                                </FormDescription>
+                            </div>
 
-                            <FormField
-                                control={form.control}
-                                name="uppEarningType"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Reward Type</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                            <FormControl>
-                                                <SelectTrigger className="h-11">
-                                                    <SelectValue placeholder="Select type" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                <SelectItem value="percentage">Percentage (%)</SelectItem>
-                                                <SelectItem value="fixed">Fixed Amount (UP)</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            {/* Read-only Reward Rate */}
+                            <div className="space-y-2">
+                                <FormLabel>UPP Reward Rate</FormLabel>
+                                <div className="h-11 px-3 py-2 rounded-md border border-input bg-muted text-muted-foreground text-sm flex items-center">
+                                    {merchant.uppEarningRate || 0} {merchant.uppEarningType === 'percentage' ? '%' : 'UP'}
+                                </div>
+                                <FormDescription>
+                                    Amount/Percentage of UP earned per purchase.
+                                </FormDescription>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -427,15 +390,17 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
                 <div className="flex justify-center md:justify-end pt-4">
                     <motion.button
                         type="submit"
-                        disabled={isPending || isSuccess}
+                        disabled={isPending || isSuccess || !form.formState.isDirty}
                         className={cn(
                             "relative h-12 px-8 text-lg font-medium rounded-xl shadow-lg transition-all overflow-hidden flex items-center justify-center min-w-[180px]",
                             isSuccess
                                 ? "bg-green-500 text-white shadow-green-500/20"
-                                : "bg-gradient-to-r from-primary to-primary/90 text-primary-foreground shadow-primary/20 hover:shadow-primary/40"
+                                : !form.formState.isDirty
+                                    ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none"
+                                    : "bg-gradient-to-r from-primary to-primary/90 text-primary-foreground shadow-primary/20 hover:shadow-primary/40"
                         )}
-                        whileHover={!isPending && !isSuccess ? { scale: 1.02 } : {}}
-                        whileTap={!isPending && !isSuccess ? { scale: 0.98 } : {}}
+                        whileHover={!isPending && !isSuccess && form.formState.isDirty ? { scale: 1.02 } : {}}
+                        whileTap={!isPending && !isSuccess && form.formState.isDirty ? { scale: 0.98 } : {}}
                         layout
                     >
                         <AnimatePresence mode="wait">

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { TrendingUp, Gift, Award, CheckCircle } from "lucide-react";
 import React from "react";
 import userData from "./data";
+import Link from "next/link";
 import { useUserProfile } from "@/app/hooks/useProfile";
 
 // Define tier-specific information
@@ -37,26 +38,25 @@ export default function PointsSummaryCard(props: Props) {
 
   // Get user's membership tier
   const { data: profileData } = useUserProfile();
-  const currentTier = profileData?.membershipTier || "White";
+
+  // Get current tier without fallback to White for "No Tier" detection
+  const hasTier = !!profileData?.membershipTier;
+  const currentTier = profileData?.membershipTier || "White"; // Keep fallback for displaying limits/rates if needed, or handle separately
 
   // Get tier-specific limits
   const tierInfo =
     TIER_INFO[currentTier as keyof typeof TIER_INFO] || TIER_INFO["White"];
 
-
-  // Calculate value based on 1000-point blocks
+  // Helper consts for redemption display
+  // ... existing calculation logic ...
   const redeemableBlockCount = Math.floor(userData.totalPoints / 1000);
   const redeemablePoints = redeemableBlockCount * 1000;
   const redeemableValue = redeemablePoints * tierInfo.redemptionRate;
-
-  // Calculate distinct cash equivalent (raw value) vs redeemable value
-  // User requested to see $0 until 1000 points, so we apply the block logic to "Current Redemption Value"
-  // We will also apply it to "Cash equivalent" to avoid confusion, or keys off user request.
-  // "I should see $0" implies they want the displayed number to represent what they can get NOW.
   const displayValue = redeemableValue;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Total Points Card - Unchanged */}
       <motion.div
         whileHover={{ y: -5 }}
         className="bg-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl p-5"
@@ -90,6 +90,7 @@ export default function PointsSummaryCard(props: Props) {
         </div>
       </motion.div>
 
+      {/* Redemption Value Card - Unchanged */}
       <motion.div
         whileHover={{ y: -5 }}
         className="bg-gradient-to-br from-gray-800 to-[#C28F49]/10 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl p-5 border border-[#C28F49]/20"
@@ -119,34 +120,64 @@ export default function PointsSummaryCard(props: Props) {
       {/* Dynamic Tier Details Section */}
       <motion.div
         whileHover={{ y: -5 }}
-        className="bg-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl p-5"
+        className={`rounded-xl shadow-xl p-5 ${!hasTier
+          ? "bg-gradient-to-br from-gray-800 to-red-900/20 border border-red-500/20"
+          : "bg-gray-800 bg-opacity-70 backdrop-blur-md"
+          }`}
       >
-        <div className="flex justify-between">
-          <h3 className="text-gray-400 text-sm">{currentTier} Details</h3>
-          <div className="p-2 rounded-lg bg-gray-700">
-            <Award size={18} className="text-[#C28F49]" />
-          </div>
-        </div>
-        <div className="mt-4 space-y-2 text-sm">
-          <div className="flex items-center text-gray-300">
-            <CheckCircle
-              size={14}
-              className="text-[#2D9642] mr-2 flex-shrink-0"
-            />
-            <span>
-              Points never expire
-            </span>
-          </div>
-          <div className="flex items-center text-gray-300">
-            <CheckCircle
-              size={14}
-              className="text-[#2D9642] mr-2 flex-shrink-0"
-            />
-            <span>
-              No points limits
-            </span>
-          </div>
-        </div>
+        {!hasTier ? (
+          // NO TIER STATE
+          <>
+            <div className="flex justify-between">
+              <h3 className="text-gray-200 text-sm font-semibold">Unlock Rewards</h3>
+              <div className="p-2 rounded-lg bg-red-500/20">
+                <Award size={18} className="text-red-400" />
+              </div>
+            </div>
+            <div className="mt-4 space-y-3">
+              <p className="text-sm text-gray-400">
+                You are currently on the <span className="text-white font-medium">Free Tier</span>. You are likely missing out on points.
+              </p>
+              <Link href="/pricing">
+                <button
+                  className="w-full py-2 bg-[#2D9642] hover:bg-[#258036] text-white text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-2"
+                >
+                  Choose a Plan <TrendingUp size={14} />
+                </button>
+              </Link>
+            </div>
+          </>
+        ) : (
+          // ACTIVE TIER STATE
+          <>
+            <div className="flex justify-between">
+              <h3 className="text-gray-400 text-sm">{currentTier} Details</h3>
+              <div className="p-2 rounded-lg bg-gray-700">
+                <Award size={18} className="text-[#C28F49]" />
+              </div>
+            </div>
+            <div className="mt-4 space-y-2 text-sm">
+              <div className="flex items-center text-gray-300">
+                <CheckCircle
+                  size={14}
+                  className="text-[#2D9642] mr-2 flex-shrink-0"
+                />
+                <span>
+                  <Link href="/pricing">Points never expire</Link>
+                </span>
+              </div>
+              <div className="flex items-center text-gray-300">
+                <CheckCircle
+                  size={14}
+                  className="text-[#2D9642] mr-2 flex-shrink-0"
+                />
+                <span>
+                  No points limits
+                </span>
+              </div>
+            </div>
+          </>
+        )}
       </motion.div>
     </div>
   );

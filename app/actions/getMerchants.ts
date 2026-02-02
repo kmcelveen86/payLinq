@@ -17,6 +17,9 @@ export async function getMerchants() {
         }
 
         const merchants = await prisma.merchant.findMany({
+            where: {
+                status: 'active'
+            },
             orderBy: {
                 createdAt: "desc",
             },

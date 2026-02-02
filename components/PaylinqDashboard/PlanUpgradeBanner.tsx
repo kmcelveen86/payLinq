@@ -56,11 +56,11 @@ export default function PlanUpgradeBanner({
     currentTier in TIER_INFO
       ? TIER_INFO[currentTier as keyof typeof TIER_INFO]
       : {
-          tagline:
-            "You're not earning any points yet. Upgrade to start earning rewards!",
-          nextTier: "White",
-          pointsMultiplier: { everyday: 0, dining: 0, travel: 0 },
-        };
+        tagline:
+          "You're not earning any points yet. Upgrade to start earning rewards!",
+        nextTier: "White",
+        pointsMultiplier: { everyday: 0, dining: 0, travel: 0 },
+      };
 
   return (
     <motion.div
@@ -91,7 +91,7 @@ export default function PlanUpgradeBanner({
           <p className="text-gray-300 mb-4 md:mb-0">{tierInfo.tagline}</p>
         </div>
 
-        <Link href="/membership-tiers">
+        <Link href="/pricing">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -100,8 +100,8 @@ export default function PlanUpgradeBanner({
             {currentTier === "No Plan"
               ? "Choose a Plan"
               : currentTier === "Black"
-              ? "Downgrade Plan"
-              : "Upgrade Plan"}
+                ? "Downgrade Plan"
+                : "Upgrade Plan"}
             <ArrowUpRight size={16} className="ml-2" />
           </motion.button>
         </Link>
