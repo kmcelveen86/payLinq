@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/admin-auth";
+import { getAdminMerchants } from "@/lib/admin-cache";
 import { z } from "zod";
 
 const querySchema = z.object({
@@ -22,39 +23,15 @@ export async function GET(req: NextRequest) {
         const params = Object.fromEntries(url.searchParams);
         const { page, limit, search, status, sort, order } = querySchema.parse(params);
 
-        const skip = (page - 1) * limit;
-
-        // 3. Build Where Clause
-        const where: any = {};
-        if (search) {
-            where.OR = [
-                { name: { contains: search, mode: "insensitive" } },
-                { contactEmail: { contains: search, mode: "insensitive" } },
-            ];
-        }
-        if (status) { // Assuming 'status' field exists or mapping it
-            // Merchant schema doesn't have 'status' field yet? 
-            // We marked it as TODO in Plan?
-            // Existing schema has 'presence'. 
-            // Let's check schema again. Merchant has `apiKey`, `commissionRate`.
-            // It does NOT have `status`.
-        }
-
-        // 4. Query DB
-        const [total, data] = await Promise.all([
-            prisma.merchant.count({ where }),
-            prisma.merchant.findMany({
-                where,
-                take: limit,
-                skip,
-                orderBy: { [sort]: order },
-                include: {
-                    _count: {
-                        select: { paylinqTransactions: true }
-                    }
-                }
-            }),
-        ]);
+        // 4. Query DB (Cached)
+        const { total, data } = await getAdminMerchants({
+            page,
+            limit,
+            search,
+            status,
+            sort,
+            order: order as "asc" | "desc"
+        });
 
         return NextResponse.json({
             data,

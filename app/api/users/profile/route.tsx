@@ -4,6 +4,7 @@ import { formatDistance, format, add } from "date-fns";
 import { profileSchema, profileUpdateSchema } from "@/app/schemas/profile";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { getUserProfileByEmailCached } from "@/lib/user-cache";
 import { stripe, STRIPE_PRICES } from "@/lib/stripe";
 import { cookies } from "next/headers";
 
@@ -25,12 +26,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch the user from the database, including notification preferences
-    const user = await prisma.user.findUnique({
-      where: { email },
-      include: {
-        notificationPreferences: true,
-      },
-    });
+    const user = email ? await getUserProfileByEmailCached(email) : null;
 
     if (!user) {
       // JIT Provisioning: If user exists in Clerk but not in DB (e.g., after DB reset)

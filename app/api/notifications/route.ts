@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { getUserNotificationsCached } from "@/lib/user-cache";
 import { stripe } from "@/lib/stripe";
 import Stripe from "stripe";
 
@@ -66,14 +67,7 @@ export async function GET(req: NextRequest) {
         }
 
         // Fetch notifications
-        const notifications = await prisma.notification.findMany({
-            where: {
-                userId: user.id,
-            },
-            orderBy: {
-                createdAt: "desc",
-            },
-        });
+        const notifications = await getUserNotificationsCached(user.id);
 
         return NextResponse.json(notifications);
     } catch (error) {
