@@ -91,7 +91,7 @@ export default function AuditLogsTable() {
                 <input
                     type="text"
                     placeholder="Search email, action, ID..."
-                    className="border border-gray-300 rounded px-3 py-2 w-72 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="border border-gray-300 rounded px-3 py-2 w-full md:w-72 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     defaultValue={search}
                     onKeyDown={(e) => {
                         if (e.key === "Enter") setSearch(e.currentTarget.value)
@@ -100,7 +100,47 @@ export default function AuditLogsTable() {
                 />
             </div>
 
-            <div className="bg-white rounded-lg shadow overflow-hidden border">
+            {/* Mobile Card View */}
+            <div className="block md:hidden space-y-4">
+                {isLoading ? (
+                    <div className="text-center py-12 text-gray-500">Loading...</div>
+                ) : data.length === 0 ? (
+                    <div className="text-center py-12 text-gray-500">No logs found.</div>
+                ) : (
+                    data.map((log) => (
+                        <div key={log.id} className="bg-white p-4 rounded-lg shadow border border-gray-200 space-y-3">
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <div className="font-semibold text-gray-900 font-mono text-sm">{log.action}</div>
+                                    <div className="text-xs text-gray-500">{log.adminEmail}</div>
+                                </div>
+                                <span className="text-xs text-gray-400">
+                                    {format(new Date(log.createdAt), "MMM d, HH:mm:ss")}
+                                </span>
+                            </div>
+
+                            <div className="text-sm border-t pt-2 gap-2 flex flex-col">
+                                <div className="flex gap-2 text-xs">
+                                    <span className="text-gray-500 font-medium w-12 shrink-0">TARGET:</span>
+                                    <div>
+                                        <span className="font-medium capitalize">{log.targetType}</span>
+                                        <span className="font-mono text-gray-400 ml-1">#{log.targetId.slice(-6)}</span>
+                                    </div>
+                                </div>
+                                <div className="flex gap-2 text-xs">
+                                    <span className="text-gray-500 font-medium w-12 shrink-0">DETAILS:</span>
+                                    <pre className="text-[10px] bg-gray-50 p-1 rounded overflow-x-auto text-gray-600 flex-1">
+                                        {JSON.stringify(log.details, null, 2).slice(0, 100)}
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-white rounded-lg shadow overflow-hidden border">
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">

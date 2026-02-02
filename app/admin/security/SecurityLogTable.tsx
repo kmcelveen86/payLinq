@@ -113,7 +113,73 @@ export default function SecurityLogTable({ initialLogs }: { initialLogs: Log[] }
                 </div>
             )}
 
-            <div className="bg-white rounded-lg shadow overflow-hidden border border-red-100">
+            <div className="block md:hidden space-y-4">
+                {logs.length === 0 ? (
+                    <div className="text-center py-12 text-gray-500">No security incidents logged.</div>
+                ) : (
+                    logs.map((log) => (
+                        <div key={log.id} className={`p-4 rounded-lg shadow border space-y-3 overflow-hidden ${selectedLogs.has(log.id) ? "bg-red-50 border-red-200" : "bg-white border-gray-200"}`}>
+                            <div className="bg-red-100/50 border-b border-red-100 px-4 py-2 -mx-4 -mt-4 mb-3">
+                                <span className="text-[10px] font-bold text-red-800 uppercase tracking-wide break-words">
+                                    {log.action.replace(/_/g, " ")}
+                                </span>
+                            </div>
+
+                            <div className="flex justify-between items-start">
+                                <div className="flex items-start gap-3">
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedLogs.has(log.id)}
+                                        onChange={() => toggleSelect(log.id)}
+                                        className="mt-1 h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+                                    />
+                                    <div>
+                                        <div className="font-semibold text-gray-900">{log.user.name || "Unknown"}</div>
+                                        <div className="text-xs text-gray-500">{log.userEmail}</div>
+                                        {log.user.banned && <div className="text-xs text-red-600 font-bold mt-0.5">BANNED</div>}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-2 text-sm border-t pt-3 mt-1">
+                                <div className="col-span-2">
+                                    <span className="block text-xs text-gray-500 font-medium uppercase">Path</span>
+                                    <span className="font-mono text-xs text-gray-900 block mt-0.5 break-all">{log.path}</span>
+                                </div>
+                                <div>
+                                    <span className="block text-xs text-gray-500 font-medium uppercase">IP Address</span>
+                                    <span className="font-mono text-xs text-gray-900 block mt-0.5">{log.ipAddress || "N/A"}</span>
+                                </div>
+                                <div>
+                                    <span className="block text-xs text-gray-500 font-medium uppercase">Time</span>
+                                    <span className="text-gray-900 block mt-0.5">{format(new Date(log.createdAt), "MMM d, HH:mm")}</span>
+                                </div>
+                            </div>
+
+                            <div className="pt-2 border-t flex justify-end gap-3">
+                                <button
+                                    onClick={() => handleRevoke(log.user.id)}
+                                    disabled={loadingAction === log.user.id}
+                                    className="text-xs font-medium text-orange-600 hover:text-orange-900 disabled:opacity-50"
+                                >
+                                    Revoke Session
+                                </button>
+                                {!log.user.banned && (
+                                    <button
+                                        onClick={() => handleBan(log.user.id)}
+                                        disabled={loadingAction === log.user.id}
+                                        className="text-xs font-bold text-red-600 hover:text-red-900 disabled:opacity-50"
+                                    >
+                                        BAN USER
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+
+            <div className="hidden md:block bg-white rounded-lg shadow overflow-hidden border border-red-100">
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">

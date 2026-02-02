@@ -25,20 +25,20 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
-                    <Link href="/customers" className="text-gray-500 hover:text-gray-900 border rounded px-2 py-1 text-sm">
+                    <Link href="/customers" className="text-gray-500 hover:text-gray-900 border rounded px-2 py-1 text-sm bg-white shrink-0">
                         ← Back
                     </Link>
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-900">{user.name || "Unnamed User"}</h1>
-                        <p className="text-sm text-gray-500">{user.email}</p>
+                    <div className="min-w-0">
+                        <h1 className="text-2xl font-bold text-gray-900 truncate">{user.name || "Unnamed User"}</h1>
+                        <p className="text-sm text-gray-500 truncate">{user.email}</p>
                     </div>
                     {user.banned && (
-                        <span className="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold uppercase">Banned</span>
+                        <span className="bg-red-100 text-red-800 px-2 py-0.5 rounded text-xs font-bold uppercase shrink-0">Banned</span>
                     )}
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
                     <ClientCustomerActions user={user} />
                 </div>
             </div>

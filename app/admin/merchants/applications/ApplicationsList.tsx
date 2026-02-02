@@ -33,12 +33,12 @@ export default function ApplicationsList() {
 
     return (
         <div className="space-y-4">
-            <div className="flex gap-4 border-b">
+            <div className="flex gap-4 border-b overflow-x-auto pb-1">
                 {["pending", "approved", "rejected"].map(s => (
                     <Link
                         key={s}
                         href={`?status=${s}`}
-                        className={`py-2 px-4 border-b-2 capitalize text-sm font-medium ${(typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get("status") || "pending" : "pending") === s
+                        className={`py-2 px-4 border-b-2 capitalize text-sm font-medium whitespace-nowrap ${(typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get("status") || "pending" : "pending") === s
                             ? "border-blue-500 text-blue-600"
                             : "border-transparent text-gray-500 hover:text-gray-700"
                             }`}
@@ -49,7 +49,46 @@ export default function ApplicationsList() {
                 ))}
             </div>
 
-            <div className="bg-white rounded-lg shadow overflow-hidden border">
+            {/* Mobile Card View */}
+            <div className="block md:hidden space-y-4">
+                {isLoading ? (
+                    <div className="p-8 text-center text-gray-500">Loading...</div>
+                ) : data.length === 0 ? (
+                    <div className="p-8 text-center text-gray-500">No applications found with this status.</div>
+                ) : (
+                    data.map((app) => (
+                        <div key={app.id} className="bg-white p-4 rounded-lg shadow border border-gray-200 space-y-3">
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <h3 className="font-semibold text-gray-900">{app.businessName}</h3>
+                                    <p className="text-sm text-gray-500">{app.contactName}</p>
+                                    <p className="text-xs text-gray-400">{app.contactEmail}</p>
+                                </div>
+                                <span className={`px-2 py-0.5 rounded-full text-xs font-medium capitalize 
+                                    ${app.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                        app.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                    {app.status}
+                                </span>
+                            </div>
+
+                            <div className="flex justify-between items-center border-t pt-2 mt-2">
+                                <span className="text-xs text-gray-500">
+                                    Submitted: {format(new Date(app.submittedAt), "MMM d, yyyy")}
+                                </span>
+                                <Link
+                                    href={`/merchants/applications/${app.id}`}
+                                    className="text-blue-600 hover:text-blue-900 font-medium text-sm"
+                                >
+                                    Review &rarr;
+                                </Link>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-white rounded-lg shadow overflow-hidden border">
                 {isLoading ? (
                     <div className="p-8 text-center text-gray-500">Loading...</div>
                 ) : data.length === 0 ? (

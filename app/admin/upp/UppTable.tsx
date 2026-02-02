@@ -109,7 +109,7 @@ export default function UppTable() {
                 <input
                     type="text"
                     placeholder="Search transaction ID or User ID..."
-                    className="border rounded px-3 py-2 w-72 text-sm"
+                    className="border border-gray-300 rounded px-3 py-2 w-full md:w-72 text-sm bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     defaultValue={search}
                     onKeyDown={(e) => {
                         if (e.key === "Enter") setSearch(e.currentTarget.value)
@@ -118,7 +118,52 @@ export default function UppTable() {
                 />
             </div>
 
-            <div className="bg-white rounded-lg shadow overflow-hidden border">
+            {/* Mobile Card View */}
+            <div className="block md:hidden space-y-4">
+                {isLoading ? (
+                    <div className="text-center py-12 text-gray-500">Loading transactions...</div>
+                ) : data.length === 0 ? (
+                    <div className="text-center py-12 text-gray-500">No transactions found.</div>
+                ) : (
+                    data.map((trx) => (
+                        <div key={trx.id} className="bg-white p-4 rounded-lg shadow border border-gray-200 space-y-3">
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <div className="font-semibold text-gray-900">{trx.wallet.user.name || "Unnamed"}</div>
+                                    <div className="text-xs text-gray-500">{trx.wallet.user.email}</div>
+                                </div>
+                                <span className={`font-mono font-medium ${trx.amount > 0 ? "text-green-600" : "text-gray-900"}`}>
+                                    {trx.amount > 0 ? "+" : ""}{trx.amount}
+                                </span>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-2 text-sm border-t pt-3 mt-1">
+                                <div>
+                                    <span className="block text-xs text-gray-500 uppercase font-medium">Type</span>
+                                    <span className="capitalize bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs font-medium inline-block mt-0.5">
+                                        {trx.type.replace("_", " ").toLowerCase()}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="block text-xs text-gray-500 uppercase font-medium">Source</span>
+                                    <span className="text-gray-900 block mt-0.5">{trx.paylinqTransaction?.merchant?.name || "System"}</span>
+                                </div>
+                                <div>
+                                    <span className="block text-xs text-gray-500 uppercase font-medium">Date</span>
+                                    <span className="text-gray-700 block mt-0.5">{format(new Date(trx.createdAt), "MMM d, HH:mm")}</span>
+                                </div>
+                                <div>
+                                    <span className="block text-xs text-gray-500 uppercase font-medium">ID</span>
+                                    <span className="font-mono text-xs text-gray-500 block mt-0.5">{trx.id.slice(-8)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-white rounded-lg shadow overflow-hidden border">
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">

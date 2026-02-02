@@ -102,19 +102,21 @@ export default function MerchantsTable() {
     return (
         <div className="space-y-4">
             {/* Filters */}
-            <div className="flex justify-between">
-                <input
-                    type="text"
-                    placeholder="Search merchants..."
-                    className="border border-gray-300 rounded px-3 py-2 w-64 text-sm bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    defaultValue={search}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") setSearch(e.currentTarget.value)
-                    }}
-                    onBlur={(e) => setSearch(e.target.value)}
-                />
+            <div className="flex flex-col md:flex-row justify-between gap-4">
+                <div className="flex gap-2 w-full md:w-auto">
+                    <input
+                        type="text"
+                        placeholder="Search merchants..."
+                        className="border border-gray-300 rounded px-3 py-2 w-full md:w-64 text-sm bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        defaultValue={search}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") setSearch(e.currentTarget.value)
+                        }}
+                        onBlur={(e) => setSearch(e.target.value)}
+                    />
+                </div>
                 <select
-                    className="border border-gray-300 rounded px-3 py-2 text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="border border-gray-300 rounded px-3 py-2 text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-auto"
                     value={limit}
                     onChange={(e) => setLimit(Number(e.target.value))}
                 >
@@ -124,8 +126,51 @@ export default function MerchantsTable() {
                 </select>
             </div>
 
-            {/* Table */}
-            <div className="bg-white rounded-lg shadow overflow-hidden border">
+            {/* Mobile Card View */}
+            <div className="block md:hidden space-y-4">
+                {isLoading ? (
+                    <div className="text-center py-12 text-gray-500">Loading...</div>
+                ) : data.length === 0 ? (
+                    <div className="text-center py-12 text-gray-500">No merchants found.</div>
+                ) : (
+                    data.map((merchant) => (
+                        <div key={merchant.id} className="bg-white p-4 rounded-lg shadow border border-gray-200 space-y-3">
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <h3 className="font-semibold text-gray-900">{merchant.name}</h3>
+                                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 mt-1">
+                                        {merchant.category || "Uncategorized"}
+                                    </span>
+                                </div>
+                                <Link
+                                    href={`/merchants/${merchant.id}`}
+                                    className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+                                >
+                                    View
+                                </Link>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-2 text-sm text-gray-600 border-t pt-3 mt-1">
+                                <div>
+                                    <span className="block text-xs text-gray-400 uppercase">Rate</span>
+                                    {((merchant.commissionRate || 0) * 100).toFixed(0)}%
+                                </div>
+                                <div>
+                                    <span className="block text-xs text-gray-400 uppercase">Transactions</span>
+                                    {merchant._count?.paylinqTransactions || 0}
+                                </div>
+                                <div className="col-span-2">
+                                    <span className="block text-xs text-gray-400 uppercase">Joined</span>
+                                    {format(new Date(merchant.createdAt), "MMM d, yyyy")}
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+
+            {/* Desktop Table */}
+            <div className="hidden md:block bg-white rounded-lg shadow overflow-hidden border">
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
@@ -136,7 +181,6 @@ export default function MerchantsTable() {
                                             key={header.id}
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                                             onClick={() => {
-                                                // TODO: Implement toggle sort logic in hook/component
                                                 setSort(header.id)
                                             }}
                                         >

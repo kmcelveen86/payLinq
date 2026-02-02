@@ -33,7 +33,7 @@ export default async function ConversionDetailPage({ params }: { params: Promise
                     <Link href="/conversions" className="text-sm text-blue-600 hover:underline mb-2 block">
                         &larr; Back to Conversions
                     </Link>
-                    <h1 className="text-3xl font-bold text-gray-900">Conversion Details</h1>
+                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Conversion Details</h1>
                     <p className="text-gray-500">ID: {conversion.id}</p>
                 </div>
             </div>
