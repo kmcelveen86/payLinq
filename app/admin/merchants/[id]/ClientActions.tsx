@@ -11,7 +11,7 @@ export default function ClientActions({ merchant }: { merchant: any }) {
         <>
             <button
                 onClick={() => setShowRate(true)}
-                className="px-3 py-1.5 border border-gray-300 bg-white text-gray-700 rounded hover:bg-gray-50 text-sm font-medium"
+                className="flex-1 md:flex-none px-3 py-1.5 border border-gray-300 bg-white text-gray-700 rounded hover:bg-gray-50 text-sm font-medium whitespace-nowrap"
             >
                 Edit Rate
             </button>
@@ -19,14 +19,14 @@ export default function ClientActions({ merchant }: { merchant: any }) {
             {merchant.status === "suspended" ? (
                 <button
                     onClick={() => setShowSuspend(true)}
-                    className="px-3 py-1.5 bg-green-600 text-white rounded hover:bg-green-700 text-sm font-medium"
+                    className="flex-1 md:flex-none px-3 py-1.5 bg-green-600 text-white rounded hover:bg-green-700 text-sm font-medium whitespace-nowrap"
                 >
                     Unsuspend
                 </button>
             ) : (
                 <button
                     onClick={() => setShowSuspend(true)}
-                    className="px-3 py-1.5 border border-red-200 text-red-600 hover:bg-red-50 rounded text-sm font-medium"
+                    className="flex-1 md:flex-none px-3 py-1.5 border border-red-200 text-red-600 hover:bg-red-50 rounded text-sm font-medium whitespace-nowrap"
                 >
                     Suspend
                 </button>

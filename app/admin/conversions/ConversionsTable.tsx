@@ -107,7 +107,7 @@ export default function ConversionsTable() {
                 <input
                     type="text"
                     placeholder="Search User, Merchant, or ID..."
-                    className="border rounded px-3 py-2 w-full max-w-sm text-sm"
+                    className="border border-gray-300 rounded px-3 py-2 w-full max-w-sm text-sm bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     defaultValue={search}
                     onKeyDown={(e) => {
                         if (e.key === "Enter") setSearch(e.currentTarget.value)
@@ -117,7 +117,57 @@ export default function ConversionsTable() {
                 {/* Potentially add amount filter here */}
             </div>
 
-            <div className="bg-white rounded-lg shadow overflow-hidden border">
+            {/* Mobile Card View */}
+            <div className="block md:hidden space-y-4">
+                {isLoading ? (
+                    <div className="text-center py-12 text-gray-500">Loading conversions...</div>
+                ) : data.length === 0 ? (
+                    <div className="text-center py-12 text-gray-500">No conversions found.</div>
+                ) : (
+                    data.map((conversion) => (
+                        <div key={conversion.id} className="bg-white p-4 rounded-lg shadow border border-gray-200 space-y-3">
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <h3 className="font-semibold text-gray-900">{conversion.merchant.name}</h3>
+                                    <div className="text-sm text-gray-500">{conversion.user.email}</div>
+                                </div>
+                                <span className={`px-2 py-0.5 rounded text-xs font-semibold ${conversion.status === "COMPLETED" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
+                                    {conversion.status}
+                                </span>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-2 text-sm border-t pt-3 mt-1">
+                                <div>
+                                    <span className="block text-xs text-gray-500 uppercase font-medium">Amount</span>
+                                    <span className="font-mono font-medium text-gray-900 block mt-0.5">
+                                        {(conversion.amount / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="block text-xs text-gray-500 uppercase font-medium">UPP Earned</span>
+                                    <span className="text-blue-600 font-bold block mt-0.5">{conversion.uppEarned.toFixed(2)}</span>
+                                </div>
+                                <div className="col-span-2">
+                                    <span className="block text-xs text-gray-500 uppercase font-medium">Date</span>
+                                    <span className="text-gray-700 block mt-0.5">{format(new Date(conversion.createdAt), "MMM d, HH:mm")}</span>
+                                </div>
+                            </div>
+
+                            <div className="pt-2 border-t flex justify-end">
+                                <Link
+                                    href={`/conversions/${conversion.id}`}
+                                    className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+                                >
+                                    View Details &rarr;
+                                </Link>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-white rounded-lg shadow overflow-hidden border">
                 {isLoading ? (
                     <div className="p-12 text-center text-gray-500">Loading conversions...</div>
                 ) : (

@@ -120,7 +120,57 @@ export default function MerchantConversionsTable({ merchantId }: { merchantId: s
                 />
             </div>
 
-            <div className="bg-white rounded-lg shadow overflow-hidden border border-gray-200">
+            {/* Mobile Card View */}
+            <div className="block md:hidden space-y-4">
+                {tableLoading ? (
+                    <div className="text-center py-12 text-gray-500">Loading conversions...</div>
+                ) : tableData.length === 0 ? (
+                    <div className="text-center py-12 text-gray-500">No conversions found for this merchant.</div>
+                ) : (
+                    tableData.map((conversion) => (
+                        <div key={conversion.id} className="bg-white p-4 rounded-lg shadow border border-gray-200 space-y-3">
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <div className="font-semibold text-gray-900">{conversion.user.firstName} {conversion.user.lastName}</div>
+                                    <div className="text-xs text-gray-500">{conversion.user.email}</div>
+                                </div>
+                                <span className={`px-2 py-0.5 rounded text-xs font-semibold ${conversion.status === "COMPLETED" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
+                                    {conversion.status}
+                                </span>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-2 text-sm border-t pt-3 mt-1">
+                                <div>
+                                    <span className="block text-xs text-gray-400 uppercase">Amount</span>
+                                    <span className="font-mono font-medium">
+                                        {(conversion.amount / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="block text-xs text-gray-400 uppercase">UPP Earned</span>
+                                    <span className="text-blue-600 font-bold">{conversion.uppEarned.toFixed(2)}</span>
+                                </div>
+                                <div className="col-span-2">
+                                    <span className="block text-xs text-gray-400 uppercase">Date</span>
+                                    {format(new Date(conversion.createdAt), "MMM d, HH:mm")}
+                                </div>
+                            </div>
+
+                            <div className="pt-2 border-t flex justify-end">
+                                <Link
+                                    href={`/conversions/${conversion.id}`}
+                                    className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+                                >
+                                    View Details &rarr;
+                                </Link>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-white rounded-lg shadow overflow-hidden border border-gray-200">
                 {tableLoading ? (
                     <div className="p-12 text-center text-gray-500">Loading conversions...</div>
                 ) : (

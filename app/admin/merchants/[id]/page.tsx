@@ -1,3 +1,4 @@
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StatusBadge } from "../../components/StatusBadge";
@@ -31,15 +32,17 @@ export default async function MerchantDetailPage({ params }: { params: Promise<{
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                    <Link href="/merchants" className="text-gray-500 hover:text-gray-900 border rounded px-2 py-1 text-sm">
-                        ← Back
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex flex-col md:flex-row md:items-center gap-4">
+                    <Link href="/merchants" className="text-gray-500 hover:text-gray-900 border rounded px-3 py-1.5 text-sm w-fit self-start bg-white whitespace-nowrap inline-flex items-center gap-2 hover:bg-gray-50">
+                        <ArrowLeft size={16} /> Back
                     </Link>
-                    <h1 className="text-2xl font-bold text-gray-900">{merchant.name}</h1>
-                    <StatusBadge status={merchant.status} />
+                    <div className="flex flex-wrap items-center gap-2">
+                        <h1 className="text-xl md:text-2xl font-bold text-gray-900 break-words">{merchant.name}</h1>
+                        <StatusBadge status={merchant.status} />
+                    </div>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-full md:w-auto">
                     <ClientActions merchant={merchant} />
                 </div>
             </div>
