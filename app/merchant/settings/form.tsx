@@ -75,7 +75,7 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
             tagline: merchant.tagline || "",
             category: merchant.category || "",
             tagsRaw: merchant.tags ? merchant.tags.join(", ") : "",
-            presence: merchant.presence || "online",
+            presence: merchant.presence || undefined,
             uppEarningRate: merchant.uppEarningRate || 0,
             uppEarningType: merchant.uppEarningType || "percentage",
         },
@@ -109,6 +109,7 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
             const result = await updateMerchantProfile(formData);
 
             if (result.success) {
+                form.reset(data); // Reset form state to current values so isDirty becomes false
                 setIsSuccess(true);
                 toast.success("Settings saved successfully");
             } else {
@@ -389,15 +390,17 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
                 <div className="flex justify-center md:justify-end pt-4">
                     <motion.button
                         type="submit"
-                        disabled={isPending || isSuccess}
+                        disabled={isPending || isSuccess || !form.formState.isDirty}
                         className={cn(
                             "relative h-12 px-8 text-lg font-medium rounded-xl shadow-lg transition-all overflow-hidden flex items-center justify-center min-w-[180px]",
                             isSuccess
                                 ? "bg-green-500 text-white shadow-green-500/20"
-                                : "bg-gradient-to-r from-primary to-primary/90 text-primary-foreground shadow-primary/20 hover:shadow-primary/40"
+                                : !form.formState.isDirty
+                                    ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none"
+                                    : "bg-gradient-to-r from-primary to-primary/90 text-primary-foreground shadow-primary/20 hover:shadow-primary/40"
                         )}
-                        whileHover={!isPending && !isSuccess ? { scale: 1.02 } : {}}
-                        whileTap={!isPending && !isSuccess ? { scale: 0.98 } : {}}
+                        whileHover={!isPending && !isSuccess && form.formState.isDirty ? { scale: 1.02 } : {}}
+                        whileTap={!isPending && !isSuccess && form.formState.isDirty ? { scale: 0.98 } : {}}
                         layout
                     >
                         <AnimatePresence mode="wait">

@@ -39,28 +39,30 @@ export async function POST(
         });
 
         // Sync with Clerk Metadata for Middleware Blocking
-        try {
-            const client = await clerkClient();
-            await client.users.updateUserMetadata(user.clerkId, {
-                publicMetadata: {
-                    banned: shouldBan,
-                },
-            });
+        if (user.clerkId) {
+            try {
+                const client = await clerkClient();
+                await client.users.updateUserMetadata(user.clerkId, {
+                    publicMetadata: {
+                        banned: shouldBan,
+                    },
+                });
 
-            if (shouldBan) {
-                // Force session revocation to ensure the ban takes effect immediately.
-                // This forces the user to re-authenticate, at which point the new token will have 'banned: true'
-                // and middleware will catch them, redirecting to /banned.
-                // Without this, their existing JWT remains valid (banned=false) until it expires.
-                const sessions = await client.sessions.getSessionList({ userId: user.clerkId });
-                for (const session of sessions.data) {
-                    await client.sessions.revokeSession(session.id);
+                if (shouldBan) {
+                    // Force session revocation to ensure the ban takes effect immediately.
+                    // This forces the user to re-authenticate, at which point the new token will have 'banned: true'
+                    // and middleware will catch them, redirecting to /banned.
+                    // Without this, their existing JWT remains valid (banned=false) until it expires.
+                    const sessions = await client.sessions.getSessionList({ userId: user.clerkId });
+                    for (const session of sessions.data) {
+                        await client.sessions.revokeSession(session.id);
+                    }
                 }
-            }
 
-        } catch (clerkError) {
-            console.error("Failed to sync ban status to Clerk:", clerkError);
-            // We don't fail the request, but we log it.
+            } catch (clerkError) {
+                console.error("Failed to sync ban status to Clerk:", clerkError);
+                // We don't fail the request, but we log it.
+            }
         }
 
         // Audit Log

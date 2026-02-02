@@ -63,7 +63,7 @@ export default async function ConversionDetailPage({ params }: { params: Promise
                         </div>
                         <div>
                             <dt className="text-sm font-medium text-gray-500">Type</dt>
-                            <dd className="text-sm text-gray-900 capitalize">{conversion.type || "Purchase"}</dd>
+                            <dd className="text-sm text-gray-900 capitalize">{conversion.walletTransaction?.type || "Purchase"}</dd>
                         </div>
                     </dl>
                 </div>

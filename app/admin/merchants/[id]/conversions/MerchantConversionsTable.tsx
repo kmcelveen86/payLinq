@@ -25,19 +25,7 @@ interface Conversion {
 const columnHelper = createColumnHelper<Conversion>();
 
 export default function MerchantConversionsTable({ merchantId }: { merchantId: string }) {
-    const {
-        data,
-        meta,
-        isLoading,
-        page,
-        setPage,
-        setSearch,
-        search,
-    } = usePaginatedQuery<Conversion>({
-        url: "/api/admin/conversions",
-        queryKey: ["conversions", merchantId],
-        queryParams: { merchantId } // Ensure this is passed if hook supports it, otherwise append manually
-    });
+
 
     // Fallback if hook doesn't support queryParams merging (it likely relies on queryKey or URL construction)
     // Looking at common patterns, if the hook constructs URL from params, we might need a custom fetcher or 
