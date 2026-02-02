@@ -7,11 +7,11 @@ export default function ClientAppActions({ applicationId, status }: { applicatio
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
-    // If already processed, show status only (or disabled buttons)
-    if (status !== 'pending') {
+    // If approved, show status only
+    if (status === 'approved') {
         return (
             <div className="bg-gray-50 p-4 rounded text-center text-sm text-gray-500">
-                This application has been {status}.
+                This application has been approved.
             </div>
         );
     }
@@ -20,7 +20,7 @@ export default function ClientAppActions({ applicationId, status }: { applicatio
         if (!confirm("Approve this application and create a live Merchant?")) return;
         setLoading(true);
         try {
-            const res = await fetch(`/api/merchants/applications/${applicationId}/approve`, { method: "POST" });
+            const res = await fetch(`/admin/api/merchants/applications/${applicationId}/approve`, { method: "POST" });
             if (!res.ok) throw new Error("Failed");
             router.refresh();
             router.push("/merchants"); // Redirect to merchant list
@@ -37,7 +37,7 @@ export default function ClientAppActions({ applicationId, status }: { applicatio
 
         setLoading(true);
         try {
-            const res = await fetch(`/api/merchants/applications/${applicationId}/reject`, {
+            const res = await fetch(`/admin/api/merchants/applications/${applicationId}/reject`, {
                 method: "POST",
                 body: JSON.stringify({ confirm: true, notes })
             });
@@ -59,13 +59,15 @@ export default function ClientAppActions({ applicationId, status }: { applicatio
             >
                 {loading ? "Processing..." : "Approve & Create Merchant"}
             </button>
-            <button
-                onClick={handleReject}
-                disabled={loading}
-                className="px-4 py-2 border border-red-200 text-red-600 hover:bg-red-50 rounded w-full disabled:opacity-50"
-            >
-                Reject
-            </button>
+            {status === 'pending' && (
+                <button
+                    onClick={handleReject}
+                    disabled={loading}
+                    className="px-4 py-2 border border-red-200 text-red-600 hover:bg-red-50 rounded w-full disabled:opacity-50"
+                >
+                    Reject
+                </button>
+            )}
         </div>
     );
 }

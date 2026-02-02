@@ -114,7 +114,7 @@ export default function MerchantsTable() {
                     onBlur={(e) => setSearch(e.target.value)}
                 />
                 <select
-                    className="border rounded px-3 py-2 text-sm"
+                    className="border border-gray-300 rounded px-3 py-2 text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={limit}
                     onChange={(e) => setLimit(Number(e.target.value))}
                 >
@@ -191,14 +191,14 @@ export default function MerchantsTable() {
                     <button
                         onClick={() => setPage(page - 1)}
                         disabled={page <= 1}
-                        className="px-3 py-1 border rounded disabled:opacity-50 hover:bg-gray-50"
+                        className="px-3 py-1 border border-gray-300 bg-white text-gray-900 rounded disabled:opacity-50 hover:bg-gray-50"
                     >
                         Previous
                     </button>
                     <button
                         onClick={() => setPage(page + 1)}
                         disabled={page >= meta.totalPages}
-                        className="px-3 py-1 border rounded disabled:opacity-50 hover:bg-gray-50"
+                        className="px-3 py-1 border border-gray-300 bg-white text-gray-900 rounded disabled:opacity-50 hover:bg-gray-50"
                     >
                         Next
                     </button>

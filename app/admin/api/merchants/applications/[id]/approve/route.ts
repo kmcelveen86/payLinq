@@ -19,8 +19,8 @@ export async function POST(
             return NextResponse.json({ error: "Application not found" }, { status: 404 });
         }
 
-        if (application.status !== "pending") {
-            return NextResponse.json({ error: "Application is not pending" }, { status: 400 });
+        if (application.status !== "pending" && application.status !== "rejected") {
+            return NextResponse.json({ error: "Application is not in a processable state" }, { status: 400 });
         }
 
         // Parse the Clerk Org ID from the description (temporary hack since we didn't add a field)
@@ -29,23 +29,34 @@ export async function POST(
         const clerkOrgIdMatch = application.description?.match(/Clerk Org ID: (.+)/);
         const clerkOrgId = clerkOrgIdMatch ? clerkOrgIdMatch[1] : `manual_${Date.now()}`;
 
-        // Transaction: Create Merchant + Update Application
+        // Transaction: Create or Update Merchant + Update Application
         const result = await prisma.$transaction(async (tx) => {
-            // 1. Create Merchant
-            const merchant = await tx.merchant.create({
-                data: {
-                    clerkOrgId: clerkOrgId,
-                    name: application.businessName,
-                    // Generate a slug if needed, or allow it to be null/generated later
-                    slug: application.businessName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-                    // contactEmail removed as it does not exist on Merchant model
-                    website: application.website,
-                    category: application.category,
-                    description: application.description,
-                    status: "active",
-                    // presence: "online" // default
-                }
-            });
+            let merchant;
+
+            if (application.merchantId) {
+                // 1a. Update existing merchant
+                merchant = await tx.merchant.update({
+                    where: { id: application.merchantId },
+                    data: {
+                        status: "active",
+                        // Update other fields if necessary, but trust the merchant record primarily
+                        // name: application.businessName, // Optional: sync name if desired
+                    }
+                });
+            } else {
+                // 1b. Create new merchant (Legacy flow or manual applications)
+                merchant = await tx.merchant.create({
+                    data: {
+                        clerkOrgId: clerkOrgId,
+                        name: application.businessName,
+                        slug: application.businessName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+                        website: application.website,
+                        category: application.category,
+                        description: application.description,
+                        status: "active",
+                    }
+                });
+            }
 
             // 2. Update Application
             const updatedApp = await tx.merchantApplication.update({

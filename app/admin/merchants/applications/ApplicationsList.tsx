@@ -26,9 +26,10 @@ export default function ApplicationsList() {
     // Since usePaginatedQuery syncs to URL, modifying the URL `?status=pending` works.
 
     const { data, meta, isLoading, page, setPage } = usePaginatedQuery<MerchantApp>({
-        url: "/api/merchants/applications",
+        url: "/admin/api/merchants/applications",
         queryKey: ["merchant_applications"],
     });
+    console.log("🚀 ~ ApplicationsList ~ data:", data)
 
     return (
         <div className="space-y-4">
@@ -38,8 +39,8 @@ export default function ApplicationsList() {
                         key={s}
                         href={`?status=${s}`}
                         className={`py-2 px-4 border-b-2 capitalize text-sm font-medium ${(typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get("status") || "pending" : "pending") === s
-                                ? "border-blue-500 text-blue-600"
-                                : "border-transparent text-gray-500 hover:text-gray-700"
+                            ? "border-blue-500 text-blue-600"
+                            : "border-transparent text-gray-500 hover:text-gray-700"
                             }`}
                         onClick={() => setFilterStatus(s)}
                     >

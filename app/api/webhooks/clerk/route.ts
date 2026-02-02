@@ -260,33 +260,7 @@ export async function POST(req: Request) {
     }
   }
 
-  // Handle organization.created event
-  if (eventType === "organization.created") {
-    const { id, name, slug, image_url, created_at } = evt.data;
 
-    try {
-      // Instead of creating a live merchant immediately, create an application
-      await prisma.merchantApplication.create({
-        data: {
-          businessName: name,
-          contactEmail: "pending_from_clerk", // Clerk org webhook doesn't send email. We might need another way or placeholder.
-          contactName: "Pending", // Also not in org payload
-          website: "",
-          category: "Uncategorized",
-          status: "pending",
-          submittedAt: new Date(created_at || Date.now()), // Ensure created_at maps correctly
-          // Store the Clerk Org ID so we can link it later
-          // We might need to store this in metadata or add a field to MerchantApplication
-          description: `Clerk Org ID: ${id}`,
-        }
-      });
-      console.log(`Created merchant application for org ${id}: ${name}`);
-      return new Response("Merchant application created", { status: 200 });
-    } catch (error) {
-      console.error("Error creating merchant application:", error);
-      return new Response("Error creating merchant application", { status: 500 });
-    }
-  }
 
   // Handle organization.updated event
   if (eventType === "organization.updated") {

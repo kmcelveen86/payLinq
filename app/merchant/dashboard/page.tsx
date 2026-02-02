@@ -26,8 +26,31 @@ export default async function MerchantDashboardPage() {
     });
 
     if (!merchant) {
-        // If the org exists in Clerk but not in our DB, they need to onboard
-        redirect("/merchant/onboarding");
+        // If the org exists in Clerk but not in our DB, they need to submit an application
+        redirect("/merchant/apply");
+    }
+
+    if (merchant.status === 'pending') {
+        return (
+            <Box className="min-h-[calc(100vh-200px)] flex flex-col items-center justify-center p-6 text-center max-w-2xl mx-auto">
+                <div className="w-20 h-20 bg-yellow-500/10 rounded-full flex items-center justify-center mb-6 animate-pulse">
+                    <span className="text-4xl">⏳</span>
+                </div>
+                <h1 className="text-3xl font-bold mb-4">Application Under Review</h1>
+                <p className="text-muted-foreground text-lg mb-8">
+                    Thanks for applying! We are currently reviewing your merchant application for <strong>{merchant.name}</strong>.
+                    You will receive an email once your account is approved.
+                </p>
+                <div className="p-4 bg-muted/50 rounded-lg text-sm text-left w-full">
+                    <h3 className="font-semibold mb-2">What happens next?</h3>
+                    <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                        <li>Our team verifies your business details (usually within 24 hours).</li>
+                        <li>We may contact you at the email provided if we need more info.</li>
+                        <li>Once approved, you'll gain full access to the Dashboard, UPP rewards, and API keys.</li>
+                    </ul>
+                </div>
+            </Box>
+        );
     }
 
     const analyticsResult = await getFavoriteAnalytics();
