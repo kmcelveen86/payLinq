@@ -1,38 +1,19 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import AdminDashboardCharts from "./AdminDashboardCharts";
+import { getAdminDashboardStats } from "@/lib/admin-cache";
 
 export default async function AdminDashboardPage() {
     // 1. Fetch High-Level Stats
-    const [
+    // 1. Fetch High-Level Stats (Cached)
+    const {
         totalMerchants,
         totalCustomers,
         totalConversions,
-        transactions
-    ] = await Promise.all([
-        prisma.merchant.count(),
-        prisma.user.count(), // User model does not have 'role' field, count all users
-        prisma.paylinqTransaction.count({ where: { status: "COMPLETED" } }),
-        prisma.paylinqTransaction.findMany({
-            where: {
-                status: "COMPLETED",
-                createdAt: {
-                    gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) // Last 30 days
-                }
-            },
-            select: {
-                amount: true,
-                createdAt: true
-            },
-            orderBy: { createdAt: "asc" }
-        })
-    ]);
+        transactions,
+        revenueAggregate
+    } = await getAdminDashboardStats();
 
-    // 2. Calculate Total Revenue (All Time - or we can fetch aggregate sum from DB)
-    const revenueAggregate = await prisma.paylinqTransaction.aggregate({
-        where: { status: "COMPLETED" },
-        _sum: { amount: true }
-    });
     const totalRevenue = (revenueAggregate._sum.amount || 0) / 100;
 
     // 3. Process Chart Data
@@ -46,7 +27,7 @@ export default async function AdminDashboardPage() {
         chartMap.set(dateStr, { date: dateStr, revenue: 0 });
     }
 
-    transactions.forEach(t => {
+    transactions.forEach((t: { createdAt: Date; amount: number }) => {
         const dateStr = t.createdAt.toISOString().split("T")[0];
         if (chartMap.has(dateStr)) {
             const entry = chartMap.get(dateStr)!;

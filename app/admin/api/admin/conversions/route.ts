@@ -1,30 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { getAdminCustomers } from "@/lib/admin-cache";
+import { getAdminConversions } from "@/lib/admin-cache";
 import { z } from "zod";
 
 const querySchema = z.object({
     page: z.coerce.number().min(1).default(1),
     limit: z.coerce.number().min(1).max(100).default(20),
     search: z.string().optional(),
-    status: z.enum(["active", "banned"]).optional(),
+    status: z.enum(["COMPLETED", "PENDING", "FAILED"]).optional(),
+    minAmount: z.coerce.number().optional(),
+    maxAmount: z.coerce.number().optional(),
     sort: z.string().default("createdAt"),
     order: z.enum(["asc", "desc"]).default("desc"),
 });
 
 export async function GET(req: NextRequest) {
     try {
-        // await requireRole(["super_admin", "support", "analyst"]);
-
         const url = new URL(req.url);
         const params = Object.fromEntries(url.searchParams);
-        const { page, limit, search, status, sort, order } = querySchema.parse(params);
+        const { page, limit, search, status, minAmount, maxAmount, sort, order } = querySchema.parse(params);
 
-        const { total, data } = await getAdminCustomers({
+        const { total, data } = await getAdminConversions({
             page,
             limit,
             search,
             status,
+            minAmount,
+            maxAmount,
             sort,
             order: order as "asc" | "desc"
         });
@@ -39,7 +40,7 @@ export async function GET(req: NextRequest) {
             },
         });
     } catch (error) {
-        console.error("Fetch Customers Error:", error);
-        return NextResponse.json({ error: "Failed to fetch customers" }, { status: 500 });
+        console.error("Fetch Conversions Error:", error);
+        return NextResponse.json({ error: "Failed to fetch conversions" }, { status: 500 });
     }
 }
