@@ -27,8 +27,8 @@ export default async function AdminDashboardPage() {
         chartMap.set(dateStr, { date: dateStr, revenue: 0 });
     }
 
-    transactions.forEach((t: { createdAt: Date; amount: number }) => {
-        const dateStr = t.createdAt.toISOString().split("T")[0];
+    transactions.forEach((t: { createdAt: Date | string; amount: number }) => {
+        const dateStr = new Date(t.createdAt).toISOString().split("T")[0];
         if (chartMap.has(dateStr)) {
             const entry = chartMap.get(dateStr)!;
             entry.revenue += t.amount / 100;

@@ -60,6 +60,7 @@ model User {
   paylinqTransactions     PaylinqTransaction[]
   wallet                  UserWallet?
   notifications           Notification[]
+  securityLogs            SecurityLog[]
 }
 
 model Waitlist {
@@ -511,4 +512,17 @@ model MerchantApplication {
   @@index([status])
   @@index([submittedAt])
   @@map("merchant_applications")
+}
+
+model SecurityLog {
+  id        String   @id @default(cuid())
+  userId    String
+  userEmail String
+  ipAddress String?
+  userAgent String?
+  path      String
+  action    String   @default("UNAUTHORIZED_ADMIN_ACCESS")
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

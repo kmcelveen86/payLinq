@@ -56,7 +56,13 @@ export async function GET(req: NextRequest) {
     };
 
     if (!user.stripeCustomerId) {
-      return NextResponse.json(defaultStatus);
+      // Fallback to DB tier if set, otherwise default
+      const dbTier = user.membershipTier?.toLowerCase() || "white";
+      return NextResponse.json({
+        ...defaultStatus,
+        tier: dbTier,
+        status: user.membershipTier ? "active" : "none",
+      });
     }
 
     // Fetch subscriptions from Stripe

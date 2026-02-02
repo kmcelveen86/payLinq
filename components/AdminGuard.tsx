@@ -2,14 +2,19 @@
 
 import { useUser } from "@clerk/nextjs";
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import LoadingComp from "./LoadingComp";
+import AccessDeniedTrap from "./AccessDeniedTrap";
+import { logSecurityEvent } from "@/app/actions/security";
 
 export default function AdminGuard({ children }: { children: React.ReactNode }) {
     const { user, isLoaded, isSignedIn } = useUser();
     const router = useRouter();
     const pathname = usePathname();
     const [authorized, setAuthorized] = useState(false);
+
+    // Capture reference to log once per mount/denial
+    const loggedRef = useRef(false);
 
     useEffect(() => {
         if (!isLoaded) return;
@@ -22,8 +27,26 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
         const role = user?.publicMetadata?.adminRole;
         if (role === "super_admin" || role === "support") {
             setAuthorized(true);
+        } else {
+            // Unauthorized - Log it!
+            // Use ref to ensure we only log once per mount, even if deps change
+            if (!loggedRef.current) {
+                loggedRef.current = true;
+
+                // Call server action to log
+                logSecurityEvent({
+                    userId: user.id,
+                    userEmail: user.primaryEmailAddress?.emailAddress || "unknown",
+                    path: pathname,
+                    action: "UNAUTHORIZED_ADMIN_ACCESS_ATTEMPT",
+                    userAgent: window.navigator.userAgent
+                }).catch(err => {
+                    console.error("Log failed", err);
+                    // If log failed, maybe allow retry? For now, keep it true to prevent spam.
+                });
+            }
         }
-    }, [isLoaded, isSignedIn, user, router]);
+    }, [isLoaded, isSignedIn, user, router, pathname]);
 
     if (!isLoaded) {
         return (
@@ -34,45 +57,8 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
     }
 
     if (!authorized) {
-        return (
-            <div className="flex h-screen w-full flex-col items-center justify-center bg-gray-100 p-4">
-                <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 text-center">
-                    <h2 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h2>
-                    <p className="text-gray-600 mb-6">
-                        You do not have permission to access the Admin Portal.
-                    </p>
-
-                    <div className="bg-gray-100 p-4 rounded text-left text-sm mb-6 overflow-auto text-gray-700">
-                        <p><strong className="text-gray-900">User ID:</strong> {user?.id || "Not Logged In"}</p>
-                        <p><strong className="text-gray-900">Role:</strong> {(user?.publicMetadata?.adminRole as string) || "None"}</p>
-                        <p><strong className="text-gray-900">Email:</strong> {user?.primaryEmailAddress?.emailAddress || "None"}</p>
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                        {!isSignedIn ? (
-                            <button
-                                onClick={() => router.push("/sign-in")}
-                                className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-                            >
-                                Sign In
-                            </button>
-                        ) : (
-                            <button
-                                onClick={() => {
-                                    const mainUrl = window.location.hostname.includes("localhost")
-                                        ? "http://localhost:3000"
-                                        : "https://getpaylinq.com";
-                                    window.location.href = mainUrl;
-                                }}
-                                className="w-full px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors"
-                            >
-                                Return to Main Site
-                            </button>
-                        )}
-                    </div>
-                </div>
-            </div>
-        );
+        // TRAP!
+        return <AccessDeniedTrap />;
     }
 
     return <>{children}</>;
