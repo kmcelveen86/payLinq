@@ -1,37 +1,18 @@
 import React from "react";
-import Link from "next/link";
 import AdminGuard from "@/components/AdminGuard";
-
-// Placeholder components - will be implemented in next steps
-const AdminSidebar = () => (
-    <aside className="w-64 bg-gray-900 text-white min-h-screen p-4">
-        <h2 className="text-xl font-bold mb-6">PayLinq Admin</h2>
-        <nav className="space-y-2">
-            <Link href="/dashboard" className="block px-4 py-2 hover:bg-gray-800 rounded">Dashboard</Link>
-            <Link href="/merchants" className="block px-4 py-2 hover:bg-gray-800 rounded">Merchants</Link>
-            <Link href="/customers" className="block px-4 py-2 hover:bg-gray-800 rounded">Customers</Link>
-            <Link href="/conversions" className="block px-4 py-2 hover:bg-gray-800 rounded">Conversions</Link>
-            <Link href="/upp" className="block px-4 py-2 hover:bg-gray-800 rounded">UPP</Link>
-            <Link href="/analytics" className="block px-4 py-2 hover:bg-gray-800 rounded">Analytics</Link>
-            <Link href="/audit-log" className="block px-4 py-2 hover:bg-gray-800 rounded">Audit Log</Link>
-            <Link href="/settings" className="block px-4 py-2 hover:bg-gray-800 rounded">Settings</Link>
-
-            <div className="pt-4 mt-4 border-t border-gray-800">
-                <a
-                    href={`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/user/dashboard`}
-                    className="block px-4 py-2 hover:bg-gray-800 rounded text-green-400"
-                >
-                    &larr; PayLinq App
-                </a>
-            </div>
-        </nav>
-    </aside>
-);
+import { SignOutButton } from "@clerk/nextjs";
+import AdminSidebar from "./AdminSidebar";
 
 const AdminHeader = () => (
     <header className="bg-white border-b h-16 flex items-center justify-between px-6">
         <h1 className="text-lg font-semibold text-gray-900">Admin Portal</h1>
-        {/* User details will be handled by client components or specialized header */}
+        <div className="flex items-center gap-4">
+            <SignOutButton redirectUrl={process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}>
+                <button className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded text-sm font-medium transition-colors">
+                    Sign Out
+                </button>
+            </SignOutButton>
+        </div>
     </header>
 );
 

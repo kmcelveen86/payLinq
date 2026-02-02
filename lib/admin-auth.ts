@@ -22,9 +22,13 @@ export async function getAdminAuth() {
         return { userId: null, role: null, email: null };
     }
 
-    // TODO: Fetch user metadata properly if not in session claims
-    // For now, using a mocked role or session claim if configured
-    const role = (session.sessionClaims?.metadata as any)?.adminRole as AdminRole | undefined;
+    // Check Session Claims (Fastest)
+    let role = (session.sessionClaims?.metadata as any)?.adminRole as AdminRole | undefined;
+
+    // Fallback: Check User Object from API (slower but reliable if token is stale)
+    if (!role && user) {
+        role = (user.publicMetadata as any)?.adminRole as AdminRole | undefined;
+    }
 
     return {
         userId: session.userId,
