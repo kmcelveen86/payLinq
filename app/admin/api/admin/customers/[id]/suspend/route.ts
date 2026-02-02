@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { clerkClient } from "@clerk/nextjs/server";
-import { requireRole, getAdminAuth } from "@/lib/admin-auth";
+import { requireRole, getAdminAuth, PERMISSIONS } from "@/lib/admin-auth";
 import { logAdminAction } from "@/lib/audit";
 import { z } from "zod";
 
@@ -15,7 +15,7 @@ export async function POST(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        // await requireRole(["super_admin", "support"]);
+        await requireRole(PERMISSIONS.MANAGE_CUSTOMERS);
         const { id } = await params;
 
         const body = await req.json();

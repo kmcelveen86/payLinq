@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireRole, getAdminAuth } from "@/lib/admin-auth";
+import { requireRole, getAdminAuth, PERMISSIONS } from "@/lib/admin-auth";
 import { logAdminAction } from "@/lib/audit";
 import { z } from "zod";
 
@@ -12,7 +12,7 @@ const adjustSchema = z.object({
 
 export async function POST(req: NextRequest) {
     try {
-        // await requireRole(["super_admin"]);
+        await requireRole(PERMISSIONS.MANAGE_UPP);
 
         const body = await req.json();
         const { userId, amount, reason } = adjustSchema.parse(body);

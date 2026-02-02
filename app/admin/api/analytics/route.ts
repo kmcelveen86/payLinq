@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireRole } from "@/lib/admin-auth";
+import { requireRole, PERMISSIONS } from "@/lib/admin-auth";
 import { startOfMonth, subMonths, format } from "date-fns";
 
 export async function GET(req: NextRequest) {
     try {
-        // await requireRole(["super_admin"]);
+        await requireRole(PERMISSIONS.VIEW_ANALYTICS);
 
         // 1. Core Counts
         const [totalUsers, totalMerchants, totalRevenueRaw, totalTransactions, totalUppIssuedRaw] = await Promise.all([

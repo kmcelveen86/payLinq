@@ -211,14 +211,14 @@ export default function UppTable() {
                     <button
                         onClick={() => setPage(page - 1)}
                         disabled={page <= 1}
-                        className="px-3 py-1 border rounded disabled:opacity-50 hover:bg-gray-50"
+                        className="px-3 py-1 border border-gray-300 bg-white text-gray-700 rounded disabled:opacity-50 hover:bg-gray-50 font-medium"
                     >
                         Previous
                     </button>
                     <button
                         onClick={() => setPage(page + 1)}
                         disabled={page >= meta.totalPages}
-                        className="px-3 py-1 border rounded disabled:opacity-50 hover:bg-gray-50"
+                        className="px-3 py-1 border border-gray-300 bg-white text-gray-700 rounded disabled:opacity-50 hover:bg-gray-50 font-medium"
                     >
                         Next
                     </button>

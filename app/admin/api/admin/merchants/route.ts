@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireRole } from "@/lib/admin-auth";
+import { requireRole, PERMISSIONS } from "@/lib/admin-auth";
 import { getAdminMerchants } from "@/lib/admin-cache";
 import { z } from "zod";
 
@@ -15,8 +15,8 @@ const querySchema = z.object({
 
 export async function GET(req: NextRequest) {
     try {
-        // 1. Auth Check (Mocked for now, will implement real check)
-        // await requireRole(["super_admin", "support", "analyst"]);
+        // 1. Auth Check
+        await requireRole(PERMISSIONS.VIEW_MERCHANTS);
 
         // 2. Parse Query
         const url = new URL(req.url);

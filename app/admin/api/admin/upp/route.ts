@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { requireRole, PERMISSIONS } from "@/lib/admin-auth";
 import { z } from "zod";
 
 const querySchema = z.object({
@@ -12,7 +13,7 @@ const querySchema = z.object({
 
 export async function GET(req: NextRequest) {
     try {
-        // await requireRole(["super_admin", "analyst"]);
+        await requireRole(PERMISSIONS.VIEW_UPP);
 
         const url = new URL(req.url);
         const params = Object.fromEntries(url.searchParams);

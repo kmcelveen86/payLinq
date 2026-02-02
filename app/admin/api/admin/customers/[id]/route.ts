@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { requireRole, PERMISSIONS } from "@/lib/admin-auth";
 
 export async function GET(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        // await requireRole(["super_admin", "support"]);
+        await requireRole(PERMISSIONS.VIEW_CUSTOMERS);
         const { id } = await params;
 
         const user = await prisma.user.findUnique({
