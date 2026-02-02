@@ -262,6 +262,7 @@ model Merchant {
   // isLocal     Boolean     @default(false) // Deprecated in favor of presence
   presence    String      @default("online") // online, local, both
   tagline     String?
+  status      String      @default("active") // active, suspended
   uppEarningRate Float?
   uppEarningType String? // percentage, fixed
   
@@ -470,4 +471,44 @@ model Notification {
   updatedAt DateTime @updatedAt
 
   @@index([userId])
+}
+
+model AdminAuditLog {
+  id          String   @id @default(cuid())
+  adminId     String   // Clerk user ID of the admin who performed the action
+  adminEmail  String
+  adminRole   String   // Role at time of action
+  action      String   // e.g., "conversion.approve", "user.suspend", "upp.adjust", "merchant.setRate"
+  targetType  String   // "user", "merchant", "conversion", "upp_transaction"
+  targetId    String   // ID of the affected entity
+  details     Json     // Freeform JSON with before/after state, reason, etc.
+  ipAddress   String?
+  createdAt   DateTime @default(now())
+
+  @@index([adminId])
+  @@index([action])
+  @@index([targetType, targetId])
+  @@index([createdAt])
+  @@map("admin_audit_logs")
+}
+
+model MerchantApplication {
+  id            String   @id @default(cuid())
+  merchantId    String?  // Links to merchant record once approved
+  businessName  String
+  contactEmail  String
+  contactName   String
+  website       String
+  category      String
+  description   String?
+  status        String   @default("pending") // pending, approved, rejected
+  reviewedBy    String?  // Admin Clerk ID who reviewed
+  reviewedAt    DateTime?
+  reviewNotes   String?
+  submittedAt   DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([status])
+  @@index([submittedAt])
+  @@map("merchant_applications")
 }

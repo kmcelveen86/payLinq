@@ -20,6 +20,18 @@ export default clerkMiddleware(
 
         const { userId, sessionClaims, redirectToSignIn, orgId } = await auth();
 
+        // ---------------------------------------------------------------------
+        // 1. Force Ban Check (Server-Side)
+        // ---------------------------------------------------------------------
+        // If user is banned, force redirect to /banned (unless already there or signing out)
+        if (userId && (sessionClaims?.publicMetadata as any)?.banned) {
+            if (req.nextUrl.pathname !== "/banned" && !req.nextUrl.pathname.startsWith("/sign-out")) {
+                return NextResponse.redirect(new URL("/banned", req.url));
+            }
+            // If already on /banned, allow access to render the page
+            return;
+        }
+
         // Get the hostname from the request headers
         const hostname = req.headers.get("host");
 

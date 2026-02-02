@@ -53,7 +53,7 @@ export default function RecentTransactions(props: Props) {
               </p>
               <div className="flex items-center justify-end">
                 <p className="text-green-500 text-sm">
-                  +{transaction.points} pts
+                  +{transaction.points.toLocaleString(undefined, { maximumFractionDigits: 1 })} pts
                 </p>
               </div>
             </div>
