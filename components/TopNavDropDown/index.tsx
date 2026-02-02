@@ -22,6 +22,7 @@ import {
   History,
   HelpCircle,
   Store,
+  Shield,
 } from "lucide-react";
 import TopNav from ".";
 import { SignOutButton, useAuth, useSession, useUser, useOrganizationList } from "@clerk/nextjs";
@@ -136,6 +137,20 @@ export default function TopNavDropDown() {
       icon: <Store size={18} />,
       path: merchantUrl,
       onClick: handleMerchantClick,
+    });
+  }
+
+  // Super Admin Link
+  const isSuperAdmin = clerkUser?.user?.publicMetadata?.adminRole === "super_admin";
+  if (isSuperAdmin) {
+    menuItems.push({
+      text: "Super Admin",
+      icon: <Shield size={18} />,
+      path: (() => {
+        if (typeof window === "undefined") return "/admin";
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+        return baseUrl.replace("://", "://admin.");
+      })(),
     });
   }
 
