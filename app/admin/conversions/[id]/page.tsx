@@ -137,7 +137,7 @@ export default async function ConversionDetailPage({ params }: { params: Promise
             {/* Raw JSON Data (Collapsible/Dev only?) */}
             <details className="bg-gray-50 p-4 rounded text-xs border">
                 <summary className="cursor-pointer font-medium text-gray-500 mb-2">Raw Data Output</summary>
-                <pre className="overflow-auto">{JSON.stringify(conversion, null, 2)}</pre>
+                <pre className="overflow-auto text-gray-800">{JSON.stringify(conversion, null, 2)}</pre>
             </details>
         </div>
     );
