@@ -15,6 +15,15 @@ const AdminSidebar = () => (
             <Link href="/analytics" className="block px-4 py-2 hover:bg-gray-800 rounded">Analytics</Link>
             <Link href="/audit-log" className="block px-4 py-2 hover:bg-gray-800 rounded">Audit Log</Link>
             <Link href="/settings" className="block px-4 py-2 hover:bg-gray-800 rounded">Settings</Link>
+
+            <div className="pt-4 mt-4 border-t border-gray-800">
+                <a
+                    href={`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/user/dashboard`}
+                    className="block px-4 py-2 hover:bg-gray-800 rounded text-green-400"
+                >
+                    &larr; PayLinq App
+                </a>
+            </div>
         </nav>
     </aside>
 );

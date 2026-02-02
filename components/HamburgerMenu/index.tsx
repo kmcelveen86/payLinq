@@ -16,6 +16,7 @@ import {
   X,
   CreditCard,
   Store,
+  Shield // Added Shield icon
 } from "lucide-react";
 import {
   useAuth,
@@ -109,6 +110,19 @@ export default function HamburgerMenu() {
         },
       ]
       : []),
+    ...(clerkUser?.user?.publicMetadata?.adminRole === "super_admin"
+      ? [
+        {
+          text: "Super Admin",
+          href: (() => {
+            if (typeof window === "undefined") return "/admin";
+            const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+            return baseUrl.replace("://", "://admin.");
+          })(),
+          icon: <Shield size={20} className="text-gray-600" />,
+        }
+      ] : []
+    )
   ];
 
   if (!isMounted) return null;

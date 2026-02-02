@@ -11,13 +11,14 @@ import {
   LogOut,
   User,
   Store, // Added Store icon
+  Shield, // Added Shield icon
 } from "lucide-react";
 import React from "react";
 import { useRouter } from "next/navigation";
 import userData from "./data";
 import Link from "next/link";
 import { useUserProfile } from "@/app/hooks/useProfile";
-import { SignOutButton, useOrganizationList } from "@clerk/nextjs"; // Added useOrganizationList
+import { SignOutButton, useOrganizationList, useUser } from "@clerk/nextjs"; // Added useUser
 import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
@@ -31,6 +32,7 @@ export default function SideBar(props: Props) {
   const router = useRouter();
   const { activeTab, setActiveTab, userData, itemVariants } = props;
   const queryClient = useQueryClient();
+  const { user } = useUser();
 
   // Check for organization memberships
   const { userMemberships, isLoaded: isOrgLoaded, setActive } = useOrganizationList({
@@ -73,6 +75,7 @@ export default function SideBar(props: Props) {
   const { membershipTier, firstName, lastName, image } = profileData || {};
 
   const hasMerchants = isOrgLoaded && userMemberships.count > 0;
+  const isSuperAdmin = user?.publicMetadata?.adminRole === "super_admin";
 
   return (
     <motion.div variants={itemVariants} className="lg:col-span-1">
@@ -180,6 +183,19 @@ export default function SideBar(props: Props) {
             </button>
           )}
 
+          {isSuperAdmin && (
+            <button
+              onClick={() => {
+                const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+                const adminUrl = baseUrl.replace("://", "://admin.");
+                window.location.href = adminUrl;
+              }}
+              className="w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors text-blue-400 hover:text-blue-300"
+            >
+              <Shield size={18} className="mr-3" />
+              <span className="font-bold">Super Admin</span>
+            </button>
+          )}
           <button
             onClick={handleOnClick}
             className={`w-full py-3 px-4 rounded-lg flex items-center hover:bg-gray-700 transition-colors ${activeTab === "settings"

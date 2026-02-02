@@ -10,6 +10,7 @@ import {
     Settings,
     LogOut,
     ChevronRight,
+    Shield, // Added Shield icon
 } from "lucide-react";
 import {
     useUser,
@@ -65,6 +66,18 @@ export default function MerchantMobileMenu() {
             icon: <Settings size={20} className="text-foreground" />,
         },
     ];
+
+    if (user?.publicMetadata?.adminRole === "super_admin") {
+        baseItems.push({
+            text: "Super Admin",
+            href: (() => {
+                if (typeof window === "undefined") return "/admin";
+                const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+                return baseUrl.replace("://", "://admin.");
+            })(),
+            icon: <Shield size={20} className="text-foreground" />,
+        });
+    }
 
     const menuItems = organization ? baseItems : [];
 
