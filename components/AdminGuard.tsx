@@ -42,10 +42,10 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
                         You do not have permission to access the Admin Portal.
                     </p>
 
-                    <div className="bg-gray-100 p-4 rounded text-left text-sm mb-6 overflow-auto">
-                        <p><strong>User ID:</strong> {user?.id || "Not Logged In"}</p>
-                        <p><strong>Role:</strong> {(user?.publicMetadata?.adminRole as string) || "None"}</p>
-                        <p><strong>Email:</strong> {user?.primaryEmailAddress?.emailAddress || "None"}</p>
+                    <div className="bg-gray-100 p-4 rounded text-left text-sm mb-6 overflow-auto text-gray-700">
+                        <p><strong className="text-gray-900">User ID:</strong> {user?.id || "Not Logged In"}</p>
+                        <p><strong className="text-gray-900">Role:</strong> {(user?.publicMetadata?.adminRole as string) || "None"}</p>
+                        <p><strong className="text-gray-900">Email:</strong> {user?.primaryEmailAddress?.emailAddress || "None"}</p>
                     </div>
 
                     <div className="flex flex-col gap-3">
