@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireRole, getAdminAuth } from "@/lib/admin-auth";
+import { requireRole, getAdminAuth, PERMISSIONS } from "@/lib/admin-auth";
 import { logAdminAction } from "@/lib/audit";
 
 export async function POST(
@@ -8,6 +8,7 @@ export async function POST(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        await requireRole(PERMISSIONS.MANAGE_APPLICATIONS);
         const { id } = await params; // Application ID
         const { userId: adminId, email, role } = await getAdminAuth();
 

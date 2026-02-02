@@ -25,7 +25,7 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
         }
 
         const role = user?.publicMetadata?.adminRole;
-        if (role === "super_admin" || role === "support") {
+        if (role === "super_admin" || role === "support" || role === "analyst") {
             setAuthorized(true);
         } else {
             // Unauthorized - Log it!

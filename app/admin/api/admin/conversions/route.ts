@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminConversions } from "@/lib/admin-cache";
+import { requireRole, PERMISSIONS } from "@/lib/admin-auth";
 import { z } from "zod";
 
 const querySchema = z.object({
@@ -15,6 +16,7 @@ const querySchema = z.object({
 
 export async function GET(req: NextRequest) {
     try {
+        await requireRole(PERMISSIONS.VIEW_UPP);
         const url = new URL(req.url);
         const params = Object.fromEntries(url.searchParams);
         const { page, limit, search, status, minAmount, maxAmount, sort, order } = querySchema.parse(params);

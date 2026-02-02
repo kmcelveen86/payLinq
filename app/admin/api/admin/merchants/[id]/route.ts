@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireRole } from "@/lib/admin-auth";
+import { requireRole, PERMISSIONS } from "@/lib/admin-auth";
 
 export async function GET(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> } // Params are async in Next.js 15+
 ) {
     try {
-        // await requireRole(["super_admin", "support", "analyst"]);
+        await requireRole(PERMISSIONS.VIEW_MERCHANTS);
         const { id } = await params;
 
         const merchant = await prisma.merchant.findUnique({

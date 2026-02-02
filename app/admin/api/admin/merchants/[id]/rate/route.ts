@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireRole, getAdminAuth } from "@/lib/admin-auth";
+import { requireRole, getAdminAuth, PERMISSIONS } from "@/lib/admin-auth";
 import { logAdminAction } from "@/lib/audit";
 import { z } from "zod";
 
@@ -14,7 +14,7 @@ export async function POST(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        // await requireRole(["super_admin"]); // STRICT: Super Admin only
+        await requireRole(PERMISSIONS.MANAGE_RATES); // STRICT: Super Admin only
         const { id } = await params;
 
         const body = await req.json();

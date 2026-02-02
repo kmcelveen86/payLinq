@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
+import { PERMISSIONS, AdminRole } from "@/lib/admin-permissions";
 
 
 interface Props {
@@ -12,23 +14,63 @@ interface Props {
 export default function AdminSidebar({ className, onNavigate }: Props) {
     const pathname = usePathname();
 
+    const { user } = useUser();
+    const role = user?.publicMetadata?.adminRole as AdminRole | undefined;
+
     const navItems = [
-        { name: "Dashboard", href: "/dashboard" },
-        { name: "Merchants", href: "/merchants" },
-        { name: "Customers", href: "/customers" },
-        { name: "Conversions", href: "/conversions" },
-        { name: "UPP", href: "/upp" },
-        { name: "Analytics", href: "/analytics" },
-        { name: "Audit Log", href: "/audit-log" },
-        { name: "Security", href: "/security", className: "hover:bg-red-900/50 text-red-200" },
-        { name: "Settings", href: "/settings" },
+        {
+            name: "Dashboard",
+            href: "/dashboard",
+            allowed: role && PERMISSIONS.VIEW_DASHBOARD.includes(role)
+        },
+        {
+            name: "Merchants",
+            href: "/merchants",
+            allowed: role && PERMISSIONS.VIEW_MERCHANTS.includes(role)
+        },
+        {
+            name: "Customers",
+            href: "/customers",
+            allowed: role && PERMISSIONS.VIEW_CUSTOMERS.includes(role)
+        },
+        {
+            name: "Conversions",
+            href: "/conversions",
+            allowed: role && PERMISSIONS.VIEW_UPP.includes(role) // Conversions related to UPP/Merchants
+        },
+        {
+            name: "UPP",
+            href: "/upp",
+            allowed: role && PERMISSIONS.VIEW_UPP.includes(role)
+        },
+        {
+            name: "Analytics",
+            href: "/analytics",
+            allowed: role && PERMISSIONS.VIEW_ANALYTICS.includes(role)
+        },
+        {
+            name: "Audit Log",
+            href: "/audit-log",
+            allowed: role && PERMISSIONS.VIEW_AUDIT_LOGS.includes(role)
+        },
+        {
+            name: "Security",
+            href: "/security",
+            allowed: role && PERMISSIONS.VIEW_SECURITY_LOGS.includes(role),
+            className: "hover:bg-red-900/50 text-red-200"
+        },
+        {
+            name: "Settings",
+            href: "/settings",
+            allowed: true // Everyone needs settings (e.g. sign out / profile)
+        },
     ];
 
     return (
         <aside className={`bg-gray-900 text-white min-h-screen p-4 flex flex-col ${className || "w-64"}`}>
             <h2 className="text-xl font-bold mb-6 px-4">PayLinq Admin</h2>
             <nav className="space-y-1 flex-1">
-                {navItems.map((item) => {
+                {navItems.filter(i => i.allowed !== false).map((item) => {
                     const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href));
 
                     return (

@@ -1,16 +1,9 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { AdminRole, PERMISSIONS } from "./admin-permissions";
 
-export type AdminRole = "super_admin" | "support" | "analyst";
-
-export const PERMISSIONS = {
-    VIEW_DASHBOARD: ["super_admin", "support", "analyst"],
-    MANAGE_MERCHANTS: ["super_admin", "support"],
-    MANAGE_CUSTOMERS: ["super_admin", "support"],
-    MANAGE_UPP: ["super_admin"],
-    MANAGE_ADMINS: ["super_admin"],
-    IMPERSONATE_USER: ["super_admin"],
-};
+export { PERMISSIONS };
+export type { AdminRole };
 
 // ...
 

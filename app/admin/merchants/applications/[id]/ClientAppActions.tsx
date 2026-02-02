@@ -2,10 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
+import { PERMISSIONS, AdminRole } from "@/lib/admin-permissions";
 
 export default function ClientAppActions({ applicationId, status }: { applicationId: string, status: string }) {
     const router = useRouter();
+    const { user } = useUser();
     const [loading, setLoading] = useState(false);
+
+    const role = user?.publicMetadata?.adminRole as AdminRole | undefined;
+    const canManageApplications = role && PERMISSIONS.MANAGE_APPLICATIONS.includes(role);
 
     // If approved, show status only
     if (status === 'approved') {
@@ -49,6 +55,10 @@ export default function ClientAppActions({ applicationId, status }: { applicatio
             setLoading(false);
         }
     };
+
+    if (!canManageApplications) {
+        return null;
+    }
 
     return (
         <div className="flex flex-col sm:flex-row gap-4 mt-6">
