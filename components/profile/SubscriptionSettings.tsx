@@ -6,6 +6,7 @@ import { useSubscriptionStatus, useManageSubscription } from "../../app/hooks/us
 const SubscriptionSettings = () => {
     const { data: subscription, isLoading } = useSubscriptionStatus();
     const { mutate: manageSubscription, isPending: isRedirecting } = useManageSubscription();
+    const [isConfirmingCancel, setIsConfirmingCancel] = React.useState(false);
 
     const handleManageClick = () => {
         manageSubscription(undefined);
@@ -71,7 +72,7 @@ const SubscriptionSettings = () => {
                                     tierName === 'Gold' ? 'from-amber-400 to-yellow-200' :
                                         tierName === 'Silver' ? 'from-slate-300 to-slate-100' :
                                             'from-gray-400 to-gray-200'}`}>
-                                {tierName} Membership
+                                {tierName.toLowerCase() === 'none' ? 'No' : tierName} Membership
                             </span>
                             {isSubscribed && (
                                 <span className="px-2 py-1 bg-green-900/50 text-green-400 text-xs rounded-full border border-green-700 flex items-center">
@@ -97,27 +98,72 @@ const SubscriptionSettings = () => {
 
             <div className=" space-y-4">
                 <h3 className="text-md font-medium text-white">Manage Subscription</h3>
-                <p className="text-gray-400 text-sm mb-4">
-                    View your payment history, download invoices, cancel your subscription, or update your payment method securely via Stripe.
-                </p>
+                {tierName !== "White" && (
+                    <p className="text-gray-400 text-sm mb-4">
+                        View your payment history, download invoices, cancel your subscription, or update your payment method securely via Stripe.
+                    </p>
+                )}
 
-                <button
-                    onClick={handleManageClick}
-                    disabled={isRedirecting}
-                    className="flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    {isRedirecting ? (
-                        <>
-                            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
-                            Redirecting...
-                        </>
+                {tierName === "White" ? (
+                    isConfirmingCancel ? (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            className="bg-red-900/10 border border-red-900/30 rounded-lg p-4"
+                        >
+                            <h4 className="text-red-400 font-medium mb-2">Are you sure you want to cancel?</h4>
+                            <p className="text-sm text-gray-400 mb-4">You will lose access to all White tier benefits immediately.</p>
+                            <div className="flex space-x-3">
+                                <button
+                                    onClick={async () => {
+                                        try {
+                                            const { cancelMembership } = await import("../../app/api/userService");
+                                            await cancelMembership();
+                                            window.location.reload();
+                                        } catch (error) {
+                                            console.error("Failed to cancel membership", error);
+                                        }
+                                    }}
+                                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-colors"
+                                >
+                                    Yes, Cancel
+                                </button>
+                                <button
+                                    onClick={() => setIsConfirmingCancel(false)}
+                                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm font-medium transition-colors"
+                                >
+                                    Nevermind
+                                </button>
+                            </div>
+                        </motion.div>
                     ) : (
-                        <>
-                            Manage Subscription
-                            <ExternalLink size={16} className="ml-2" />
-                        </>
-                    )}
-                </button>
+                        <button
+                            onClick={() => setIsConfirmingCancel(true)}
+                            className="flex items-center px-6 py-3 bg-red-900/30 hover:bg-red-900/50 text-red-400 border border-red-900/50 rounded-lg transition-colors font-medium"
+                        >
+                            <div className="mr-2">❌</div>
+                            Cancel Membership
+                        </button>
+                    )
+                ) : (
+                    <button
+                        onClick={handleManageClick}
+                        disabled={isRedirecting || tierName.toLowerCase() === 'none'}
+                        className="flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {isRedirecting ? (
+                            <>
+                                <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
+                                Redirecting...
+                            </>
+                        ) : (
+                            <>
+                                Manage Subscription
+                                <ExternalLink size={16} className="ml-2" />
+                            </>
+                        )}
+                    </button>
+                )}
             </div>
         </motion.div >
     );

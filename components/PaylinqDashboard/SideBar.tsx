@@ -102,7 +102,7 @@ export default function SideBar(props: Props) {
           <div className="mt-2 mb-3 px-3 py-1 rounded-full bg-gray-700 flex items-center">
             <Award size={14} className="text-[#C28F49] mr-1.5" />
             <span className="text-sm text-[#C28F49] font-medium">
-              {membershipTier || `Not a member`}
+              {(!membershipTier || membershipTier === 'none') ? 'No Plan' : membershipTier}
             </span>
           </div>
 
@@ -235,6 +235,6 @@ export default function SideBar(props: Props) {
           </span>
         </SignOutButton>
       </div>
-    </motion.div>
+    </motion.div >
   );
 }

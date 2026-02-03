@@ -35,7 +35,7 @@ const userData = {
   totalPoints: 0,
   pointsThisMonth: 0,
   cardLastFour: "----",
-  planTier: "White",
+  planTier: "none",
   memberSince: "2024",
   recentTransactions: [] as Transaction[],
   upcomingRewards: [] as Reward[],

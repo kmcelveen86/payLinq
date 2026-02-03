@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { stripe, STRIPE_PRICES, getFriendlyStripeError } from '@/lib/stripe';
 import prisma from '@/lib/prisma';
+import { revalidateTag, revalidatePath } from 'next/cache';
 
 // Price ID to membership tier mapping
 const PRICE_TO_TIER: Record<string, string> = {
@@ -150,12 +151,18 @@ export async function POST(request: NextRequest) {
 
         // Check if subscription is active
         if (subscription.status === 'active' || subscription.status === 'trialing') {
-          const tier = getTierFromSubscription(subscription);
-          const billingCycle = getBillingCycleFromSubscription(subscription);
+          // If subscription is set to cancel at period end, we should NOT revert the user's tier
+          // if they have already been set to White (e.g. by our downgrade logic).
+          if (subscription.cancel_at_period_end) {
+            console.log(`Subscription ${subscription.id} is set to cancel at period end. Skipping tier update to preserve downgrade state.`);
+          } else {
+            const tier = getTierFromSubscription(subscription);
+            const billingCycle = getBillingCycleFromSubscription(subscription);
 
-          if (tier) {
-            await updateUserMembership(user.id, tier, billingCycle);
-            console.log(`Updated user ${user.id} to ${tier} tier (${billingCycle})`);
+            if (tier) {
+              await updateUserMembership(user.id, tier, billingCycle);
+              console.log(`Updated user ${user.id} to ${tier} tier (${billingCycle})`);
+            }
           }
         } else if (subscription.status === 'canceled' || subscription.status === 'unpaid') {
           // Downgrade to White (free) tier
@@ -244,7 +251,6 @@ export async function POST(request: NextRequest) {
           }
         });
 
-        console.log(`User ${user.id} has been banned and downgraded due to dispute.`);
         console.log(`User ${user.id} has been banned and downgraded due to dispute.`);
         break;
       }

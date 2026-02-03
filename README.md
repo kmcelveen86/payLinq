@@ -230,3 +230,34 @@ The application is deployed on Vercel with a Neon PostgreSQL database. Environme
 - [NextAuth Documentation](https://next-auth.js.org/)
 - [Prisma Documentation](https://www.prisma.io/docs/)
 - [Neon Documentation](https://neon.tech/docs/)
+
+## PayLinq Vendor Integration API
+
+### Orders API (`POST /api/v1/orders`)
+
+Important notes for vendors integrating with the PayLinq Orders API:
+
+1.  **Authentication**: Requests must include a valid Merchant API Key in the `Authorization` header (`Bearer sk_live_...`).
+2.  **User Identification**: You must pass the `user_id` received from the PayLinq referral link (which is a secure `AffiliateClick` ID).
+    - **Note:** The API **ONLY** accepts secure Click IDs. Passing a raw PayLinq User ID will result in a `404 Not Found` error.
+    - **Security:** Each Click ID is a **Single-Use Token**. It is invalidated immediately after a successful purchase to prevent replay attacks.
+3.  **Subscription Enforcement**: 
+    - Purchases are **only** permitted for users with an active PayLinq membership.
+    - If a user is unsubscribed (or their subscription is inactive), the API will reject the transaction with a `403 Forbidden` error.
+    - **Vendors must handle this error gracefully** (e.g., by alerting the user or failing the checkout if rewards are mandatory).
+
+#### Error Response Example (Unsubscribed User)
+```json
+{
+  "error": "Active subscription required to earn rewards"
+}
+```
+Status Code: `403 Forbidden`
+
+#### Error Response Example (Replay Attack / Expired Link)
+```json
+{
+  "error": "Tracking link expired or already used"
+}
+```
+Status Code: `400 Bad Request`

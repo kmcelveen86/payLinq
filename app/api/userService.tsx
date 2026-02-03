@@ -130,6 +130,11 @@ export const createPortalSession = async (returnUrl?: string) => {
   return response.data;
 };
 
+export const fetchStripePrices = async () => {
+  const response = await axios.get("/api/stripe/prices");
+  return response.data;
+};
+
 // Payment Methods APIs
 // export const fetchPaymentMethods = async (): Promise<PaymentMethod[]> => {
 //   const response = await apiClient.get("/payment-methods");
@@ -167,3 +172,18 @@ export const createPortalSession = async (returnUrl?: string) => {
 //   const response = await apiClient.get("/login-history");
 //   return response.data;
 // };
+
+export const cancelMembership = async () => {
+  const response = await axios.post("/api/user/cancel-membership");
+  return response.data;
+};
+
+export const fetchUserWallet = async () => {
+  const response = await apiClient.get("/wallet");
+  return response.data;
+};
+
+export const fetchUserTransactions = async () => {
+  const response = await apiClient.get("/transactions");
+  return response.data;
+};

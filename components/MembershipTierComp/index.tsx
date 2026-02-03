@@ -32,7 +32,7 @@ const membershipTiers = [
     id: "white",
     name: "White",
     tagline: "Start your journey",
-    price: 10,
+    price: 0,
     color: "bg-gray-50",
     accentColor: "border-green-300",
     buttonColor: "from-[#2D9642] to-[#38b053]",
@@ -73,7 +73,7 @@ const membershipTiers = [
     id: "silver",
     name: "Silver",
     tagline: "Enhance your rewards",
-    price: 20,
+    price: 10,
     color: "bg-green-50",
     accentColor: "border-green-400",
     buttonColor: "from-[#2D9642] to-[#38b053]",
@@ -103,7 +103,7 @@ const membershipTiers = [
     id: "gold",
     name: "Gold",
     tagline: "Premium experience",
-    price: 50,
+    price: 30,
     color: "bg-amber-50",
     accentColor: "border-amber-400",
     buttonColor: "from-[#C28F49] to-[#d9a55c]",
@@ -133,7 +133,7 @@ const membershipTiers = [
     id: "black",
     name: "Black",
     tagline: "Luxury redefined",
-    price: 70,
+    price: 50,
     color: "bg-amber-50",
     accentColor: "border-amber-400",
     buttonColor: "from-[#C28F49] to-[#d9a55c]",
@@ -373,9 +373,8 @@ const MembershipTierComp = () => {
               transition={{ duration: 0.5, delay: 0.8 }}
             >
               <span
-                className={`mr-3 text-sm font-medium ${
-                  !annualBilling ? "text-green-700" : "text-gray-500"
-                }`}
+                className={`mr-3 text-sm font-medium ${!annualBilling ? "text-green-700" : "text-gray-500"
+                  }`}
               >
                 Monthly
               </span>
@@ -398,9 +397,8 @@ const MembershipTierComp = () => {
                 />
               </button>
               <span
-                className={`ml-3 text-sm font-medium ${
-                  annualBilling ? "text-green-700" : "text-gray-500"
-                }`}
+                className={`ml-3 text-sm font-medium ${annualBilling ? "text-green-700" : "text-gray-500"
+                  }`}
               >
                 Annually{" "}
                 <span className="text-amber-600 font-bold">
@@ -461,7 +459,7 @@ const MembershipTierComp = () => {
                 // Only enable White for now (or already selected tier)
                 // ONLY FOR DEV PURPOSES
                 disabled={false}
-                // disabled={tier.id !== "white" && tier.id !== selectedTier}
+              // disabled={tier.id !== "white" && tier.id !== selectedTier}
               />
             </motion.div>
           ))}

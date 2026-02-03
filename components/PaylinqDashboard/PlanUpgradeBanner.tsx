@@ -48,8 +48,8 @@ export default function PlanUpgradeBanner({
   const { membershipTier, firstName, lastName, image } =
     profileData || {};
 
-  // Default to no tier if not provided
-  const currentTier = membershipTier || "No Plan";
+  // Default to no tier if not provided, and handle "none" explicitly
+  const currentTier = (!membershipTier || membershipTier === 'none') ? "No Plan" : membershipTier;
 
   // Get the tier info or use default for users without a plan
   const tierInfo =

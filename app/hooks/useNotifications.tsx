@@ -27,8 +27,10 @@ export const useNotifications = () => {
     return useQuery({
         queryKey: ["notifications"],
         queryFn: fetchNotifications,
-        // Refetch every minute to keep count fresh
-        refetchInterval: 60 * 1000,
+        // Refetch every 5 minutes to keep count fresh without spamming
+        refetchInterval: 5 * 60 * 1000,
+        staleTime: 5 * 60 * 1000,
+        refetchOnWindowFocus: false,
     });
 };
 

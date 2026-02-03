@@ -43,9 +43,17 @@ export default function MultiplierDetails(props: Props) {
   } = useUserProfile();
   const { itemVariants } = props;
 
-  // Get current tier with fallback to White for safely accessing consts, but track *actual* presence
-  const currentTier = profileData?.membershipTier || "White";
-  const hasTier = !!profileData?.membershipTier;
+  // Get current tier with fallback, handling "none" explicitly
+  // If tier is "none", we treat it as having no tier effectively for the "Unlock" view,
+  // OR we show the "White" stats as a potential preview?
+  // The logic below says: (!hasTier) -> show "Unlock Rewards"
+  // So we need to ensure "none" results in hasTier = false.
+
+  const rawTier = profileData?.membershipTier;
+  const hasTier = !!rawTier && rawTier !== "none";
+
+  // Use White as the default for the "Unlock" preview data if user has no tier
+  const currentTier = hasTier ? rawTier : "White";
 
   // Get redemption info for the current tier
   const redemptionInfo =
@@ -84,7 +92,7 @@ export default function MultiplierDetails(props: Props) {
           <h3 className="text-2xl font-bold text-white mb-2">Unlock Your Rewards Value</h3>
           <p className="text-gray-400 max-w-md mb-6">
             Upgrade to a membership plan to start seeing your potential earnings matrix here.
-            You could be earning up to <span className="text-white font-bold">$20</span> for every 1000 points!
+            You could be earning up to <span className="text-white font-bold">$10</span> for every 1000 points!
           </p>
 
           <Link href="/pricing">
@@ -155,7 +163,7 @@ export default function MultiplierDetails(props: Props) {
           <div className="flex items-center justify-center gap-2 pt-4 border-t border-gray-700/50">
             <TrendingUp size={18} className="text-[#2D9642]" />
             <p className="text-sm text-gray-300">
-              Your <span className="font-bold text-[#2D9642]">{currentTier}</span> tier redemption value
+              Your <span className="font-bold text-[#2D9642]">{hasTier ? currentTier : "Next Tier"}</span> tier redemption value
             </p>
           </div>
         </div>

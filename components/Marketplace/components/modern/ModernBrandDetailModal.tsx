@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { toggleFavorite } from "@/app/actions/toggleFavorite";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
+import { useUserProfile } from "@/app/hooks/useProfile";
 import { toast } from "sonner";
 import {
     Dialog,
@@ -66,6 +67,9 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
         };
         fetchDbUser();
     }, [user?.id]);
+
+    const { data: profile } = useUserProfile();
+    const isSubscribed = profile?.membershipTier && profile.membershipTier !== "none";
 
     useEffect(() => {
         if (showConfetti) {
@@ -291,35 +295,65 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                                         </p>
                                     </div>
 
-                                    <Button
-                                        size="lg"
-                                        className="w-full h-12 text-lg font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all rounded-xl"
-                                        onClick={async () => {
-                                            // Determine which link to use based on environment
-                                            let targetUrl = brand.affiliateLink || brand.website;
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <div className="w-full">
+                                                    <Button
+                                                        size="lg"
+                                                        className="w-full h-12 text-lg font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all rounded-xl"
+                                                        onClick={async () => {
+                                                            if (!isSubscribed) return;
 
-                                            // Override with test link if in development and available
-                                            if (process.env.NODE_ENV === "development" && brand.testAffiliateLink) {
-                                                targetUrl = brand.testAffiliateLink;
-                                            }
+                                                            if (!isSubscribed) return;
 
-                                            // Track the click (fire and forget)
-                                            trackEvent(brand.id, "click", { targetUrl });
+                                                            try {
+                                                                setIsLoading(true);
+                                                                // Secure Click Generation (Rakuten-style)
+                                                                // We ask the backend to generate a unique, opaque token for this session.
+                                                                const response = await fetch("/api/tracking/click", {
+                                                                    method: "POST",
+                                                                    headers: { "Content-Type": "application/json" },
+                                                                    body: JSON.stringify({
+                                                                        merchantId: brand.id,
+                                                                        targetUrl: brand.affiliateLink || brand.website || brand.testAffiliateLink
+                                                                    })
+                                                                });
 
-                                            if (targetUrl) {
-                                                const separator = targetUrl.includes("?") ? "&" : "?";
-                                                const idToUse = dbUserId || user?.id; // Prefer DB ID
-                                                const finalUrl = idToUse
-                                                    ? `${targetUrl}${separator}userId=${idToUse}`
-                                                    : targetUrl;
-                                                window.open(finalUrl, "_blank");
-                                            }
-                                        }}
-                                        disabled={!brand.affiliateLink && !brand.website && !(process.env.NODE_ENV === "development" && brand.testAffiliateLink)}
-                                    >
-                                        {`Shop & Earn`}
-                                        <ArrowRight className="ml-2 h-5 w-5" />
-                                    </Button>
+                                                                const data = await response.json();
+
+                                                                if (!response.ok) {
+                                                                    toast.error(data.error || "Failed to generate tracking link");
+                                                                    return;
+                                                                }
+
+                                                                // Track the event
+                                                                trackEvent(brand.id, "click", { clickId: data.clickId });
+
+                                                                // Open the secure URL (which contains ?userId=CLICK_ID)
+                                                                window.open(data.finalUrl, "_blank");
+
+                                                            } catch (error) {
+                                                                console.error("Tracking Error:", error);
+                                                                toast.error("Unable to redirect to merchant");
+                                                            } finally {
+                                                                setIsLoading(false);
+                                                            }
+                                                        }}
+                                                        disabled={(!brand.affiliateLink && !brand.website && !(process.env.NODE_ENV === "development" && brand.testAffiliateLink)) || !isSubscribed || isLoading}
+                                                    >
+                                                        {isLoading ? "Redirecting..." : (isSubscribed ? `Shop & Earn` : `Subscribe to Shop`)}
+                                                        <ArrowRight className="ml-2 h-5 w-5" />
+                                                    </Button>
+                                                </div>
+                                            </TooltipTrigger>
+                                            {!isSubscribed && (
+                                                <TooltipContent>
+                                                    <p>You must have an active membership to shop.</p>
+                                                </TooltipContent>
+                                            )}
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
                             </div>
                         </div>
@@ -331,27 +365,39 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                     <Button
                         size="lg"
                         className="w-full h-12 text-lg font-semibold rounded-xl"
-                        onClick={() => {
-                            // Determine which link to use based on environment
-                            let targetUrl = brand.affiliateLink || brand.website;
+                        onClick={async () => {
+                            if (!isSubscribed) return;
 
-                            // Override with test link if in development and available
-                            if (process.env.NODE_ENV === "development" && brand.testAffiliateLink) {
-                                targetUrl = brand.testAffiliateLink;
-                            }
+                            try {
+                                setIsLoading(true);
+                                const response = await fetch("/api/tracking/click", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({
+                                        merchantId: brand.id,
+                                        targetUrl: brand.affiliateLink || brand.website || brand.testAffiliateLink
+                                    })
+                                });
 
-                            if (targetUrl) {
-                                const separator = targetUrl.includes("?") ? "&" : "?";
-                                const idToUse = dbUserId || user?.id; // Prefer DB ID
-                                const finalUrl = idToUse
-                                    ? `${targetUrl}${separator}userId=${idToUse}`
-                                    : targetUrl;
-                                window.open(finalUrl, "_blank");
+                                const data = await response.json();
+
+                                if (!response.ok) {
+                                    toast.error(data.error || "Failed to generate tracking link");
+                                    return;
+                                }
+
+                                trackEvent(brand.id, "click", { clickId: data.clickId });
+                                window.open(data.finalUrl, "_blank");
+
+                            } catch (error) {
+                                toast.error("Unable to redirect to merchant");
+                            } finally {
+                                setIsLoading(false);
                             }
                         }}
-                        disabled={!brand.affiliateLink && !brand.website && !(process.env.NODE_ENV === "development" && brand.testAffiliateLink)}
+                        disabled={(!brand.affiliateLink && !brand.website && !(process.env.NODE_ENV === "development" && brand.testAffiliateLink)) || !isSubscribed || isLoading}
                     >
-                        {`Shop & Earn`}
+                        {isLoading ? "Redirecting..." : (isSubscribed ? `Shop & Earn` : `Subscribe to Shop`)}
                     </Button>
                 </div>
             </DialogContent>

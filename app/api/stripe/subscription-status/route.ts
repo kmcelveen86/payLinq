@@ -17,7 +17,7 @@ const TIER_MAP: Record<string, string> = {
 };
 
 interface SubscriptionStatus {
-  tier: "white" | "silver" | "gold" | "black";
+  tier: "white" | "silver" | "gold" | "black" | "none";
   status: "active" | "canceled" | "past_due" | "trialing" | "none";
   billingPeriod: "monthly" | "yearly" | null;
   currentPeriodEnd: string | null;
@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
 
     // Default status for users without Stripe customer
     const defaultStatus: SubscriptionStatus = {
-      tier: "white",
+      tier: "none",
       status: "none",
       billingPeriod: null,
       currentPeriodEnd: null,
@@ -57,7 +57,7 @@ export async function GET(req: NextRequest) {
 
     if (!user.stripeCustomerId) {
       // Fallback to DB tier if set, otherwise default
-      const dbTier = user.membershipTier?.toLowerCase() || "white";
+      const dbTier = user.membershipTier?.toLowerCase() || "none";
       return NextResponse.json({
         ...defaultStatus,
         tier: dbTier,
@@ -82,7 +82,7 @@ export async function GET(req: NextRequest) {
     const price = subscription.items.data[0]?.price;
 
     // Determine tier from price ID
-    const tier = (TIER_MAP[priceId] || "white") as SubscriptionStatus["tier"];
+    const tier = (TIER_MAP[priceId] || "none") as SubscriptionStatus["tier"];
 
     // Determine billing period from price interval
     let billingPeriod: "monthly" | "yearly" | null = null;
@@ -111,7 +111,7 @@ export async function GET(req: NextRequest) {
     const currentPeriodEnd = subscriptionItem?.current_period_end;
 
     const status: SubscriptionStatus = {
-      tier: subscription.status === "active" || subscription.status === "trialing" ? tier : "white",
+      tier: subscription.status === "active" || subscription.status === "trialing" ? tier : "none",
       status: statusMap[subscription.status] || "none",
       billingPeriod,
       currentPeriodEnd: currentPeriodEnd
