@@ -6,58 +6,46 @@ import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import TopNavComp from "@/components/TopNav/TopNavComp";
 import { TIER_COLORS, TierName } from "@/constants/tierColors";
-import { Check, Sparkles, Crown, Star, Zap, Loader2 } from "lucide-react";
+import { Check, Sparkles, Crown, Star, Zap, Loader2, Clock } from "lucide-react";
 import { getUserSubscription } from "@/app/actions/subscription";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { fetchStripePrices } from "@/app/api/userService";
+import { useSubscriptionStatus } from "@/app/hooks/useProfile";
 
 // Static tier features (these don't come from Stripe)
-const TIER_FEATURES: Record<TierName, { tagline: string; features: string[] }> = {
+const TIER_FEATURES: Record<TierName, { tagline: string; features: { text: string, available: boolean }[] }> = {
   White: {
-    tagline: "Essential tracking",
+    tagline: "Start your journey",
     features: [
-      "Basic transaction tracking",
-      "Connect 1 bank account",
-      "Monthly spending reports",
-      "Email support",
-      "Mobile app access",
+      { text: "1,000 points = $10.00 Redemption", available: true },
+      { text: "PayLinq Reward Debit Card (Coming Soon)", available: false },
+      { text: "Loyalty Rewards Program (Coming Soon)", available: false },
+      { text: "AI Powered Shopping Assistant (Coming Soon)", available: false },
+      { text: "Referral Bonus Program (Coming Soon)", available: false },
     ],
   },
   Silver: {
-    tagline: "For growing finances",
+    tagline: "Enhance your rewards",
     features: [
-      "Everything in White, plus:",
-      "Connect up to 3 bank accounts",
-      "Weekly spending insights",
-      "Budget creation tools",
-      "Bill reminders",
-      "Priority email support",
-      "Export to CSV/PDF",
+      { text: "1,000 points = $12.50 Redemption", available: false },
+      { text: "Everything in White", available: false },
+      { text: "Coming Soon", available: false },
     ],
   },
   Gold: {
-    tagline: "Most popular choice",
+    tagline: "Premium experience",
     features: [
-      "Everything in Silver, plus:",
-      "Unlimited bank accounts",
-      "Real-time alerts",
-      "Investment tracking",
-      "Tax optimization tips",
-      "AI-powered insights",
-      "Priority chat support",
-      "Custom categories",
+      { text: "1,000 points = $17.50 Redemption", available: false },
+      { text: "Everything in Silver", available: false },
+      { text: "Coming Soon", available: false },
     ],
   },
   Black: {
-    tagline: "Ultimate financial power",
+    tagline: "Luxury redefined",
     features: [
-      "Everything in Gold, plus:",
-      "Personal financial advisor",
-      "Dedicated account manager",
-      "Early feature access",
-      "White-glove onboarding",
-      "API access",
-      "Custom integrations",
-      "24/7 phone support",
-      "Family accounts (up to 5)",
+      { text: "1,000 points = $20.00 Redemption", available: false },
+      { text: "Everything in Gold", available: false },
+      { text: "Coming Soon", available: false },
     ],
   },
 };
@@ -81,39 +69,57 @@ interface StripeTier {
 
 export default function PricingPage() {
   const { user, isLoaded } = useUser();
+  const queryClient = useQueryClient();
   const [isYearly, setIsYearly] = useState(false);
-  const [tiers, setTiers] = useState<StripeTier[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // Fetch prices using React Query
+  const {
+    data: pricesData,
+    isLoading: isPricesLoading,
+    isError: isPricesError
+  } = useQuery({
+    queryKey: ["stripePrices"],
+    queryFn: fetchStripePrices,
+  });
 
-  // Fetch prices from Stripe and user subscription
+  // Fetch subscription using React Query logic from hook (or directly if hook not avail, but we'll use the hook pattern)
+  const {
+    data: subscriptionData,
+    isLoading: isSubLoading
+  } = useSubscriptionStatus();
+
+  // Derived state
+  const stripeTiers: StripeTier[] = pricesData?.tiers || [];
+
+  // Ensure White tier is always present at the start
+  const whiteTier: StripeTier = {
+    productId: 'white-tier',
+    name: 'White',
+    description: 'Start your journey',
+    monthlyPrice: 0,
+    monthlyPriceId: null,
+    yearlyPrice: 0,
+    yearlyPriceId: null
+  };
+
+  const tiers = [whiteTier, ...stripeTiers.filter(t => t.name !== 'White')];
+  const loading = isPricesLoading || isSubLoading || !isLoaded;
+  const error = isPricesError || (pricesData?.error ? pricesData.error : null);
+
+  // Sync subscription data to local state for toggles when data arrives
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const [pricesResponse, subscriptionData] = await Promise.all([
-          fetch("/api/stripe/prices"),
-          getUserSubscription()
-        ]);
+    if (subscriptionData) {
+      // Normalize tier name to PascalCase to match TierName type (white -> White)
+      const rawTier = subscriptionData.tier;
+      const normalizedTier = rawTier && rawTier !== 'none'
+        ? (rawTier.charAt(0).toUpperCase() + rawTier.slice(1)) as TierName
+        : null;
 
-        const data = await pricesResponse.json();
-        if (data.tiers) {
-          setTiers(data.tiers);
-        } else if (data.error) {
-          setError(data.error);
-        }
+      setCurrentPlan(normalizedTier);
 
-        if (subscriptionData) {
-          setCurrentPlan(subscriptionData.tier as TierName);
-          setIsYearly(subscriptionData.interval === 'yearly');
-        }
-      } catch (err) {
-        setError("Failed to load pricing info");
-      } finally {
-        setLoading(false);
-      }
+      // Only set yearly if explicit
+      setIsYearly(subscriptionData.interval === 'yearly');
     }
-    fetchData();
-  }, []);
+  }, [subscriptionData]);
 
   // Handle payment failure toast
   useEffect(() => {
@@ -153,6 +159,36 @@ export default function PricingPage() {
   };
 
   const handleSubscribe = async (tierName: TierName) => {
+    // White tier is free, no checkout needed
+    if (tierName === "White") {
+      if (user) {
+        // If user is already on a plan (not White), we need to downgrade
+        if (currentPlan !== "White") {
+          try {
+            await axios.post("/api/stripe/downgrade");
+            import("react-hot-toast").then(({ toast }) => {
+              toast.success("Plan updated to White");
+            });
+            // Invalidate queries
+            queryClient.invalidateQueries({ queryKey: ["userProfile"] });
+            queryClient.invalidateQueries({ queryKey: ["subscriptionStatus"] });
+
+            window.location.href = "/user/dashboard";
+          } catch (err) {
+            console.error("Downgrade failed", err);
+            // Fallback redirect even if API fails (or show error? Better to show error but redirecting might be safer for UX flow if just a glitch)
+            window.location.href = "/user/dashboard";
+          }
+        } else {
+          // Already White or no plan
+          window.location.href = "/user/dashboard";
+        }
+      } else {
+        window.location.href = "/sign-up?redirect_url=/user/dashboard";
+      }
+      return;
+    }
+
     if (!user) {
       window.location.href = "/sign-up?redirect_url=/pricing";
       return;
@@ -176,7 +212,7 @@ export default function PricingPage() {
             toast.success("Subscription updated successfully!");
           }
           setTimeout(() => {
-            window.location.href = "/user/profile-edit";
+            window.location.href = "/user/dashboard";
           }, 2000);
         });
       }
@@ -230,7 +266,7 @@ export default function PricingPage() {
           </p>
 
           {/* Billing Toggle */}
-          <div className="flex items-center justify-center gap-4 mb-16">
+          <div className="flex items-center justify-center gap-4 mb-8">
             <span
               className={`text-lg font-medium transition-colors ${!isYearly ? "text-white" : "text-neutral-500"
                 }`}
@@ -260,10 +296,20 @@ export default function PricingPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="ml-2 px-3 py-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-sm font-semibold rounded-full"
               >
-                Save 15%
+                2 Months Free
               </motion.span>
             )}
           </div>
+
+          {/* Free Trial Banner */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mb-16 px-6 py-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-full inline-block"
+          >
+            <span className="text-green-400 font-semibold">🎉 Start with 2 months FREE on all paid plans!</span>
+          </motion.div>
         </motion.div>
 
         {/* Pricing Cards */}
@@ -274,7 +320,7 @@ export default function PricingPage() {
             const features = TIER_FEATURES[tierName];
             const icon = TIER_ICONS[tierName];
             const isCurrentPlan = currentPlan === tierName;
-            const isHighlighted = tierName === "Gold";
+            const isHighlighted = tierName === "White";
 
             if (!colors || !features) return null;
 
@@ -377,18 +423,20 @@ export default function PricingPage() {
                             color: tierName === "Black" ? colors.text.primary : "#fff",
                           }}
                         >
-                          ${getPrice(tier)}
+                          {tierName === "White" ? "Free" : `$${getPrice(tier)}`}
                         </span>
-                        <span
-                          className="text-sm"
-                          style={{
-                            color: tierName === "Black" ? colors.text.secondary : "#9ca3af",
-                          }}
-                        >
-                          /{isYearly ? "year" : "month"}
-                        </span>
+                        {tierName !== "White" && (
+                          <span
+                            className="text-sm"
+                            style={{
+                              color: tierName === "Black" ? colors.text.secondary : "#9ca3af",
+                            }}
+                          >
+                            /{isYearly ? "year" : "month"}
+                          </span>
+                        )}
                       </div>
-                      {isYearly && tier.monthlyPrice && (
+                      {isYearly && tier.monthlyPrice && tierName !== "White" && (
                         <p className="text-sm text-neutral-500 mt-1">
                           <span className="line-through">
                             ${tier.monthlyPrice * 12}
@@ -403,20 +451,20 @@ export default function PricingPage() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => handleSubscribe(tierName)}
-                      disabled={isCurrentPlan || subscribingTier !== null}
-                      className={`w-full py-3 px-4 rounded-xl font-semibold text-sm transition-all duration-300 mb-6 ${isCurrentPlan
+                      className={`w-full py-3 px-4 rounded-xl font-semibold text-sm transition-all duration-300 mb-6 ${isCurrentPlan || tierName !== "White"
                         ? "bg-neutral-800 text-neutral-500 cursor-not-allowed"
                         : "shadow-lg hover:shadow-xl cursor-pointer"
                         } ${subscribingTier !== null && subscribingTier !== tierName ? "opacity-50 cursor-not-allowed" : ""}`}
                       style={
-                        !isCurrentPlan
+                        !isCurrentPlan && tierName === "White"
                           ? {
                             background: `linear-gradient(135deg, ${colors.button.from}, ${colors.button.to})`,
-                            color: tierName === "Black" ? "#000" : tierName === "White" ? "#333" : "#fff",
+                            color: "#333",
                             boxShadow: `0 8px 24px -8px ${colors.button.from}60`,
                           }
                           : undefined
                       }
+                      disabled={isCurrentPlan || tierName !== "White" || subscribingTier !== null}
                     >
                       {isCurrentPlan ? (
                         "Current Plan"
@@ -425,8 +473,10 @@ export default function PricingPage() {
                           <Loader2 className="w-4 h-4 animate-spin" />
                           <span>Subscribing...</span>
                         </div>
+                      ) : tierName === "White" ? (
+                        "Get Started Free"
                       ) : (
-                        "Subscribe Now"
+                        "Coming Soon"
                       )}
                     </motion.button>
 
@@ -440,17 +490,20 @@ export default function PricingPage() {
                           transition={{ delay: 0.3 + featureIndex * 0.05 }}
                           className="flex items-start gap-3"
                         >
-                          <Check
+                          {feature.available ? <Check
                             className="w-5 h-5 flex-shrink-0 mt-0.5"
                             style={{ color: colors.icon }}
-                          />
+                          /> : <Clock
+                            className="w-5 h-5 flex-shrink-0 mt-0.5"
+                            style={{ color: colors.icon }}
+                          />}
                           <span
                             className="text-sm"
                             style={{
                               color: tierName === "Black" ? colors.text.secondary : "#d1d5db",
                             }}
                           >
-                            {feature}
+                            {feature.text}
                           </span>
                         </motion.li>
                       ))}
@@ -535,7 +588,7 @@ export default function PricingPage() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => handleSubscribe("Gold")}
+              onClick={() => handleSubscribe("White")}
               className="px-8 py-4 bg-neutral-900 text-white font-semibold rounded-xl shadow-xl hover:bg-neutral-800 transition-colors"
             >
               Get Started

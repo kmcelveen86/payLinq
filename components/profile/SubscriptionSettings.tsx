@@ -71,7 +71,7 @@ const SubscriptionSettings = () => {
                                     tierName === 'Gold' ? 'from-amber-400 to-yellow-200' :
                                         tierName === 'Silver' ? 'from-slate-300 to-slate-100' :
                                             'from-gray-400 to-gray-200'}`}>
-                                {tierName} Membership
+                                {tierName.toLowerCase() === 'none' ? 'No' : tierName} Membership
                             </span>
                             {isSubscribed && (
                                 <span className="px-2 py-1 bg-green-900/50 text-green-400 text-xs rounded-full border border-green-700 flex items-center">
@@ -103,7 +103,7 @@ const SubscriptionSettings = () => {
 
                 <button
                     onClick={handleManageClick}
-                    disabled={isRedirecting}
+                    disabled={isRedirecting || tierName.toLowerCase() === 'none'}
                     className="flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {isRedirecting ? (

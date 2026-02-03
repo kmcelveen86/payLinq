@@ -65,7 +65,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
   disabled = false,
   buttonText,
 }) => {
-  const annualPrice = Math.ceil(price * 12 * 0.85); // 15% discount for annual billing
+  const annualPrice = price * 10; // 2 months free
   const currentPrice = annualBilling ? annualPrice : price;
   const priceDisplay =
     currentPrice === 0
@@ -163,6 +163,12 @@ const PricingCard: React.FC<PricingCardProps> = ({
           >
             {priceDisplay}
           </motion.span>
+          {annualBilling && price > 0 && (
+            <p className="text-sm font-medium mt-1">
+              <span className="text-gray-500 line-through mr-2">${price * 12}</span>
+              <span className="text-green-600">Save ${price * 2}</span>
+            </p>
+          )}
         </div>
 
         {/* Rewards Section */}

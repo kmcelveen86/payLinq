@@ -13,7 +13,8 @@ function ReactQueryProvider({ children }: { children: ReactNode }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            refetchOnWindowFocus: true,
+            refetchOnWindowFocus: false,
+            staleTime: 60 * 1000, // 1 minute
             retry: 1,
           },
         },

@@ -66,7 +66,12 @@ const MembershipTiersOnHomePage: React.FC = () => {
   const handleSelectTier = (tierName: string): void => {
     // If user is not logged in, redirect to sign-up
     if (!profileData && !isProfileLoading) {
-      window.location.href = "/sign-up?redirect_url=/pricing";
+      window.location.href = "/sign-up?redirect_url=/user/dashboard";
+      return;
+    }
+
+    if (tierName === "White") {
+      window.location.href = "/user/dashboard";
       return;
     }
 
@@ -180,7 +185,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.7 }}
             >
               <span className="inline-block px-4 py-2 bg-green-100 text-green-800 rounded-full font-medium">
-                Your Current Plan: {profileData.membershipTier}
+                Your Current Plan: {profileData.membershipTier === 'none' ? 'No Plan' : profileData.membershipTier}
               </span>
             </motion.div>
           )}
@@ -222,7 +227,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
                   }`}
               >
                 Annually{" "}
-                <span className="text-amber-600 font-bold">(Save 15%)</span>
+                <span className="text-amber-600 font-bold">(2 Months Free)</span>
               </span>
             </motion.div>
           )}
@@ -239,7 +244,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
             <PricingCard
               tierName="White"
               tagline="Start your journey"
-              price={10}
+              price={0}
               color="bg-gray-50"
               accentColor="border-green-300"
               buttonColor="bg-linear-to-r from-[#2D9642] to-[#38b053]"
@@ -293,7 +298,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
             <PricingCard
               tierName="Silver"
               tagline="Enhance your rewards"
-              price={20}
+              price={10}
               color="bg-green-50"
               accentColor="border-green-400"
               buttonColor="bg-linear-to-r from-[#2D9642] to-[#38b053]"
@@ -322,7 +327,8 @@ const MembershipTiersOnHomePage: React.FC = () => {
               isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "silver"}
               onSelect={() => handleSelectTier("Silver")}
               annualBilling={annualBilling}
-              buttonText={(!profileData && !isProfileLoading) ? "Get Started" : undefined}
+              buttonText={undefined}
+              disabled={true}
             />
           </motion.div>
 
@@ -335,7 +341,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
             <PricingCard
               tierName="Gold"
               tagline="Premium experience"
-              price={50}
+              price={30}
               color="bg-amber-50"
               accentColor="border-amber-400"
               buttonColor="bg-linear-to-r from-[#C28F49] to-[#d9a55c]"
@@ -364,7 +370,8 @@ const MembershipTiersOnHomePage: React.FC = () => {
               isCurrentPlan={profileData?.membershipTier?.toLowerCase() === "gold"}
               onSelect={() => handleSelectTier("Gold")}
               annualBilling={annualBilling}
-              buttonText={(!profileData && !isProfileLoading) ? "Get Started" : undefined}
+              buttonText={undefined}
+              disabled={true}
             />
           </motion.div>
 
@@ -377,7 +384,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
             <PricingCard
               tierName="Black"
               tagline="Luxury redefined"
-              price={70}
+              price={50}
               color="bg-amber-50"
               accentColor="border-amber-400"
               buttonColor="bg-linear-to-r from-[#C28F49] to-[#d9a55c]"
@@ -406,7 +413,8 @@ const MembershipTiersOnHomePage: React.FC = () => {
               isCurrentPlan={profileData?.membershipTier === "Black"}
               onSelect={() => handleSelectTier("Black")}
               annualBilling={annualBilling}
-              buttonText={(!profileData && !isProfileLoading) ? "Get Started" : undefined}
+              buttonText={undefined}
+              disabled={true}
             />
           </motion.div>
         </div>

@@ -84,7 +84,7 @@ export default function MultiplierDetails(props: Props) {
           <h3 className="text-2xl font-bold text-white mb-2">Unlock Your Rewards Value</h3>
           <p className="text-gray-400 max-w-md mb-6">
             Upgrade to a membership plan to start seeing your potential earnings matrix here.
-            You could be earning up to <span className="text-white font-bold">$20</span> for every 1000 points!
+            You could be earning up to <span className="text-white font-bold">$10</span> for every 1000 points!
           </p>
 
           <Link href="/pricing">

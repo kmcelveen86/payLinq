@@ -130,6 +130,11 @@ export const createPortalSession = async (returnUrl?: string) => {
   return response.data;
 };
 
+export const fetchStripePrices = async () => {
+  const response = await axios.get("/api/stripe/prices");
+  return response.data;
+};
+
 // Payment Methods APIs
 // export const fetchPaymentMethods = async (): Promise<PaymentMethod[]> => {
 //   const response = await apiClient.get("/payment-methods");

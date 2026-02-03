@@ -136,7 +136,7 @@ export default function PointsSummaryCard(props: Props) {
             </div>
             <div className="mt-4 space-y-3">
               <p className="text-sm text-gray-400">
-                You are currently on the <span className="text-white font-medium">Free Tier</span>. You are likely missing out on points.
+                You are currently on <span className="text-white font-medium">No Tier</span>. You are likely missing out on points.
               </p>
               <Link href="/pricing">
                 <button
