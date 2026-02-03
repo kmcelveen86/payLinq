@@ -12,7 +12,7 @@ import userData from "./data";
 
 import { CreditCard, Bell, User } from "lucide-react";
 import Link from "next/link";
-import { useUserProfile } from "@/app/hooks/useProfile";
+import { useUserProfile, useUserWallet } from "@/app/hooks/useProfile";
 import { useNotifications } from "@/app/hooks/useNotifications";
 
 const PaylinqDashboard = ({ initialWalletData }: { initialWalletData?: any }) => {
@@ -23,17 +23,21 @@ const PaylinqDashboard = ({ initialWalletData }: { initialWalletData?: any }) =>
   } = useUserProfile();
 
   const { data: notifications } = useNotifications();
+  const { data: liveWalletData } = useUserWallet();
   const unreadCount = notifications?.filter(n => !n.read).length || 0;
 
   const { firstName, image } = profileData || {};
   const [activeTab, setActiveTab] = useState("overview");
 
+  // Use live data if available, otherwise fall back to initial SSR data
+  const activeWalletData = liveWalletData || initialWalletData;
+
   // Merge static data with real data if available
   const displayData = {
     ...userData,
-    totalPoints: initialWalletData?.totalPoints ?? userData.totalPoints,
-    pointsThisMonth: initialWalletData?.pointsThisMonth ?? userData.pointsThisMonth,
-    recentTransactions: initialWalletData?.transactions ?? userData.recentTransactions,
+    totalPoints: activeWalletData?.totalPoints ?? userData.totalPoints,
+    pointsThisMonth: activeWalletData?.pointsThisMonth ?? userData.pointsThisMonth,
+    recentTransactions: activeWalletData?.transactions ?? userData.recentTransactions,
   };
 
   // Animation variants

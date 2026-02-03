@@ -172,3 +172,18 @@ export const fetchStripePrices = async () => {
 //   const response = await apiClient.get("/login-history");
 //   return response.data;
 // };
+
+export const cancelMembership = async () => {
+  const response = await axios.post("/api/user/cancel-membership");
+  return response.data;
+};
+
+export const fetchUserWallet = async () => {
+  const response = await apiClient.get("/wallet");
+  return response.data;
+};
+
+export const fetchUserTransactions = async () => {
+  const response = await apiClient.get("/transactions");
+  return response.data;
+};

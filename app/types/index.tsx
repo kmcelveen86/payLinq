@@ -18,7 +18,8 @@ export interface User {
   | "White"
   | "Silver"
   | "Gold"
-  | "Black";
+  | "Black"
+  | "none";
 }
 
 export interface Address {

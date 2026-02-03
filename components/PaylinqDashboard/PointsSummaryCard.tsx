@@ -40,8 +40,8 @@ export default function PointsSummaryCard(props: Props) {
   const { data: profileData } = useUserProfile();
 
   // Get current tier without fallback to White for "No Tier" detection
-  const hasTier = !!profileData?.membershipTier;
-  const currentTier = profileData?.membershipTier || "White"; // Keep fallback for displaying limits/rates if needed, or handle separately
+  const hasTier = !!profileData?.membershipTier && profileData.membershipTier !== "none";
+  const currentTier = (hasTier ? profileData?.membershipTier : "White") as keyof typeof TIER_INFO; // Keep fallback for displaying limits/rates if needed, or handle separately
 
   // Get tier-specific limits
   const tierInfo =

@@ -1,5 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { stripe } from "@/lib/stripe";
+import Stripe from "stripe";
 
 // Type definitions based on the original function's return structure
 type FormattedTransaction = {
@@ -77,7 +79,7 @@ export const getUserWalletDataCached = unstable_cache(
         };
     },
     ["user-wallet-data"],
-    { revalidate: 60 } // Cache for 1 minute
+    { revalidate: 60, tags: ["user-wallet-data"] } // Cache for 1 minute
 );
 
 export const getAllUserTransactionsCached = unstable_cache(
@@ -131,7 +133,7 @@ export const getAllUserTransactionsCached = unstable_cache(
         });
     },
     ["user-all-transactions"],
-    { revalidate: 60 }
+    { revalidate: 60, tags: ["user-all-transactions"] }
 );
 
 export const getUserProfileByEmailCached = unstable_cache(
@@ -160,4 +162,18 @@ export const getUserNotificationsCached = unstable_cache(
     },
     ["user-notifications"],
     { revalidate: 60 }
+);
+
+export const getStripeCreditBalanceCached = unstable_cache(
+    async (customerId: string) => {
+        try {
+            const customer = await stripe.customers.retrieve(customerId) as Stripe.Customer;
+            return customer.invoice_credit_balance || 0;
+        } catch (error) {
+            console.error("Error fetching stripe credit balance:", error);
+            return 0;
+        }
+    },
+    ["stripe-credit-balance"],
+    { revalidate: 900 } // Cache for 15 minutes
 );

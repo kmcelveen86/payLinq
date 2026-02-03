@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
+import { revalidateTag } from "next/cache";
 import { verifyMerchantApiKey } from "@/lib/api-keys";
 import { prisma } from "@/lib/prisma";
 import { awardUpp, getOrCreateUserWallet } from "@/lib/wallet";
@@ -45,23 +46,49 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        // 3. Verify User Exists
-        const user = await prisma.user.findUnique({
+        // 3. Resolve Click ID (Secure Attribution)
+        // We ONLY accept an AffiliateClick ID here. Raw User IDs are NOT allowed.
+        const click = await prisma.affiliateClick.findUnique({
             where: { id: user_id },
+            include: { user: true }
         });
 
-        if (!user) {
+        if (!click) {
+            console.warn(`[OrdersAPI] Invalid or Unknown ID: ${user_id}`);
             return NextResponse.json(
-                { error: `User not found: ${user_id}` },
+                { error: "Invalid tracking ID" },
                 { status: 404 }
             );
         }
+
+        // Check if Click is expired or already used
+        if (!click.isActive || new Date() > click.expiresAt) {
+            console.warn(`[OrdersAPI] Click ID expired or used: ${user_id}`);
+            return NextResponse.json(
+                { error: "Tracking link expired or already used" },
+                { status: 400 }
+            );
+        }
+
+        // Set the real user from the secure click record
+        const user = click.user;
+        const resolvedUserId = user.id;
+        const clickId = click.id;
 
         // 4. Calculate Rewards
         // Logic: amount_cents / 100 * rate.
         // If rate is 0.05 (5%), $50.00 * 0.05 = 2.5 UPP? 
         // Or is UPP 1:1 with currency? Assuming 1 UPP = $1 value or arbitrary points?
         // Let's assume UPP is a point system.
+        // Let's assume UPP is a point system.
+        // CHECK: If user is unsubscribed (tier "none" or null), REJECT the transaction.
+        if (!user.membershipTier || user.membershipTier === "none") {
+            return NextResponse.json(
+                { error: "Active subscription required to earn rewards" },
+                { status: 403 }
+            );
+        }
+
         const earningRate = merchant.uppEarningRate || 0.0; // e.g. 1.0 = 1 point per $1? 
         // Or percentage e.g. 5% cashback equivalent.
 
@@ -140,6 +167,22 @@ export async function POST(req: NextRequest) {
                     amount: amount_cents,
                     currency: currency
                 }
+            }
+        });
+
+        // 8. Invalidate Cache
+        // This ensures the dashboard updates immediately
+        revalidateTag("user-wallet-data", "default");
+        revalidateTag("user-all-transactions", "default");
+        // revalidatePath("/user/dashboard"); // Backup for server components if tags fail
+
+        // 9. CONSUME TOKEN (Single-Use Enforcement)
+        // We mark the click as inactive so it cannot be used again
+        await prisma.affiliateClick.update({
+            where: { id: clickId },
+            data: {
+                isActive: false,
+                convertedAt: new Date()
             }
         });
 

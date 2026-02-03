@@ -14,6 +14,8 @@ import {
   uploadProfileImage,
   fetchSubscriptionStatus,
   createPortalSession,
+  fetchUserWallet,
+  fetchUserTransactions,
 } from "@/app/api/userService";
 import { toast } from "react-hot-toast";
 import { ProfileFormData } from "../schemas/profile";
@@ -253,6 +255,26 @@ export const useManageSubscription = () => {
       console.error("Error creating portal session:", error);
       toast.error("Failed to redirect to billing portal");
     },
+  });
+};
+
+export const useUserWallet = () => {
+  return useQuery({
+    queryKey: ["userWallet"],
+    queryFn: fetchUserWallet,
+    staleTime: 1000 * 60, // 1 minute
+    refetchInterval: 1000 * 60, // Poll every minute
+    refetchOnWindowFocus: true,
+  });
+};
+
+export const useUserTransactions = () => {
+  return useQuery({
+    queryKey: ["userTransactions"],
+    queryFn: fetchUserTransactions,
+    staleTime: 1000 * 60, // 1 minute
+    refetchInterval: 1000 * 60, // Poll every minute
+    refetchOnWindowFocus: true,
   });
 };
 

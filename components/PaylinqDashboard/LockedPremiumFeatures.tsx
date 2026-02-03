@@ -75,7 +75,9 @@ export default function LockedPremiumFeatures(props: Props) {
       className="bg-gray-800 bg-opacity-70 backdrop-blur-md rounded-xl shadow-xl p-6"
     >
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-lg font-bold">{currentTier} Features</h3>
+        <h3 className="text-lg font-bold">
+          {(!currentTier || currentTier === 'none') ? 'PayLinq' : currentTier} Features
+        </h3>
       </div>
 
       {tierInfo.showFeatures ? (

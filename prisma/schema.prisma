@@ -61,6 +61,7 @@ model User {
   wallet                  UserWallet?
   notifications           Notification[]
   securityLogs            SecurityLog[]
+  affiliateClicks         AffiliateClick[]
 }
 
 model Waitlist {
@@ -287,6 +288,7 @@ model Merchant {
   webhooks    WebhookSubscriber[]
   paylinqTransactions PaylinqTransaction[]
   analyticsEvents AnalyticsEvent[]
+  affiliateClicks AffiliateClick[]
 }
 
 model Location {
@@ -525,4 +527,27 @@ model SecurityLog {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AffiliateClick {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  merchantId  String?
+  merchant    Merchant? @relation(fields: [merchantId], references: [id], onDelete: SetNull)
+  
+  targetUrl   String    // The original destination
+  ipAddress   String?
+  userAgent   String?
+  
+  isActive    Boolean   @default(true) // Can be set to false after conversion if we want single-use
+  convertedAt DateTime? // When the purchase happened
+  
+  createdAt   DateTime  @default(now())
+  expiresAt   DateTime  // Validity window (e.g. 30 days)
+  
+  @@index([userId])
+  @@index([merchantId])
+  @@index([createdAt])
 }
