@@ -56,6 +56,7 @@ const PaylinqFooter = () => {
       links: [
         { name: "Debit Card", href: "/products/debit-card" },
         { name: "Rewards Program", href: "/products/rewards" },
+        { name: "Travel Rewards", href: "/travel-rewards" },
         { name: "Partner Benefits", href: "/products/benefits" },
       ],
     },
@@ -71,15 +72,22 @@ const PaylinqFooter = () => {
     {
       title: "Legal",
       links: [
-        { name: "Terms of Service", href: "/terms" },
-        { name: "Privacy Policy", href: "/privacy" },
+        { name: "Terms & Conditions", href: "/terms" },
         { name: "Cookie Policy", href: "/cookies" },
-        { name: "Disclosures", href: "/disclosures" },
+        { name: "Data Processing", href: "/data-processing" },
+        { name: "Legal Compliance", href: "/legal-compliance" },
+      ],
+    },
+    {
+      title: "Disclosures",
+      links: [
+        { name: "All Disclosures", href: "/disclosures" },
+        { name: "Affiliate Disclosure", href: "/affiliate-disclosure" },
+        { name: "Rewards Disclosure", href: "/rewards-disclosure" },
+        { name: "Travel Disclaimer", href: "/travel-disclaimer" },
       ],
     },
   ];
-
-  if (!isMounted) return null;
 
   return (
     <footer className="relative bg-black pt-20 pb-10 overflow-hidden">
@@ -177,7 +185,7 @@ const PaylinqFooter = () => {
 
           {/* Footer Links */}
           <div className="lg:col-span-3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8">
               {footerLinks.map((column, idx) => (
                 <motion.div
                   key={column.title}
