@@ -1,0 +1,48 @@
+Cookie Policy
+Last Updated: March 3, 2026
+1. What Are Cookies
+Cookies are small text files stored on your device when you visit a website. Cookies help
+websites remember user preferences, improve performance, and enable certain platform
+features.
+Paylinq uses cookies and similar technologies to operate the platform, track affiliate referrals,
+and improve user experience.
+2. Types of Cookies We Use
+Essential Cookies
+These cookies are required for core platform functionality such as account login, security, and
+session management.
+Performance and Analytics Cookies
+These cookies collect information about how users interact with the Paylinq platform, such as
+pages visited, features used, and general traffic patterns. This information helps improve
+platform performance and usability.
+Affiliate Tracking Cookies
+When users access merchants through Paylinq links or integrations, affiliate networks may
+place tracking cookies on the user’s device. These cookies help confirm that a referral
+originated from Paylinq and allow commissions and rewards to be properly attributed.
+Marketing and Measurement Cookies
+Paylinq or its partners may use cookies to measure marketing campaign performance, track
+referral sources, and improve promotional effectiveness.
+3. Third-Party Cookies
+Some cookies may be placed by third-party partners including:
+● Affiliate networks
+● Travel providers
+● Analytics services
+● Payment processors
+These third parties operate under their own privacy and cookie policies.
+4. Cookie Duration
+Cookies may remain active for different time periods depending on their purpose. Some cookies
+expire when the browsing session ends, while others may remain active for a defined period to
+allow referral tracking and reward validation.
+Affiliate tracking cookies may remain active for periods defined by the affiliate network or
+merchant partner.
+5. Managing Cookies
+Users can control cookie preferences through their web browser settings. Most browsers allow
+users to block or delete cookies.
+Please note that disabling cookies may limit certain features of the Paylinq platform, including
+referral tracking and reward validation.
+6. Updates to This Policy
+Paylinq may update this Cookie Policy periodically to reflect changes in technology, legal
+requirements, or platform functionality.
+7. Contact Information
+Paylinq Privacy Team
+privacy@getpaylinq.com
+https://www.getpaylinq.com

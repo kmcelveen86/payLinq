@@ -1,0 +1,11 @@
+Travel Services Disclaimer
+Last Updated: March 3, 2026
+Travel products and services displayed on Paylinq are provided by independent travel partners
+including airlines, hotels, cruise lines, and travel agencies.
+Paylinq is not a travel agency and is not the merchant of record for most bookings. All travel
+reservations, payments, and fulfillment are handled directly by the travel provider or booking
+partner.
+Paylinq may receive referral commissions from travel partners for qualifying bookings made
+through Paylinq links, widgets, or integrations.
+Travel availability, pricing, cancellation policies, and customer support are determined solely by
+the travel provider.

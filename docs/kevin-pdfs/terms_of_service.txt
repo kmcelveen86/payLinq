@@ -1,0 +1,89 @@
+Terms of Service
+Last Updated: March 3, 2026
+1. Acceptance of Terms
+These Terms of Service (“Terms”) govern your access to and use of the Paylinq platform,
+website, applications, and related services (collectively, the “Platform”). By accessing or using
+Paylinq, you agree to be bound by these Terms and all applicable laws and regulations. If you
+do not agree with these Terms, you should not use the Platform.
+2. Description of Services
+Paylinq is a rewards and referral platform that allows users to discover merchants, travel
+services, and partner offers while earning Paylinq Points (“PP”) through qualifying activities.
+Points may be converted into Universal Reward Tokens (“URT”) subject to Paylinq policies and
+eligibility requirements.
+Paylinq operates primarily as a referral and rewards platform and generally is not the merchant
+of record for transactions made with third-party merchants or travel providers.
+3. User Accounts
+To access certain features, users may be required to create an account.
+Users agree to:
+● Provide accurate and complete information during registration
+● Maintain the security of their account credentials
+● Notify Paylinq of any unauthorized access or security breach
+Users are responsible for all activity occurring under their accounts.
+4. Eligibility
+Paylinq services are intended for individuals 18 years of age or older. By using the Platform,
+you represent that you meet this eligibility requirement.
+5. Rewards Program
+Paylinq Points and Universal Reward Tokens are promotional incentives issued by Paylinq.
+Rewards may:
+● Remain pending until merchant confirmation
+● Be adjusted for cancellations, refunds, or transaction changes
+● Be withheld or reversed in cases of fraud, abuse, or policy violations
+Paylinq reserves the right to modify reward structures, redemption requirements, and eligibility
+criteria at any time.
+6. Merchant and Travel Partner Transactions
+Transactions made through Paylinq links or integrations are completed directly with merchants
+or travel providers.
+Paylinq:
+● Does not control merchant pricing, availability, or policies
+● Is not responsible for product fulfillment or travel services
+● Does not guarantee the quality or performance of third-party services
+Users should review the terms and policies of the merchant or travel provider before completing
+a purchase or booking.
+7. Affiliate Relationships
+Paylinq may receive commissions from merchants or affiliate networks when users complete
+qualifying purchases or bookings through Paylinq links, widgets, or integrations.
+These commissions help fund Paylinq Points and promotional incentives.
+8. Paid Membership Tiers
+Paylinq may offer paid membership tiers that provide enhanced platform features or reward
+benefits.
+Payments for paid tiers are processed through third-party payment processors. Paylinq does not
+store full credit card numbers.
+Membership fees may be billed on a recurring basis depending on the subscription plan
+selected.
+9. Prohibited Activities
+Users agree not to:
+● Engage in fraudulent or artificial transactions
+● Attempt to manipulate rewards or referral tracking systems
+● Use automated scripts, bots, or other unauthorized tools
+● Misrepresent identity or account information
+● Violate affiliate network or merchant policies
+Violation of these rules may result in account suspension, termination, or reward forfeiture.
+10. Account Suspension or Termination
+Paylinq may suspend or terminate accounts at its discretion if users violate these Terms,
+engage in fraud, or misuse the platform.
+Upon termination, users may lose access to their account and any pending or unredeemed
+rewards.
+11. Intellectual Property
+All platform content, trademarks, logos, software, and design elements are the property of
+Paylinq or its licensors unless otherwise stated.
+Users may not copy, reproduce, distribute, or modify Paylinq intellectual property without
+authorization.
+12. Limitation of Liability
+To the maximum extent permitted by law, Paylinq shall not be liable for indirect, incidental, or
+consequential damages resulting from the use of the platform or transactions conducted with
+third-party merchants.
+Paylinq provides its services on an “as is” and “as available” basis without warranties of any
+kind.
+13. Changes to Services
+Paylinq may modify, suspend, or discontinue platform features, reward programs, or services at
+any time without prior notice.
+14. Governing Law
+These Terms shall be governed by and interpreted under the laws of the State of Georgia,
+United States, without regard to conflict-of-law principles.
+15. Changes to These Terms
+Paylinq may update these Terms periodically. Continued use of the platform after updates
+indicates acceptance of the revised Terms.
+16. Contact Information
+Paylinq Legal Team
+Email: legal@getpaylinq.com
+Website: https://www.getpaylinq.com
