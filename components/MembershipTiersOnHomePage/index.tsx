@@ -262,11 +262,11 @@ const MembershipTiersOnHomePage: React.FC = () => {
                   text: "Loyalty Rewards Program",
                   comingSoon: true,
                 },
-                {
-                  icon: <Bot size={18} />,
-                  text: "AI Powered Shopping Assistant",
-                  comingSoon: true,
-                },
+                // {
+                //   icon: <Bot size={18} />,
+                //   text: "AI Powered Shopping Assistant",
+                //   comingSoon: true,
+                // },
                 {
                   icon: <Gift size={18} />,
                   text: "Referral Bonus Program",
@@ -274,7 +274,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
                 },
               ]}
               rewards={[
-                { category: "Everyday Purchases", points: 1 },
+                { category: "Everyday Purchases", points: 100 },
               ]}
               pointsFor10={1000}
               redemptionValue={10}
@@ -317,7 +317,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
                 },
               ]}
               rewards={[
-                { category: "Everyday Purchases", points: 1 },
+                { category: "Multiplier", points: 1.25 },
               ]}
               pointsFor10={1000}
               redemptionValue={12.50}
@@ -360,7 +360,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
                 },
               ]}
               rewards={[
-                { category: "Everyday Purchases", points: 1 },
+                { category: "Multiplier", points: 1.5 },
               ]}
               pointsFor10={1000}
               redemptionValue={17.50}
@@ -403,7 +403,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
                 },
               ]}
               rewards={[
-                { category: "Everyday Purchases", points: 1 },
+                { category: "Multiplier", points: 2.0 },
               ]}
               pointsFor10={1000}
               redemptionValue={20}

@@ -20,7 +20,7 @@ const TIER_FEATURES: Record<TierName, { tagline: string; features: { text: strin
       { text: "1,000 points = $10.00 Redemption", available: true },
       { text: "PayLinq Reward Debit Card (Coming Soon)", available: false },
       { text: "Loyalty Rewards Program (Coming Soon)", available: false },
-      { text: "AI Powered Shopping Assistant (Coming Soon)", available: false },
+      // { text: "AI Powered Shopping Assistant (Coming Soon)", available: false },
       { text: "Referral Bonus Program (Coming Soon)", available: false },
     ],
   },

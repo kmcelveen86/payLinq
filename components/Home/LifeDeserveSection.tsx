@@ -228,7 +228,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
                     backgroundImage: "linear-gradient(90deg, #2D9642, #C28F49)",
                   }}
                 >
-                  {`AI-Driven Rewards. Real Purchasing Power.`}
+                  {`Spend Anywhere. Earn Anywhere. Real Purchasing Power.`}
                 </span>
               </div>
             </Typography>
@@ -240,27 +240,6 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
             >
               {`PayLinq turns your everyday spending into Universal PayLinq Points (UPP) - our universal rewards currency - redeemable like cash, powered by AI to maximize your value.`}
             </Typography>
-
-            {/* Mission statement */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5, duration: 1 }}
-              className="mt-8 p-6 rounded-lg"
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(45,150,66,0.15) 0%, rgba(194,143,73,0.15) 100%)",
-                borderLeft: "4px solid #2D9642",
-              }}
-            >
-              <Typography
-                variant="body1"
-                component="div"
-                className="text-white font-light italic"
-              >
-                {`"Our mission is to transform everyday spending into rewards that unlock real financial freedom."`}
-              </Typography>
-            </motion.div>
 
             {/* CTA Button */}
             {/* <motion.div

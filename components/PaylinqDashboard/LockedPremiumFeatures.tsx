@@ -11,7 +11,7 @@ const TIER_FEATURES = {
     features: [
       "PayLinq Reward Debit Card",
       "Loyalty Rewards Program",
-      "AI Powered Shopping Assistant",
+      // "AI Powered Shopping Assistant",
       "Referral Bonus Program",
     ],
   },
