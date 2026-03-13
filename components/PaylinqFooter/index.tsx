@@ -160,14 +160,14 @@ const PaylinqFooter = () => {
                   className="text-gray-500 mt-1 mr-3 shrink-0"
                   size={18}
                 />
-                <span className="text-gray-400">{`kmcelveen@getpaylinq.com`}</span>
+                <span className="text-gray-400">{`info@getpaylinq.com`}</span>
               </div>
               <div className="flex items-start">
                 <Phone
                   className="text-gray-500 mt-1 mr-3 shrink-0"
                   size={18}
                 />
-                <span className="text-gray-400">{`(901) 428-1741`}</span>
+                <span className="text-gray-400">{`(888) 413-4601`}</span>
               </div>
               <div className="flex items-start">
                 <MapPin
