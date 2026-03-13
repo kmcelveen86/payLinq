@@ -186,22 +186,22 @@ const PricingCard: React.FC<PricingCardProps> = ({
                   {reward.category}
                 </span>
                 <span className="font-semibold" style={{ color: tierName === "Black" ? tierColors.text.accent : "#111827" }}>
-                  {reward.points} pts per $1
+                  {reward.category === "Multiplier" ? `${reward.points}x multiplier` : `${reward.points} pts per $1`}
                 </span>
               </motion.li>
             ))}
-            <motion.li
+            {tierName === "White" && <motion.li
               className="flex justify-between text-sm"
               whileHover={{ x: 3 }}
               transition={{ duration: 0.2 }}
             >
-              <span style={{ color: tierName === "Black" ? tierColors.text.accent : "#4B5563" }}>
+              <span style={{ color: "#4B5563" }}>
                 ${redemptionValue.toFixed(2)} Redemption
               </span>
-              <span className="font-semibold" style={{ color: tierName === "Black" ? tierColors.text.accent : "#111827" }}>
+              <span className="font-semibold" style={{ color: "#111827" }}>
                 {pointsFor10.toLocaleString()} points
               </span>
-            </motion.li>
+            </motion.li>}
           </ul>
         </div>
 

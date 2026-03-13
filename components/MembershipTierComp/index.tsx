@@ -50,11 +50,11 @@ const membershipTiers = [
         text: "Loyalty Rewards Program",
         comingSoon: true,
       },
-      {
-        icon: <Sparkle size={18} />,
-        text: "AI Powered Shopping Assistant",
-        comingSoon: true,
-      },
+      // {
+      //   icon: <Sparkle size={18} />,
+      //   text: "AI Powered Shopping Assistant",
+      //   comingSoon: true,
+      // },
       {
         icon: <Gift size={18} />,
         text: "Referral Bonus Program",
@@ -92,7 +92,7 @@ const membershipTiers = [
       },
     ],
     rewards: [
-      { category: "Everyday Purchases", points: 1 },
+      { category: "Multiplier", points: 1.25 },
     ],
     pointsFor10: 1000,
     redemptionValue: 12.50,
@@ -122,7 +122,7 @@ const membershipTiers = [
       },
     ],
     rewards: [
-      { category: "Everyday Purchases", points: 1 },
+      { category: "Multiplier", points: 1.5 },
     ],
     pointsFor10: 1000,
     redemptionValue: 17.50,
@@ -152,7 +152,7 @@ const membershipTiers = [
       },
     ],
     rewards: [
-      { category: "Everyday Purchases", points: 1 },
+      { category: "Multiplier", points: 2 },
     ],
     pointsFor10: 1000,
     redemptionValue: 20,

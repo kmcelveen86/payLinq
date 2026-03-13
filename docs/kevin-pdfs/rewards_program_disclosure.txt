@@ -1,0 +1,10 @@
+Rewards Program Disclosure
+Last Updated: March 3, 2026
+Paylinq Points and Universal Reward Tokens (URT) are promotional rewards issued by Paylinq.
+These rewards are independent from merchant loyalty programs and are not issued or
+guaranteed by merchants or travel providers.
+Rewards may remain pending until a merchant confirms a transaction. Rewards may be
+adjusted or reversed if a transaction is cancelled, refunded, or determined to violate Paylinq
+policies.
+Reward values may vary depending on merchant category, promotional campaigns,
+membership tier, or affiliate commission structure.
