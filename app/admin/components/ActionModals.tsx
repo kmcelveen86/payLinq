@@ -135,12 +135,12 @@ export function UpdateRateModal({ merchantId, currentRate, isOpen, onClose }: { 
         >
             <div className="space-y-4 text-gray-900">
                 <div>
-                    <label className="block text-sm font-medium mb-1 text-gray-900">New Rate (0.0 - 1.0)</label>
+                    <label className="block text-sm font-medium mb-1 text-gray-900">New Rate (0.0 - 10)</label>
                     <input
                         type="number"
                         step="0.01"
                         min="0"
-                        max="1"
+                        max="10"
                         value={rate}
                         onChange={(e) => setRate(e.target.value)}
                         className="w-full border rounded p-2 text-sm text-gray-900 bg-white"

@@ -5,7 +5,7 @@ import { logAdminAction } from "@/lib/audit";
 import { z } from "zod";
 
 const rateSchema = z.object({
-    rate: z.number().min(0).max(1), // 0.0 to 1.0
+    rate: z.number().min(0).max(10), // 0.0 to 10.0
     reason: z.string().min(1, "Reason is required"),
 });
 
@@ -25,10 +25,11 @@ export async function POST(
         if (!merchant) return NextResponse.json({ error: "Merchant not found" }, { status: 404 });
 
         const previousRate = merchant.commissionRate;
+        const previousUppRate = merchant.uppEarningRate;
 
         const updated = await prisma.merchant.update({
             where: { id },
-            data: { commissionRate: rate },
+            data: { commissionRate: rate, uppEarningRate: rate },
         });
 
         await logAdminAction({
@@ -38,7 +39,7 @@ export async function POST(
             action: "merchant.setRate",
             targetType: "merchant",
             targetId: id,
-            details: { reason, previousRate, newRate: rate },
+            details: { reason, previousRate, previousUppRate, newRate: rate },
             ipAddress: req.headers.get("x-forwarded-for")
         });
 
