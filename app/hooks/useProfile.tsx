@@ -149,6 +149,7 @@ export const useUpdateMembershipTier = () => {
   return useMutation({
     mutationFn: updateMembershipTier,
     onSuccess: (data) => {
+      console.log("🚀 ~ useUpdateMembershipTier ~ data:", data)
       // Update the cached user profile with the new membership tier
       queryClient.setQueryData(["userProfile"], (oldData: any) => {
         if (oldData) {

@@ -27,7 +27,7 @@ const TIER_FEATURES: Record<TierName, { tagline: string; features: { text: strin
   Silver: {
     tagline: "Enhance your rewards",
     features: [
-      { text: "1,000 points = $12.50 Redemption", available: false },
+      // { text: "1,000 points = $12.50 Redemption", available: false },
       { text: "Everything in White", available: false },
       { text: "Coming Soon", available: false },
     ],
@@ -35,7 +35,7 @@ const TIER_FEATURES: Record<TierName, { tagline: string; features: { text: strin
   Gold: {
     tagline: "Premium experience",
     features: [
-      { text: "1,000 points = $17.50 Redemption", available: false },
+      // { text: "1,000 points = $17.50 Redemption", available: false },
       { text: "Everything in Silver", available: false },
       { text: "Coming Soon", available: false },
     ],
@@ -43,7 +43,7 @@ const TIER_FEATURES: Record<TierName, { tagline: string; features: { text: strin
   Black: {
     tagline: "Luxury redefined",
     features: [
-      { text: "1,000 points = $20.00 Redemption", available: false },
+      // { text: "1,000 points = $20.00 Redemption", available: false },
       { text: "Everything in Gold", available: false },
       { text: "Coming Soon", available: false },
     ],
@@ -110,6 +110,7 @@ export default function PricingPage() {
     if (subscriptionData) {
       // Normalize tier name to PascalCase to match TierName type (white -> White)
       const rawTier = subscriptionData.tier;
+      console.log("🚀 ~ PricingPage ~ rawTier:", rawTier)
       const normalizedTier = rawTier && rawTier !== 'none'
         ? (rawTier.charAt(0).toUpperCase() + rawTier.slice(1)) as TierName
         : null;
