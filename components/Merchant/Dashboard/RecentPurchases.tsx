@@ -59,7 +59,7 @@ export function RecentPurchases({ transactions }: RecentPurchasesProps) {
                                     <div className="text-right">
                                         <div className="flex items-center gap-1 text-sm font-medium text-gold">
                                             <Gift className="h-3 w-3" />
-                                            +{tx.uppEarned} UPP
+                                            +{tx.uppEarned} Paylinq Cash
                                         </div>
                                         <p className="text-xs text-muted-foreground">
                                             User: {tx.userId ? tx.userId.slice(0, 8) + "..." : "Guest"}

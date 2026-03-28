@@ -28,7 +28,7 @@ This data may include:
 Paylinq generally does not receive full payment card numbers or sensitive financial details.
 4. Reward Validation
 Transaction data received from affiliate networks or merchant partners is used to validate
-eligibility for Paylinq Points and Universal Reward Tokens (URT).
+eligibility for Paylinq Cash and Universal Reward Tokens (URT).
 Rewards may remain in a pending state until merchants confirm that the transaction is
 completed and not refunded, cancelled, or reversed.
 5. Fraud Prevention and Compliance

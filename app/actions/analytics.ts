@@ -51,7 +51,7 @@ export async function getMerchantAnalytics() {
     // 5. Avg Order Value
     const avgOrderValue = salesCount > 0 ? totalRevenue / salesCount : 0;
 
-    // 6. Avg UPP per Transaction
+    // 6. Avg Paylinq Cash per Transaction
     const avgUppPerTx = salesCount > 0 ? totalUppIssued / salesCount : 0;
 
     // 7. Repeat Purchase Rate & Freq
@@ -94,7 +94,7 @@ export async function getMerchantAnalytics() {
         // Excluding 3am for now to match UI or add if needed
     ];
 
-    // 9. UPP Issued This Month
+    // 9. Paylinq Cash Issued This Month
     const now = new Date();
     const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 

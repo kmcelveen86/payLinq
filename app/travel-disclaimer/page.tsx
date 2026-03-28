@@ -88,13 +88,13 @@ export default function TravelDisclaimerPage() {
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-800 mb-8">
             <h2 className="text-xl font-semibold text-white mb-4">Earning Rewards on Travel</h2>
-            <p className="text-gray-400 mb-4">When you book travel through Paylinq, you can earn Paylinq Points on qualifying bookings:</p>
+            <p className="text-gray-400 mb-4">When you book travel through Paylinq, you can earn Paylinq Cash on qualifying bookings:</p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
-                { category: "Flights", points: "200 PP" },
-                { category: "Hotels", points: "400 PP" },
-                { category: "Car Rentals", points: "300 PP" },
-                { category: "Vacation Packages", points: "600 PP" },
+                { category: "Flights", points: "200 Paylinq Cash" },
+                { category: "Hotels", points: "400 Paylinq Cash" },
+                { category: "Car Rentals", points: "300 Paylinq Cash" },
+                { category: "Vacation Packages", points: "600 Paylinq Cash" },
               ].map((item, idx) => (
                 <div key={idx} className="bg-gray-800/50 rounded-lg p-4 text-center">
                   <p className="text-[#C28F49] font-bold">{item.points}</p>
@@ -102,7 +102,7 @@ export default function TravelDisclaimerPage() {
                 </div>
               ))}
             </div>
-            <p className="text-gray-400 mt-4 text-sm">Monthly travel earning cap: 4,000 PP. Rewards are credited after booking confirmation.</p>
+            <p className="text-gray-400 mt-4 text-sm">Monthly travel earning cap: 4,000 Paylinq Cash. Rewards are credited after booking confirmation.</p>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }} className="bg-gradient-to-r from-[#2D9642]/10 to-[#C28F49]/10 rounded-xl p-8 border border-[#2D9642]/30">

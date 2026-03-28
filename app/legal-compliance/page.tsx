@@ -9,7 +9,7 @@ import PaylinqFooter from "@/components/PaylinqFooter";
 export default function LegalCompliancePage() {
   const sections = [
     { icon: Scale, title: "1. Affiliate Relationships", content: "Paylinq participates in affiliate marketing and referral programs with various merchants, travel providers, and service platforms. When users access merchants through Paylinq links, widgets, or integrations, Paylinq may earn a commission or referral fee.\n\nThese commissions are paid by merchants and do not increase the price paid by the consumer." },
-    { icon: Gift, title: "2. Independent Rewards Program", content: "Paylinq Points and Universal Reward Tokens (URT) are promotional incentives issued solely by Paylinq unless explicitly stated otherwise. Merchant partners do not issue or control Paylinq rewards." },
+    { icon: Gift, title: "2. Independent Rewards Program", content: "Paylinq Cash and Universal Reward Tokens (URT) are promotional incentives issued solely by Paylinq unless explicitly stated otherwise. Merchant partners do not issue or control Paylinq rewards." },
     { icon: BadgeCheck, title: "3. Price Integrity", content: "Paylinq does not alter merchant pricing, add hidden charges, or manipulate discounts. Affiliate commissions are paid from merchant marketing budgets." },
     { icon: Layers, title: "4. Merchant Loyalty Compatibility", content: "Using Paylinq does not prevent customers from receiving merchant loyalty points, credit card rewards, or membership benefits." },
     { icon: RefreshCw, title: "5. Reward Tracking and Validation", content: "Rewards may initially appear as pending until merchant confirmation. Paylinq reserves the right to adjust or reverse rewards in cases of cancellations, refunds, fraud, or policy violations." },

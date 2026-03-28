@@ -137,7 +137,7 @@ export function UpdateRateModal({ merchantId, currentRate, isOpen, onClose }: { 
                         onChange={(e) => setRate(e.target.value)}
                         className="w-full border rounded p-2 text-sm"
                     />
-                    <p className="text-xs text-gray-500 mt-1">Example: 0.8 = 80% of Base UPP</p>
+                    <p className="text-xs text-gray-500 mt-1">Example: 0.8 = 80% of Base Paylinq Cash</p>
                 </div>
                 <div>
                     <label className="block text-sm font-medium mb-1">Reason (Required)</label>

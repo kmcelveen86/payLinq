@@ -1,6 +1,6 @@
 Travel Rewards
 Travel the World. Earn Real Rewards.
-With Paylinq, members earn Paylinq Points (PP) when booking travel through our integrated
+With Paylinq, members earn Paylinq Cash when booking travel through our integrated
 travel marketplace.
 Flights, hotels, car rentals, activities, and travel insurance all earn rewards — automatically.
 How It Works
@@ -9,10 +9,10 @@ Book travel through Paylinq’s travel portal.
 •
 Complete your trip.
 •
-Earn Paylinq Points.
+Earn Paylinq Cash.
 •
 Convert points into Universal Reward Tokens (URT).
-1,000 Paylinq Points = 1 URT
+1,000 Paylinq Cash = 1 URT
 1 URT = $10 value (White Tier)
 Rewards are funded through partner marketing agreements.
 What You Can Book
@@ -27,11 +27,11 @@ Vacation Package
 All bookings are fulfilled by our trusted travel partners.
 Transparent Reward Structure (White Tier)
 Category Earn
-Flights 200 PP
-Hotels 400 PP
-Car Rentals 300 PP
-Vacation Package 600 PP
-Monthly travel earning cap: 4,000 PP
+Flights 200 Paylinq Cash
+Hotels 400 Paylinq Cash
+Car Rentals 300 Paylinq Cash
+Vacation Package 600 Paylinq Cash
+Monthly travel earning cap: 4,000 Paylinq Cash
 Rewards are credited after booking confirmation.
 Why Paylinq Travel Is Different
 •

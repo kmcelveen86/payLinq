@@ -83,10 +83,11 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
   return (
     <motion.div
-      className={`rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 h-full ${selected || isCurrentPlan
-        ? `ring-2 ${getRingColor()} scale-[1.02]`
-        : "hover:scale-[1.02]"
-        } ${tierColors.background} ${tierColors.border} border ${disabled ? "opacity-90" : ""}`}
+      className={`rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 h-full ${
+        selected || isCurrentPlan
+          ? `ring-2 ${getRingColor()} scale-[1.02]`
+          : "hover:scale-[1.02]"
+      } ${tierColors.background} ${tierColors.border} border ${disabled ? "opacity-90" : ""}`}
       whileHover={{ y: -5, boxShadow: "0 10px 40px rgba(0,0,0,0.15)" }}
       transition={{ duration: 0.3 }}
     >
@@ -133,13 +134,19 @@ const PricingCard: React.FC<PricingCardProps> = ({
           <div>
             <h3
               className="text-xl font-bold"
-              style={{ color: tierName === "Black" ? tierColors.text.primary : "#1F2937" }}
+              style={{
+                color:
+                  tierName === "Black" ? tierColors.text.primary : "#1F2937",
+              }}
             >
               {tierName}
             </h3>
             <p
               className="text-sm mt-1"
-              style={{ color: tierName === "Black" ? tierColors.text.secondary : "#6B7280" }}
+              style={{
+                color:
+                  tierName === "Black" ? tierColors.text.secondary : "#6B7280",
+              }}
             >
               {tagline}
             </p>
@@ -156,7 +163,9 @@ const PricingCard: React.FC<PricingCardProps> = ({
         <div className="mt-6 mb-6">
           <motion.span
             className="text-4xl font-bold"
-            style={{ color: tierName === "Black" ? tierColors.text.primary : "#111827" }}
+            style={{
+              color: tierName === "Black" ? tierColors.text.primary : "#111827",
+            }}
             initial={{ scale: 1 }}
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
@@ -165,15 +174,25 @@ const PricingCard: React.FC<PricingCardProps> = ({
           </motion.span>
           {annualBilling && price > 0 && (
             <p className="text-sm font-medium mt-1">
-              <span className="text-gray-500 line-through mr-2">${price * 12}</span>
+              <span className="text-gray-500 line-through mr-2">
+                ${price * 12}
+              </span>
               <span className="text-green-600">Save ${price * 2}</span>
             </p>
           )}
         </div>
 
         {/* Rewards Section */}
-        <div className="border-t pt-4 mb-6" style={{ borderColor: tierColors.accent }}>
-          <h4 className="font-semibold mb-2" style={{ color: tierColors.text.primary }}>Rewards</h4>
+        <div
+          className="border-t pt-4 mb-6"
+          style={{ borderColor: tierColors.accent }}
+        >
+          <h4
+            className="font-semibold mb-2"
+            style={{ color: tierColors.text.primary }}
+          >
+            Rewards
+          </h4>
           <ul className="space-y-2">
             {rewards.map((reward, index) => (
               <motion.li
@@ -182,32 +201,56 @@ const PricingCard: React.FC<PricingCardProps> = ({
                 whileHover={{ x: 3 }}
                 transition={{ duration: 0.2 }}
               >
-                <span style={{ color: tierName === "Black" ? tierColors.text.accent : "#4B5563" }}>
+                <span
+                  style={{
+                    color:
+                      tierName === "Black" ? tierColors.text.accent : "#4B5563",
+                  }}
+                >
                   {reward.category}
                 </span>
-                <span className="font-semibold" style={{ color: tierName === "Black" ? tierColors.text.accent : "#111827" }}>
-                  {reward.category === "Multiplier" ? `${reward.points}x multiplier` : `${reward.points} pts per $1`}
+                <span
+                  className="font-semibold"
+                  style={{
+                    color:
+                      tierName === "Black" ? tierColors.text.accent : "#111827",
+                  }}
+                >
+                  {reward.category === "Multiplier"
+                    ? `${reward.points}x multiplier`
+                    : `${reward.points} pts per $1`}
                 </span>
               </motion.li>
             ))}
-            {tierName === "White" && <motion.li
-              className="flex justify-between text-sm"
-              whileHover={{ x: 3 }}
-              transition={{ duration: 0.2 }}
-            >
-              <span style={{ color: "#4B5563" }}>
-                ${redemptionValue.toFixed(2)} Redemption
-              </span>
-              <span className="font-semibold" style={{ color: "#111827" }}>
-                {pointsFor10.toLocaleString()} points
-              </span>
-            </motion.li>}
+            {tierName === "White" && (
+              <motion.li
+                className="flex justify-between text-sm"
+                whileHover={{ x: 3 }}
+                transition={{ duration: 0.2 }}
+              >
+                <span style={{ color: "#4B5563" }}>
+                  {/* ${redemptionValue.toFixed(2)} Redemption */}
+                  Earn <span className="font-bold">1%</span> in purchasing power
+                </span>
+                <span className="font-semibold" style={{ color: "#111827" }}>
+                  {/* {pointsFor10.toLocaleString()} points */}
+                </span>
+              </motion.li>
+            )}
           </ul>
         </div>
 
         {/* Features List */}
-        <div className="border-t pt-4 mb-6" style={{ borderColor: tierColors.accent }}>
-          <h4 className="font-semibold mb-2" style={{ color: tierColors.text.primary }}>Key Features</h4>
+        <div
+          className="border-t pt-4 mb-6"
+          style={{ borderColor: tierColors.accent }}
+        >
+          <h4
+            className="font-semibold mb-2"
+            style={{ color: tierColors.text.primary }}
+          >
+            Key Features
+          </h4>
           <ul className="space-y-3">
             {features.map((feature, index) => (
               <motion.li
@@ -222,8 +265,12 @@ const PricingCard: React.FC<PricingCardProps> = ({
                   className="shrink-0 h-5 w-5 mr-2"
                   style={{
                     color: feature.comingSoon
-                      ? (tierName === "Black" ? "#F59E0B" : "#F59E0B")
-                      : (tierName === "Black" ? tierColors.text.primary : "#10B981")
+                      ? tierName === "Black"
+                        ? "#F59E0B"
+                        : "#F59E0B"
+                      : tierName === "Black"
+                        ? tierColors.text.primary
+                        : "#10B981",
                   }}
                 >
                   {feature.comingSoon ? (
@@ -235,14 +282,21 @@ const PricingCard: React.FC<PricingCardProps> = ({
                 <div className="flex items-center gap-2">
                   <span
                     className="text-sm"
-                    style={{ color: tierName === "Black" ? tierColors.text.accent : "#4B5563" }}
+                    style={{
+                      color:
+                        tierName === "Black"
+                          ? tierColors.text.accent
+                          : "#4B5563",
+                    }}
                   >
                     {feature.text}
                   </span>
                   {feature.comingSoon && (
                     <span
                       className="text-xs"
-                      style={{ color: tierName === "Black" ? "#FCD34D" : "#D97706" }}
+                      style={{
+                        color: tierName === "Black" ? "#FCD34D" : "#D97706",
+                      }}
                     >
                       Coming soon
                     </span>
@@ -257,9 +311,11 @@ const PricingCard: React.FC<PricingCardProps> = ({
         <motion.button
           onClick={onSelect}
           disabled={disabled}
-          className={`w-full text-white font-semibold mb-8 py-3 px-4 rounded-lg transition-all duration-300 mt-auto shadow-md hover:shadow-lg ${disabled ? "opacity-70 cursor-not-allowed" : ""
-            } ${selected || isCurrentPlan ? "ring-2 ring-white ring-opacity-70" : ""
-            }`}
+          className={`w-full text-white font-semibold mb-8 py-3 px-4 rounded-lg transition-all duration-300 mt-auto shadow-md hover:shadow-lg ${
+            disabled ? "opacity-70 cursor-not-allowed" : ""
+          } ${
+            selected || isCurrentPlan ? "ring-2 ring-white ring-opacity-70" : ""
+          }`}
           style={{
             background: `linear-gradient(to right, ${tierColors.button.from}, ${tierColors.button.to})`,
           }}

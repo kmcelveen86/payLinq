@@ -74,7 +74,7 @@ const Marketplace = () => {
 
   // Hero carousel items
   const heroItems = [
-    { title: 'Shop Anywhere', subtitle: 'Earn UPP Everywhere', image: marketplaceHero },
+    { title: 'Shop Anywhere', subtitle: 'Earn Paylinq Cash Everywhere', image: marketplaceHero },
     { title: 'Support Local', subtitle: 'Get Rewarded', image: marketplaceHero },
     { title: 'Premium Brands', subtitle: 'Maximum Rewards', image: marketplaceHero },
   ];

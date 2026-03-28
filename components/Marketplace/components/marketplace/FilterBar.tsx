@@ -59,7 +59,7 @@ export const FilterBar = ({
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="recommended">Recommended</SelectItem>
-          <SelectItem value="highest-upp">Highest UPP</SelectItem>
+          <SelectItem value="highest-upp">Highest Paylinq Cash</SelectItem>
           <SelectItem value="trending">Trending</SelectItem>
           <SelectItem value="newest">Newest</SelectItem>
           <SelectItem value="near-me">Near Me</SelectItem>

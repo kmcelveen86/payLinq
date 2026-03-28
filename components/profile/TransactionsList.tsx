@@ -77,7 +77,7 @@ export default function TransactionsList({ initialTransactions }: { initialTrans
                                         <div className="flex items-center gap-1.5 mt-1 bg-gray-900/50 px-2 py-1 rounded-lg border border-gray-700/50">
                                             <Award size={14} className="text-[#C28F49]" />
                                             <span className="text-sm font-semibold bg-gradient-to-r from-[#C28F49] to-amber-500 bg-clip-text text-transparent">
-                                                +{tx.points.toLocaleString()} UPP
+                                                +{tx.points.toLocaleString()} Paylinq Cash
                                             </span>
                                         </div>
                                     </div>

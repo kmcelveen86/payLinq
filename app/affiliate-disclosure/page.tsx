@@ -33,7 +33,7 @@ export default function AffiliateDisclosurePage() {
         <div className="max-w-4xl mx-auto px-6 pb-20">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="bg-gradient-to-r from-[#2D9642]/10 to-[#C28F49]/10 rounded-xl p-8 border border-[#2D9642]/30 mb-12">
             <p className="text-lg text-gray-300 leading-relaxed">Paylinq participates in affiliate marketing programs. This means Paylinq may earn a commission when users click certain links or complete purchases or travel bookings through our platform.</p>
-            <p className="text-lg text-gray-300 leading-relaxed mt-4">These commissions help fund Paylinq Points and other promotional rewards, allowing us to provide you with valuable cashback and incentives.</p>
+            <p className="text-lg text-gray-300 leading-relaxed mt-4">These commissions help fund Paylinq Cash and other promotional rewards, allowing us to provide you with valuable cashback and incentives.</p>
             <p className="text-lg text-gray-300 leading-relaxed mt-4">Purchases and bookings are completed directly with the merchant or travel provider, and Paylinq does not control pricing, availability, or fulfillment.</p>
           </motion.div>
 
@@ -60,7 +60,7 @@ export default function AffiliateDisclosurePage() {
               {[
                 { step: "1", title: "You Shop Through Paylinq", description: "Browse offers and click through to merchant websites using Paylinq links." },
                 { step: "2", title: "Merchant Pays Commission", description: "When you make a purchase, the merchant pays Paylinq a referral commission." },
-                { step: "3", title: "You Earn Rewards", description: "We share a portion of that commission with you as Paylinq Points." },
+                { step: "3", title: "You Earn Rewards", description: "We share a portion of that commission with you as Paylinq Cash." },
                 { step: "4", title: "Everyone Wins", description: "You get cashback, the merchant gets a customer, and Paylinq keeps the platform running." },
               ].map((item, idx) => (
                 <div key={idx} className="flex items-start gap-4">

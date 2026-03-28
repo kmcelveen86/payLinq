@@ -27,9 +27,11 @@ import {
   SignedIn,
   useSession,
 } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import { useUserProfile } from "@/app/hooks/useProfile";
 
 export default function HamburgerMenu() {
+
   const { isLoaded, session, isSignedIn } = useSession();
   const { data: profileData } = useUserProfile();
   const { email } = profileData || {};
@@ -96,9 +98,14 @@ export default function HamburgerMenu() {
       href: "/",
       icon: <Home size={20} className="text-gray-600" />,
     },
+    // {
+    //   text: "How it works",
+    //   href: "/howitworks",
+    //   icon: <HelpCircle size={20} className="text-gray-600" />,
+    // },
     {
-      text: "How it works",
-      href: "/howitworks",
+      text: "Become a merchant",
+      href: "/merchant",
       icon: <HelpCircle size={20} className="text-gray-600" />,
     },
     ...(hasOrgAccess
@@ -130,14 +137,14 @@ export default function HamburgerMenu() {
   return (
     <div className="bg-gray-900 h-16 flex items-center justify-between px-4 relative z-50">
       {/* Logo Area */}
-      <div className="flex items-center">
+      <div className="flex w-full items-center">
         <Link href="/">
-          <div className="relative w-10 h-10 mr-2">
+          <div className="relative w-full h-10 mr-2">
             <Image
-              src="/logos/paylinq-logo-new.png"
-              width={40}
-              height={40}
-              alt="PayLinq Logo"
+              src="/logos/paylinq-logo-light.png"
+              width={100}
+              height={100}
+              alt="Paylinq Logo"
               className="object-contain"
             />
           </div>
@@ -180,18 +187,15 @@ export default function HamburgerMenu() {
           >
             {/* Drawer Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-800">
-              <div className="flex items-center">
-                <div className="w-10 h-10 relative mr-2">
+              <div className="flex w-full items-center">
+                <div className="w-full h-10 relative mr-2">
                   <Image
-                    src="/logos/paylinq-logo-new.png"
+                    src="/logos/paylinq-logo-light.png"
                     fill
-                    alt="PayLinq Logo"
+                    alt="Paylinq Logo"
                     className="object-contain"
                   />
                 </div>
-                <span className="font-bold text-xl bg-gradient-to-r from-[#2D9642] to-[#C28F49] bg-clip-text text-transparent">
-                  PayLinq
-                </span>
               </div>
               <motion.button
                 whileTap={{ scale: 0.95 }}

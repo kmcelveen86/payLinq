@@ -59,7 +59,7 @@ export default function AnalyticsDashboard() {
                     <p className="mt-2 text-3xl font-bold text-gray-900">{data.counts.merchants.toLocaleString()}</p>
                 </div>
                 <div className="bg-white p-6 rounded-lg shadow">
-                    <h3 className="text-sm font-medium text-gray-500 uppercase">UPP Issued</h3>
+                    <h3 className="text-sm font-medium text-gray-500 uppercase">Paylinq Cash Issued</h3>
                     <p className="mt-2 text-3xl font-bold text-blue-600">{data.counts.uppIssued.toLocaleString()}</p>
                 </div>
             </div>

@@ -27,25 +27,25 @@ export default function FAQSection() {
 
   const faqs = [
     {
-      question: "What is PayLinq?",
+      question: "What is Paylinq?",
       answer:
-        "PayLinq is a Fintech startup dedicated to empowering financially vulnerable individuals through innovative solutions. Our platform combines rewards, financial education, and tools designed to help you maximize your money while building better financial habits.",
+        "Paylinq is a Fintech startup dedicated to empowering financially vulnerable individuals through innovative solutions. Our platform combines rewards, financial education, and tools designed to help you maximize your money while building better financial habits.",
       icon: <MessageCircle size={22} />,
     },
     {
       question: "How does it work?",
       answer:
-        "PayLinq works by tracking purchases made with your PayLinq Debit Card. You'll earn points for everyday spending which can be redeemed for rewards. We also provide insights into your spending patterns and offer tools to help improve your financial health over time.",
+        "Paylinq works by tracking purchases made with your Paylinq Debit Card. You'll earn points for everyday spending which can be redeemed for rewards. We also provide insights into your spending patterns and offer tools to help improve your financial health over time.",
       icon: <Lightbulb size={22} />,
     },
     {
       question: "What are the benefits of joining the waitlist?",
       answer:
-        "By joining the PayLinq waitlist, you'll secure early access to our platform when we launch. Early adopters will receive special bonuses including extra reward points, exclusive merchant offers, and the opportunity to help shape our future features through direct feedback to our team.",
+        "By joining the Paylinq waitlist, you'll secure early access to our platform when we launch. Early adopters will receive special bonuses including extra reward points, exclusive merchant offers, and the opportunity to help shape our future features through direct feedback to our team.",
       icon: <Clock size={22} />,
     },
     {
-      question: "When will PayLinq be fully available?",
+      question: "When will Paylinq be fully available?",
       answer:
         "We're currently in our initial launch phase with core features available to our early access users. Our full platform with all planned features will be rolling out over the coming quarters, with major upgrades scheduled throughout 2025.",
       icon: <Sparkles size={22} />,
@@ -136,7 +136,7 @@ export default function FAQSection() {
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10" ref={ref}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-16">
           {/* Left Side - Introduction */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -144,7 +144,7 @@ export default function FAQSection() {
             transition={{ duration: 1, ease: "easeOut" }}
             className="text-left"
           >
-            <div
+            {/* <div
               className="mb-6 inline-flex items-center px-4 py-2 rounded-full text-[#C28F49]"
               style={{
                 backgroundColor: "rgba(194, 143, 73, 0.1)",
@@ -156,7 +156,7 @@ export default function FAQSection() {
               <span className="text-sm font-medium">
                 Frequently Asked Questions
               </span>
-            </div>
+            </div> */}
 
             <Typography
               variant="h3"
@@ -171,28 +171,29 @@ export default function FAQSection() {
                   backgroundImage: "linear-gradient(90deg, #2D9642, #C28F49)",
                 }}
               >
-                {`what's next for PayLinq?`}
+                {`what's next for Paylinq?`}
               </span>
             </Typography>
-
-            <Typography
-              variant="body1"
-              className="text-gray-300 text-lg leading-relaxed mb-8"
-            >
-              {`Thank you for joining us on this journey! Right now, you are part
-              of an exclusive group of users who are shaping the future of
-              financial rewards. We're starting simple to ensure we build a
-              reliable, secure platform you can trust.`}
-            </Typography>
-
             <Typography
               variant="body1"
               className="text-gray-300 text-lg leading-relaxed"
             >
-              {`As we grow, we'll roll out exciting features like virtual cards,
-              credit reporting, expanded point earning opportunities, and
-              merchant rewards. Stay tuned—together, we're creating something
-              incredible.`}
+              {`You're among the first to experience Paylinq—a new way to turn everyday spending into real purchasing power.
+              We're starting with a focused experience to ensure everything is seamless, reliable, and built to last.`}
+            </Typography>
+            <Typography
+              className="text-gray-300 text-xl my-16"
+            >
+              {`What's next:`}
+            </Typography>
+            <Typography
+              variant="body1"
+              className="text-gray-300 text-lg mt-16"
+            >
+              {`Spend anywhere and earn value automatically. Use your balance instantly across travel, shopping, and more.
+              Unlock higher tiers that increase your purchasing power.
+              Access premium experiences and personalized offers.
+              We're building something bigger than rewards—a smarter financial layer where your money works harder every time you spend.`}
             </Typography>
 
             {/* Animated decoration */}
@@ -247,132 +248,6 @@ export default function FAQSection() {
           </motion.div>
 
           {/* Right Side - FAQ Accordion */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={controls}
-            className="space-y-4"
-          >
-            {faqs.map((faq, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="overflow-hidden"
-              >
-                <motion.div
-                  whileHover={{
-                    scale: 1.01,
-                    boxShadow: "0 4px 12px rgba(45, 150, 66, 0.15)",
-                  }}
-                  className={`
-                    bg-gray-800/40 backdrop-blur-xs border border-gray-700/50 rounded-xl overflow-hidden
-                    transition-all duration-300 ease-in-out shadow-lg
-                    ${openIndex === index ? "shadow-[#2D9642]/10" : ""}
-                  `}
-                >
-                  {/* Question header */}
-                  <button
-                    onClick={() => toggleAccordion(index)}
-                    className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-hidden"
-                  >
-                    <div className="flex items-center">
-                      <div
-                        className={`
-                        mr-4 p-2 rounded-lg transition-colors
-                        ${
-                          openIndex === index
-                            ? "bg-[#2D9642]/20 text-[#2D9642]"
-                            : "bg-gray-700/50 text-gray-400"
-                        }
-                      `}
-                      >
-                        {faq.icon}
-                      </div>
-                      <Typography
-                        variant="h6"
-                        component="span"
-                        className={`
-                          font-semibold transition-colors text-lg
-                          ${
-                            openIndex === index
-                              ? "text-[#C28F49]"
-                              : "text-white"
-                          }
-                        `}
-                      >
-                        {faq.question}
-                      </Typography>
-                    </div>
-                    <motion.div
-                      animate={{ rotate: openIndex === index ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
-                      className={`
-                        shrink-0 transition-colors
-                        ${
-                          openIndex === index
-                            ? "text-[#C28F49]"
-                            : "text-gray-400"
-                        }
-                      `}
-                    >
-                      <ChevronDown size={22} />
-                    </motion.div>
-                  </button>
-
-                  {/* Answer body */}
-                  <motion.div
-                    initial={false}
-                    animate={{
-                      height: openIndex === index ? "auto" : 0,
-                      opacity: openIndex === index ? 1 : 0,
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="px-6 pb-5 pt-0">
-                      <div
-                        className="pl-10 border-l"
-                        style={{ borderColor: "rgba(45, 150, 66, 0.3)" }}
-                      >
-                        <Typography className="text-gray-300 leading-relaxed">
-                          {faq.answer}
-                        </Typography>
-                      </div>
-                    </div>
-                  </motion.div>
-                </motion.div>
-              </motion.div>
-            ))}
-
-            {/* CTA Button */}
-            <motion.div
-              variants={itemVariants}
-              className="mt-8 text-center lg:text-left flex justify-center lg:justify-start"
-            >
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 text-white font-medium rounded-lg shadow-lg transition-all flex items-center"
-                style={{
-                  background:
-                    "linear-gradient(90deg, #2D9642 0%, #C28F49 100%)",
-                }}
-              >
-                <span>Have More Questions?</span>
-                <motion.div
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                  }}
-                  className="ml-2"
-                >
-                  <ArrowRight size={20} />
-                </motion.div>
-              </motion.button>
-            </motion.div>
-          </motion.div>
         </div>
       </div>
     </div>

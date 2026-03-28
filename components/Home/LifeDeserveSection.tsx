@@ -228,7 +228,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
                     backgroundImage: "linear-gradient(90deg, #2D9642, #C28F49)",
                   }}
                 >
-                  {`Spend Anywhere. Earn Anywhere. Real Purchasing Power.`}
+                  {`Spend Anywhere. Unlock Real Purchasing Power.`}
                 </span>
               </div>
             </Typography>
@@ -238,7 +238,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
               component="div"
               className="text-white leading-relaxed xs:text-sm md:text-base lg:text-lg mt-6 mb-8"
             >
-              {`PayLinq turns your everyday spending into Universal PayLinq Points (UPP) - our universal rewards currency - redeemable like cash, powered by AI to maximize your value.`}
+              {`Where your money becomes more valuable after you spend it.`}
             </Typography>
 
             {/* CTA Button */}
@@ -285,57 +285,7 @@ export default function LifeDeserveSection(): React.ReactElement<any> {
         </Box>
       </Box>
 
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-end"
-        justifyContent="flex-end"
-        className="absolute xs:bottom-[-80px] md:bottom-[-112px] lg:bottom-[-170px] right-0 w-[300px] h-[300px] sm:left-0 lg:left-[268px] z-1"
-      >
-        {/* Floating motion for the card image */}
-        <motion.div
-          animate={{
-            y: [0, -15, 0],
-            rotateZ: [0, 2, 0],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        >
-          <motion.img
-            src="/images/rectangle.png"
-            alt="Picture of the credit cards"
-            className="relative object-contain lg:w-[498px] lg:h-[408px] md:w-[300px] md:h-[210px] xs:w-[200px] xs:h-[140px]"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2 }}
-            style={{
-              filter: "drop-shadow(0px 10px 20px rgba(45,150,66,0.4))",
-            }}
-          />
-        </motion.div>
 
-        {/* Subtle glow effect behind cards */}
-        <motion.div
-          className="absolute top-1/2 left-1/2 w-full h-full rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(45,150,66,0.3) 0%, rgba(194,143,73,0.1) 50%, rgba(0,0,0,0) 70%)",
-            transform: "translate(-50%, -50%)",
-            filter: "blur(40px)",
-          }}
-          animate={{
-            opacity: [0.6, 1, 0.6],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      </Box>
     </div>
   );
 }

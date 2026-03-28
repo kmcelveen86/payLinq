@@ -72,7 +72,7 @@ export async function GET(req: NextRequest) {
             },
         });
     } catch (error) {
-        console.error("Fetch UPP Transactions Error:", error);
+        console.error("Fetch Paylinq Cash Transactions Error:", error);
         return NextResponse.json({ error: "Failed to fetch transactions" }, { status: 500 });
     }
 }

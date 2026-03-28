@@ -46,7 +46,7 @@ export default async function MerchantDashboardPage() {
                     <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                         <li>Our team verifies your business details (usually within 24 hours).</li>
                         <li>We may contact you at the email provided if we need more info.</li>
-                        <li>Once approved, you'll gain full access to the Dashboard, UPP rewards, and API keys.</li>
+                        <li>Once approved, you'll gain full access to the Dashboard, Paylinq Cash, and API keys.</li>
                     </ul>
                 </div>
             </Box>

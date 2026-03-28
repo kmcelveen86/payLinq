@@ -46,7 +46,7 @@ export function UPPMetrics({
                     setDisplayMonthIssued(data.uppIssuedThisMonth);
                 }
             } catch (error) {
-                console.error("Failed to poll UPP metrics:", error);
+                console.error("Failed to poll Paylinq Cash metrics:", error);
             }
         }, 5000); // Poll every 5 seconds
 
@@ -57,7 +57,7 @@ export function UPPMetrics({
         <Card className="col-span-1">
             <CardHeader>
                 <div className="flex justify-between items-center">
-                    <CardTitle className="text-lg font-medium">UPP Tokenomics</CardTitle>
+                    <CardTitle className="text-lg font-medium">Paylinq Cash Tokenomics</CardTitle>
                     <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20">
                         <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -74,7 +74,7 @@ export function UPPMetrics({
                         <div className="p-2 bg-yellow-500/20 text-yellow-500 rounded-lg">
                             <Coins className="h-5 w-5" />
                         </div>
-                        <span className="text-sm font-medium text-yellow-500">Total UPP Issued</span>
+                        <span className="text-sm font-medium text-yellow-500">Total Paylinq Cash Issued</span>
                     </div>
                     <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
                         <span className="text-2xl lg:text-3xl font-bold transition-all duration-300">
@@ -92,9 +92,9 @@ export function UPPMetrics({
                     <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between p-3 bg-muted/30 rounded-lg border border-border/50 gap-2 xl:gap-0">
                         <div className="flex items-center gap-2">
                             <Zap className="h-4 w-4 text-muted-foreground shrink-0" />
-                            <span className="text-xs lg:text-sm font-medium whitespace-nowrap">Avg UPP / Transaction</span>
+                            <span className="text-xs lg:text-sm font-medium whitespace-nowrap">Avg Paylinq Cash / Transaction</span>
                         </div>
-                        <span className="font-bold whitespace-nowrap">{Math.round(displayAvgUpp)} UPP</span>
+                        <span className="font-bold whitespace-nowrap">{Math.round(displayAvgUpp)} Paylinq Cash</span>
                     </div>
 
                     {/* Campaign Performance */}

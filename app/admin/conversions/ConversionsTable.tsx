@@ -71,7 +71,7 @@ export default function ConversionsTable() {
             ),
         }),
         columnHelper.accessor("uppEarned", {
-            header: "UPP Earned",
+            header: "Paylinq Cash Earned",
             cell: (info) => <span className="text-blue-600 font-bold">{info.getValue().toFixed(2)}</span>,
         }),
         columnHelper.accessor("status", {
@@ -144,7 +144,7 @@ export default function ConversionsTable() {
                                     </span>
                                 </div>
                                 <div>
-                                    <span className="block text-xs text-gray-500 uppercase font-medium">UPP Earned</span>
+                                    <span className="block text-xs text-gray-500 uppercase font-medium">Paylinq Cash Earned</span>
                                     <span className="text-blue-600 font-bold block mt-0.5">{conversion.uppEarned.toFixed(2)}</span>
                                 </div>
                                 <div className="col-span-2">

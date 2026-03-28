@@ -172,7 +172,10 @@ export default function MultiplierDetails(props: Props) {
       {/* Bottom Info */}
       <div className="mt-6 flex items-center justify-center gap-2 text-xs text-gray-400">
         <Sparkles size={14} className="text-[#C28F49]" />
-        <p>Earn points on all purchases • No limits • Points never expire</p>
+        <Link href="/products/rewards" className="hover:text-[#2D9642] transition-colors underline decoration-dotted underline-offset-4">
+          Earn points on all purchases
+        </Link>
+        <span>• No limits • Points never expire</span>
       </div>
     </motion.div>
   );

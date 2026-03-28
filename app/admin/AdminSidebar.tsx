@@ -36,10 +36,10 @@ export default function AdminSidebar({ className, onNavigate }: Props) {
         {
             name: "Conversions",
             href: "/conversions",
-            allowed: role && PERMISSIONS.VIEW_UPP.includes(role) // Conversions related to UPP/Merchants
+            allowed: role && PERMISSIONS.VIEW_UPP.includes(role) // Conversions related to Paylinq Cash/Merchants
         },
         {
-            name: "UPP",
+            name: "Paylinq Cash",
             href: "/upp",
             allowed: role && PERMISSIONS.VIEW_UPP.includes(role)
         },

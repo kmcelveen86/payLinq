@@ -16,7 +16,7 @@ export default function TermsOfServicePage() {
     {
       icon: Shield,
       title: "2. Description of Services",
-      content: `Paylinq is a rewards and referral platform that allows users to discover merchants, travel services, and partner offers while earning Paylinq Points ("PP") through qualifying activities. Points may be converted into Universal Reward Tokens ("URT") subject to Paylinq policies and eligibility requirements.`,
+      content: `Paylinq is a rewards and referral platform that allows users to discover merchants, travel services, and partner offers while earning Paylinq Cash through qualifying activities. Points may be converted into Universal Reward Tokens ("URT") subject to Paylinq policies and eligibility requirements.`,
     },
     {
       icon: FileText,
@@ -29,7 +29,7 @@ export default function TermsOfServicePage() {
     },
     {
       title: "5. Rewards Program",
-      content: `Paylinq Points and Universal Reward Tokens are promotional incentives issued by Paylinq. Rewards may remain pending until merchant confirmation, be adjusted for cancellations, refunds, or transaction changes, and be withheld or reversed in cases of fraud, abuse, or policy violations. Paylinq reserves the right to modify reward structures, redemption requirements, and eligibility criteria at any time.`,
+      content: `Paylinq Cash and Universal Reward Tokens are promotional incentives issued by Paylinq. Rewards may remain pending until merchant confirmation, be adjusted for cancellations, refunds, or transaction changes, and be withheld or reversed in cases of fraud, abuse, or policy violations. Paylinq reserves the right to modify reward structures, redemption requirements, and eligibility criteria at any time.`,
     },
     {
       title: "6. Merchant and Travel Partner Transactions",
@@ -37,7 +37,7 @@ export default function TermsOfServicePage() {
     },
     {
       title: "7. Affiliate Relationships",
-      content: `Paylinq may receive commissions from merchants or affiliate networks when users complete qualifying purchases or bookings through Paylinq links, widgets, or integrations. These commissions help fund Paylinq Points and promotional incentives.`,
+      content: `Paylinq may receive commissions from merchants or affiliate networks when users complete qualifying purchases or bookings through Paylinq links, widgets, or integrations. These commissions help fund Paylinq Cash and promotional incentives.`,
     },
     {
       title: "8. Paid Membership Tiers",

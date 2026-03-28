@@ -9,8 +9,8 @@ const TIER_FEATURES = {
   White: {
     showFeatures: true,
     features: [
-      "PayLinq Reward Debit Card",
-      "Loyalty Rewards Program",
+      "Paylinq Reward Card",
+      "Paylinq Reward Program",
       // "AI Powered Shopping Assistant",
       "Referral Bonus Program",
     ],
@@ -76,7 +76,7 @@ export default function LockedPremiumFeatures(props: Props) {
     >
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-lg font-bold">
-          {(!currentTier || currentTier === 'none') ? 'PayLinq' : currentTier} Features
+          {(!currentTier || currentTier === 'none') ? 'Paylinq' : currentTier} Features
         </h3>
       </div>
 

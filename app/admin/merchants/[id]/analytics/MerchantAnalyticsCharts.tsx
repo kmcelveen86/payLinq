@@ -64,7 +64,7 @@ export default function MerchantAnalyticsCharts({ data }: MerchantAnalyticsChart
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow border">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">UPP Rewards Issued</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Paylinq Cash Issued</h3>
                 <div className="h-72 w-full">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={data}>
@@ -80,7 +80,7 @@ export default function MerchantAnalyticsCharts({ data }: MerchantAnalyticsChart
                                 contentStyle={{ backgroundColor: "#ffffff", border: "1px solid #e5e7eb", borderRadius: "8px", boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" }}
                                 itemStyle={{ color: "#111827", fontWeight: 500 }}
                                 labelStyle={{ color: "#6b7280", marginBottom: "0.25rem" }}
-                                formatter={(val: number) => [val.toFixed(2), "UPP"]}
+                                formatter={(val: number) => [val.toFixed(2), "Paylinq Cash"]}
                                 labelFormatter={(label) => format(parseISO(label), "MMM d, yyyy")}
                                 cursor={{ fill: '#f3f4f6' }}
                             />

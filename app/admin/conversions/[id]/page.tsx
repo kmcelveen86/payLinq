@@ -70,10 +70,10 @@ export default async function ConversionDetailPage({ params }: { params: Promise
 
                 {/* Rewards Info */}
                 <div className="bg-white p-6 rounded-lg shadow">
-                    <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">UPP Rewards</h3>
+                    <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Paylinq Cash</h3>
                     <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-4">
                         <div>
-                            <dt className="text-sm font-medium text-gray-500">UPP Earned</dt>
+                            <dt className="text-sm font-medium text-gray-500">Paylinq Cash Earned</dt>
                             <dd className="text-2xl font-bold text-blue-600">{conversion.uppEarned.toFixed(2)}</dd>
                         </div>
                         {conversion.walletTransaction && (

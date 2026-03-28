@@ -1,4 +1,3 @@
-
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { geolocation } from "@vercel/functions";
 import { NextResponse } from "next/server";

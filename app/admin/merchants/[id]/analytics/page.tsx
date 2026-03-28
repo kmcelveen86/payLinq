@@ -88,7 +88,7 @@ export default async function MerchantAnalyticsPage({ params }: { params: Promis
                     </dd>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow border">
-                    <dt className="text-xs font-semibold text-gray-500 uppercase">30d UPP Issued</dt>
+                    <dt className="text-xs font-semibold text-gray-500 uppercase">30d Paylinq Cash Issued</dt>
                     <dd className="mt-1 text-2xl font-bold text-blue-600">
                         {totalUpp30d.toFixed(2)}
                     </dd>

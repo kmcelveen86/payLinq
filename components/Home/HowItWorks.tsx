@@ -14,19 +14,19 @@ import {
 const featureItems = [
   {
     step: 1,
-    title: "Become a Member",
+    title: "Join Paylinq",
     description:
-      "Sign up for a PayLinq membership to unlock exclusive rewards and benefits.",
+      "Start turning your everyday spending into usable value.",
     icon: <UserPlus size={28} className="text-[#2D9642]" />,
     image: <PaylinqDebit />,
-    alt: "PayLinq Membership",
+    alt: "Paylinq Membership",
     color: "#2D9642",
   },
   {
     step: 2,
-    title: "Shop & Earn UPP",
+    title: "Spend & Build Value",
     description:
-      "Shop at our partner merchants and earn Universal PayLinq Points (UPP) on every purchase.",
+      "Every purchase generates value that's automatically tracked in your balance.",
     icon: <ShoppingBag size={28} className="text-[#2D9642]" />,
     image: <PaylinqShopping />,
     alt: "Shop and Earn",
@@ -34,9 +34,9 @@ const featureItems = [
   },
   {
     step: 3,
-    title: "Redeem Rewards",
+    title: "Use Your Value Instantly.",
     description:
-      "Use your UPP to redeem cash back, gift cards, and exclusive experiences.",
+      "Apply your balance toward purchases across travel, shopping, and more.",
     icon: <Gift size={28} className="text-[#C28F49]" />,
     image: <PaylinqRewardsAndBenefits />,
     alt: "Redeem Rewards",
@@ -184,7 +184,7 @@ export default function HowItWorks() {
                   WebkitBackgroundClip: 'text',
                 }}
               >
-                How PayLinq Works
+                How Paylinq Increases Your Purchasing Power
               </Typography>
             </motion.div>
             <motion.div
@@ -195,7 +195,7 @@ export default function HowItWorks() {
             >
               <p className="text-gray-300 text-lg md:text-xl">
                 Elevate your everyday spending with rewards that match your
-                lifestyle. Follow these simple steps to begin your PayLinq
+                lifestyle. Follow these simple steps to begin your Paylinq
                 journey.
               </p>
             </motion.div>

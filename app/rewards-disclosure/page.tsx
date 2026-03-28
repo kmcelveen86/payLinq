@@ -31,7 +31,7 @@ export default function RewardsDisclosurePage() {
               </div>
               <div>
                 <h2 className="text-2xl font-semibold text-white mb-3">Independent Rewards Program</h2>
-                <p className="text-gray-300 leading-relaxed">Paylinq Points and Universal Reward Tokens (URT) are promotional rewards issued by Paylinq. These rewards are independent from merchant loyalty programs and are not issued or guaranteed by merchants or travel providers.</p>
+                <p className="text-gray-300 leading-relaxed">Paylinq Cash and Universal Reward Tokens (URT) are promotional rewards issued by Paylinq. These rewards are independent from merchant loyalty programs and are not issued or guaranteed by merchants or travel providers.</p>
               </div>
             </div>
           </motion.div>
@@ -91,7 +91,7 @@ export default function RewardsDisclosurePage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="bg-gray-800/50 rounded-lg p-4 text-center">
                 <p className="text-3xl font-bold text-[#2D9642] mb-1">1,000</p>
-                <p className="text-gray-400 text-sm">Paylinq Points</p>
+                <p className="text-gray-400 text-sm">Paylinq Cash</p>
               </div>
               <div className="flex items-center justify-center">
                 <div className="text-gray-500">=</div>

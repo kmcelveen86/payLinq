@@ -8,27 +8,27 @@ import { useUserProfile } from "@/app/hooks/useProfile";
 const TIER_INFO = {
   White: {
     tagline:
-      "You earn 1x point per dollar on all purchases.",
+      "Redeem points at $10 value per 1,000 pts.",
     nextTier: "Silver",
-    pointsMultiplier: { everyday: 1, dining: 2, travel: 2 },
+    pointsMultiplier: { everyday: 1, dining: 1, travel: 1 },
   },
   Silver: {
     tagline:
-      "You earn 1x point per dollar on all purchases.",
+      "Redeem points at $15 value per 1,000 pts.",
     nextTier: "Gold",
-    pointsMultiplier: { everyday: 2, dining: 3, travel: 3 },
+    pointsMultiplier: { everyday: 1, dining: 1, travel: 1 },
   },
   Gold: {
     tagline:
-      "You earn 1x point per dollar on all purchases.",
+      "Redeem points at $20 value per 1,000 pts.",
     nextTier: "Black",
-    pointsMultiplier: { everyday: 3, dining: 4, travel: 4 },
+    pointsMultiplier: { everyday: 1, dining: 1, travel: 1 },
   },
   Black: {
     tagline:
-      "You earn 1x point per dollar on all purchases.",
+      "Redeem points at $25 value per 1,000 pts.",
     nextTier: null, // No next tier
-    pointsMultiplier: { everyday: 5, dining: 5, travel: 5 },
+    pointsMultiplier: { everyday: 1, dining: 1, travel: 1 },
   },
 };
 

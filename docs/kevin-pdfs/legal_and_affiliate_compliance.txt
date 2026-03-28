@@ -6,7 +6,7 @@ providers, and service platforms. When users access merchants through Paylinq li
 integrations, Paylinq may earn a commission or referral fee.
 These commissions are paid by merchants and do not increase the price paid by the consumer.
 2. Independent Rewards Program
-Paylinq Points and Universal Reward Tokens (URT) are promotional incentives issued solely by
+Paylinq Cash and Universal Reward Tokens (URT) are promotional incentives issued solely by
 Paylinq unless explicitly stated otherwise. Merchant partners do not issue or control Paylinq rewards.
 3. Price Integrity
 Paylinq does not alter merchant pricing, add hidden charges, or manipulate discounts. Affiliate

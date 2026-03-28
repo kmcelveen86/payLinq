@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
         // We append the Click ID appropriately
         const separator = targetUrl.includes("?") ? "&" : "?";
         // We use 'ref' as the standard parameter, but some merchants might use 'click_id' etc.
-        // For PayLinq ecosystem, we'll standardize on 'ref' or 'userId' (spoofing the user ID field with the Click ID)
+        // For Paylinq ecosystem, we'll standardize on 'ref' or 'userId' (spoofing the user ID field with the Click ID)
         // Since we want to drop-in replace, let's pass it as 'userId' if the merchant expects that,
         // OR simpler: assume the merchant just wants A identifier.
         // Let's return the click ID so the client can construct the URL if needed, or return the full URL.

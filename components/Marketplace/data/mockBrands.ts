@@ -11,9 +11,9 @@ export const mockBrands: Brand[] = [
     tags: ['trending'],
     isLocal: false,
     tagline: 'Expect More. Pay Less.',
-    description: 'Your one-stop shop for everyday essentials, home goods, electronics, and more. Earn UPP on every purchase.',
+    description: 'Your one-stop shop for everyday essentials, home goods, electronics, and more. Earn Paylinq Cash on every purchase.',
     offers: [
-      { id: '1', title: 'Weekend Bonus', description: 'Extra 2% UPP this weekend', bonusUpp: 200 }
+      { id: '1', title: 'Weekend Bonus', description: 'Extra 2% Paylinq Cash this weekend', bonusUpp: 200 }
     ],
     affiliateLink: 'https://www.target.com',
   },
@@ -40,7 +40,7 @@ export const mockBrands: Brand[] = [
     isLocal: true,
     distance: 0.8,
     tagline: 'Your local coffee destination',
-    description: 'Premium coffee, tea, and pastries. Visit your neighborhood Starbucks and earn UPP.',
+    description: 'Premium coffee, tea, and pastries. Visit your neighborhood Starbucks and earn Paylinq Cash.',
     address: '123 Main St, Downtown',
     hours: 'Open 6am - 9pm',
   },
@@ -54,7 +54,7 @@ export const mockBrands: Brand[] = [
     tags: ['trending'],
     isLocal: false,
     tagline: 'Expert service. Unbeatable price.',
-    description: 'The latest tech, expert advice, and competitive prices. Earn UPP on all electronics.',
+    description: 'The latest tech, expert advice, and competitive prices. Earn Paylinq Cash on all electronics.',
   },
   {
     id: '5',
@@ -79,7 +79,7 @@ export const mockBrands: Brand[] = [
     isLocal: true,
     distance: 1.2,
     tagline: 'Authentic New York style pizza',
-    description: 'Family-owned since 1975. The best pizza in town, now with UPP rewards.',
+    description: 'Family-owned since 1975. The best pizza in town, now with Paylinq Cash rewards.',
     address: '456 Broadway Ave',
     hours: 'Open 11am - 11pm',
   },
@@ -93,7 +93,7 @@ export const mockBrands: Brand[] = [
     tags: ['trending'],
     isLocal: false,
     tagline: 'Everything from A to Z',
-    description: 'Shop millions of products and earn UPP on every purchase.',
+    description: 'Shop millions of products and earn Paylinq Cash on every purchase.',
   },
   {
     id: '8',
@@ -120,7 +120,7 @@ export const mockBrands: Brand[] = [
     tags: ['editors-pick'],
     isLocal: false,
     tagline: 'Keep climbing',
-    description: 'Book flights worldwide and earn UPP on your travels.',
+    description: 'Book flights worldwide and earn Paylinq Cash on your travels.',
   },
   {
     id: '10',
@@ -147,7 +147,7 @@ export const mockBrands: Brand[] = [
     tags: [],
     isLocal: false,
     tagline: 'Think different',
-    description: 'The latest Apple products and accessories. Earn UPP on iPhone, Mac, iPad, and more.',
+    description: 'The latest Apple products and accessories. Earn Paylinq Cash on iPhone, Mac, iPad, and more.',
   },
   {
     id: '12',

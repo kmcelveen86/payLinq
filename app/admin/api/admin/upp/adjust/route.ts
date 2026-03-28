@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(result);
 
     } catch (error) {
-        console.error("UPP Adjustment Error:", error);
+        console.error("Paylinq Cash Adjustment Error:", error);
         return NextResponse.json({ error: "Failed to adjust balance" }, { status: 500 });
     }
 }

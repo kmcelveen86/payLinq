@@ -99,7 +99,7 @@ export default async function MerchantDetailPage({ params }: { params: Promise<{
                         <h3 className="text-lg font-medium text-gray-900 mb-2">Commission Rate</h3>
                         <div className="flex items-baseline gap-2">
                             <span className="text-3xl font-bold text-gray-900">{((merchant.commissionRate || 0) * 100).toFixed(0)}%</span>
-                            <span className="text-sm text-gray-500">of base UPP</span>
+                            <span className="text-sm text-gray-500">of base Paylinq Cash</span>
                         </div>
                         <p className="text-sm text-gray-500 mt-2">
                             This determines how many points users earn per dollar spent.
