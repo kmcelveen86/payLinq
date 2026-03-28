@@ -20,7 +20,7 @@ export function BusinessImpact({ revenue, avgOrderValue, cac }: { revenue?: numb
                     <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2 text-muted-foreground">
                             <DollarSign className="h-4 w-4" />
-                            <span className="text-sm font-medium">Net Revenue (PayLinq)</span>
+                            <span className="text-sm font-medium">Net Revenue (Paylinq)</span>
                         </div>
                         <span className="text-xs bg-muted px-2 py-0.5 rounded-full">YTD</span>
                     </div>

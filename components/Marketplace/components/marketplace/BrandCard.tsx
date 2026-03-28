@@ -63,7 +63,7 @@ export const BrandCard = ({ brand, onClick }: BrandCardProps) => {
           <p className="text-sm text-muted-foreground">{brand.category}</p>
         </div>
 
-        {/* UPP Badge */}
+        {/* Paylinq Cash Badge */}
         <UPPBadge
           rate={brand.uppEarningRate}
           type={brand.uppEarningType}

@@ -274,7 +274,7 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                                                     <h4 className="font-bold text-foreground">{offer.title}</h4>
                                                     <p className="text-sm text-muted-foreground mb-2">{offer.description}</p>
                                                     <Badge className="bg-gold hover:bg-gold/90 border-none text-white shadow-sm">
-                                                        +{offer.bonusUpp} Bonus UPP
+                                                        +{offer.bonusUpp} Bonus Paylinq Cash
                                                     </Badge>
                                                 </div>
                                             ))}
@@ -291,7 +291,7 @@ export const ModernBrandDetailModal = ({ brand, open, onOpenChange }: ModernBran
                                     <div className="text-center mb-6">
                                         <p className="text-muted-foreground text-sm mb-1">Earn rewards instantly</p>
                                         <p className="text-2xl font-bold text-primary">
-                                            {brand.uppEarningType === "percentage" ? `${brand.uppEarningRate}% Back` : `${brand.uppEarningRate} UPP / $10`}
+                                            {brand.uppEarningType === "percentage" ? `${brand.uppEarningRate}% Back` : `${brand.uppEarningRate} Paylinq Cash / $10`}
                                         </p>
                                     </div>
 

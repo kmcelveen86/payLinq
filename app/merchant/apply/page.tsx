@@ -57,7 +57,7 @@ export default function MerchantApplyPage() {
                         Complete Your Merchant Profile
                     </h1>
                     <p className="text-muted-foreground mt-2 max-w-md mx-auto">
-                        Tell us a bit about your business ({organization?.name}) to get your store listed on PayLinq.
+                        {`Tell us a bit about ${organization?.name ? organization.name : `your business`} to get your store listed on Paylinq.`}
                     </p>
                 </div>
 

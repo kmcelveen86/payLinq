@@ -32,15 +32,14 @@ export default function RoadmapSection() {
 
   const roadmapItems = [
     {
-      phase: "Phase 1 (Q1)",
-      title: "Track Purchases, Earn Points",
-      objective: "Launch PayLinq's core earning engine.",
+      phase: "Phase 1",
+      title: "Start Earning Value",
+      objective: "Track your spending and earn real value on everyday purchases.",
       features: [
-        "Link PayLinq Debit Card.",
-        "Automatically track every purchase.",
-        "Earn UPP on eligible transactions.",
-        "View real-time points and spending analytics.",
-        "Access Rewards dashboard with redemption preview.",
+        "Earn value on travel and bookings.",
+        "Track your spending automatically.",
+        "View your balance in real time.",
+        "Use your value starting at $10.",
       ],
       status: "Current Phase",
       icon: <BarChart4 size={24} className="text-[#2D9642]" />,
@@ -50,15 +49,15 @@ export default function RoadmapSection() {
       timeline: "Q1",
     },
     {
-      phase: "Phase 2 (Q2)",
-      title: "Redeem, Upgrade, and Engage",
+      phase: "Phase 2",
+      title: "Use and Grow Your Value",
       objective:
-        "Expand user value through redemption options and tier upgrades.",
+        "Unlock more ways to use your balance and increase your purchasing power.",
       features: [
-        "Enable full UPP redemption for shopping, travel, and gift.",
-        "Introduce Silver and Gold membership tiers with higher earning rates.",
-        "Launch merchant offers and bonus campaigns.",
-        "Add referral rewards and in-app notifications.",
+        "Paylinq marketplace.",
+        "Redeem for travel, shopping, and experiences.",
+        "Unlock higher tiers for more value.",
+        "Invite others and earn more.",
       ],
       status: "Coming Soon",
       icon: <Award size={24} className="text-[#2D9642]" />,
@@ -68,14 +67,14 @@ export default function RoadmapSection() {
       timeline: "Q2",
     },
     {
-      phase: "Phase 3 (Q3)",
-      title: "Ecosystem Expansion",
-      objective: "Scale PayLinq into a full lifestyle rewards ecosystem.",
+      phase: "Phase 3",
+      title: "A New Financial Experience",
+      objective: "Paylinq becomes your everyday financial layer-where spending creates more value.",
       features: [
-        "Integrate premium partners (travel, entertainment, retail).",
-        "Launch Black Tier with elite benefits and concierge access.",
-        "Add PayLinq Marketplace for direct point spending.",
-        "Introduce AI-powered spend insights and reward optimization.",
+        "Premium partners across travel, retail, and lifestyle.",
+        "Get personalized offers and bonuses.",
+        "Concierge and exclusive experiences.",
+        "AI-powered insights to maximize your value.",
       ],
       status: "Future Vision",
       icon: <LucideRocket size={24} className="text-[#C28F49]" />,
@@ -186,10 +185,9 @@ export default function RoadmapSection() {
               variants={itemVariants}
               className={`
                 rounded-xl shadow-lg overflow-hidden transition-all duration-500 transform
-                ${
-                  hoveredCard === index
-                    ? "scale-105 z-10 shadow-xl"
-                    : "scale-100 z-0"
+                ${hoveredCard === index
+                  ? "scale-105 z-10 shadow-xl"
+                  : "scale-100 z-0"
                 } 
                 h-full flex flex-col border border-gray-100
               `}
@@ -221,10 +219,10 @@ export default function RoadmapSection() {
                     <h3 className="text-xl font-bold text-white">
                       {item.phase}
                     </h3>
-                    <div className="flex items-center mt-1 text-white/90 text-sm">
+                    {/* <div className="flex items-center mt-1 text-white/90 text-sm">
                       <Milestone className="w-4 h-4 mr-1" />
                       <span>{item.timeline}</span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 

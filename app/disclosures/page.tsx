@@ -29,7 +29,7 @@ export default function DisclosuresPage() {
     {
       icon: Gift,
       title: "Rewards Program",
-      description: "Details about Paylinq Points and Universal Reward Tokens, including pending status and adjustments.",
+      description: "Details about Paylinq Cash and Universal Reward Tokens, including pending status and adjustments.",
       href: "/rewards-disclosure",
     },
     {

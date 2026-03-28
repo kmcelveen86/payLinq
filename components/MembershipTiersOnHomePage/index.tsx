@@ -254,12 +254,12 @@ const MembershipTiersOnHomePage: React.FC = () => {
               features={[
                 {
                   icon: <CreditCard size={18} />,
-                  text: "PayLinq Reward Debit Card",
+                  text: "PayLinq Reward Card",
                   comingSoon: true
                 },
                 {
                   icon: <Award size={18} />,
-                  text: "Loyalty Rewards Program",
+                  text: "Paylinq Reward Program",
                   comingSoon: true,
                 },
                 // {
@@ -274,7 +274,7 @@ const MembershipTiersOnHomePage: React.FC = () => {
                 },
               ]}
               rewards={[
-                { category: "Everyday Purchases", points: 100 },
+                // { category: "Everyday Purchases", points: 100 },
               ]}
               pointsFor10={1000}
               redemptionValue={10}
@@ -444,7 +444,7 @@ const FAQSection: React.FC = () => {
     {
       question: "How do I redeem my PayLinq Reward points?",
       answer:
-        "Redeem PayLinq Points directly in the app or web dashboard. Go to Rewards → Redeem, then choose how to use your <strong>Universal PayLinq Points (UPP)</strong>: Shop instantly with participating brands online or in-store, or book travel—flights, hotels, or experiences. Redemptions are instant. No minimum balance required.",
+        "Redeem PayLinq Points directly in the app or web dashboard. Go to Rewards → Redeem, then choose how to use your <strong>Paylinq Cash</strong>: Shop instantly with participating brands online or in-store, or book travel—flights, hotels, or experiences. Redemptions are instant. No minimum balance required.",
     },
     {
       question: "Can I upgrade my membership tier at any time?",
@@ -459,7 +459,7 @@ const FAQSection: React.FC = () => {
     {
       question: "What is the Loyalty Program?",
       answer:
-        "The PayLinq Loyalty Program lets members earn <strong>Universal PayLinq Points (UPP)</strong> on everyday spending. Each purchase made through a PayLinq Reward card or partner brand generates points that can be redeemed like cash—for shopping, travel, or experiences. Members also unlock higher earning rates, exclusive offers, and enhanced redemption values as they move up from White → Silver → Gold → Black tiers.",
+        "The PayLinq Loyalty Program lets members earn <strong>Paylinq Cash</strong> on everyday spending. Each purchase made through a PayLinq Reward card or partner brand generates points that can be redeemed like cash—for shopping, travel, or experiences. Members also unlock higher earning rates, exclusive offers, and enhanced redemption values as they move up from White → Silver → Gold → Black tiers.",
     },
   ];
 

@@ -42,7 +42,8 @@ export default function TopNavComp() {
   }, [scrolled]);
 
   const navLinks = [
-    { href: "/howitworks", label: "How It Works", color: "#2D9642" },
+    // { href: "/howitworks", label: "How it works", color: "#2D9642" },
+    { href: "/merchant", label: "Become a merchant", color: "#2D9642" },
     // { href: "/membership-tiers", label: "Features", color: "#C28F49" },
     // { href: "/contact", label: "Contact Us", color: "#2D9642" },
   ];
@@ -86,11 +87,11 @@ export default function TopNavComp() {
             <Link href="/">
               <div className="relative group">
                 <Image
-                  src="/logos/paylinq-logo-new.png"
-                  width={70}
-                  height={70}
-                  alt="PayLinq Logo"
-                  className="sm:ml-4 lg:ml-[133px] transition-transform duration-300 group-hover:scale-105"
+                  src="/logos/paylinq-logo-light.png"
+                  width={200}
+                  height={200}
+                  alt="Paylinq Logo"
+                  className="sm:ml-4 lg:ml-[133px] mt-4 transition-transform duration-300 group-hover:scale-105"
                 />
                 {/* Logo glow effect */}
                 <motion.div

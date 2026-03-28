@@ -137,7 +137,7 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
             {brand.category}
           </Badge>
 
-          {/* Tags & UPP Badge */}
+          {/* Tags & Paylinq Badge */}
           <div className="flex flex-wrap gap-2 justify-center items-center">
             <UPPBadge
               rate={brand.uppEarningRate}
@@ -172,7 +172,7 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
             }}
             disabled={!brand.affiliateLink}
           >
-            Shop & Earn UPP
+            Shop & Earn Paylinq Cash
           </Button>
 
           <div className="flex gap-2">
@@ -220,18 +220,18 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
 
         <Separator />
 
-        {/* UPP Earning Breakdown */}
+        {/* Paylinq Cash Earning Breakdown */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              Earn UPP on Every Purchase
+              Earn Paylinq Cash on Every Purchase
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p>{`UPP is Paylinq's universal reward currency redeemable anywhere Paylinq is accepted.`}</p>
+                    <p>{`Paylinq Cash is Paylinq's universal reward currency.`}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -240,14 +240,14 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
           <CardContent className="space-y-2">
             <p className="text-lg font-semibold text-primary">
               {brand.uppEarningType === 'percentage'
-                ? `${brand.uppEarningRate}% back in UPP`
-                : `${brand.uppEarningRate} UPP per $10 spent`
+                ? `${brand.uppEarningRate}% back in Paylinq Cash`
+                : `${brand.uppEarningRate} Paylinq Cash per $10 spent`
               }
             </p>
             <p className="text-sm text-muted-foreground">
               {brand.uppEarningType === 'percentage'
-                ? `Spend $100, earn ${brand.uppEarningRate * 100} UPP instantly`
-                : `Every $10 you spend earns you ${brand.uppEarningRate} UPP`
+                ? `Spend $100, earn ${brand.uppEarningRate * 100} Paylinq Cash instantly`
+                : `Every $10 you spend earns you ${brand.uppEarningRate} Paylinq Cash`
               }
             </p>
           </CardContent>
@@ -277,7 +277,7 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
                   <h4 className="font-semibold text-success-light-foreground">{offer.title}</h4>
                   <p className="text-sm text-muted-foreground">{offer.description}</p>
                   <p className="text-sm font-medium text-success">
-                    Bonus: {offer.bonusUpp} UPP
+                    Bonus: {offer.bonusUpp} Paylinq Cash
                   </p>
                 </div>
               ))}
@@ -318,7 +318,7 @@ export const BrandDetailModal = ({ brand, open, onOpenChange }: BrandDetailModal
             }}
             disabled={!brand.affiliateLink}
           >
-            Shop & Earn UPP
+            Shop & Earn Paylinq Cash
           </Button>
         </div>
       </DialogContent>

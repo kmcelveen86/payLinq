@@ -4,6 +4,7 @@ import { revalidateTag } from "next/cache";
 import { verifyMerchantApiKey } from "@/lib/api-keys";
 import { prisma } from "@/lib/prisma";
 import { awardUpp, getOrCreateUserWallet } from "@/lib/wallet";
+import { calculateWowPoints } from "@/lib/rewards";
 import { dispatchWebhook } from "@/lib/webhooks";
 
 export async function POST(req: NextRequest) {
@@ -76,25 +77,13 @@ export async function POST(req: NextRequest) {
         const clickId = click.id;
 
         // 4. Calculate Rewards
-        // Logic: amount_cents / 100 * rate.
-        // If rate is 0.05 (5%), $50.00 * 0.05 = 2.5 UPP? 
-        // Or is UPP 1:1 with currency? Assuming 1 UPP = $1 value or arbitrary points?
-        // Let's assume UPP is a point system.
-        // Let's assume UPP is a point system.
-        // CHECK: If user is unsubscribed (tier "none" or null), REJECT the transaction.
-        if (!user.membershipTier || user.membershipTier === "none") {
-            return NextResponse.json(
-                { error: "Active subscription required to earn rewards" },
-                { status: 403 }
-            );
-        }
+        // Determine fixed points based on Category (WOW Model)
+        const category = merchant.category || "Shopping";
 
-        const earningRate = merchant.uppEarningRate || 0.0; // e.g. 1.0 = 1 point per $1? 
-        // Or percentage e.g. 5% cashback equivalent.
+        // Calculate Points: Fixed logic from lib/rewards.ts
+        const uppEarned = calculateWowPoints(category, amount_cents);
 
-        // Let's calculate standard points: (Cents / 100) * Rate
-        const amountDollars = amount_cents / 100;
-        const uppEarned = amountDollars * earningRate;
+        console.log(`[OrdersAPI] Awards: Tier=${user.membershipTier}, Cat=${category}, FixedPoints=${uppEarned}`);
 
         // 5. Create Transaction
         // 5. Create Transaction

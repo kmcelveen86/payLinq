@@ -112,12 +112,6 @@ export default function HowItWorksContent() {
   // Features data
   const features = [
     {
-      icon: <Shield className="w-6 h-6 text-[#2D9642]" />,
-      title: "Bank-Level Security",
-      description:
-        "Your money and data are protected with the latest security technology and fraud protection.",
-    },
-    {
       icon: <Zap className="w-6 h-6 text-[#2D9642]" />,
       title: "Instant Notifications",
       description:
@@ -168,7 +162,7 @@ export default function HowItWorksContent() {
             className="text-center mb-16"
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#2D9642] to-[#C28F49]">
-              How PayLinq Works
+              How Paylinq Works
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Earn rewards on every purchase, enjoy exclusive perks, and take
@@ -189,8 +183,8 @@ export default function HowItWorksContent() {
                   key={index}
                   onClick={() => setActiveStep(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${activeStep === index
-                      ? "bg-gradient-to-r from-[#2D9642] to-[#C28F49] w-12"
-                      : "bg-gray-600"
+                    ? "bg-gradient-to-r from-[#2D9642] to-[#C28F49] w-12"
+                    : "bg-gray-600"
                     }`}
                 />
               ))}
@@ -304,7 +298,7 @@ export default function HowItWorksContent() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl font-bold mb-2">Why Choose PayLinq</h2>
+            <h2 className="text-3xl font-bold mb-2">Why Choose Paylinq</h2>
             <div className="w-24 h-1 bg-gradient-to-r from-[#2D9642] to-[#C28F49] mx-auto"></div>
           </motion.div>
 
@@ -348,7 +342,7 @@ export default function HowItWorksContent() {
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-[#2D9642] to-[#C28F49] mx-auto mb-4"></div>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Get answers to the most common questions about PayLinq rewards and
+              Get answers to the most common questions about Paylinq rewards and
               membership
             </p>
           </motion.div>
@@ -373,7 +367,7 @@ export default function HowItWorksContent() {
               {
                 question: "How do I track my rewards and spending?",
                 answer:
-                  "The PayLinq dashboard and mobile app provide real-time tracking for all your transactions, point earnings, and available rewards. You can also set up custom spending categories and alerts to help manage your finances.",
+                  "The Paylinq dashboard and mobile app provide real-time tracking for all your transactions, point earnings, and available rewards. You can also set up custom spending categories and alerts to help manage your finances.",
               },
             ].map((faq, index) => (
               <motion.div

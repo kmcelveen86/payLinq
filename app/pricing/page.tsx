@@ -17,9 +17,8 @@ const TIER_FEATURES: Record<TierName, { tagline: string; features: { text: strin
   White: {
     tagline: "Start your journey",
     features: [
-      { text: "1,000 points = $10.00 Redemption", available: true },
-      { text: "PayLinq Reward Debit Card (Coming Soon)", available: false },
-      { text: "Loyalty Rewards Program (Coming Soon)", available: false },
+      { text: "Paylinq Reward Card (Coming Soon)", available: false },
+      { text: "Paylinq Reward Program (Coming Soon)", available: false },
       // { text: "AI Powered Shopping Assistant (Coming Soon)", available: false },
       { text: "Referral Bonus Program (Coming Soon)", available: false },
     ],
@@ -48,6 +47,29 @@ const TIER_FEATURES: Record<TierName, { tagline: string; features: { text: strin
       { text: "Coming Soon", available: false },
     ],
   },
+};
+
+const TIER_REWARDS: Record<TierName, { category: string; value: string }[]> = {
+  White: [
+    { category: "Shopping", value: "1pt per 1.0¢" },
+    { category: "Travel", value: "1pt per 1.5¢" },
+    { category: "1,000 Paylinq Cash", value: "$10 cash redemption" },
+  ],
+  Silver: [
+    { category: "Shopping", value: "1pt per 1.5¢" },
+    { category: "Travel", value: "1pt per 2.0¢" },
+    { category: "1,000 Paylinq Cash", value: "$15 cash redemption" },
+  ],
+  Gold: [
+    { category: "Shopping", value: "1pt per 2.0¢" },
+    { category: "Travel", value: "1pt per 2.5¢" },
+    { category: "1,000 Paylinq Cash", value: "$20 cash redemption" },
+  ],
+  Black: [
+    { category: "Shopping", value: "1pt per 2.5¢" },
+    { category: "Travel", value: "1pt per 3.0¢" },
+    { category: "1,000 Paylinq Cash", value: "$25 cash redemption" },
+  ],
 };
 
 const TIER_ICONS: Record<TierName, React.ReactNode> = {
@@ -291,7 +313,7 @@ export default function PricingPage() {
             >
               Yearly
             </span>
-            {isYearly && (
+            {/* {isYearly && (
               <motion.span
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -299,7 +321,7 @@ export default function PricingPage() {
               >
                 2 Months Free
               </motion.span>
-            )}
+            )} */}
           </div>
 
           {/* Free Trial Banner */}
@@ -447,6 +469,28 @@ export default function PricingPage() {
                       )}
                     </div>
 
+                    {/* Rewards Section */}
+                    <div className="border-t border-neutral-800 pt-4 mb-6">
+                      <h4 className="font-semibold mb-2" style={{ color: tierName === "Black" ? colors.text.primary : "#fff" }}>Rewards</h4>
+                      <ul className="space-y-2">
+                        {TIER_REWARDS[tierName].map((reward, index) => (
+                          <motion.li
+                            key={index}
+                            className="flex justify-between text-sm"
+                            whileHover={{ x: 3 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <span style={{ color: tierName === "Black" ? colors.text.accent : "#9ca3af" }}>
+                              {reward.category}
+                            </span>
+                            <span className="font-semibold" style={{ color: tierName === "Black" ? colors.text.accent : "#fff" }}>
+                              {reward.value}
+                            </span>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </div>
+
                     {/* Subscribe Button */}
                     <motion.button
                       whileHover={{ scale: 1.02 }}
@@ -583,7 +627,7 @@ export default function PricingPage() {
               Ready to Take Control?
             </h2>
             <p className="text-neutral-700 mb-8 max-w-xl mx-auto">
-              Join thousands of users who have transformed their financial lives with PayLinq.
+              Join thousands of users who have transformed their financial lives with Paylinq.
               Start your journey today.
             </p>
             <motion.button

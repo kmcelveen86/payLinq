@@ -10,8 +10,8 @@ import MerchantMobileMenu from "@/components/MerchantMobileMenu";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "PayLinq Merchant",
-    description: "Merchant Portal for PayLinq",
+    title: "Paylinq Merchant",
+    description: "Merchant Portal for Paylinq",
 };
 
 // ... existing code ...
@@ -35,13 +35,12 @@ export default async function MerchantLayout({
                     <div className="font-bold text-xl tracking-tight flex items-center gap-3">
                         <Link href="/" className="flex items-center gap-2">
                             <Image
-                                src="/logos/paylinq-logo-new.png"
-                                alt="PayLinq"
-                                width={32}
-                                height={32}
+                                src="/logos/paylinq-logo-light.png"
+                                alt="Paylinq"
+                                width={125}
+                                height={125}
                                 className="object-contain" // Keeping it simple, assuming icon-like dimensions
                             />
-                            <span className="text-primary hidden sm:inline-block">PayLinq</span>
                         </Link>
                         <span className="text-muted-foreground font-normal text-lg">|</span>
                         <span className="text-foreground">Merchant</span>

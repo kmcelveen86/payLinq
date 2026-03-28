@@ -31,12 +31,12 @@ export default function TravelRewardsPage() {
     {
       step: "3",
       title: "Earn Points",
-      description: "Earn Paylinq Points automatically.",
+      description: "Earn Paylinq Cash automatically.",
     },
     {
       step: "4",
-      title: "Convert to URT",
-      description: "Convert points into Universal Reward Tokens.",
+      title: "Convert to Paylinq Cash",
+      description: "Convert points into Paylinq Cash.",
     },
   ];
 
@@ -44,25 +44,25 @@ export default function TravelRewardsPage() {
     {
       icon: Plane,
       name: "Flights",
-      points: "200 PP",
+      points: "200 Paylinq Cash",
       description: "Domestic & international",
     },
     {
       icon: Hotel,
       name: "Hotels",
-      points: "400 PP",
+      points: "400 Paylinq Cash",
       description: "All accommodations",
     },
     {
       icon: Car,
       name: "Car Rentals",
-      points: "300 PP",
+      points: "300 Paylinq Cash",
       description: "Rental vehicles",
     },
     {
       icon: Map,
       name: "Vacation Packages",
-      points: "600 PP",
+      points: "600 Paylinq Cash",
       description: "Bundle deals",
     },
   ];
@@ -82,7 +82,7 @@ export default function TravelRewardsPage() {
     {
       icon: Coins,
       title: "Real Value",
-      description: "Convert to real-world value with URT",
+      description: "Convert to real-world value with Paylinq Cash",
     },
     {
       icon: Shield,
@@ -133,14 +133,14 @@ export default function TravelRewardsPage() {
           className="bg-gradient-to-r from-[#2D9642]/10 to-[#C28F49]/10 rounded-xl p-8 border border-[#2D9642]/30 mb-12"
         >
           <p className="text-lg text-gray-300 leading-relaxed">
-            With Paylinq, members earn Paylinq Points (PP) when booking travel
+            With Paylinq, members earn Paylinq Cash when booking travel
             through our integrated travel marketplace. Flights, hotels, car
             rentals, activities, and travel insurance all earn rewards —
             automatically.
           </p>
           <div className="mt-6 p-4 bg-[#2D9642]/10 rounded-lg border border-[#2D9642]/30">
             <p className="text-[#C28F49] font-medium text-center">
-              1,000 Paylinq Points = 1 URT = $10 value (White Tier)
+              1,000 Paylinq Cash = $10 value (White Tier)
             </p>
             <p className="text-gray-400 text-sm text-center mt-2">
               Rewards are funded through partner marketing agreements
@@ -210,10 +210,10 @@ export default function TravelRewardsPage() {
           <div className="mt-4 p-4 bg-[#C28F49]/10 rounded-lg border border-[#C28F49]/30">
             <p className="text-gray-300 text-center text-sm">
               <strong className="text-white">Monthly travel earning cap:</strong>{" "}
-              4,000 PP
+              4,000 Paylinq Cash
             </p>
             <p className="text-gray-400 text-center text-xs mt-1">
-              Rewards are credited after booking confirmation
+              Paylinq Cash is credited after booking confirmation
             </p>
           </div>
         </motion.div>

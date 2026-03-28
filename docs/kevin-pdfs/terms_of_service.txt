@@ -7,7 +7,7 @@ Paylinq, you agree to be bound by these Terms and all applicable laws and regula
 do not agree with these Terms, you should not use the Platform.
 2. Description of Services
 Paylinq is a rewards and referral platform that allows users to discover merchants, travel
-services, and partner offers while earning Paylinq Points (“PP”) through qualifying activities.
+services, and partner offers while earning Paylinq Cash through qualifying activities.
 Points may be converted into Universal Reward Tokens (“URT”) subject to Paylinq policies and
 eligibility requirements.
 Paylinq operates primarily as a referral and rewards platform and generally is not the merchant
@@ -23,7 +23,7 @@ Users are responsible for all activity occurring under their accounts.
 Paylinq services are intended for individuals 18 years of age or older. By using the Platform,
 you represent that you meet this eligibility requirement.
 5. Rewards Program
-Paylinq Points and Universal Reward Tokens are promotional incentives issued by Paylinq.
+Paylinq Cash and Universal Reward Tokens are promotional incentives issued by Paylinq.
 Rewards may:
 ● Remain pending until merchant confirmation
 ● Be adjusted for cancellations, refunds, or transaction changes
@@ -42,7 +42,7 @@ a purchase or booking.
 7. Affiliate Relationships
 Paylinq may receive commissions from merchants or affiliate networks when users complete
 qualifying purchases or bookings through Paylinq links, widgets, or integrations.
-These commissions help fund Paylinq Points and promotional incentives.
+These commissions help fund Paylinq Cash and promotional incentives.
 8. Paid Membership Tiers
 Paylinq may offer paid membership tiers that provide enhanced platform features or reward
 benefits.

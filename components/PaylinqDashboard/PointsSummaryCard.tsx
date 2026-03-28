@@ -110,11 +110,11 @@ export default function PointsSummaryCard(props: Props) {
           </p>
           <p className="text-xs text-gray-400 mt-1">Available to redeem now</p>
         </div>
-        <div className="mt-4 pt-3 border-t border-gray-700/50">
+        {/* <div className="mt-4 pt-3 border-t border-gray-700/50">
           <p className="text-xs text-gray-500 text-center">
             Redeem anytime • 1,000 point increments • Points never expire
           </p>
-        </div>
+        </div> */}
       </motion.div>
 
       {/* Dynamic Tier Details Section */}

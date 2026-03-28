@@ -218,7 +218,7 @@ export default function SideBar(props: Props) {
               <CreditCard size={24} className="text-[#2D9642]" />
             </div>
             <div>
-              <h3 className="font-medium">PayLinq Card</h3>
+              <h3 className="font-medium">Paylinq Card</h3>
               <p className="text-gray-400 text-sm">
                 **** **** **** {userData.cardLastFour}
               </p>

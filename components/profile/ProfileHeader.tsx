@@ -14,7 +14,7 @@ const ProfileHeader = ({ title }: ProfileHeaderProps) => {
           <CreditCard className="h-8 w-8 text-[#2D9642] mr-2" />
           <Link href="/">
             <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2D9642] to-[#C28F49]">
-              PayLinq
+              Paylinq
             </span>
           </Link>
         </div>

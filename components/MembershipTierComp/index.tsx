@@ -42,12 +42,12 @@ const membershipTiers = [
     features: [
       {
         icon: <CreditCard size={18} />,
-        text: "PayLinq Reward Debit Card",
+        text: "Paylinq Reward Card",
         comingSoon: true,
       },
       {
         icon: <Award size={18} />,
-        text: "Loyalty Rewards Program",
+        text: "Paylinq Reward Program",
         comingSoon: true,
       },
       // {
@@ -62,7 +62,7 @@ const membershipTiers = [
       },
     ],
     rewards: [
-      { category: "Everyday Purchases", points: 1 },
+      // { category: "Everyday Purchases", points: 1 },
     ],
     pointsFor10: 1000,
     redemptionValue: 10,
@@ -335,7 +335,7 @@ const MembershipTierComp = () => {
           <div className="flex items-center">
             <CreditCard className="h-8 w-8 text-[#2D9642] mr-2" />
             <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2D9642] to-[#C28F49]">
-              PayLinq
+              Paylinq
             </span>
           </div>
         </motion.div>
@@ -352,7 +352,7 @@ const MembershipTierComp = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <h1 className="text-4xl font-bold text-gray-900 mb-3">
-              Choose Your PayLinq Membership
+              Choose Your Paylinq Membership
             </h1>
           </motion.div>
           <motion.p

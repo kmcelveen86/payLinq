@@ -375,12 +375,12 @@ export function MerchantSettingsForm({ merchant }: { merchant: any }) {
 
                             {/* Read-only Reward Rate */}
                             <div className="space-y-2">
-                                <FormLabel>UPP Reward Rate</FormLabel>
+                                <FormLabel>Paylinq Cash Rate</FormLabel>
                                 <div className="h-11 px-3 py-2 rounded-md border border-input bg-muted text-muted-foreground text-sm flex items-center">
                                     {merchant.uppEarningRate || 0} {merchant.uppEarningType === 'percentage' ? '%' : 'UP'}
                                 </div>
                                 <FormDescription>
-                                    Amount/Percentage of UP earned per purchase.
+                                    Amount/Percentage of Paylinq Cash earned per purchase.
                                 </FormDescription>
                             </div>
                         </div>

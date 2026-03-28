@@ -53,7 +53,7 @@ export default async function MerchantTransactionsPage() {
                                 <TableHead>Transaction ID</TableHead>
                                 <TableHead>Customer</TableHead>
                                 <TableHead>Amount</TableHead>
-                                <TableHead>UPP Earned</TableHead>
+                                <TableHead>Paylinq Cash Earned</TableHead>
                                 <TableHead>Status</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -88,7 +88,7 @@ export default async function MerchantTransactionsPage() {
                                         </TableCell>
                                         <TableCell>
                                             <Badge className="bg-gold text-white hover:bg-gold/90 border-none">
-                                                +{tx.uppEarned} UPP
+                                                +{tx.uppEarned} Paylinq Cash
                                             </Badge>
                                         </TableCell>
                                         <TableCell>

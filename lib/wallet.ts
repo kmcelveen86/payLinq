@@ -21,9 +21,9 @@ export async function getOrCreateUserWallet(userId: string) {
 }
 
 /**
- * Awards UPP to a user for a transaction.
+ * Awards Paylinq Cash to a user for a transaction.
  * @param userId User ID
- * @param amountUpp Amount of UPP to add
+ * @param amountCash Amount of Paylinq Cash to add
  * @param transactionId Related PaylinqTransaction ID
  * @param description Description for the wallet transaction
  */

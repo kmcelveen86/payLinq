@@ -27,7 +27,7 @@ export type StripeProduct = Stripe.Product;
 // Invoice types
 export type StripeInvoice = Stripe.Invoice;
 
-// Card Issuing types (for PayLinq card features)
+// Card Issuing types (for Paylinq card features)
 export type StripeIssuingCard = Stripe.Issuing.Card;
 export type StripeIssuingCardCreateParams = Stripe.Issuing.CardCreateParams;
 export type StripeIssuingCardholder = Stripe.Issuing.Cardholder;
@@ -46,7 +46,7 @@ export type StripeCheckoutSessionCreateParams = Stripe.Checkout.SessionCreatePar
 export type StripeBalance = Stripe.Balance;
 export type StripeBalanceTransaction = Stripe.BalanceTransaction;
 
-// Custom types for PayLinq
+// Custom types for Paylinq
 export interface PayLinqCardDetails {
   cardId: string;
   cardholderId: string;

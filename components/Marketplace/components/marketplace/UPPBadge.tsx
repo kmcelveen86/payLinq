@@ -16,8 +16,8 @@ export const UPPBadge = ({ rate, type, size = 'md', className }: UPPBadgeProps) 
   };
 
   const displayText = type === 'percentage'
-    ? `Earn ${rate}% UPP`
-    : `Earn ${rate} UPP per $10`;
+    ? `Earn ${rate}% Paylinq Cash`
+    : `Earn ${rate} Paylinq Cash per $10`;
 
   return (
     <Badge

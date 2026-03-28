@@ -42,33 +42,33 @@ const PaylinqFooter = () => {
   };
 
   const footerLinks = [
-    {
-      title: "Company",
-      links: [
-        { name: "About Us", href: "/about" },
-        { name: "Our Team", href: "/team" },
-        { name: "Careers", href: "/careers" },
-        { name: "Press", href: "/press" },
-      ],
-    },
+    // {
+    //   title: "Company",
+    //   links: [
+    //     // { name: "About Us", href: "/about" },
+    //     // { name: "Our Team", href: "/team" },
+    //     // { name: "Careers", href: "/careers" },
+    //     // { name: "Press", href: "/press" },
+    //   ],
+    // },
     {
       title: "Products",
       links: [
-        { name: "Debit Card", href: "/products/debit-card" },
+        // { name: "Debit Card", href: "/products/debit-card" },
         { name: "Rewards Program", href: "/products/rewards" },
         { name: "Travel Rewards", href: "/travel-rewards" },
-        { name: "Partner Benefits", href: "/products/benefits" },
+        // { name: "Partner Benefits", href: "/products/benefits" },
       ],
     },
-    {
-      title: "Resources",
-      links: [
-        { name: "How It Works", href: "/howitworks" },
-        { name: "FAQs", href: "/faqs" },
-        { name: "Blog", href: "/blog" },
-        { name: "Support Center", href: "/support" },
-      ],
-    },
+    // {
+    //   title: "Resources",
+    //   links: [
+    //     // { name: "How It Works", href: "/howitworks" },
+    //     // { name: "FAQs", href: "/faqs" },
+    //     // { name: "Blog", href: "/blog" },
+    //     // { name: "Support Center", href: "/support" },
+    //   ],
+    // },
     {
       title: "Legal",
       links: [
@@ -87,6 +87,15 @@ const PaylinqFooter = () => {
         { name: "Travel Disclaimer", href: "/travel-disclaimer" },
       ],
     },
+    // {
+    //   title: "Legal",
+    //   links: [
+    //     { name: "Terms of Service", href: "/terms" },
+    //     { name: "Privacy Policy", href: "/privacy" },
+    //     { name: "Cookie Policy", href: "/cookies" },
+    //     { name: "Disclosures", href: "/disclosures" },
+    //   ],
+    // },
   ];
 
   return (
@@ -133,11 +142,11 @@ const PaylinqFooter = () => {
                     backgroundImage: "linear-gradient(90deg, #2D9642, #C28F49)",
                   }}
                 >
-                  {`PayLinq`}
+                  {`Paylinq`}
                 </span>
               </div>
             </motion.div>
-
+{/* 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -147,7 +156,7 @@ const PaylinqFooter = () => {
               {`Our mission is to turn your everyday transactions into a way to
               achieve your financial and lifestyle dreams. Join us on the
               journey to transform how you manage your finances.`}
-            </motion.p>
+            </motion.p> */}
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -231,24 +240,7 @@ const PaylinqFooter = () => {
         </div>
 
         {/* Middle section with features */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            whileHover={{ y: -5 }}
-            className="bg-gray-900 bg-opacity-40 backdrop-blur-xs p-6 rounded-xl border border-gray-800"
-          >
-            <Landmark size={24} className="mb-4" style={{ color: "#2D9642" }} />
-            <h3 className="text-white font-semibold mb-2">
-              {`Bank-Level Security`}
-            </h3>
-            <p className="text-gray-400 text-sm">
-              {`Your funds are secured with FDIC insurance up to $250,000 through
-              our banking partners.`}
-            </p>
-          </motion.div>
-
+        {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -297,7 +289,7 @@ const PaylinqFooter = () => {
               live chat.`}
             </p>
           </motion.div>
-        </div>
+        </div> */}
 
         {/* Bottom section with social and newsletter */}
         <div className="border-t border-gray-800 pt-10 mt-10">
@@ -364,7 +356,7 @@ const PaylinqFooter = () => {
               </motion.div>
             </div>
 
-            <div>
+            {/* <div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -390,7 +382,7 @@ const PaylinqFooter = () => {
                   </button>
                 </div>
               </motion.div>
-            </div>
+            </div> */}
           </div>
 
           <div className="mt-10 flex flex-col md:flex-row justify-between items-center">
@@ -400,16 +392,7 @@ const PaylinqFooter = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-gray-500 text-sm"
             >
-              © {new Date().getFullYear()} PayLinq. All rights reserved.
-            </motion.p>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-gray-500 text-sm mt-2 md:mt-0"
-            >
-              {`Banking services provided by Our Banking Partner, Member FDIC.`}
+              © {new Date().getFullYear()} Paylinq. All rights reserved.
             </motion.p>
           </div>
         </div>
